@@ -168,6 +168,8 @@ ul.tree details[open] > summary::before {
 
     const urlParams = new URLSearchParams(window.location.search);
     const dataPath = urlParams.get('d');
+    const pagePath = urlParams.get('p');
+
     const mainTitle = document.getElementById('mtitle');
     const tree = document.getElementById('tree');
     const contentPane = document.getElementById('content');
@@ -188,6 +190,14 @@ ul.tree details[open] > summary::before {
         })
         .then(content => {
           tree.innerHTML = linesToHtmlTree(content);
+          if (pagePath) {
+            SetHeaderText(pagePath);
+            const _reloadFromUrl = async () => {
+              const content = await searchArchiveForFile(pagePath, archive);
+              contentPane.innerHTML = marked.parse(content);
+            }
+            _reloadFromUrl();
+          }
         })
         .catch(err => {
           console.error("Error:", err);
