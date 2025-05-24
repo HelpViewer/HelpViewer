@@ -148,7 +148,7 @@ ul.tree details[open] > summary::before {
   <div class="container">
     <div class="sidebar" id="sidebar">
       <button class="hide-btn" onclick="toggleSidebar()">←</button>
-<ul class="tree">
+<ul class="tree" id="tree">
 </ul>
     </div>
 
@@ -169,9 +169,58 @@ ul.tree details[open] > summary::before {
     const urlParams = new URLSearchParams(window.location.search);
     const dataPath = urlParams.get('d');
     const mainTitle = document.getElementById('mtitle');
+    const tree = document.getElementById('tree');
+
+    function SetHeaderText(txt) {
+       mainTitle.textContent = txt;
+    }
 
     if (!dataPath) {
-      mainTitle.textContent = 'Data file has not been specified. Use ?d= and its path in URI.';
+      SetHeaderText('Data file has not been specified. Use ?d= and its path in URI.');
+    } else {
+        const arch = loadZipFromUrl(dataPath);
+arch  .then(zip => {
+    console.log(zip.files);
+  })
+  .catch(err => {
+    console.error("Chyba při načítání ZIP:", err);
+  });
+    }
+  loadZipFromUrl(dataPath)
+    .then(arch2 => {
+      return searchArchiveForFile("tree.lst", arch2);
+    })
+    .then(content => {
+      tree.innerHTML = linesToHtmlTree(content);
+    })
+    .catch(err => {
+      console.error("Chyba:", err);
+    });
+
+    async function loadZipFromUrl(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const arrayBuffer = await response.arrayBuffer();
+
+        const arch = await JSZip.loadAsync(arrayBuffer);
+        return arch;
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    async function searchArchiveForFile(fileName, arch) {
+      const fileObj = Object.keys(arch.files)
+        .map(name => arch.files[name])
+        .find(file => file.name === fileName);
+
+      if (fileObj) {
+        const content = await fileObj.async("text");
+        return content;
+      } else {
+        return "";
+      }
     }
 
     function toggleSidebar() {
@@ -194,6 +243,69 @@ ul.tree details[open] > summary::before {
 
     window.addEventListener("resize", checkSidebarWidth);
     window.addEventListener("load", checkSidebarWidth);
+
+// File formats
+function linesToHtmlTree(linesP) {
+  const lines = linesP.split("\n");
+  function makeLink(name, note, path) {
+    if (path) {
+      return `<a href="${path}" title="${note}">${name}</a>`;
+    } else {
+      return `<a title="${note}">${name}</a>`;
+    }
+  }
+
+  let html = "";
+
+  const stack = [];
+
+  function getIndent(line) {
+    let count = 0;
+    for (const ch of line) {
+      if (ch === " ") count++;
+      else break;
+    }
+    return count;
+  }
+
+  function closeLevels(toLevel) {
+    while (stack.length > toLevel) {
+      html += "</ul></details></li>";
+      stack.pop();
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const indent = getIndent(line);
+    const trimmed = line.trim();
+    const parts = trimmed.split("|");
+    const name = parts[0]?.trim() || "";
+    const note = parts[1]?.trim() || "";
+    const path = parts[2]?.trim() || "";
+
+    let nextIndent = -1;
+    if (i + 1 < lines.length) {
+      nextIndent = getIndent(lines[i + 1]);
+    }
+
+    closeLevels(indent);
+
+    const content = makeLink(name, note, path);
+
+    if (nextIndent > indent) {
+      html += `<li><details><summary>${content}</summary><ul>`;
+      stack.push(indent);
+    } else {
+      html += `<li>${content}</li>`;
+    }
+  }
+
+  closeLevels(0);
+
+  return `${html}`;
+}
+// E: File formats
   </script>
 </body>
 </html>

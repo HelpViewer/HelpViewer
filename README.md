@@ -17,9 +17,17 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 - HLP file browsing will not be supported (at least not for now).
 - Support old help CHM file format with defined conversion steps.
 
-## Credits
+## About AI Assistance
 
-- ChatGPT, Copilot :)
+Some parts of this project were developed with assistance from:
+
+- ChatGPT, 
+- Copilot
+
+, an AI-powered advisor. 
+While AI helped generate suggestions, the final code and design decisions were made by the project author.
+
+Please note that any use of third-party code generated or suggested by AI is subject to the original licenses of that code.
 
 [HTMLHW]: https://learn.microsoft.com/en-us/previous-versions/windows/desktop/htmlhelp/about-the-html-help-viewer "HTML Help Viewer"
 [WinHlp32]: https://blog.butras.cz/2013/11/jiz-od-verze-windows-vista-jiz-neni.html "WinHlp32"
