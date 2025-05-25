@@ -7,6 +7,10 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 1. You will open **HelpViewer.htm** file in your browser.
 2. Then you will populate parameter **?d=X** where X will be your ZIP file path where all markdown files for your help file are present.
 
+## Data files structure
+
+- [Metadata structure description][Structure]
+
 ## Used 3rd party products
 
 - [JSZip library][JSZIP]
@@ -33,3 +37,4 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [WinHlp32]: https://blog.butras.cz/2013/11/jiz-od-verze-windows-vista-jiz-neni.html "WinHlp32"
 [JSZIP]: http://jszip.org/ "JSZip JavaScript library"
 [Marked]: https://marked.js.org/ "Marked JavaScript library"
+[Structure]: FileMetadata.md "File metadata"
