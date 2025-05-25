@@ -82,6 +82,7 @@ h1 {
   flex: 1;
   overflow-y: auto;
   padding: 1em;
+  font-size: 1em;
 }
 
 .tree {
@@ -119,7 +120,7 @@ ul.tree details[open] > summary::before {
   transform: rotate(90deg);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 635px) {
   .container {
     flex-direction: column;
   }
@@ -150,6 +151,44 @@ ul.tree details[open] > summary::before {
     width: 100%;
   }
 }
+
+//markdown formatting
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    margin-top: var(--base-size-24);
+    margin-bottom: var(--base-size-16);
+    font-weight: var(--base-text-weight-semibold, 600);
+    line-height: 1.25;
+}
+
+.content h1 {
+    padding-bottom: .3em;
+    font-size: 2em;
+    border-bottom: 1px solid var(--c-border, var(--c-border));
+}
+
+.content h2 {
+    padding-bottom: .3em;
+    font-size: 1.5em;
+    border-bottom: 1px solid var(--c-border, var(--c-border));
+}
+
+.content li {
+    margin-top: .5em;
+}
+
+.content pre {
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    line-height: 1.42857143;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: var(--c-background);
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    overflow: auto;
+}
+//E: markdown formatting
   </style>
 </head>
 <body>
