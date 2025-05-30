@@ -7,6 +7,27 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 1. You will open **HelpViewer.htm** file in your browser.
 2. Then you will populate parameter **?d=X** where X will be your ZIP file path where all markdown files for your help file are present.
 
+## Troubleshooting
+
+- The solution is implemented using pure JavaScript. Please ensure that JavaScript is enabled in your browser to ensure proper functionality.
+
+### Page not reading ZIP content - check if your browser is blocking content because of CORS policy
+
+You need to run your browser in mode with bypass CORS policy:
+- Firefox:
+  > Address bar: 
+  about:config
+  > 
+  > search:
+  privacy.file_unique_origin
+  > 
+  > set to:
+  false
+  
+- Chrome:
+  > Run in CLI:
+  > chrome.exe --disable-site-isolation-trials --disable-web-security --user-data-dir="C:\temp"
+
 ## Data files structure
 
 - [Metadata structure description][Structure]
