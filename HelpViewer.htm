@@ -248,7 +248,7 @@ ul.tree details[open] > summary::before {
             SetHeaderText(pagePath);
             const _reloadFromUrl = async () => {
               const content = await searchArchiveForFile(pagePath, archive);
-              contentPane.innerHTML = marked.parse(content);
+              contentPane.innerHTML = fixLinks(marked.parse(content));
             }
             _reloadFromUrl();
           }
@@ -256,6 +256,31 @@ ul.tree details[open] > summary::before {
         .catch(err => {
           console.error("Error:", err);
         });
+    }
+
+    function fixLinks(htmlTxt) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlTxt, "text/html");
+      const checkList = ["href", "src", "data-href"];
+    
+      doc.querySelectorAll("*").forEach((el) => {
+        checkList.forEach((attr) => {
+          if (el.hasAttribute(attr)) {
+            const val = el.getAttribute(attr);
+            if (val 
+              && !/^https?:\/\//.test(val) 
+              && !val.startsWith("mailto:") 
+              && !val.startsWith("tel:") 
+              && !val.startsWith("#")) {
+              
+              const newVal = `?d=${dataPath}&p=${encodeURIComponent(val)}`;
+              el.setAttribute(attr, newVal);
+            }
+          }
+        });
+      });
+      
+      return doc.documentElement.outerHTML;
     }
 
     async function loadZipFromUrl(url) {
@@ -314,7 +339,7 @@ ul.tree details[open] > summary::before {
     
       SetHeaderText(heading);
       const content = await searchArchiveForFile(path, archive);
-      contentPane.innerHTML = marked.parse(content);
+      contentPane.innerHTML = fixLinks(marked.parse(content));
       
       return false;
     }
