@@ -214,7 +214,7 @@ ul.tree details[open] > summary::before {
     const showBtn = document.getElementById('showBtn');
 
     const urlParams = new URLSearchParams(window.location.search);
-    const dataPath = urlParams.get('d');
+    dataPath = urlParams.get('d');
     const pagePath = urlParams.get('p');
 
     const mainTitle = document.getElementById('mtitle');
@@ -227,9 +227,16 @@ ul.tree details[open] > summary::before {
     
     let archive;
 
+    if (!dataPath || !pagePath) {
+      SetHeaderText('Select item from left');
+    }
+    
     if (!dataPath) {
-      SetHeaderText('Data file has not been specified. Use ?d= and its path in URI.');
-    } else {
+      console.log('Data file has not been specified. Use ?d= and its path in URI. Used default file name.');
+      dataPath = 'Help.zip';
+    }
+    
+    if (dataPath) {
       loadZipFromUrl(dataPath)
         .then(arch2 => {
           archive = arch2;
