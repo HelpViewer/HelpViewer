@@ -283,13 +283,35 @@ pre.code-numbers code span::before {
     const sidebar = document.getElementById('sidebar');
     const showBtn = document.getElementById('showBtn');
 
-    const urlParams = new URLSearchParams(window.location.search);
-    dataPath = urlParams.get('d');
-    const pagePath = urlParams.get('p');
+    let dataPath = '';
+    let pagePath = '';
+    
+    function LoadURLParameters() {
+      const urlParams = new URLSearchParams(window.location.search);
+      dataPath = urlParams.get('d');
+      pagePath = urlParams.get('p');
+    }
+    
+    LoadURLParameters();
 
     const mainTitle = document.getElementById('mtitle');
     const tree = document.getElementById('tree');
     const contentPane = document.getElementById('content');
+
+    document.getElementById('content').addEventListener('click', function(event) {
+      const link = event.target.closest('a');
+      if (!link) return;
+  
+      const href = link.getAttribute('href');
+  
+      if (href.startsWith('http') || href.startsWith('//')) return;
+  
+      event.preventDefault();
+      history.pushState({}, '', href);
+      
+      LoadURLParameters();
+      getDataOfPathInZIP(pagePath, pagePath);
+    });
 
     function SetHeaderText(txt) {
        mainTitle.textContent = txt;
@@ -315,12 +337,7 @@ pre.code-numbers code span::before {
         .then(content => {
           tree.innerHTML = linesToHtmlTree(content);
           if (pagePath) {
-            SetHeaderText(pagePath);
-            const _reloadFromUrl = async () => {
-              const content = await searchArchiveForFile(pagePath, archive);
-              contentPane.innerHTML = transformOutput(marked.parse(content));
-            }
-            _reloadFromUrl();
+            getDataOfPathInZIP(pagePath, pagePath);
           }
         })
         .catch(err => {
@@ -428,11 +445,15 @@ pre.code-numbers code span::before {
       url.searchParams.set('p', path);  
       history.pushState(null, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
     
+      await getDataOfPathInZIP(path, heading);
+      
+      return false;
+    }
+    
+    async function getDataOfPathInZIP(path, heading) {
       SetHeaderText(heading);
       const content = await searchArchiveForFile(path, archive);
       contentPane.innerHTML = transformOutput(marked.parse(content));
-      
-      return false;
     }
     
 // File formats
