@@ -437,6 +437,7 @@ pre.code-numbers code span::before {
           if (el.hasAttribute(attr)) {
             const val = el.getAttribute(attr);
             if (val 
+              && el.tagName.toLowerCase() !== "img"
               && !/^https?:\/\//.test(val) 
               && !val.startsWith("mailto:") 
               && !val.startsWith("tel:") 
@@ -459,6 +460,21 @@ pre.code-numbers code span::before {
       
       //end
       return doc.documentElement.outerHTML;
+    }
+    
+    function transformOutputConnected(doc) {
+      //relative img src paths update for ZIP structure
+      doc.querySelectorAll('img').forEach((img) => {
+        (async () => {
+          const src = img.getAttribute('src');
+          if (src && !/^https?:\/\//.test(src)) {
+            const data = await getDataOfPathInZIPImage(src);
+            if (data) {
+              img.src = data;
+            }
+          }
+        })();
+      });
     }
 
     async function loadZipFromUrl(url) {
@@ -487,6 +503,19 @@ pre.code-numbers code span::before {
       }
     }
 
+    async function searchArchiveForFileB64(fileName, arch) {
+      const fileObj = Object.keys(arch.files)
+        .map(name => arch.files[name])
+        .find(file => file.name === fileName);
+
+      if (fileObj) {
+        const content = await fileObj.async("base64");
+        return content;
+      } else {
+        return "";
+      }
+    }
+    
     function toggleSidebar() {
       if (sidebar.classList.contains('hidden')) {
         sidebar.classList.remove('hidden');
@@ -598,6 +627,7 @@ pre.code-numbers code span::before {
       SetHeaderText(heading);
       const content = await searchArchiveForFile(path, archive);
       contentPane.innerHTML = transformOutput(marked.parse(content));
+      transformOutputConnected(contentPane);
       
       if (content === '') {
         contentPane.innerHTML = `Given path <b>${path}</b> is not present inside the help ZIP archive <b>${dataPath}</b>.`;
@@ -605,6 +635,12 @@ pre.code-numbers code span::before {
           contentPane.innerHTML = msgNoData;
         }
       }
+    }
+    
+    async function getDataOfPathInZIPImage(path) {
+      const content = await searchArchiveForFileB64(path, archive);
+      let mimeType = 'image/' + path.split('.').pop().toLowerCase();
+      return `data:${mimeType};base64,${content}`;
     }
     
 // File formats
