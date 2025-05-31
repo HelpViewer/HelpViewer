@@ -73,12 +73,15 @@ h1 {
   border-bottom: 1px solid var(--c-border);
 }
 
-.show-btn {
-  display: none;
+.pnl-btn {
   background: var(--c-border);
   border: none;
   padding: 5px 10px;
   cursor: pointer;
+}
+
+.hidden-btn {
+  display: none;
 }
 
 .content {
@@ -259,6 +262,19 @@ pre.code-numbers code span::before {
   color: var(--c-numbering);
 }
 //E: code listing numbering
+
+#toolbar {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+#toolbar button {
+  flex: 1 1 auto;
+  max-height: 2rem;
+  line-height: 1.5;
+  overflow: hidden;
+}
   </style>
 </head>
 <body>
@@ -272,7 +288,12 @@ pre.code-numbers code span::before {
     <div class="main" id="main">
       <div class="header">
         <h1 id="mtitle">&nbsp;</h1>
-        <button class="show-btn" id="showBtn" onclick="toggleSidebar()">☰</button>
+        <div id="toolbar">
+        <button class="hidden-btn pnl-btn" id="showBtn" onclick="toggleSidebar()">☰</button>
+        <button class="hidden-btn pnl-btn" id="nav-left" onclick="navPrev(event);">⬅</button>
+        <button class="hidden-btn pnl-btn" id="nav-top" onclick="navTop(event);">⬆</button>
+        <button class="hidden-btn pnl-btn" id="nav-right" onclick="navNext(event);">➡</button>
+        </div>
       </div>
       <div class="content" id="content">
       </div>
@@ -280,6 +301,10 @@ pre.code-numbers code span::before {
   </div>
 
   <script>
+    const navL = document.getElementById('nav-left');
+    const navT = document.getElementById('nav-top');
+    const navR = document.getElementById('nav-right');
+    
     const sidebar = document.getElementById('sidebar');
     const showBtn = document.getElementById('showBtn');
     let msgNoData = '';
@@ -292,10 +317,11 @@ pre.code-numbers code span::before {
       const urlParams = new URLSearchParams(window.location.search);
       dataPath = urlParams.get('d');
       pagePath = urlParams.get('p');
-      idxTreeItem =urlParams.get('id');
+      idxTreeItem = parseInt(urlParams.get('id')) || 0;
     }
     
     LoadURLParameters();
+    updateNavButtons(idxTreeItem);
 
     const mainTitle = document.getElementById('mtitle');
     const tree = document.getElementById('tree');
@@ -341,6 +367,9 @@ pre.code-numbers code span::before {
         })
         .then(content => {
           tree.innerHTML = linesToHtmlTree(content);
+          revealTreeItem('tree-' + idxTreeItem);
+          updateNavButtons(idxTreeItem);
+          
           if (pagePath) {
             getDataOfPathInZIP(pagePath, pagePath);
           }
@@ -349,7 +378,7 @@ pre.code-numbers code span::before {
           console.error("Error:", err);
         });
     }
-    
+
     if (!pagePath) {
       pagePath = 'README.md';
       let txt = contentPane.innerHTML;
@@ -446,20 +475,93 @@ pre.code-numbers code span::before {
       }
     }
 
+    function revealTreeItem(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+    
+      let parent = el.parentElement;
+      while (parent) {
+        if (parent.tagName === 'DETAILS') {
+          parent.open = true;
+        }
+        parent = parent.parentElement;
+      }
+    }
+
     window.addEventListener("resize", checkSidebarWidth);
     window.addEventListener("load", checkSidebarWidth);
+    
+    function navPrev(event) {
+      event.preventDefault();
+      loadPageByTreeId(idxTreeItem-1);
+    }
+    
+    function navNext(event) {
+      event.preventDefault();
+      loadPageByTreeId(idxTreeItem+1);
+    }
+    
+    function navTop(event) {
+      event.preventDefault();
+      const treeItem = document.getElementById('tree-' + idxTreeItem);
+      const upId = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(5));
+      loadPageByTreeId(upId);
+    }
+    
+    function loadPageByTreeId(id) {
+      const treeItem = document.getElementById('tree-' + id);
+      if (treeItem) {
+        const syntheticClick = new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        treeItem.dispatchEvent(syntheticClick);
+        idxTreeItem = id;
+      }
+      revealTreeItem('tree-' + id);
+    }
 
     async function loadPage(event, path, heading, i) {
       event.preventDefault();
+      await _loadPageI(path, heading, i);
+      return false;
+    }
+    
+    async function _loadPageI(path, heading, i) {
       const current = window.location.pathname + window.location.search + window.location.hash;
       const url = new URL(current, document.baseURI);
       url.searchParams.set('p', path);
       url.searchParams.set('id', i);
+      idxTreeItem = i;
       history.pushState(null, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
     
       await getDataOfPathInZIP(path, heading);
+      updateNavButtons(i);
+    }
+    
+    function updateNavButtons(i) {
+      if (i >= 0) {
+        navL.classList.remove('hidden-btn');
+        navT.classList.remove('hidden-btn');
+        navR.classList.remove('hidden-btn');
+      } else {
+        navL.classList.add('hidden-btn');
+        navT.classList.add('hidden-btn');
+        navR.classList.add('hidden-btn');
+      }
       
-      return false;
+      const currentTreeItem = document.getElementById('tree-' + i);
+      const nextTreeItem = document.getElementById('tree-' + (i + 1));
+      
+      if (i == 0) {
+        navL.classList.add('hidden-btn');
+        navT.classList.add('hidden-btn');
+      }
+      
+      if (nextTreeItem == null) {
+        navR.classList.add('hidden-btn');
+      }
     }
     
     async function getDataOfPathInZIP(path, heading) {
@@ -480,10 +582,12 @@ pre.code-numbers code span::before {
       const lines = linesP.split("\n");
       const current = window.location.pathname + window.location.search + window.location.hash;
       const url = new URL(current, document.baseURI);
+      let linksEmitted = -1;
     
-      function makeLink(name, note, path, i) {
+      function makeLink(name, note, path) {
         if (path) {
-          return `<a href="" id="tree-${i}" onclick="return loadPage(event, '${path}', '${name}', ${i})" title="${note}">${name}</a>`;
+          linksEmitted++;
+          return `<a href="" id="tree-${linksEmitted}" onclick="return loadPage(event, '${path}', '${name}', ${linksEmitted})" title="${note}">${name}</a>`;
         } else {
           return `<a title="${note}">${name}</a>`;
         }
@@ -525,7 +629,7 @@ pre.code-numbers code span::before {
     
         closeLevels(indent);
     
-        const content = makeLink(name, note, path, i);
+        const content = makeLink(name, note, path);
     
         if (nextIndent > indent) {
           html += `<li><details><summary>${content}</summary><ul>`;
