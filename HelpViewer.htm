@@ -11,6 +11,9 @@
   --c-border: #ccc;
   --c-background: #f0f0f0;
   --c-backgroundHead: #eee;
+  --c-numbering: #888;
+  --c-line0: #f9f9f9;
+  --c-line1: #ffffff;
 }
 
 html, body {
@@ -152,7 +155,7 @@ ul.tree details[open] > summary::before {
   }
 }
 
-//markdown formatting
+//S: markdown formatting
 .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
     margin-top: var(--base-size-24);
     margin-bottom: var(--base-size-16);
@@ -189,6 +192,73 @@ ul.tree details[open] > summary::before {
     overflow: auto;
 }
 //E: markdown formatting
+
+//S: code listing numbering
+pre {
+  counter-reset: line;
+}
+
+code {
+  display: block;
+  white-space: pre;
+  overflow: auto;
+}
+
+code::before {
+  content: "";
+}
+
+code::after {
+  content: "";
+}
+
+pre code {
+  display: block;
+  position: relative;
+  padding-left: 2em;
+  line-height: 1.5;
+  font-family: monospace;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--c-line0) 0,
+    var(--c-line0) 1.5em,
+    var(--c-line1) 1.5em,
+    var(--c-line1) 3em
+  );
+}
+
+pre.code-numbers {
+  position: relative;
+}
+
+pre.code-numbers code {
+  display: block;
+  counter-reset: line;
+}
+
+pre.code-numbers code::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  content: "";
+  background: var(--c-backgroundHead);
+  border-right: 1px solid var(--c-border);
+}
+
+pre.code-numbers code span {
+  counter-increment: line;
+}
+
+pre.code-numbers code span::before {
+  content: counter(line);
+  display: inline-block;
+  margin-left: -1em;
+  margin-right: 1.5em;
+  text-align: right;
+  color: var(--c-numbering);
+}
+//E: code listing numbering
   </style>
 </head>
 <body>
@@ -248,7 +318,7 @@ ul.tree details[open] > summary::before {
             SetHeaderText(pagePath);
             const _reloadFromUrl = async () => {
               const content = await searchArchiveForFile(pagePath, archive);
-              contentPane.innerHTML = fixLinks(marked.parse(content));
+              contentPane.innerHTML = transformOutput(marked.parse(content));
             }
             _reloadFromUrl();
           }
@@ -258,9 +328,11 @@ ul.tree details[open] > summary::before {
         });
     }
 
-    function fixLinks(htmlTxt) {
+    function transformOutput(htmlTxt) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlTxt, "text/html");
+      
+      //relative link paths update for ZIP structure
       const checkList = ["href", "src", "data-href"];
     
       doc.querySelectorAll("*").forEach((el) => {
@@ -280,6 +352,15 @@ ul.tree details[open] > summary::before {
         });
       });
       
+      //code listings lines numbering
+      doc.querySelectorAll('pre code').forEach((block) => {
+        const lines = block.innerText.split('\n');
+        block.innerHTML = lines.map(line =>
+          `<span>${line}</span>`).join('\n');
+        block.parentElement.classList.add('code-numbers');
+      });
+      
+      //end
       return doc.documentElement.outerHTML;
     }
 
@@ -339,7 +420,7 @@ ul.tree details[open] > summary::before {
     
       SetHeaderText(heading);
       const content = await searchArchiveForFile(path, archive);
-      contentPane.innerHTML = fixLinks(marked.parse(content));
+      contentPane.innerHTML = transformOutput(marked.parse(content));
       
       return false;
     }
