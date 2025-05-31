@@ -6,7 +6,6 @@
   <title>Help Viewer</title>
   <script src="https://cdn.jsdelivr.net/npm/jszip"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@11.6.0/dist/mermaid.min.js"></script>
   <style>
 :root {
   --c-border: #ccc;
@@ -467,6 +466,21 @@ pre.code-numbers code span::before {
       return doc.documentElement.outerHTML;
     }
     
+    let loadedMermaid = 0;
+    
+    function loadMermaid(callback) {
+      if (loadedMermaid != 0) {
+        callback();
+        return;
+      }
+      
+      loadedMermaid = 1;
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/mermaid@11.6.0/dist/mermaid.min.js';
+      script.onload = () => callback();
+      document.head.appendChild(script);
+    }
+    
     function transformOutputConnected(doc) {
       //relative img src paths update for ZIP structure
       doc.querySelectorAll('img').forEach((img) => {
@@ -483,15 +497,19 @@ pre.code-numbers code span::before {
 
       //mermaid graphs transformation
       const codeBlocks = doc.querySelectorAll('code.language-mermaid');
-      codeBlocks.forEach(code => {
-        const div = document.createElement('div');
-        div.className = 'mermaid';
-        div.textContent = code.textContent;
-        code.parentElement.replaceWith(div);
-      });
-  
-      mermaid.initialize({ startOnLoad: false });
-      mermaid.init();
+      if (codeBlocks.length > 0) {
+        loadMermaid(() => {
+          codeBlocks.forEach(code => {
+            const div = document.createElement('div');
+            div.className = 'mermaid';
+            div.textContent = code.textContent;
+            code.parentElement.replaceWith(div);
+          });
+          
+          mermaid.initialize({ startOnLoad: false });
+          mermaid.init();
+        });
+      }
     }
 
     async function loadZipFromUrl(url) {
