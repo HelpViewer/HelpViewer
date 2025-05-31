@@ -14,6 +14,7 @@
   --c-numbering: #888;
   --c-line0: #f9f9f9;
   --c-line1: #ffffff;
+  --c-firstLine: rgba(0, 0, 0, 0);
 }
 
 html, body {
@@ -205,6 +206,14 @@ ul.tree details[open] > summary::before {
     border-collapse: collapse;
 }
 
+.content table tr:nth-child(even) {
+    background-color: var(--c-background);
+}
+
+.content table tr:nth-child(odd) {
+    background-color: var(--c-firstLine);
+}
+
 .content table th {
     border: 1px solid var(--c-border);
     padding: 6px 13px;
@@ -213,10 +222,6 @@ ul.tree details[open] > summary::before {
 .content table td {
     border: 1px solid var(--c-border);
     padding: 6px 13px;
-}
-
-.content table tr:nth-child(2n) {
-    background-color: var(--c-background, var(--color-canvas-subtle));
 }
 /*E: markdown formatting*/
 
