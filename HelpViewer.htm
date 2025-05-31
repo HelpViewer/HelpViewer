@@ -282,6 +282,7 @@ pre.code-numbers code span::before {
   <script>
     const sidebar = document.getElementById('sidebar');
     const showBtn = document.getElementById('showBtn');
+    let msgNoData = '';
 
     let dataPath = '';
     let pagePath = '';
@@ -328,6 +329,8 @@ pre.code-numbers code span::before {
     if (!dataPath) {
       console.log('Data file has not been specified. Use ?d= and its path in URI. Used default file name.');
       dataPath = 'Help.zip';
+      msgNoData = 'Data file has not been specified. Use <b>?d=</b> followed by the file path in the URI. The default file name <b>' + dataPath + '</b> was used instead. If the left panel is empty, the file <b>' + dataPath + '</b> probably does not exist in the viewer\'s local directory. As a next step, check <b>p=</b> for a valid path inside the help ZIP archive.';
+      document.getElementById('content').innerHTML = msgNoData;
     }
     
     if (dataPath) {
@@ -345,6 +348,12 @@ pre.code-numbers code span::before {
         .catch(err => {
           console.error("Error:", err);
         });
+    }
+    
+    if (!pagePath) {
+      pagePath = 'README.md';
+      let txt = contentPane.innerHTML;
+      getDataOfPathInZIP(pagePath, pagePath);
     }
 
     function transformOutput(htmlTxt) {
@@ -457,6 +466,13 @@ pre.code-numbers code span::before {
       SetHeaderText(heading);
       const content = await searchArchiveForFile(path, archive);
       contentPane.innerHTML = transformOutput(marked.parse(content));
+      
+      if (content === '') {
+        contentPane.innerHTML = `Given path <b>${path}</b> is not present inside the help ZIP archive <b>${dataPath}</b>.`;
+        if (dataPath === '') {
+          contentPane.innerHTML = msgNoData;
+        }
+      }
     }
     
 // File formats
