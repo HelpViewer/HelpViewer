@@ -285,11 +285,13 @@ pre.code-numbers code span::before {
 
     let dataPath = '';
     let pagePath = '';
+    let idxTreeItem = 0;
     
     function LoadURLParameters() {
       const urlParams = new URLSearchParams(window.location.search);
       dataPath = urlParams.get('d');
       pagePath = urlParams.get('p');
+      idxTreeItem =urlParams.get('id');
     }
     
     LoadURLParameters();
@@ -372,7 +374,7 @@ pre.code-numbers code span::before {
               && !val.startsWith("tel:") 
               && !val.startsWith("#")) {
               
-              const newVal = `?d=${dataPath}&p=${encodeURIComponent(val)}`;
+              const newVal = `?d=${dataPath}&p=${encodeURIComponent(val)}&id=${encodeURIComponent(idxTreeItem)}`;
               el.setAttribute(attr, newVal);
             }
           }
@@ -438,11 +440,12 @@ pre.code-numbers code span::before {
     window.addEventListener("resize", checkSidebarWidth);
     window.addEventListener("load", checkSidebarWidth);
 
-    async function loadPage(event, path, heading) {
+    async function loadPage(event, path, heading, i) {
       event.preventDefault();
       const current = window.location.pathname + window.location.search + window.location.hash;
       const url = new URL(current, document.baseURI);
-      url.searchParams.set('p', path);  
+      url.searchParams.set('p', path);
+      url.searchParams.set('id', i);
       history.pushState(null, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
     
       await getDataOfPathInZIP(path, heading);
@@ -462,9 +465,9 @@ pre.code-numbers code span::before {
       const current = window.location.pathname + window.location.search + window.location.hash;
       const url = new URL(current, document.baseURI);
     
-      function makeLink(name, note, path) {
+      function makeLink(name, note, path, i) {
         if (path) {
-          return `<a href="" onclick="return loadPage(event, '${path}', '${name}')" title="${note}">${name}</a>`;
+          return `<a href="" id="tree-${i}" onclick="return loadPage(event, '${path}', '${name}', ${i})" title="${note}">${name}</a>`;
         } else {
           return `<a title="${note}">${name}</a>`;
         }
@@ -506,7 +509,7 @@ pre.code-numbers code span::before {
     
         closeLevels(indent);
     
-        const content = makeLink(name, note, path);
+        const content = makeLink(name, note, path, i);
     
         if (nextIndent > indent) {
           html += `<li><details><summary>${content}</summary><ul>`;
