@@ -14,7 +14,8 @@
   --c-numbering: #888;
   --c-line0: #f9f9f9;
   --c-line1: #ffffff;
-  --c-firstLine: rgba(0, 0, 0, 0);
+  --c-tabLine0: rgba(0, 0, 0, 0);
+  --c-tabLine1: var(--c-background);
 }
 
 html, body {
@@ -207,11 +208,11 @@ ul.tree details[open] > summary::before {
 }
 
 .content table tr:nth-child(even) {
-    background-color: var(--c-background);
+    background-color: var(--c-tabLine1);
 }
 
 .content table tr:nth-child(odd) {
-    background-color: var(--c-firstLine);
+    background-color: var(--c-tabLine0);
 }
 
 .content table th {
