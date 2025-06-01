@@ -16,6 +16,7 @@
   --c-tabLine0: rgba(0, 0, 0, 0);
   --c-tabLine1: var(--c-background);
   --c-anchorHover: #000;
+  --c-anchorColor: var(--c-border);
 }
 
 html, body {
@@ -300,7 +301,7 @@ pre.code-numbers code span::before {
 /*S: anchors in headings*/
 .anchor-link {
   text-decoration: none;
-  color: var(--c-border);
+  color: var(--c-anchorColor);
   font-weight: normal;
   margin-left: 0.25em;
   font-size: 0.8em;
@@ -401,6 +402,14 @@ pre.code-numbers code span::before {
       history.pushState({}, '', href);
       
       LoadURLParameters();
+      
+      const id = href.substring(1);
+      const targetO = document.getElementById(id);
+      if (targetO) {
+        targetO.scrollIntoView({ behavior: 'smooth' });
+        obs.disconnect();
+      }
+      
       getDataOfPathInZIP(pagePath, pagePath);
     });
 
