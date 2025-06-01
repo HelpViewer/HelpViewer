@@ -312,6 +312,46 @@ pre.code-numbers code span::before {
 }
 /*E: anchors in headings*/
 
+/*S: print support*/
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .main, .main * {
+    visibility: visible;
+  }
+
+  .main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  a {
+    color: black;
+  }
+  
+  .header {
+    background-color: transparent;
+  }
+  
+  button, .anchor-link {
+    display: none !important;
+  }
+  
+  svg {
+    filter: grayscale(100%);
+  }
+  
+/*  svg path {
+    fill: gray !important;
+    stroke: gray !important;
+  }*/
+}
+/*E: print support*/
+
 #toolbar {
   display: flex;
   align-items: stretch;
