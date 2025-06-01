@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Help Viewer</title>
-  <script src="https://cdn.jsdelivr.net/npm/jszip"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="jszip"></script>
   <style>
 :root {
   --c-border: #ccc;
@@ -335,6 +334,20 @@ pre.code-numbers code span::before {
   </div>
 
   <script>
+    let arch3rdp = null;
+    
+    loadZipFromUrl('3rdParty.zip')
+      .then(arch2 => {
+        arch3rdp = arch2;
+        return searchArchiveForFile('marked.min.js', arch2);
+      })
+      .then(content => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.textContent = content;
+        document.head.appendChild(script);
+      });
+        
     const navL = document.getElementById('nav-left');
     const navT = document.getElementById('nav-top');
     const navR = document.getElementById('nav-right');
@@ -466,21 +479,24 @@ pre.code-numbers code span::before {
       return doc.documentElement.outerHTML;
     }
     
-    let loadedMermaid = 0;
-    
-    function loadMermaid(callback) {
-      if (loadedMermaid != 0) {
+    async function loadMermaid(callback) {
+      if (window.mermaid) {
         callback();
         return;
       }
       
-      loadedMermaid = 1;
-      appendJavascript('https://cdn.jsdelivr.net/npm/mermaid@11.6.0/dist/mermaid.min.js', callback);
+      await appendJavascript('mermaid.min.js', callback);
     }
     
-    function appendJavascript(path, callback) {
+    async function appendJavascript(path, callback) {
       const script = document.createElement('script');
-      script.src = path;
+      if (/^https?:\/\//.test(path)) {
+        script.src = path;
+      } else {
+        script.type = 'text/javascript';
+        content = await searchArchiveForFile(path, arch3rdp);
+        script.textContent = content;
+      }
       script.onload = () => callback();
       document.head.appendChild(script);
     }
@@ -502,7 +518,7 @@ pre.code-numbers code span::before {
       //mermaid graphs transformation
       const codeBlocks = doc.querySelectorAll('code.language-mermaid');
       if (codeBlocks.length > 0) {
-        loadMermaid(() => {
+        loadMermaid(() => {}).then(() => {
           codeBlocks.forEach(code => {
             const div = document.createElement('div');
             div.className = 'mermaid';
@@ -665,7 +681,9 @@ pre.code-numbers code span::before {
     async function getDataOfPathInZIP(path, heading) {
       SetHeaderText(heading);
       const content = await searchArchiveForFile(path, archive);
-      contentPane.innerHTML = transformOutput(marked.parse(content));
+      if (window.marked) {
+        contentPane.innerHTML = transformOutput(marked.parse(content));
+      }
       transformOutputConnected(contentPane);
       
       if (content === '') {
