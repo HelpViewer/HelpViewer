@@ -369,11 +369,26 @@ ul:has(li input[type="checkbox"]) {
 }
 
 #toolbar button, .toolbar button, .pnl-btn {
-    margin: 0px;
+  margin: 0px;
+}
+
+#toolbar button, .toolbar button, .pnl-btn {
+  margin: 0px;
+}
+
+.inGray {
+  filter: grayscale(100%);
+}
+
+.inBlackWhite {
+  filter: grayscale(100%) contrast(200%);
+}
+
+.inStandard {
 }
   </style>
 </head>
-<body>
+<body class="inStandard">
   <div class="container">
     <div class="sidebar" id="sidebar">
       <div class="sidebar-page" id="sp1">
@@ -381,6 +396,7 @@ ul:has(li input[type="checkbox"]) {
 </ul>
       </div>
       <div class="toolbar toolbar-down">
+        <button class="pnl-btn" onclick="switchColorMode()" title="">&#x1F319;</button>
         <button class="pnl-btn" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();" title="Toggle fullscreen view">&#x1F532;</button>
         <button class="pnl-btn" onclick="toggleSidebar()" title="Hide panel">&#x274C;&#xFE0E;</button>
       </div>
@@ -687,6 +703,13 @@ ul:has(li input[type="checkbox"]) {
       } else {
         return "";
       }
+    }
+    
+    function switchColorMode() {
+      const base = document.body;
+      const modes = ["inStandard", "inGray", "inBlackWhite"];
+      const idx = (modes.indexOf(base.classList[0]) + 1) % modes.length;
+      base.className = modes[idx];
     }
     
     function toggleSidebar() {
