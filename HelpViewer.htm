@@ -369,7 +369,7 @@ pre.code-numbers code span::before {
 <body>
   <div class="container">
     <div class="sidebar" id="sidebar">
-      <button class="hide-btn" onclick="toggleSidebar()">←</button>
+      <button class="hide-btn" onclick="toggleSidebar()" title="Hide panel">←</button>
 <ul class="tree" id="tree">
 </ul>
     </div>
@@ -378,10 +378,10 @@ pre.code-numbers code span::before {
       <div class="header">
         <h1 id="mtitle">&nbsp;</h1>
         <div id="toolbar">
-        <button class="hidden-btn pnl-btn" id="showBtn" onclick="toggleSidebar()">☰</button>
-        <button class="hidden-btn pnl-btn" id="nav-left" onclick="navPrev(event);">⬅</button>
-        <button class="hidden-btn pnl-btn" id="nav-top" onclick="navTop(event);">⬆</button>
-        <button class="hidden-btn pnl-btn" id="nav-right" onclick="navNext(event);">➡</button>
+        <button class="hidden-btn pnl-btn" id="showBtn" onclick="toggleSidebar()" title="Show browsing panel">☰</button>
+        <button class="hidden-btn pnl-btn" id="nav-left" onclick="navPrev(event);" title="Previous topic">⬅</button>
+        <button class="hidden-btn pnl-btn" id="nav-top" onclick="navTop(event);" title="Parent topic">⬆</button>
+        <button class="hidden-btn pnl-btn" id="nav-right" onclick="navNext(event);" title="Next topic">➡</button>
         </div>
       </div>
       <div class="content" id="content">
