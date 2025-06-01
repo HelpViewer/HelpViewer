@@ -465,7 +465,7 @@ pre.code-numbers code span::before {
     }
     
     function SetHeaderText(txt) {
-       mainTitle.textContent = txt;
+       mainTitle.innerHTML = txt;
     }
     
     let archive;
@@ -515,8 +515,8 @@ pre.code-numbers code span::before {
       const firstH1 = doc.body.firstElementChild;
       
       if (firstH1 && firstH1.tagName.toLowerCase() === 'h1') {
-        if (mainTitle.textContent === pagePath) {
-          SetHeaderText(firstH1.textContent.trim());
+        if (mainTitle.innerHTML === pagePath) {
+          SetHeaderText(firstH1.innerHTML.trim());
         }      
         firstH1.remove();
       }
@@ -576,8 +576,8 @@ pre.code-numbers code span::before {
       document.head.appendChild(script);
     }
     
-    function transformOutputConnected(doc) {
-      //relative img src paths update for ZIP structure
+    async function fixImgRelativePathToZipPaths(doc)
+    {
       doc.querySelectorAll('img').forEach((img) => {
         (async () => {
           const src = img.getAttribute('src');
@@ -589,6 +589,12 @@ pre.code-numbers code span::before {
           }
         })();
       });
+    }
+    
+    function transformOutputConnected(doc) {
+      //relative img src paths update for ZIP structure
+      fixImgRelativePathToZipPaths(doc);
+      fixImgRelativePathToZipPaths(mainTitle);
 
       //mermaid graphs transformation
       const codeBlocks = doc.querySelectorAll('code.language-mermaid');
