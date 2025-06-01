@@ -42,18 +42,8 @@ h1 {
   border-right: 1px solid var(--c-border);
   position: relative;
   transition: transform 0.3s ease;
-}
-
-.sidebar .hide-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: var(--c-border);
-  border: none;
-  padding: 8px 14px;
-  cursor: pointer;
-  font-size: 1.2em;
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar.hidden {
@@ -141,12 +131,8 @@ ul.tree details[open] > summary::before {
     min-height: 60px;
     display: block;
     padding: 0;
-  }
-
-  .sidebar .hide-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    display: flex;
+    flex-direction: column-reverse;
   }
 
   .main {
@@ -360,26 +346,38 @@ ul:has(li input[type="checkbox"]) {
   padding-left: 1em;
 }
 
-#toolbar {
+#toolbar, .toolbar {
   display: flex;
   align-items: stretch;
   gap: 0.5rem;
 }
 
-#toolbar button {
+#toolbar button, .toolbar button {
   flex: 1 1 auto;
   max-height: 2rem;
   line-height: 1.5;
   overflow: hidden;
+}
+
+.toolbar-down {
+  margin-top: auto;
+}
+
+.sidebar-page {
+  overflow-y: auto;
 }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="sidebar" id="sidebar">
-      <button class="hide-btn" onclick="toggleSidebar()" title="Hide panel">←</button>
+      <div class="sidebar-page" id="sp1">
 <ul class="tree" id="tree">
 </ul>
+      </div>
+      <div class="toolbar toolbar-down">
+        <button class="pnl-btn" onclick="toggleSidebar()" title="Hide panel">←</button>
+      </div>
     </div>
 
     <div class="main" id="main">
