@@ -55,9 +55,8 @@ You need to run your browser in mode with bypass CORS policy:
 ## Future plans
 
 - HLP file browsing will not be supported (at least not for now).
-- Support old help CHM file format with defined conversion steps.
 - The previous goal of single-file deployment is no longer possible.
-- Prepare description help ZIP file for the solution.
+- More [Future plans][FuturePlans].
 
 ## About AI Assistance
 
@@ -76,5 +75,6 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [JSZIP]: http://jszip.org/ "JSZip JavaScript library - ZIP files manipulation"
 [Marked]: https://marked.js.org/ "Marked JavaScript library - md files to HTML renderer"
 [Structure]: FileMetadata.md "File metadata"
+[FuturePlans]: FuturePlans.md "Future plans list"
 [Mermaid]: https://mermaid.js.org/ "Mermaid library - renderer for diagrams defined by specific textual definitions"
 [bypassCORS]: #cors-policy "Browser possibly blocking local file access (file://) due to CORS policy restrictions"
