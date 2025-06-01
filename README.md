@@ -4,8 +4,9 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 
 ## How it works
 
-1. You will open **HelpViewer.htm** file in your browser.
-2. Then you will populate parameter **?d=X** where X will be your ZIP file path where all markdown files for your help file are present.
+1. Start your browser with [CORS restrictions][bypassCORS] disabled.
+2. In this session you will open **HelpViewer.htm** file in your browser.
+3. Then you will populate parameter **?d=X** where X will be your ZIP file path where all markdown files for your help file are present. If you will skip this step, then **./Help.zip** will be used as default value.
 
 ## Used 3rd party products
 
@@ -23,14 +24,15 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 | **./hvdata/data.zip** | Compressed 3rd party product redistributables (javascripts) |
 | ./hvdata/data.zip:marked.min.js | [Marked][Marked] - md files to HTML renderer |
 | ./hvdata/data.zip:mermaid.min.js | [Mermaid][Mermaid] - renderer for diagrams defined by specific textual definitions |
-| **./hvdata/jszip** | [ZIP archives manipulation library][JSZIP] |
+| **./hvdata/jszip** | [JSZip][JSZIP] - ZIP archives manipulation library |
 
 ## Troubleshooting
 
 - The solution is implemented using pure JavaScript. Please ensure that JavaScript is enabled in your browser to ensure proper functionality.
 
-### Page not reading ZIP content - check if your browser is blocking content because of CORS policy
+### CORS policy
 
+Page not reading ZIP content? This may be caused by your browser blocking local file access (file://) due to CORS policy restrictions. 
 You need to run your browser in mode with bypass CORS policy:
 - Firefox:
   > Address bar: 
@@ -75,3 +77,4 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [Marked]: https://marked.js.org/ "Marked JavaScript library - md files to HTML renderer"
 [Structure]: FileMetadata.md "File metadata"
 [Mermaid]: https://mermaid.js.org/ "Mermaid library - renderer for diagrams defined by specific textual definitions"
+[bypassCORS]: #cors-policy "Browser possibly blocking local file access (file://) due to CORS policy restrictions"
