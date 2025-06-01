@@ -15,6 +15,7 @@
   --c-line1: #ffffff;
   --c-tabLine0: rgba(0, 0, 0, 0);
   --c-tabLine1: var(--c-background);
+  --c-anchorHover: #000;
 }
 
 html, body {
@@ -296,6 +297,20 @@ pre.code-numbers code span::before {
 }
 /*E: code listing numbering*/
 
+/*S: anchors in headings*/
+.anchor-link {
+  text-decoration: none;
+  color: var(--c-border);
+  font-weight: normal;
+  margin-left: 0.25em;
+  font-size: 0.8em;
+}
+
+.anchor-link:hover {
+  color: var(--c-anchorHover);
+}
+/*E: anchors in headings*/
+
 #toolbar {
   display: flex;
   align-items: stretch;
@@ -532,6 +547,31 @@ pre.code-numbers code span::before {
       }
     }
 
+    function nameForAnchor(text) {
+      return text.toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
+    
+    function transformOutputConnectedMd(doc) {
+      const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    
+      headings.forEach(heading => {
+        if (!heading.id) {
+          heading.id = nameForAnchor(heading.textContent);
+        }
+        
+        const anchor = document.createElement('a');
+        anchor.href = `#${heading.id}`;
+        anchor.className = 'anchor-link';
+        anchor.textContent = ' #';
+        
+        heading.appendChild(anchor);
+      });
+    }
+
     async function loadZipFromUrl(url) {
       try {
         const response = await fetch(url);
@@ -685,6 +725,10 @@ pre.code-numbers code span::before {
         contentPane.innerHTML = transformOutput(marked.parse(content));
       }
       transformOutputConnected(contentPane);
+      
+      if (path.toLowerCase().endsWith('.md')) {
+        transformOutputConnectedMd(contentPane);
+      }
       
       if (content === '') {
         contentPane.innerHTML = `Given path <b>${path}</b> is not present inside the help ZIP archive <b>${dataPath}</b>.`;
