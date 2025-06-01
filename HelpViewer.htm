@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Help Viewer</title>
-  <script src="jszip"></script>
+  <script src="3rdParty/jszip"></script>
   <style>
 :root {
   --c-border: #ccc;
@@ -336,7 +336,7 @@ pre.code-numbers code span::before {
   <script>
     let arch3rdp = null;
     
-    loadZipFromUrl('3rdParty.zip')
+    loadZipFromUrl('3rdParty/3rdParty.zip')
       .then(arch2 => {
         arch3rdp = arch2;
         return searchArchiveForFile('marked.min.js', arch2);
