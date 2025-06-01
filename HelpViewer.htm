@@ -390,6 +390,17 @@ pre.code-numbers code span::before {
     const tree = document.getElementById('tree');
     const contentPane = document.getElementById('content');
 
+    window.addEventListener('popstate', () => {
+      LoadURLParameters();
+
+      if (typeof dataPath !== 'string' || dataPath.trim() === '') {
+        dataPath = 'Help.zip';
+      }
+
+      getDataOfPathInZIP(pagePath, '');
+      updateNavButtons(idxTreeItem);
+    });
+
     document.getElementById('content').addEventListener('click', function(event) {
       const link = event.target.closest('a');
       if (!link) return;
@@ -409,7 +420,6 @@ pre.code-numbers code span::before {
       const targetO = document.getElementById(id);
       if (targetO) {
         targetO.scrollIntoView({ behavior: 'smooth' });
-        obs.disconnect();
       }
     }
     
