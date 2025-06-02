@@ -361,6 +361,14 @@ ul:has(li input[type="checkbox"]) {
 .toolbar-down {
   margin-top: auto;
   gap: 0;
+/*
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.toolbar-down > * {
+  flex: 0 0 calc(20%);
+  box-sizing: border-box;*/
 }
 
 .sidebar-page {
@@ -425,6 +433,13 @@ ul:has(li input[type="checkbox"]) {
 </ul>
       </div>
       <div class="toolbar toolbar-down">
+        <button class="pnl-btn" onclick="alert()" title="">&#x1F4D6;</button>
+        <button class="pnl-btn" onclick="alert()" title="">&#x1F516;</button>
+        <button class="pnl-btn" onclick="alert()" title="">&#x1F4C7;</button>
+        <button class="pnl-btn" onclick="alert()" title="">&#x1F50E;</button>
+        <button class="pnl-btn hidden-btn" onclick="alert()" title="">&#x1F4DD;</button>
+        <button class="pnl-btn hidden-btn" onclick="return loadPage(event, 'README.md', 'README.md', 0)" title="">&#x1F3E1;</button>
+        <button class="pnl-btn" onclick="alert()" title="" style="filter: grayscale(100%); font-size: 0.9em;">&#x1F310;</button>
         <button class="pnl-btn" onclick="switchColorMode()" title="">&#x1F319;</button>
         <button class="pnl-btn" onclick="switchFullScreen()" title="Toggle fullscreen view">&#x1F532;</button>
         <button class="pnl-btn" onclick="toggleSidebar()" title="Hide panel">&#x274C;&#xFE0E;</button>
