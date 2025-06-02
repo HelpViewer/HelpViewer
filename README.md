@@ -26,6 +26,7 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 | ./hvdata/data.zip:mermaid.min.js | [Mermaid][Mermaid] - renderer for diagrams defined by specific textual definitions |
 | ./hvdata/data.zip:layout.htm | Default viewer GUI layout |
 | ./hvdata/data.zip:main.css | Default viewer CSS styles |
+| ./hvdata/data.zip:appmainRun.js | Application runner |
 | ./hvdata/data.zip:appmainNext.js | Javascript part of application |
 | **./hvdata/jszip** | [JSZip][JSZIP] - ZIP archives manipulation library |
 | **./hvdata/appmain.js** | Basic application runner for operation with JSZip |
