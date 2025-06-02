@@ -423,7 +423,7 @@ ul:has(li input[type="checkbox"]) {
       </div>
       <div class="toolbar toolbar-down">
         <button class="pnl-btn" onclick="switchColorMode()" title="">&#x1F319;</button>
-        <button class="pnl-btn" onclick="document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();" title="Toggle fullscreen view">&#x1F532;</button>
+        <button class="pnl-btn" onclick="switchFullScreen()" title="Toggle fullscreen view">&#x1F532;</button>
         <button class="pnl-btn" onclick="toggleSidebar()" title="Hide panel">&#x274C;&#xFE0E;</button>
       </div>
     </div>
@@ -445,6 +445,12 @@ ul:has(li input[type="checkbox"]) {
   </div>
 
   <script>
+    const KEY_LS_COLORTHEME = "colorTheme";
+    
+    const colorTheme = localStorage.getItem(KEY_LS_COLORTHEME) || 'inStandard';
+    setColorMode(colorTheme);
+    
+    const fullScreenMode = localStorage.getItem(KEY_LS_FULLSCREEN) || 0;
     let arch3rdp = null;
     
     loadZipFromUrl('hvdata/data.zip')
@@ -731,11 +737,26 @@ ul:has(li input[type="checkbox"]) {
       }
     }
     
+    function switchFullScreen() {
+      document.fullscreenElement 
+        ? document.exitFullscreen() 
+        : document.documentElement.requestFullscreen();
+      localStorage.setItem(KEY_LS_FULLSCREEN, document.fullscreenElement 
+        ? 0 : 1);
+    }
+    
     function switchColorMode() {
       const base = document.body;
       const modes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
       const idx = (modes.indexOf(base.classList[0]) + 1) % modes.length;
       base.className = modes[idx];
+      localStorage.setItem(KEY_LS_COLORTHEME, modes[idx]);
+    }
+    
+    function setColorMode(val) {
+      const base = document.body;
+      base.className = val;
+      localStorage.setItem(KEY_LS_COLORTHEME, val);
     }
     
     function toggleSidebar() {
