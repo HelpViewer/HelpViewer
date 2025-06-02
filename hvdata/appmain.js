@@ -2,14 +2,9 @@ let arcData = null;
 
 async function main() {
   arcData = await loadZipFromUrl('hvdata/data.zip');
-  const srcLayout = await searchArchiveForFile('layout.htm', arcData);
-  document.body.innerHTML = srcLayout;
-  
-  const srcMainCSS = await searchArchiveForFile('main.css', arcData);
-  appendCSS('mainCSS', srcMainCSS);
-  
-  const srcMarkedJs = await searchArchiveForFile('marked.min.js', arcData);
-  appendJavaScript('ext-marked', srcMarkedJs);
+  const srcMarkedJs = await searchArchiveForFile('appmainNext.js', arcData);
+  appendJavaScript('appNext', srcMarkedJs);
+  runApp();
 }
 
 async function loadZipFromUrl(url) {
