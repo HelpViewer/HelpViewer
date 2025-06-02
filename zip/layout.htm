@@ -1,0 +1,35 @@
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-page" id="sp1">
+<ul class="tree" id="tree">
+</ul>
+      </div>
+      <div class="toolbar toolbar-down">
+        <button class="pnl-btn" onclick="alert()" title="">&#x1F4D6;</button>
+        <button class="pnl-btn" onclick="alert()" title="">&#x1F516;</button>
+        <button class="pnl-btn" onclick="alert()" title="">&#x1F4C7;</button>
+        <button class="pnl-btn" onclick="alert()" title="">&#x1F50E;</button>
+        <button class="pnl-btn hidden-btn" onclick="alert()" title="">&#x1F4DD;</button>
+        <button class="pnl-btn hidden-btn" onclick="return loadPage(event, 'README.md', 'README.md', 0)" title="">&#x1F3E1;</button>
+        <button class="pnl-btn" onclick="alert()" title="" style="filter: grayscale(100%); font-size: 0.9em;">&#x1F310;</button>
+        <button class="pnl-btn" onclick="switchColorMode()" title="">&#x1F319;</button>
+        <button class="pnl-btn" onclick="switchFullScreen()" title="Toggle fullscreen view">&#x1F532;</button>
+        <button class="pnl-btn" onclick="toggleSidebar()" title="Hide panel">&#x274C;&#xFE0E;</button>
+      </div>
+    </div>
+
+    <div class="main" id="main">
+      <div class="header">
+        <h1 id="mtitle">&nbsp;</h1>
+        <div id="toolbar">
+        <button class="hidden-btn pnl-btn" id="showBtn" onclick="toggleSidebar()" title="Show browsing panel">?</button>
+        <button class="pnl-btn" id="printBtn" onclick="window.print()" title="Print page">&#x1F4C4;</button>
+        <button class="hidden-btn pnl-btn" id="nav-left" onclick="navPrev(event);" title="Previous topic">?</button>
+        <button class="hidden-btn pnl-btn" id="nav-top" onclick="navTop(event);" title="Parent topic">?</button>
+        <button class="hidden-btn pnl-btn" id="nav-right" onclick="navNext(event);" title="Next topic">?</button>
+        </div>
+      </div>
+      <div class="content" id="content">
+      </div>
+    </div>
+  </div>
