@@ -101,7 +101,7 @@ ul.tree summary::-webkit-details-marker {
 }
 
 ul.tree details > summary::before {
-  content: "?";
+  content: "\25B6";
 
   display: inline-block;
   margin-right: 5px;

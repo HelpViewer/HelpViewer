@@ -3,7 +3,7 @@ let arcData = null;
 async function main() {
   arcData = await loadZipFromUrl('hvdata/data.zip');
   const srcAppmainNext = await searchArchiveForFile('appmainNext.js', arcData);
-  appendJavaScript('appNext', srcAppmainNext);
+  appendJavaScript('appNext', srcAppmainNext, document.body);
   runApp();
 }
 
@@ -36,12 +36,12 @@ function appendCSS(id, content) {
   document.head.appendChild(style);
 }
 
-function appendJavaScript(id, content) {
+function appendJavaScript(id, content, parentO) {
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.textContent = content;
   script.id = id;
-  document.head.appendChild(script);
+  parentO.appendChild(script);
 }
 
 main();
