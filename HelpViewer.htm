@@ -385,6 +385,32 @@ ul:has(li input[type="checkbox"]) {
 
 .inStandard {
 }
+
+.inBWDuoColor {
+  background: black;
+  color: white;
+  --c-background: black;
+  --c-backgroundHead: black;
+  --c-tabLine1: black;
+  --c-border: black;
+}
+
+.inBWDuoColor a {
+  color: white;
+}
+
+.inBWDuoColor .pnl-btn {
+  color: white;
+}
+
+.inBWDuoColor svg {
+  filter: grayscale(100%) contrast(200%);
+}
+
+.inBWDuoColor path {
+  stroke: white !important;
+}
+
   </style>
 </head>
 <body class="inStandard">
@@ -706,7 +732,7 @@ ul:has(li input[type="checkbox"]) {
     
     function switchColorMode() {
       const base = document.body;
-      const modes = ["inStandard", "inGray", "inBlackWhite"];
+      const modes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
       const idx = (modes.indexOf(base.classList[0]) + 1) % modes.length;
       base.className = modes[idx];
     }
