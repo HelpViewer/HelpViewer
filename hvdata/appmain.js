@@ -30,6 +30,7 @@ async function searchArchiveForFile(fileName, arch) {
 }
 
 function appendCSS(id, content) {
+  //if (document.getElementById(id)) return;
   const style = document.createElement('style');
   style.textContent = content;
   style.id = id;
@@ -37,6 +38,7 @@ function appendCSS(id, content) {
 }
 
 function appendJavaScript(id, content, parentO) {
+  if (document.getElementById(id)) return;
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.textContent = content;
