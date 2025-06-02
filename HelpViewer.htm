@@ -741,8 +741,6 @@ ul:has(li input[type="checkbox"]) {
       document.fullscreenElement 
         ? document.exitFullscreen() 
         : document.documentElement.requestFullscreen();
-      localStorage.setItem(KEY_LS_FULLSCREEN, document.fullscreenElement 
-        ? 0 : 1);
     }
     
     function switchColorMode() {
