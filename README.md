@@ -24,7 +24,10 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 | **./hvdata/data.zip** | Compressed 3rd party product redistributables (javascripts) |
 | ./hvdata/data.zip:marked.min.js | [Marked][Marked] - md files to HTML renderer |
 | ./hvdata/data.zip:mermaid.min.js | [Mermaid][Mermaid] - renderer for diagrams defined by specific textual definitions |
+| ./hvdata/data.zip:layout.htm | Default viewer GUI layout |
+| ./hvdata/data.zip:main.css | Default viewer CSS styles |
 | **./hvdata/jszip** | [JSZip][JSZIP] - ZIP archives manipulation library |
+| **./hvdata/appmain.js** | Javascript part of solution |
 
 ## Troubleshooting
 
