@@ -293,6 +293,7 @@ pre.code-numbers code span::before {
 @media print {
   body * {
     visibility: hidden;
+    color: black;
   }
 
   .main, .main * {
