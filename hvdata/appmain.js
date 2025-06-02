@@ -8,6 +8,26 @@ let arch3rdp = null;
 loadZipFromUrl('hvdata/data.zip')
   .then(arch2 => {
     arch3rdp = arch2;
+    return searchArchiveForFile('layout.htm', arch2);
+  })
+  .then(content => {
+    document.body.innerHTML = content;
+  });
+
+loadZipFromUrl('hvdata/data.zip')
+  .then(arch2 => {
+    arch3rdp = arch2;
+    return searchArchiveForFile('main.css', arch2);
+  })
+  .then(content => {
+const style = document.createElement('style');
+style.textContent = content;
+document.head.appendChild(style);
+  });
+
+loadZipFromUrl('hvdata/data.zip')
+  .then(arch2 => {
+    arch3rdp = arch2;
     return searchArchiveForFile('marked.min.js', arch2);
   })
   .then(content => {
