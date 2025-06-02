@@ -2,8 +2,8 @@ let arcData = null;
 
 async function main() {
   arcData = await loadZipFromUrl('hvdata/data.zip');
-  const srcMarkedJs = await searchArchiveForFile('appmainNext.js', arcData);
-  appendJavaScript('appNext', srcMarkedJs);
+  const srcAppmainNext = await searchArchiveForFile('appmainNext.js', arcData);
+  appendJavaScript('appNext', srcAppmainNext);
   runApp();
 }
 
