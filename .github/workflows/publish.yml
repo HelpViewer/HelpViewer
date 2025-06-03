@@ -72,7 +72,7 @@ jobs:
 
           echo "::group::Packaging"
           cd hvdata/data
-          zip -r ../data.zip .
+          zip -r -9 ../data.zip .
           cd ..
           rm -rf data/
           echo "::endgroup::"
@@ -83,7 +83,7 @@ jobs:
           cd _distrib
           cp ../HelpViewer.htm .
           cp -rf ../hvdata .
-          zip -r ../package.zip .
+          zip -r -9 ../package.zip .
           cd ..
           if [ -f ./package.zip ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
