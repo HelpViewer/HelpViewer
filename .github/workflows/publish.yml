@@ -70,10 +70,11 @@ jobs:
           echo "::group::Packaging"
           cd hvdata/data
           zip -r ../data.zip .
+          cd ..
+          rm -rf data/
           echo "::endgroup::"
 
           echo "::group::Packaging deploy bundle"
-          cd ..
           cd ..
           ls -l
           echo "next ---"
