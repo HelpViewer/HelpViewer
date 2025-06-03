@@ -2,6 +2,30 @@
 
 A simple reader for ZIP archives containing markdown files, intended to serve as a help file viewer similar to those found in older Windows systems - [HTML Help Viewer][HTMLHW] and [WinHelp][WinHlp32].
 
+## Features
+
+- Ready to work in offline mode without any backend or local server (requires disabling CORS in browser)
+- Simple user interface
+- Responsive (desktop and other devices supported)
+- Seamless full-screen expansion of topic content
+- Hierarchical view of topics (collapsible topic tree)
+- Integrated topic navigation buttons
+- Bookmarks for chapters supported
+- Four native color schemes: color (default), greyscale, white on black, and black on white
+- Print friendly version (prefers greyscale)
+- Tooltips in English (other languages planned)
+- Lightweight - under 1 MiB, 4 files + 1 subfolder (most part of solution compressed)
+
+## Features for authors
+
+- Single platform for rendering Markdown and HTML content (both can be present in one help ZIP file)
+- ZIP compression method supported (one single part file only)
+- Rendering diagrams by Mermaid library (included in deployment)
+- Syntax highlighting for code blocks
+- Flexible customization of appearance and functionality
+- Automated CI/CD release pipeline (package: 1 ZIP file)
+- Open-source and extendable code (MIT license)
+
 ## How it works
 
 1. Start your browser with [CORS restrictions][bypassCORS] disabled.
@@ -28,7 +52,7 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 | ./hvdata/data.zip:main.css | Default viewer CSS styles |
 | ./hvdata/data.zip:appmainRun.js | Application runner |
 | ./hvdata/data.zip:appmainNext.js | Javascript part of application |
-| **./hvdata/jszip** | [JSZip][JSZIP] - ZIP archives manipulation library |
+| **./hvdata/jszip.min.js** | [JSZip][JSZIP] - ZIP archives manipulation library |
 | **./hvdata/appmain.js** | Basic application runner for operation with JSZip |
 
 ## Troubleshooting
