@@ -81,9 +81,9 @@ jobs:
           mkdir _distrib
           cd _distrib
           ls -l
-          tree ..
           cp ../HelpViewer.htm .
           cp ../hvdata .
+          tree ..
           zip -r ../package.zip .
           cd ..
           if [ -f ./package.zip ]; then
