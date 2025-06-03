@@ -30,6 +30,10 @@ function revealTreeItem(id) {
 /*E: Topic tree handling */
 
 /*S: Feature: Right top panel, page navigation buttons */
+const navL = document.getElementById('nav-left');
+const navT = document.getElementById('nav-top');
+const navR = document.getElementById('nav-right');
+
 function navPrev(event) {
   event.preventDefault();
   loadPageByTreeId(idxTreeItem-1);
@@ -45,6 +49,30 @@ function navTop(event) {
   const treeItem = document.getElementById('tree-' + idxTreeItem);
   const upId = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(5));
   loadPageByTreeId(upId);
+}
+
+function updateNavButtons(i) {
+  if (i >= 0) {
+    navL.classList.remove('hidden-btn');
+    navT.classList.remove('hidden-btn');
+    navR.classList.remove('hidden-btn');
+  } else {
+    navL.classList.add('hidden-btn');
+    navT.classList.add('hidden-btn');
+    navR.classList.add('hidden-btn');
+  }
+  
+  const currentTreeItem = document.getElementById('tree-' + i);
+  const nextTreeItem = document.getElementById('tree-' + (i + 1));
+  
+  if (i == 0) {
+    navL.classList.add('hidden-btn');
+    navT.classList.add('hidden-btn');
+  }
+  
+  if (nextTreeItem == null) {
+    navR.classList.add('hidden-btn');
+  }
 }
 /*E: Feature: Right top panel, page navigation buttons */
 
@@ -75,6 +103,7 @@ const colorTheme = localStorage.getItem(KEY_LS_COLORTHEME) || 'inStandard';
 setColorMode(colorTheme);
 
 function switchColorMode() {
+  const base = document.body;
   const modes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
   const idx = (modes.indexOf(base.classList[0]) + 1) % modes.length;
   setColorMode(modes[idx]);
@@ -98,10 +127,6 @@ function LoadURLParameters() {
 }
 
 /*////////////// Unsorted*/
-const navL = document.getElementById('nav-left');
-const navT = document.getElementById('nav-top');
-const navR = document.getElementById('nav-right');
-
 const sidebar = document.getElementById('sidebar');
 const showBtn = document.getElementById('showBtn');
 var msgNoData = '';
@@ -164,23 +189,17 @@ if (!dataPath) {
 }
 
 if (dataPath) {
-  loadZipFromUrl(dataPath)
-    .then(arch2 => {
-      archive = arch2;
-      return searchArchiveForFile("tree.lst", arch2);
-    })
-    .then(content => {
-      tree.innerHTML = linesToHtmlTree(content);
-      revealTreeItem('tree-' + idxTreeItem);
-      updateNavButtons(idxTreeItem);
-      
-      if (pagePath) {
-        getDataOfPathInZIP(pagePath, pagePath);
-      }
-    })
-    .catch(err => {
-      console.error("Error:", err);
-    });
+  (async () => {
+    archive = await loadZipFromUrl(dataPath);
+    const srcTreeData = await searchArchiveForFile("tree.lst", archive);
+    tree.innerHTML = linesToHtmlTree(srcTreeData);
+    revealTreeItem('tree-' + idxTreeItem);
+    updateNavButtons(idxTreeItem);
+  
+    if (pagePath) {
+      getDataOfPathInZIP(pagePath, pagePath);
+    }
+  })();
 }
 
 if (!pagePath) {
@@ -256,8 +275,6 @@ async function loadMermaid() {
   if (!document.getElementById(MERMAID_ID)) {
     const srcMermaid = await searchArchiveForFile('mermaid.min.js', arcData);
     appendJavaScript(MERMAID_ID, srcMermaid, document.head);
-    mermaid.initialize({ startOnLoad: false });
-    mermaid.init();
   }
 }
 
@@ -269,12 +286,15 @@ function transformOutputConnected(doc) {
   //mermaid graphs transformation
   const codeBlocks = doc.querySelectorAll('code.language-mermaid');
   if (codeBlocks.length > 0) {
-    loadMermaid();
-    codeBlocks.forEach(code => {
-      const div = document.createElement('div');
-      div.className = 'mermaid';
-      div.textContent = code.textContent;
-      code.parentElement.replaceWith(div);
+    loadMermaid().then(() => {
+      codeBlocks.forEach(code => {
+        const div = document.createElement('div');
+        div.className = 'mermaid';
+        div.textContent = code.textContent;
+        code.parentElement.replaceWith(div);
+      });
+      mermaid.initialize({ startOnLoad: false });
+      mermaid.init();
     });
   }
 }
@@ -326,11 +346,7 @@ window.addEventListener("load", checkSidebarWidth);
 
 async function loadPage(event, path, heading, i) {
   event.preventDefault();
-  await _loadPageI(path, heading, i);
-  return false;
-}
 
-async function _loadPageI(path, heading, i) {
   const current = window.location.pathname + window.location.search + window.location.hash;
   const url = new URL(current, document.baseURI);
   url.searchParams.set('p', path);
@@ -340,30 +356,8 @@ async function _loadPageI(path, heading, i) {
 
   await getDataOfPathInZIP(path, heading);
   updateNavButtons(i);
-}
 
-function updateNavButtons(i) {
-  if (i >= 0) {
-    navL.classList.remove('hidden-btn');
-    navT.classList.remove('hidden-btn');
-    navR.classList.remove('hidden-btn');
-  } else {
-    navL.classList.add('hidden-btn');
-    navT.classList.add('hidden-btn');
-    navR.classList.add('hidden-btn');
-  }
-  
-  const currentTreeItem = document.getElementById('tree-' + i);
-  const nextTreeItem = document.getElementById('tree-' + (i + 1));
-  
-  if (i == 0) {
-    navL.classList.add('hidden-btn');
-    navT.classList.add('hidden-btn');
-  }
-  
-  if (nextTreeItem == null) {
-    navR.classList.add('hidden-btn');
-  }
+  return false;
 }
 
 async function getDataOfPathInZIP(path, heading) {
