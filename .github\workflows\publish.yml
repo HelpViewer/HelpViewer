@@ -1,0 +1,111 @@
+name: Publish Workflow
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: 'Source branch'
+        required: true
+        default: 'master'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.source_branch || github.ref }}
+
+      - name: Check if should be published
+        if: ${{ github.event_name != 'workflow_dispatch' && !contains(github.event.head_commit.message, '[pub]') }}
+        run: |
+          echo "[pub] string is missing in commit message, skipping ..."
+          exit 0
+
+      - name: Publish
+        id: pub
+        if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[pub]') }}
+        run: |
+          mkdir -p hvdata/data
+          
+          echo "::group::Processing deps.lst"
+          if [ -f deps.lst ]; then
+            dependList=$(cat deps.lst)
+
+            for line in $(printf '%s\n' "$dependList"); do
+              cleanedText=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+              [ -z "$cleanedText" ] && continue
+              num_pipes=$(echo "$cleanedText" | awk -F'|' '{print NF-1}')
+              set -- $(echo "$cleanedText" | awk -F'|' '{printf "%s %s %s", $1, $2, $3}')
+    
+              if [ "$num_pipes" -eq 1 ]; then
+                out="hvdata/data/$1"
+                url="$2"
+              elif [ "$num_pipes" -eq 2 ]; then
+                out="hvdata/$1"
+                url="$2"
+              else
+                continue
+              fi
+    
+              echo "Downloading from -> to : $url -> $out"
+              wget -q -O "$out" "$url"
+            done
+          else
+            echo "deps.lst file not defined, skipping ..."
+          fi
+          echo "Processing of deps.lst finished"
+          echo "::endgroup::"
+          
+          echo "::group::Processing zip subdirectory"
+          shopt -s nullglob
+          cp -f ./zip/* ./hvdata/data
+          shopt -u nullglob
+          echo "::endgroup::"
+
+          echo "::group::Packaging"
+          cd hvdata/data
+          zip -r ../pack.zip .
+          cd ..
+          if [ -f ./pack.zip ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+          echo "::endgroup::"
+
+      - name: Create tag
+        id: newtag
+        if: steps.pub.outputs.exists == 'true'
+        run: |
+          VERSION=$(awk '/^## /{print $2; exit}' CHANGELOG.md)
+          BODY=$(awk '/^## /{if (seen++) exit} seen' CHANGELOG.md | tail -n +2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          TAG="$VERSION"
+          
+          if git ls-remote --tags origin | grep -q "$TAG"; then
+            git tag -d "$TAG" || true
+            git push origin ":refs/tags/$TAG" || true
+          fi
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          git tag $TAG
+          git push origin $TAG || true
+                    
+      - name: Create release
+        if: steps.pub.outputs.exists == 'true'
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.newtag.outputs.version }}
+          release_name: ${{ steps.newtag.outputs.version }}
+          body: ${{ steps.newtag.outputs.body }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
