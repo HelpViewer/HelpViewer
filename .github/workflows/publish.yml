@@ -11,6 +11,9 @@ on:
         required: true
         default: 'master'
 
+permissions:
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
