@@ -1,10 +1,13 @@
 # HelpViewer
 
-A simple reader for ZIP archives containing markdown files, intended to serve as a help file viewer similar to those found in older Windows systems - [HTML Help Viewer][HTMLHW] and [WinHelp][WinHlp32].
+A lightweight and simple reader for ZIP archives containing Markdown and HTML files, designed as a modern and portable help file viewer.
+It supports offline usage without a backend or local server, providing a clean and responsive interface similar in spirit to classic Windows Help viewers like [HTML Help Viewer][HTMLHW] and [WinHelp][WinHlp32].
 
 ## Features
 
-- Ready to work in offline mode without any backend or local server (requires disabling CORS in browser)
+- No installation required — just unzip and run locally
+- Multiplatform — works on all major operating systems via web browsers
+- Ready to work in offline mode without any backend or local server (requires disabling CORS in web browser)
 - Simple user interface
 - Responsive (desktop and other devices supported)
 - Seamless full-screen expansion of topic content
@@ -20,11 +23,12 @@ A simple reader for ZIP archives containing markdown files, intended to serve as
 
 - Single platform for rendering Markdown and HTML content (both can be present in one help ZIP file)
 - ZIP compression method supported (one single part file only)
-- Rendering diagrams by Mermaid library (included in deployment)
+- Rendering diagrams by Mermaid library (included in deployment package)
 - Syntax highlighting for code blocks
 - Flexible customization of appearance and functionality
 - Automated CI/CD release pipeline (package: 1 ZIP file)
-- Open-source and extendable code (MIT license)
+- Open-source and extendable code
+- MIT license
 
 ## How it works
 
