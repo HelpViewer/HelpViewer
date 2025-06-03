@@ -1,124 +1,4 @@
-const C_HIDDENC = 'hidden';
-
-/*S: Topic tree handling */
-var idxTreeItem = 0;
-
-function loadPageByTreeId(id) {
-  const treeItem = document.getElementById('tree-' + id);
-  if (treeItem) {
-    const syntheticClick = new MouseEvent("click", {
-      bubbles: true,
-      cancelable: true,
-      view: window
-    });
-    treeItem.dispatchEvent(syntheticClick);
-    idxTreeItem = id;
-  }
-  revealTreeItem('tree-' + id);
-}
-
-function revealTreeItem(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-
-  var parent = el.parentElement;
-  while (parent) {
-    if (parent.tagName === 'DETAILS') {
-      parent.open = true;
-    }
-    parent = parent.parentElement;
-  }
-}
-/*E: Topic tree handling */
-
-/*S: Feature: Right top panel, page navigation buttons */
-const navL = document.getElementById('nav-left');
-const navT = document.getElementById('nav-top');
-const navR = document.getElementById('nav-right');
-
-function navPrev(event) {
-  event.preventDefault();
-  loadPageByTreeId(idxTreeItem-1);
-}
-
-function navNext(event) {
-  event.preventDefault();
-  loadPageByTreeId(idxTreeItem+1);
-}
-
-function navTop(event) {
-  event.preventDefault();
-  const treeItem = document.getElementById('tree-' + idxTreeItem);
-  const upId = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(5));
-  loadPageByTreeId(upId);
-}
-
-function updateNavButtons(i) {
-  if (i >= 0) {
-    navL.classList.remove(C_HIDDENC);
-    navT.classList.remove(C_HIDDENC);
-    navR.classList.remove(C_HIDDENC);
-  } else {
-    navL.classList.add(C_HIDDENC);
-    navT.classList.add(C_HIDDENC);
-    navR.classList.add(C_HIDDENC);
-  }
-  
-  const currentTreeItem = document.getElementById('tree-' + i);
-  const nextTreeItem = document.getElementById('tree-' + (i + 1));
-  
-  if (i == 0) {
-    navL.classList.add(C_HIDDENC);
-    navT.classList.add(C_HIDDENC);
-  }
-  
-  if (nextTreeItem == null) {
-    navR.classList.add(C_HIDDENC);
-  }
-}
-/*E: Feature: Right top panel, page navigation buttons */
-
-/*S: Feature: Sidebar hide/show (sidebar switching) */
-const sidebar = document.getElementById('sidebar');
-
-function toggleSidebar() {
-  if (sidebar.classList.contains(C_HIDDENC)) {
-    sidebar.classList.remove(C_HIDDENC);
-    showBtn.classList.add(C_HIDDENC);
-  } else {
-    sidebar.classList.add(C_HIDDENC);
-    showBtn.classList.remove(C_HIDDENC);
-  }
-}
-/*E: Feature: Sidebar hide/show (sidebar switching) */
-
-/*S: Feature: Switch fullscreen */
-function switchFullScreen() {
-  document.fullscreenElement 
-    ? document.exitFullscreen() 
-    : document.documentElement.requestFullscreen();
-}
-/*E: Feature: Switch fullscreen */
-
-/*S: Feature: Set color theme */
-const KEY_LS_COLORTHEME = "colorTheme";
-
-const colorTheme = localStorage.getItem(KEY_LS_COLORTHEME) || 'inStandard';
-setColorMode(colorTheme);
-
-function switchColorMode() {
-  const base = document.body;
-  const modes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
-  const idx = (modes.indexOf(base.classList[0]) + 1) % modes.length;
-  setColorMode(modes[idx]);
-}
-
-function setColorMode(val) {
-  const base = document.body;
-  base.className = val;
-  localStorage.setItem(KEY_LS_COLORTHEME, val);
-}
-/*E: Feature: Set color theme */
+const colorModes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
 
 var dataPath = '';
 var pagePath = '';
@@ -130,18 +10,13 @@ function LoadURLParameters() {
   idxTreeItem = parseInt(urlParams.get('id')) || 0;
 }
 
+/*S: Feature: Language switching management */
+const langTab = document.getElementById('sp-languages');
+
+/*E: Feature: Language switching management */
+
 /*////////////// Unsorted*/
-function showSidebarTab(id) {
-  const tab = document.getElementById(id);
-  
-  Array.from(tab.parentElement.children).forEach(child => {
-    child.classList.add(C_HIDDENC);
-  });
 
-  tab.classList.remove(C_HIDDENC);
-}
-
-const showBtn = document.getElementById('showBtn');
 var msgNoData = '';
 
 LoadURLParameters();
@@ -177,13 +52,6 @@ document.getElementById('content').addEventListener('click', function(event) {
   getDataOfPathInZIP(pagePath, pagePath);
 });
 
-function scrollToAnchor(id) {
-  const targetO = document.getElementById(id);
-  if (targetO) {
-    targetO.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
 function SetHeaderText(txt) {
    mainTitle.innerHTML = txt;
 }
@@ -206,7 +74,7 @@ if (dataPath) {
     archive = await loadZipFromUrl(dataPath);
     const srcTreeData = await searchArchiveForFile("tree.lst", archive);
     tree.innerHTML = linesToHtmlTree(srcTreeData);
-    revealTreeItem('tree-' + idxTreeItem);
+    revealTreeItem(N_P_TREEITEM + idxTreeItem);
     updateNavButtons(idxTreeItem);
   
     if (pagePath) {
@@ -312,14 +180,6 @@ function transformOutputConnected(doc) {
   }
 }
 
-function nameForAnchor(text) {
-  return text.toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
-}
-
 function transformOutputConnectedMd(doc) {
   const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
@@ -335,15 +195,6 @@ function transformOutputConnectedMd(doc) {
     
     heading.appendChild(anchor);
   });
-}
-
-async function searchArchiveForFileB64(fileName, arch) {
-  try {
-    const fileContent = await arch.file(fileName)?.async('base64');
-    return fileContent ?? "";
-  } catch (error) {
-    return "";
-  }
 }
 
 function checkSidebarWidth() {
@@ -395,77 +246,3 @@ async function getDataOfPathInZIP(path, heading) {
   const id = window.location.hash.substring(1);
   scrollToAnchor(id);
 }
-
-async function getDataOfPathInZIPImage(path) {
-  const content = await searchArchiveForFileB64(path, archive);
-  var mimeType = 'image/' + path.split('.').pop().toLowerCase();
-  return `data:${mimeType};base64,${content}`;
-}
-
-// File formats
-function linesToHtmlTree(linesP) {
-  const lines = linesP.split("\n");
-  const current = window.location.pathname + window.location.search + window.location.hash;
-  const url = new URL(current, document.baseURI);
-  var linksEmitted = -1;
-
-  function makeLink(name, note, path) {
-    if (path) {
-      linksEmitted++;
-      return `<a href="" id="tree-${linksEmitted}" onclick="return loadPage(event, '${path}', '${name}', ${linksEmitted})" title="${note}">${name}</a>`;
-    } else {
-      return `<a title="${note}">${name}</a>`;
-    }
-  }
-
-  var html = "";
-
-  const stack = [];
-
-  function getIndent(line) {
-    var count = 0;
-    for (const ch of line) {
-      if (ch === " ") count++;
-      else break;
-    }
-    return count;
-  }
-
-  function closeLevels(toLevel) {
-    while (stack.length > toLevel) {
-      html += "</ul></details></li>";
-      stack.pop();
-    }
-  }
-
-  for (var i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    const indent = getIndent(line);
-    const trimmed = line.trim();
-    const parts = trimmed.split("|");
-    const name = parts[0]?.trim() || "";
-    const note = parts[1]?.trim() || "";
-    const path = parts[2]?.trim() || "";
-
-    var nextIndent = -1;
-    if (i + 1 < lines.length) {
-      nextIndent = getIndent(lines[i + 1]);
-    }
-
-    closeLevels(indent);
-
-    const content = makeLink(name, note, path);
-
-    if (nextIndent > indent) {
-      html += `<li><details><summary>${content}</summary><ul>`;
-      stack.push(indent);
-    } else {
-      html += `<li>${content}</li>`;
-    }
-  }
-
-  closeLevels(0);
-
-  return html;
-}
-// E: File formats
