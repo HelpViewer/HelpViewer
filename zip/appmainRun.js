@@ -1,6 +1,6 @@
 async function runApp() {
   const srcLayout = await searchArchiveForFile('layout.htm', arcData);
-  document.body.insertAdjacentHTML('afterbegin', srcLayout);
+  document.body.innerHTML = srcLayout;
   
   const srcMainCSS = await searchArchiveForFile('main.css', arcData);
   appendCSS('mainCSS', srcMainCSS);
