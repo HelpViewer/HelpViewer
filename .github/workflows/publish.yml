@@ -69,9 +69,19 @@ jobs:
 
           echo "::group::Packaging"
           cd hvdata/data
-          zip -r ../pack.zip .
+          zip -r ../data.zip .
+          echo "::endgroup::"
+
+          echo "::group::Packaging deploy bundle"
           cd ..
-          if [ -f ./pack.zip ]; then
+          cd ..
+          mkdir _distrib
+          cd _distrib
+          cp -f ../HelpViewer.htm .
+          cp ../hvdata .
+          zip -r ../package.zip .
+          cd ..
+          if [ -f ./package.zip ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -101,6 +111,7 @@ jobs:
           git push origin $TAG || true
                     
       - name: Create release
+        id: crelease
         if: steps.pub.outputs.exists == 'true'
         uses: actions/create-release@v1
         with:
@@ -109,3 +120,12 @@ jobs:
           body: ${{ steps.newtag.outputs.body }}
         env:
           GITHUB_TOKEN: ${{ secrets._TOKEN }}
+      - name: Upload asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets._TOKEN }}
+        with:
+          upload_url: ${{ steps.crelease.outputs.upload_url }}
+          asset_path: ./_distrib/package.zip
+          asset_name: soubor.zip
+          asset_content_type: application/zip
