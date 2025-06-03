@@ -75,9 +75,13 @@ jobs:
           echo "::group::Packaging deploy bundle"
           cd ..
           cd ..
+          ls -l
+          echo "next ---"
           mkdir _distrib
           cd _distrib
-          cp -f ../HelpViewer.htm .
+          ls -l
+          tree ..
+          cp ../HelpViewer.htm .
           cp ../hvdata .
           zip -r ../package.zip .
           cd ..
