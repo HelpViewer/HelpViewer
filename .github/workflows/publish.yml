@@ -81,6 +81,9 @@ jobs:
           mkdir _distrib
           cd _distrib
           ls -l
+          echo "test" > aa.txt
+          tree 
+          tree ..
           cp ../HelpViewer.htm .
           cp ../hvdata .
           tree ..
