@@ -121,11 +121,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets._TOKEN }}
       - name: Upload asset
+        if: steps.pub.outputs.exists == 'true'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets._TOKEN }}
         with:
           upload_url: ${{ steps.crelease.outputs.upload_url }}
-          asset_path: ./_distrib/package.zip
-          asset_name: soubor.zip
+          asset_path: ./package.zip
+          asset_name: package.zip
           asset_content_type: application/zip
