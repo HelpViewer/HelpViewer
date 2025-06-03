@@ -93,23 +93,40 @@ jobs:
         id: newtag
         if: steps.pub.outputs.exists == 'true'
         run: |
+          echo "::group::Version overview"
           VERSION=$(awk '/^## /{print $2; exit}' CHANGELOG.md)
           BODY=$(awk '/^## /{if (seen++) exit} seen' CHANGELOG.md | tail -n +2)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$BODY" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+          echo "::endgroup::"
           
           TAG="$VERSION"
+
+          echo "::group::Old release delete"
+          RELEASE_ID=$(curl -s -H "Authorization: token $TOKEN" \
+            https://api.github.com/repos/$REPO/releases/tags/$TAG | jq -r .id)
+
+          if [ "$RELEASE_ID" != "null" ]; then
+            echo "Deleting release ID $RELEASE_ID"
+            curl -s -X DELETE -H "Authorization: token $TOKEN" \
+              https://api.github.com/repos/$REPO/releases/$RELEASE_ID
+          fi
+          echo "::endgroup::"
           
+          echo "::group::Old tag delete"
           if git ls-remote --tags origin | grep -q "$TAG"; then
             git tag -d "$TAG" || true
             git push origin ":refs/tags/$TAG" || true
           fi
+          echo "::endgroup::"
 
+          echo "::group::New tag created"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           git tag $TAG
           git push origin $TAG || true
+          echo "::endgroup::"
                     
       - name: Create release
         id: crelease
@@ -121,6 +138,7 @@ jobs:
           body: ${{ steps.newtag.outputs.body }}
         env:
           GITHUB_TOKEN: ${{ secrets._TOKEN }}
+
       - name: Upload asset
         if: steps.pub.outputs.exists == 'true'
         uses: actions/upload-release-asset@v1
