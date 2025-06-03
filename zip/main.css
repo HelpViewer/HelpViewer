@@ -38,7 +38,7 @@ h1 {
   flex-direction: column;
 }
 
-.sidebar.hidden {
+.hidden {
   display: none;
 }
 
@@ -63,10 +63,6 @@ h1 {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
-}
-
-.hidden-btn {
-  display: none;
 }
 
 .content {

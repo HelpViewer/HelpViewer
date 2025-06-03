@@ -1,3 +1,5 @@
+const C_HIDDENC = 'hidden';
+
 /*S: Topic tree handling */
 var idxTreeItem = 0;
 
@@ -53,37 +55,39 @@ function navTop(event) {
 
 function updateNavButtons(i) {
   if (i >= 0) {
-    navL.classList.remove('hidden-btn');
-    navT.classList.remove('hidden-btn');
-    navR.classList.remove('hidden-btn');
+    navL.classList.remove(C_HIDDENC);
+    navT.classList.remove(C_HIDDENC);
+    navR.classList.remove(C_HIDDENC);
   } else {
-    navL.classList.add('hidden-btn');
-    navT.classList.add('hidden-btn');
-    navR.classList.add('hidden-btn');
+    navL.classList.add(C_HIDDENC);
+    navT.classList.add(C_HIDDENC);
+    navR.classList.add(C_HIDDENC);
   }
   
   const currentTreeItem = document.getElementById('tree-' + i);
   const nextTreeItem = document.getElementById('tree-' + (i + 1));
   
   if (i == 0) {
-    navL.classList.add('hidden-btn');
-    navT.classList.add('hidden-btn');
+    navL.classList.add(C_HIDDENC);
+    navT.classList.add(C_HIDDENC);
   }
   
   if (nextTreeItem == null) {
-    navR.classList.add('hidden-btn');
+    navR.classList.add(C_HIDDENC);
   }
 }
 /*E: Feature: Right top panel, page navigation buttons */
 
 /*S: Feature: Sidebar hide/show (sidebar switching) */
+const sidebar = document.getElementById('sidebar');
+
 function toggleSidebar() {
-  if (sidebar.classList.contains('hidden')) {
-    sidebar.classList.remove('hidden');
-    showBtn.style.display = 'none';
+  if (sidebar.classList.contains(C_HIDDENC)) {
+    sidebar.classList.remove(C_HIDDENC);
+    showBtn.classList.add(C_HIDDENC);
   } else {
-    sidebar.classList.add('hidden');
-    showBtn.style.display = 'inline-block';
+    sidebar.classList.add(C_HIDDENC);
+    showBtn.classList.remove(C_HIDDENC);
   }
 }
 /*E: Feature: Sidebar hide/show (sidebar switching) */
@@ -127,7 +131,16 @@ function LoadURLParameters() {
 }
 
 /*////////////// Unsorted*/
-const sidebar = document.getElementById('sidebar');
+function showSidebarTab(id) {
+  const tab = document.getElementById(id);
+  
+  Array.from(tab.parentElement.children).forEach(child => {
+    child.classList.add(C_HIDDENC);
+  });
+
+  tab.classList.remove(C_HIDDENC);
+}
+
 const showBtn = document.getElementById('showBtn');
 var msgNoData = '';
 
