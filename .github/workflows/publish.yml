@@ -1,4 +1,4 @@
-name: Publish Workflow
+name: Publishing
 
 on:
   push:
@@ -76,17 +76,10 @@ jobs:
 
           echo "::group::Packaging deploy bundle"
           cd ..
-          ls -l
-          echo "next ---"
           mkdir _distrib
           cd _distrib
-          ls -l
-          echo "test" > aa.txt
-          tree 
-          tree ..
           cp ../HelpViewer.htm .
-          cp ../hvdata .
-          tree ..
+          cp -rf ../hvdata .
           zip -r ../package.zip .
           cd ..
           if [ -f ./package.zip ]; then
