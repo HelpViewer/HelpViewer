@@ -1,12 +1,12 @@
 # HelpViewer
 
 A lightweight and simple reader for ZIP archives containing Markdown and HTML files, designed as a modern and portable help file viewer.
-It supports offline usage without a backend or local server, providing a clean and responsive interface similar in spirit to classic Windows Help viewers like [HTML Help Viewer][HTMLHW] and [WinHelp][WinHlp32].
+It supports offline usage without a backend or local server, providing a clean and responsive interface inspired by classic desktop help viewers from the Windows era.
 
 ## Features
 
-- No installation required — just unzip and run locally
-- Multiplatform — works on all major operating systems via web browsers
+- No installation required - just unzip and run locally
+- Multiplatform - works on all major operating systems via web browsers
 - Ready to work in offline mode without any backend or local server (requires disabling CORS in web browser)
 - Simple user interface
 - Responsive (desktop and other devices supported)
@@ -103,8 +103,6 @@ While AI helped generate suggestions, the final code and design decisions were m
 
 Please note that any use of third-party code generated or suggested by AI is subject to the original licenses of that code.
 
-[HTMLHW]: https://learn.microsoft.com/en-us/previous-versions/windows/desktop/htmlhelp/about-the-html-help-viewer "HTML Help Viewer"
-[WinHlp32]: https://blog.butras.cz/2013/11/jiz-od-verze-windows-vista-jiz-neni.html "WinHlp32"
 [JSZIP]: http://jszip.org/ "JSZip JavaScript library - ZIP files manipulation"
 [Marked]: https://marked.js.org/ "Marked JavaScript library - md files to HTML renderer"
 [Structure]: FileMetadata.md "File metadata"
