@@ -1,5 +1,8 @@
 # Changelog
 
+## 20250604
+- Logic internal refactor (functionality unchanged in compare to 20250603-1)
+
 ## 20250603-1
 - Left bottom panel buttons prunned to currently working only
 

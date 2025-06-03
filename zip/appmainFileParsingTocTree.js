@@ -1,5 +1,6 @@
 // File formats
 const N_P_TREEITEM = 'tree-';
+const FILENAME_TREE = 'tree.lst';
 
 function linesToHtmlTree(linesP) {
   const lines = linesP.split("\n");

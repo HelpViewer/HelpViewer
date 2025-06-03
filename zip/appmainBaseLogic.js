@@ -1,4 +1,6 @@
 const C_HIDDENC = 'hidden';
+const FILENAME_1STTOPIC = 'README.md';
+const FILENAME_DEFAULT_HELPFILE = 'Help.zip';
 
 function nameForAnchor(text) {
   return text.toLowerCase()

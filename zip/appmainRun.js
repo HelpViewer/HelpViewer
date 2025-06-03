@@ -5,9 +5,10 @@ async function runApp() {
   const srcMainCSS = await searchArchiveForFile('main.css', arcData);
   appendCSS('mainCSS', srcMainCSS);
   
-  const sequence = ['marked.min.js', 'appmainBaseLogic.js', 
+  const sequence = ['marked.min.js', 'appmainBaseLogic.js',
+    'appLocalizationSwitcher.js',  
     'appFTree.js', 'appFNavigation.js', 'appFColorTheme.js', 
-    'appLayoutHandlers.js', 
+    'appLayoutHandlers.js', 'appTopicRenderLogic.js',
     'appmainFileParsingTocTree.js', 'appmainNext.js'];
 
   for (const one of sequence) {
