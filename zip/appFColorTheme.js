@@ -1,6 +1,9 @@
 /*S: Feature: Set color theme */
 const KEY_LS_COLORTHEME = "colorTheme";
 
+// reimplement yourself
+const colorModes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
+
 const colorTheme = localStorage.getItem(KEY_LS_COLORTHEME) || 'inStandard';
 setColorMode(colorTheme);
 

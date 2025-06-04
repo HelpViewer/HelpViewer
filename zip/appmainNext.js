@@ -1,5 +1,3 @@
-const colorModes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
-
 var dataPath = '';
 var pagePath = '';
 
@@ -71,12 +69,7 @@ if (dataPath) {
   })();
 }
 
-if (!pagePath) {
-  // read default filename (1st topic)
-  pagePath = FILENAME_1STTOPIC;
-  var txt = contentPane.innerHTML;
-  getPathData(pagePath, pagePath);
-}
+getPathData(pagePath, pagePath);
 
 function checkSidebarWidth() {
   if (sidebar.offsetWidth / window.innerWidth > 0.5) {

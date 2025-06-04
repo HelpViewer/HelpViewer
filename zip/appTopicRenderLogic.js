@@ -139,6 +139,11 @@ async function loadPage(event, path, heading, i) {
 }
 
 async function getPathData(path, heading) {
+  if (!path || path === '') {
+    // read default filename (1st topic)
+    pagePath = FILENAME_1STTOPIC;
+  }
+  
   SetHeaderText(heading);
   const content = await searchArchiveForFile(path, archive);
   if (window.marked) {
