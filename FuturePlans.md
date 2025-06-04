@@ -2,8 +2,6 @@
 
 - Support old help CHM file format with defined conversion steps.
 - Prepare description help ZIP file for the solution.
-- Language localization subsystem
-- Language localization (EN, CZ)
 - Definition of keyword lists and mapping to topic files (md, htm)
 - Images in topic tree support
 - Left panel with multi pages:

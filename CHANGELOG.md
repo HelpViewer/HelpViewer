@@ -1,5 +1,13 @@
 # Changelog
 
+## 20250604-1
+- Language localization logic has been added
+- Layout has been updated to support languages
+- CSS format for language links introduced
+- Bugfix: When path has not been specified and 1st loaded, warning message has been shown. Viewer prefers heading titles in order: user defined heading, 1st h1 in markdown or html (if on start of document), file path
+- New chapter heading decision order: 1st h1 in markdown or html (if on start of document) (if defined, every time is used in priority), user defined heading, file path
+- Updates in pipeline definition, new repository with localization
+
 ## 20250604
 - Logic internal refactor (functionality unchanged in compare to 20250603-1)
 
