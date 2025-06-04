@@ -1,5 +1,9 @@
 # Changelog
 
+## 20250604-2
+- TOC tree item now can have associated image
+- TOC tree plus and minus signs can be replaced by icons from helpfile
+
 ## 20250604-1
 - Language localization logic has been added
 - Layout has been updated to support languages

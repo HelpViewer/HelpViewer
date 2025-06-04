@@ -80,6 +80,23 @@ loadLocalization(activeLanguage).then(() => {
       updateNavButtons(idxTreeItem);
     
       getPathData(pagePath, pagePath);
+      
+      const bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, archive);
+      const bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, archive);
+      
+      if (bookOpen && bookClosed) {
+        appendCSS('overridePlusMinus',
+`ul.tree details > summary::before {
+  content: url("${bookClosed}");
+}
+
+ul.tree details[open] > summary::before {
+  transform: rotate(0deg);
+  content: url("${bookOpen}");
+}` 
+        );
+         
+      }
     })();
   }
 });
