@@ -9,6 +9,7 @@
   --c-tabLine1: var(--c-background);
   --c-anchorHover: #000;
   --c-anchorColor: var(--c-border);
+  --c-contentPaneColor: white;
 }
 
 html, body {
@@ -70,6 +71,7 @@ h1 {
   overflow-y: auto;
   padding: 1em;
   font-size: 1em;
+  background-color: var(--c-contentPaneColor);
 }
 
 .tree {
@@ -395,6 +397,7 @@ ul:has(li input[type="checkbox"]) {
   --c-tabLine1: black;
   --c-border: black;
   --c-anchorHover: white;
+  --c-contentPaneColor: black;
 }
 
 .inBWDuoColor a {
