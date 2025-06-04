@@ -25,6 +25,7 @@ async function searchArchiveForFileB64(fileName, arch) {
 
 async function getDataOfPathInZIPImage(path, archive) {
   const content = await searchArchiveForFileB64(path, archive);
+  if (!content) return null;
   var mimeType = 'image/' + path.split('.').pop().toLowerCase();
   return `data:${mimeType};base64,${content}`;
 }
