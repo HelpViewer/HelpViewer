@@ -2,6 +2,13 @@
 const mainTitle = document.getElementById('mtitle');
 const contentPane = document.getElementById('content');
 
+// interconnect with your logic
+var msgNoData = '';
+
+// interconnect with get parameter
+var pagePath = '';
+var dataPath = '';
+
 // reimplement yourself
 function convertRelativePathToViewerURI(val) {
   return val;

@@ -1,17 +1,12 @@
 const PAR_NAME_DOC = 'd'; // Help file path
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
-var dataPath = '';
-var pagePath = '';
-
 function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
   dataPath = urlParams.get(PAR_NAME_DOC);
-  pagePath = urlParams.get(PAR_NAME_PAGE);
+  pagePath = urlParams.get(PAR_NAME_PAGE) || FILENAME_1STTOPIC;
   idxTreeItem = parseInt(urlParams.get(PAR_NAME_ID)) || 0;
 }
-
-var msgNoData = '';
 
 LoadURLParameters();
 updateNavButtons(idxTreeItem);
