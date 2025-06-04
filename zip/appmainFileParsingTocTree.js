@@ -9,12 +9,13 @@ function linesToHtmlTree(linesP) {
   const url = new URL(current, document.baseURI);
   var linksEmitted = -1;
 
-  function makeLink(name, note, path) {
+  function makeLink(name, note, path, image) {
+    const picAdd = !image ? '' : `<img src="${image}" class='treepic'>`;
     if (path) {
       linksEmitted++;
-      return `<a href="" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="return loadPage(event, '${path}', '${name}', ${linksEmitted})" title="${note}">${name}</a>`;
+      return `<a href="" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="return loadPage(event, '${path}', '${name}', ${linksEmitted})" title="${note}">${picAdd}${name}</a>`;
     } else {
-      return `<a title="${note}">${name}</a>`;
+      return `<a title="${note}">${picAdd}${name}</a>`;
     }
   }
 
@@ -45,7 +46,8 @@ function linesToHtmlTree(linesP) {
     const parts = trimmed.split("|");
     const name = parts[0]?.trim() || "";
     const note = parts[1]?.trim() || "";
-    const path = parts[2]?.trim() || "";
+    const image = parts[2]?.trim() || "";
+    const path = parts[3]?.trim() || "";
 
     var nextIndent = -1;
     if (i + 1 < lines.length) {
@@ -54,7 +56,7 @@ function linesToHtmlTree(linesP) {
 
     closeLevels(indent);
 
-    const content = makeLink(name, note, path);
+    const content = makeLink(name, note, path, image);
 
     if (nextIndent > indent) {
       html += `<li><details><summary>${content}</summary><ul>`;

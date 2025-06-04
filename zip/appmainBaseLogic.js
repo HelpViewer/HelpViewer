@@ -46,3 +46,20 @@ async function getZipSubdirs(parentPath, arch) {
   return [...subdirs];
 }
 /*E: Zip archive reading functions */
+
+/*S: Fixing local in archive paths to base64 dump*/
+async function fixImgRelativePathToZipPaths(doc)
+{
+  doc.querySelectorAll('img').forEach((img) => {
+    (async () => {
+      const src = img.getAttribute('src');
+      if (src && !/^https?:\/\//.test(src)) {
+        const data = await getDataOfPathInZIPImage(src, archive);
+        if (data) {
+          img.src = data;
+        }
+      }
+    })();
+  });
+}
+/*E: Fixing local in archive paths to base64 dump*/

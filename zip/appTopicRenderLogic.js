@@ -69,21 +69,6 @@ function transformOutput(htmlTxt) {
   return doc.documentElement.outerHTML;
 }
 
-async function fixImgRelativePathToZipPaths(doc)
-{
-  doc.querySelectorAll('img').forEach((img) => {
-    (async () => {
-      const src = img.getAttribute('src');
-      if (src && !/^https?:\/\//.test(src)) {
-        const data = await getDataOfPathInZIPImage(src, archive);
-        if (data) {
-          img.src = data;
-        }
-      }
-    })();
-  });
-}
-
 async function loadMermaid() {
   const MERMAID_ID = 'ext-mermaid';
   if (!document.getElementById(MERMAID_ID)) {

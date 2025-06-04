@@ -416,3 +416,7 @@ ul:has(li input[type="checkbox"]) {
 .inBWDuoColor .toolbar-down {
   filter: grayscale(100%) contrast(200%);
 }
+
+.treepic {
+    padding-right: 0.3em;
+}

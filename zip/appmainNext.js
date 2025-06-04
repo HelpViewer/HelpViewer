@@ -75,6 +75,7 @@ loadLocalization(activeLanguage).then(() => {
       archive = await loadZipFromUrl(dataPath);
       const srcTreeData = await searchArchiveForFile(FILENAME_TREE, archive);
       tree.innerHTML = linesToHtmlTree(srcTreeData);
+      fixImgRelativePathToZipPaths(tree);
       revealTreeItem(N_P_TREEITEM + idxTreeItem);
       updateNavButtons(idxTreeItem);
     
