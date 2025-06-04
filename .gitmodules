@@ -1,0 +1,4 @@
+[submodule "zip/lang"]
+	path = zip/lang
+	url = https://github.com/HelpViewer/Translations.git
+	branch = master
