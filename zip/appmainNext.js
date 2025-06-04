@@ -1,6 +1,9 @@
 const PAR_NAME_DOC = 'd'; // Help file path
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
+const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
+const LK_MSG_NODATA = 'MSG_NODATA';
+
 function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
   dataPath = urlParams.get(PAR_NAME_DOC);
@@ -41,29 +44,44 @@ contentPane.addEventListener('click', function(event) {
 
 var archive;
 
-if (!dataPath || !pagePath) {
-  SetHeaderText('Select item from left');
-}
+var languages = getLanguagesList();
 
-if (!dataPath) {
-  console.log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);
-  dataPath = FILENAME_DEFAULT_HELPFILE;
-  msgNoData = `Data file has not been specified. Use <b>?${PAR_NAME_DOC}=</b> followed by the file path in the URI. The default file name <b>${dataPath}</b> was used instead. If the left panel is empty, the file <b>${dataPath}</b> probably does not exist in the viewer\'s local directory. As a next step, check <b>${PAR_NAME_PAGE}=</b> for a valid path inside the help ZIP archive.`;
-  contentPane.innerHTML = msgNoData;
-}
-
-if (dataPath) {
-  (async () => {
-    // load tree data
-    archive = await loadZipFromUrl(dataPath);
-    const srcTreeData = await searchArchiveForFile(FILENAME_TREE, archive);
-    tree.innerHTML = linesToHtmlTree(srcTreeData);
-    revealTreeItem(N_P_TREEITEM + idxTreeItem);
-    updateNavButtons(idxTreeItem);
+loadLocalization(activeLanguage).then(() => {
+  languages.then((languages) => {
+    langTab.innerHTML = '';
   
-    getPathData(pagePath, pagePath);
-  })();
-}
+    for (var i = 0; i < languages.length; i++) {
+      const parts = languages[i].split("|");
+      const alias = parts[0]?.trim() || "";
+      const name = parts[1]?.trim() || "";
+      langTab.innerHTML += `<li><a class='langLink' href="" onclick="return setLanguage('${name}')" title="${alias}">${alias}</a></li>`;
+    }  
+  });
+  
+  if (!dataPath || !pagePath) {
+    SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
+  }
+  
+  if (!dataPath) {
+    console.log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);
+    dataPath = FILENAME_DEFAULT_HELPFILE;
+    msgNoData = _T(LK_MSG_NODATA);
+    contentPane.innerHTML = msgNoData;
+  }
+  
+  if (dataPath) {
+    (async () => {
+      // load tree data
+      archive = await loadZipFromUrl(dataPath);
+      const srcTreeData = await searchArchiveForFile(FILENAME_TREE, archive);
+      tree.innerHTML = linesToHtmlTree(srcTreeData);
+      revealTreeItem(N_P_TREEITEM + idxTreeItem);
+      updateNavButtons(idxTreeItem);
+    
+      getPathData(pagePath, pagePath);
+    })();
+  }
+});
 
 function checkSidebarWidth() {
   if (sidebar.offsetWidth / window.innerWidth > 0.5) {

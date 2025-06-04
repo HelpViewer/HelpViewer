@@ -1,4 +1,6 @@
 /*S: Topic renderer logic */
+const LK_MSG_PATH_NOT_FOUND_IN_ARCH = 'MSG_PATH_NOT_FOUND_IN_ARCH';
+
 const mainTitle = document.getElementById('mtitle');
 const contentPane = document.getElementById('content');
 
@@ -161,11 +163,13 @@ async function getPathData(path, heading) {
   }
   
   if (content === '') {
-    contentPane.innerHTML = `Given path <b>${path}</b> is not present inside the help ZIP archive <b>${dataPath}</b>.`;
+    contentPane.innerHTML = _T(LK_MSG_PATH_NOT_FOUND_IN_ARCH);
     if (dataPath === '') {
       contentPane.innerHTML = msgNoData;
     }
   }
+  
+  refreshTitlesForLangStrings(null);
   
   const id = window.location.hash.substring(1);
   scrollToAnchor(id);

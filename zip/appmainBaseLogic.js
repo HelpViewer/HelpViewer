@@ -25,4 +25,24 @@ async function getDataOfPathInZIPImage(path, archive) {
   var mimeType = 'image/' + path.split('.').pop().toLowerCase();
   return `data:${mimeType};base64,${content}`;
 }
+
+async function getZipSubdirs(parentPath, arch) {
+  const subdirs = new Set();
+  
+  arch.forEach((relativePath, file) => {
+    if (relativePath.startsWith(parentPath) && relativePath !== parentPath) 
+    {
+      const subPath = relativePath.slice(parentPath.length);
+      const parts = subPath.split("/");
+  
+      if (parts.length > 1) {
+        subdirs.add(parts[0]);
+      } else if (file.dir) {
+        subdirs.add(parts[0]);
+      }
+    }
+  });
+  
+  return [...subdirs];
+}
 /*E: Zip archive reading functions */
