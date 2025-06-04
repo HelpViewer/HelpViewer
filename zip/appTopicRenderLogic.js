@@ -23,9 +23,7 @@ function transformOutput(htmlTxt) {
   const firstH1 = doc.body.firstElementChild;
   
   if (firstH1 && firstH1.tagName.toLowerCase() === 'h1') {
-    if (mainTitle.innerHTML === pagePath) {
-      SetHeaderText(firstH1.innerHTML.trim());
-    }      
+    SetHeaderText(firstH1.innerHTML.trim());
     firstH1.remove();
   }
   
