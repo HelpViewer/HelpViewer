@@ -66,13 +66,9 @@ if (dataPath) {
     revealTreeItem(N_P_TREEITEM + idxTreeItem);
     updateNavButtons(idxTreeItem);
   
-    if (pagePath) {
-      getPathData(pagePath, pagePath);
-    }
+    getPathData(pagePath, pagePath);
   })();
 }
-
-getPathData(pagePath, pagePath);
 
 function checkSidebarWidth() {
   if (sidebar.offsetWidth / window.innerWidth > 0.5) {
