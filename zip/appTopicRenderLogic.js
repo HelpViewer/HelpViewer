@@ -73,7 +73,7 @@ async function fixImgRelativePathToZipPaths(doc)
     (async () => {
       const src = img.getAttribute('src');
       if (src && !/^https?:\/\//.test(src)) {
-        const data = await getDataOfPathInZIPImage(src);
+        const data = await getDataOfPathInZIPImage(src, archive);
         if (data) {
           img.src = data;
         }
