@@ -67,7 +67,7 @@ jobs:
           
           echo "::group::Processing zip subdirectory"
           shopt -s nullglob
-          cp -f ./zip/* ./hvdata/data
+          cp -rf ./zip/* ./hvdata/data
           shopt -u nullglob
           echo "::endgroup::"
 
