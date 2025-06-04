@@ -139,9 +139,9 @@ async function loadPage(event, path, heading, i) {
 }
 
 async function getPathData(path, heading) {
-  if (!path || path === '') {
+  if (!path || path.trim() === '') {
     // read default filename (1st topic)
-    pagePath = FILENAME_1STTOPIC;
+    path = FILENAME_1STTOPIC;
   }
   
   SetHeaderText(heading);

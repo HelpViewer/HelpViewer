@@ -1,10 +1,13 @@
+const PAR_NAME_DOC = 'd'; // Help file path
+const PAR_NAME_PAGE = 'p'; // chapter page path
+
 var dataPath = '';
 var pagePath = '';
 
 function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
-  dataPath = urlParams.get('d');
-  pagePath = urlParams.get('p');
+  dataPath = urlParams.get(PAR_NAME_DOC);
+  pagePath = urlParams.get(PAR_NAME_PAGE);
   idxTreeItem = parseInt(urlParams.get(PAR_NAME_ID)) || 0;
 }
 
@@ -48,9 +51,9 @@ if (!dataPath || !pagePath) {
 }
 
 if (!dataPath) {
-  console.log('Data file has not been specified. Use ?d= and its path in URI. Used default file name.');
+  console.log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);
   dataPath = FILENAME_DEFAULT_HELPFILE;
-  msgNoData = 'Data file has not been specified. Use <b>?d=</b> followed by the file path in the URI. The default file name <b>' + dataPath + '</b> was used instead. If the left panel is empty, the file <b>' + dataPath + '</b> probably does not exist in the viewer\'s local directory. As a next step, check <b>p=</b> for a valid path inside the help ZIP archive.';
+  msgNoData = `Data file has not been specified. Use <b>?${PAR_NAME_DOC}=</b> followed by the file path in the URI. The default file name <b>${dataPath}</b> was used instead. If the left panel is empty, the file <b>${dataPath}</b> probably does not exist in the viewer\'s local directory. As a next step, check <b>${PAR_NAME_PAGE}=</b> for a valid path inside the help ZIP archive.`;
   contentPane.innerHTML = msgNoData;
 }
 
@@ -84,11 +87,11 @@ window.addEventListener("load", checkSidebarWidth);
 
 /*S: Topic renderer logic integration */
 function convertRelativePathToViewerURI(val) {
-  return `?d=${dataPath}&p=${encodeURIComponent(val)}&id=${encodeURIComponent(idxTreeItem)}`;
+  return `?${PAR_NAME_DOC}=${dataPath}&${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(idxTreeItem)}`;
 }
 
 function setSearchParams(url, path, i) {
-  url.searchParams.set('p', path);
+  url.searchParams.set(PAR_NAME_PAGE, path);
   url.searchParams.set(PAR_NAME_ID, i);
 }
 /*E: Topic renderer logic integration */
