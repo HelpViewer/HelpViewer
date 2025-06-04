@@ -5,7 +5,7 @@ function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
   dataPath = urlParams.get('d');
   pagePath = urlParams.get('p');
-  idxTreeItem = parseInt(urlParams.get('id')) || 0;
+  idxTreeItem = parseInt(urlParams.get(PAR_NAME_ID)) || 0;
 }
 
 var msgNoData = '';
@@ -89,6 +89,6 @@ function convertRelativePathToViewerURI(val) {
 
 function setSearchParams(url, path, i) {
   url.searchParams.set('p', path);
-  url.searchParams.set('id', i);
+  url.searchParams.set(PAR_NAME_ID, i);
 }
 /*E: Topic renderer logic integration */

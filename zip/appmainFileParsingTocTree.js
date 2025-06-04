@@ -1,6 +1,7 @@
 // File formats
 const N_P_TREEITEM = 'tree-';
 const FILENAME_TREE = 'tree.lst';
+const PAR_NAME_ID = 'id';
 
 function linesToHtmlTree(linesP) {
   const lines = linesP.split("\n");
@@ -11,7 +12,7 @@ function linesToHtmlTree(linesP) {
   function makeLink(name, note, path) {
     if (path) {
       linksEmitted++;
-      return `<a href="" id="${N_P_TREEITEM}${linksEmitted}" onclick="return loadPage(event, '${path}', '${name}', ${linksEmitted})" title="${note}">${name}</a>`;
+      return `<a href="" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="return loadPage(event, '${path}', '${name}', ${linksEmitted})" title="${note}">${name}</a>`;
     } else {
       return `<a title="${note}">${name}</a>`;
     }
