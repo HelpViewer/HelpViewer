@@ -1,10 +1,19 @@
 const C_HIDDENC = 'hidden';
 const FILENAME_1STTOPIC = 'README.md';
 const FILENAME_DEFAULT_HELPFILE = 'Help.zip';
+const FILENAME_VERSIONFILE = '_version.txt';
 
 const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
 
+async function getCurrentBundleUri()
+{
+  var ver = (await searchArchiveForFile(FILENAME_VERSIONFILE, arcData)).trim();
+  return `https://github.com/HelpViewer/HelpViewer/releases/download/${ver}/package.zip`;
+}
+getCurrentBundleUri().then((x) => {
+  document.title = x;
+});
 function nameForAnchor(text) {
   return text.toLowerCase()
     .trim()
