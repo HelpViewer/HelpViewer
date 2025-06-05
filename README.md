@@ -56,6 +56,12 @@ It supports offline usage without a backend or local server, providing a clean a
 | ./hvdata/data.zip:main.css | Default viewer CSS styles |
 | ./hvdata/data.zip:appmainRun.js | Application runner |
 | ./hvdata/data.zip:appmainNext.js | Javascript part of application |
+| ./hvdata/data.zip:app*.js | Application features and submodules |
+| ./hvdata/data.zip:lang/* | Translation strings |
+| ./hvdata/data.zip:lang/?/lname.txt | Language friendly name |
+| ./hvdata/data.zip:lang/?/lstr.txt | Language strings (static) |
+| ./hvdata/data.zip:lang/?/lstr.js | Language strings (with dynamic data support) |
+| ./hvdata/data.zip:_version.txt | Application version (GitHub release name) |
 | **./hvdata/jszip.min.js** | [JSZip][JSZIP] - ZIP archives manipulation library |
 | **./hvdata/appmain.js** | Basic application runner for operation with JSZip |
 
