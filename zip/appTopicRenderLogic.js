@@ -6,6 +6,7 @@ const C_ANCHOR_CONTENT = ' #';
 const mainTitle = document.getElementById('mtitle');
 const contentPane = document.getElementById('content');
 const bookmarksPane = document.getElementById('subsList');
+const bookmarksPaneButton = document.getElementById('downP-ChapterAnchor');
 
 // interconnect with your logic
 var msgNoData = '';
@@ -175,6 +176,12 @@ async function getPathData(path, heading) {
   bookmarksPane.querySelectorAll('details').forEach(detail => {
       detail.open = true;
   });
+  
+  if (treeString.length == 0) {
+    bookmarksPaneButton.classList.add(C_HIDDENC);
+  } else {
+    bookmarksPaneButton.classList.remove(C_HIDDENC);
+  }
   
   // alternative for empty content panel
   if (content === '') {
