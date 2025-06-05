@@ -4,21 +4,25 @@
 <ul class="tree" id="tree">
 </ul>
       </div>
+      <div class="sidebar-page hidden" id="sp-subsections">
+<ul class="tree" id="subsList">
+</ul>
+      </div>
       <div class="sidebar-page hidden" id="sp-languages">
 <ul class="tree" id="langList">
 </ul>
       </div>
       <div class="toolbar toolbar-down">
-        <button class="pnl-btn" onclick="showSidebarTab('sp1')" id="downP-TopicTree" title="">&#x1F4D6;</button>
-        <!--<button class="pnl-btn" onclick="alert()" title="">&#x1F516;</button>
-        <button class="pnl-btn" onclick="alert()" title="">&#x1F4C7;</button>
-        <button class="pnl-btn" onclick="alert()" title="">&#x1F50E;</button>
-        <button class="pnl-btn hidden" onclick="alert()" title="">&#x1F4DD;</button>  -->
-        <button class="pnl-btn" onclick="return loadPage(event, 'README.md', 'README.md', 0)" id="downP-Home" title="">&#x1F3E1;</button>
-        <button class="pnl-btn" onclick="showSidebarTab('sp-languages')" id="downP-ChangeLanguage" title="" style="filter: grayscale(100%); font-size: 0.9em;">&#x1F310;</button>
-        <button class="pnl-btn" onclick="switchColorMode()" id="downP-SwitchColorMode" title="">&#x1F319;</button>
-        <button class="pnl-btn" onclick="switchFullScreen()" id="downP-ToggleFS" title="Toggle fullscreen view">&#x1F532;</button>
-        <button class="pnl-btn" onclick="toggleSidebar()" id="downP-Hide" title="Hide panel">&#x274C;&#xFE0E;</button>
+        <button class="pnl-btn" onclick="showSidebarTab('sp1')" id="downP-TopicTree">&#x1F4D6;</button>
+        <button class="pnl-btn" onclick="showSidebarTab('sp-subsections')" id="downP-ChapterAnchor">&#x1F516;</button>
+        <!--<button class="pnl-btn" onclick="alert()">&#x1F4C7;</button>
+        <button class="pnl-btn" onclick="alert()">&#x1F50E;</button>
+        <button class="pnl-btn hidden" onclick="alert()">&#x1F4DD;</button>  -->
+        <button class="pnl-btn" onclick="return loadPage(event, 'README.md', 'README.md', 0)" id="downP-Home">&#x1F3E1;</button>
+        <button class="pnl-btn" onclick="showSidebarTab('sp-languages')" id="downP-ChangeLanguage" style="filter: grayscale(100%); font-size: 0.9em;">&#x1F310;</button>
+        <button class="pnl-btn" onclick="switchColorMode()" id="downP-SwitchColorMode">&#x1F319;</button>
+        <button class="pnl-btn" onclick="switchFullScreen()" id="downP-ToggleFS">&#x1F532;</button>
+        <button class="pnl-btn" onclick="toggleSidebar()" id="downP-Hide">&#x274C;&#xFE0E;</button>
       </div>
     </div>
 
@@ -26,11 +30,11 @@
       <div class="header">
         <h1 id="mtitle">&nbsp;</h1>
         <div id="toolbar">
-        <button class="hidden pnl-btn" id="showBtn" onclick="toggleSidebar()" title="Show browsing panel">&#x2630;</button>
-        <button class="pnl-btn" id="printBtn" onclick="window.print()" title="Print page">&#x1F4C4;</button>
-        <button class="hidden pnl-btn" id="nav-left" onclick="navPrev(event);" title="Previous topic">&#x2B05;</button>
-        <button class="hidden pnl-btn" id="nav-top" onclick="navTop(event);" title="Parent topic">&#x2B06;</button>
-        <button class="hidden pnl-btn" id="nav-right" onclick="navNext(event);" title="Next topic">&#x27A1;</button>
+        <button class="hidden pnl-btn" id="showBtn" onclick="toggleSidebar()">&#x2630;</button>
+        <button class="pnl-btn" id="printBtn" onclick="window.print()">&#x1F4C4;</button>
+        <button class="hidden pnl-btn" id="nav-left" onclick="navPrev(event);">&#x2B05;</button>
+        <button class="hidden pnl-btn" id="nav-top" onclick="navTop(event);">&#x2B06;</button>
+        <button class="hidden pnl-btn" id="nav-right" onclick="navNext(event);">&#x27A1;</button>
         </div>
       </div>
       <div class="content" id="content">

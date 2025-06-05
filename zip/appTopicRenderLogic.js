@@ -1,8 +1,11 @@
 /*S: Topic renderer logic */
 const LK_MSG_PATH_NOT_FOUND_IN_ARCH = 'MSG_PATH_NOT_FOUND_IN_ARCH';
 
+const C_ANCHOR_CONTENT = ' #';
+
 const mainTitle = document.getElementById('mtitle');
 const contentPane = document.getElementById('content');
+const bookmarksPane = document.getElementById('subsList');
 
 // interconnect with your logic
 var msgNoData = '';
@@ -99,6 +102,7 @@ function transformOutputConnected(doc) {
 }
 
 function transformOutputConnectedMd(doc) {
+  // append bookmarks to chapters
   const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
   headings.forEach(heading => {
@@ -109,7 +113,7 @@ function transformOutputConnectedMd(doc) {
     const anchor = document.createElement('a');
     anchor.href = `#${heading.id}`;
     anchor.className = 'anchor-link';
-    anchor.textContent = ' #';
+    anchor.textContent = C_ANCHOR_CONTENT;
     
     heading.appendChild(anchor);
   });
@@ -143,10 +147,36 @@ async function getPathData(path, heading) {
   }
   transformOutputConnected(contentPane);
   
+  // additional steps for markdown
   if (path.toLowerCase().endsWith('.md')) {
     transformOutputConnectedMd(contentPane);
   }
   
+  // fill bookmarks panel
+  const bookmarksFound = Array.from(contentPane.querySelectorAll('a'));
+  
+  var treeString = '';
+  
+  bookmarksFound.forEach(a => {
+    if (!/^H[1-6]$/.test(a.parentElement.tagName)) return;
+    treeString += ' '.repeat(parseInt(a.parentElement.tagName.slice(1, 2), 10) - 1);
+    treeString += a.parentElement.innerText.slice(0, -C_ANCHOR_CONTENT.length);
+    treeString += '|||';
+    treeString += new URL(a.href).hash;
+    treeString += '\n';
+  });
+  
+  if (treeString.slice(0, 1) === ' ') {
+    treeString = mainTitle.innerText + '|||\n' + treeString;
+  }
+  
+  bookmarksPane.innerHTML = linesToHtmlTree(treeString);
+  
+  bookmarksPane.querySelectorAll('details').forEach(detail => {
+      detail.open = true;
+  });
+  
+  // alternative for empty content panel
   if (content === '') {
     contentPane.innerHTML = _T(LK_MSG_PATH_NOT_FOUND_IN_ARCH);
     if (dataPath === '') {

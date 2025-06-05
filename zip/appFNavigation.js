@@ -51,3 +51,8 @@ function scrollToAnchor(id) {
     targetO.scrollIntoView({ behavior: 'smooth' });
   }
 }
+
+function scrollToAnchorE(event, id) {
+  event.preventDefault();
+  scrollToAnchor(id);
+}

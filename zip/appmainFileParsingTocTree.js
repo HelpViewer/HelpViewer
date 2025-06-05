@@ -13,7 +13,15 @@ function linesToHtmlTree(linesP) {
     const picAdd = !image ? '' : `<img src="${image}" class='treepic'>`;
     if (path) {
       linksEmitted++;
-      return `<a href="" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="return loadPage(event, '${path}', '${name}', ${linksEmitted})" title="${note}">${picAdd}${name}</a>`;
+      var clickEvent = '';
+      
+      if (path.startsWith('#')) {
+        clickEvent = `return scrollToAnchorE(event, '${path.substring(1)}')`;
+      } else {
+        clickEvent = `return loadPage(event, '${path}', '${name}', ${linksEmitted})`;
+      }
+      
+      return `<a href="" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
     } else {
       return `<a title="${note}">${picAdd}${name}</a>`;
     }
