@@ -1,5 +1,8 @@
 # Changelog
 
+## 20250605
+- Panel with sub chapters list
+
 ## 20250604-2
 - TOC tree item now can have associated image
 - TOC tree plus and minus signs can be replaced by icons from helpfile
