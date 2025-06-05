@@ -141,6 +141,13 @@ async function getPathData(path, heading) {
     pagePath = path = FILENAME_1STTOPIC;
   }
   
+  const bookmarkTest = path.split("#");
+  
+  if (bookmarkTest.length > 1) {
+    path = bookmarkTest[0];
+    window.location.hash = bookmarkTest[1];
+  }
+  
   SetHeaderText(heading || path);
   const content = await searchArchiveForFile(path, archive);
   if (window.marked) {
