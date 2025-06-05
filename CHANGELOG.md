@@ -1,5 +1,13 @@
 # Changelog
 
+## 20250605-1
+- Panel with glossary (keyword index)
+- Application has version about its version and ability to recover GitHub release original path
+- Default helpfile name works with user selected language now (switching language in UI will switch help file to language version if default filename is used)
+- Bottom left action button panel background color unification
+- Bugfix : In small resolution left panel Close button didn't worked correctly
+- Bugfix : Bookmark path in topic tree has not been processed correctly - loading of document failed
+
 ## 20250605
 - Panel with sub chapters list
 

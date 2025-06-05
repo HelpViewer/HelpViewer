@@ -95,8 +95,9 @@ ul.tree details[open] > summary::before {
   content: url("${bookOpen}");
 }` 
         );
-         
       }
+      
+      ReadKeywordDatabase(archive);
     })();
   }
 });

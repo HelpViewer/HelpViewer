@@ -9,7 +9,7 @@ async function runApp() {
     'appLocalizationSwitcher.js',  
     'appFTree.js', 'appFNavigation.js', 'appFColorTheme.js', 
     'appLayoutHandlers.js', 'appTopicRenderLogic.js',
-    'appmainFileParsingTocTree.js', 'appmainNext.js'];
+    'appmainFileParsingTocTree.js', 'appmainNext.js', 'appFKeywordIndex.js'];
 
   for (const one of sequence) {
     const srcMarkedJs = await searchArchiveForFile(one, arcData);
