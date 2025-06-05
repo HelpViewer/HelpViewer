@@ -359,6 +359,7 @@ ul:has(li input[type="checkbox"]) {
 /*
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  background-color: var(--c-border);
 }
 
 .toolbar-down > * {
