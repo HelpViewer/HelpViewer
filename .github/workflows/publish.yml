@@ -132,6 +132,11 @@ jobs:
           git tag $TAG
           git push origin $TAG || true
           echo "::endgroup::"
+
+          echo "::group::Add tag to zip as version info"
+          echo "$TAG" >> _version.txt
+          zip ./package.zip _version.txt
+          echo "::endgroup::"
                     
       - name: Create release
         id: crelease
