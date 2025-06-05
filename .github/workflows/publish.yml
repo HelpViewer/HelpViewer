@@ -72,6 +72,15 @@ jobs:
           shopt -u nullglob
           echo "::endgroup::"
 
+          echo "::group::Get version"
+          __VERSION=$(awk '/^## /{print $2; exit}' CHANGELOG.md)
+          echo $__VERSION
+          echo "::endgroup::"
+
+          echo "::group::Add tag to zip as version info"
+          echo "$__VERSION" >> ./hvdata/data/_version.txt
+          echo "::endgroup::"
+
           echo "::group::Packaging"
           cd hvdata/data
           zip -r -9 ../data.zip .
@@ -131,11 +140,6 @@ jobs:
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           git tag $TAG
           git push origin $TAG || true
-          echo "::endgroup::"
-
-          echo "::group::Add tag to zip as version info"
-          echo "$TAG" >> _version.txt
-          zip ./package.zip _version.txt
           echo "::endgroup::"
                     
       - name: Create release
