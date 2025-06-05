@@ -6,14 +6,26 @@ const FILENAME_VERSIONFILE = '_version.txt';
 const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
 
-async function getCurrentBundleUri()
+async function getReleaseBundleUri(exactVer)
 {
-  var ver = (await searchArchiveForFile(FILENAME_VERSIONFILE, arcData)).trim();
+  var ver = exactVer || (await searchArchiveForFile(FILENAME_VERSIONFILE, arcData)).trim();
   return `https://github.com/HelpViewer/HelpViewer/releases/download/${ver}/package.zip`;
 }
-getCurrentBundleUri().then((x) => {
-  document.title = x;
-});
+
+async function getLatestReleaseBundleUri()
+{
+  var reply = await getReleaseBundleUri();
+  const separator = ' class="Link--primary Link">';
+  const response = await fetch("https://github.com/HelpViewer/HelpViewer/releases");
+  const txt = await response.text();
+  
+  var ver = txt.split(separator, 2)[1]; 
+  ver = ver.split('<', 2)[0];
+  reply = await getReleaseBundleUri(ver);
+  
+  return reply;
+}
+
 function nameForAnchor(text) {
   return text.toLowerCase()
     .trim()
