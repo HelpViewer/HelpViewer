@@ -39,10 +39,6 @@ h1 {
   flex-direction: column;
 }
 
-.hidden {
-  display: none;
-}
-
 .main {
   flex: 1;
   display: flex;
@@ -423,4 +419,8 @@ ul:has(li input[type="checkbox"]) {
 
 .treepic {
     padding-right: 0.3em;
+}
+
+.hidden {
+  display: none;
 }
