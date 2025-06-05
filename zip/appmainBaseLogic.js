@@ -6,17 +6,19 @@ const FILENAME_VERSIONFILE = '_version.txt';
 const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
 
+const releasesBaseAddr = 'https://github.com/HelpViewer/HelpViewer/releases';
+
 async function getReleaseBundleUri(exactVer)
 {
   var ver = exactVer || (await searchArchiveForFile(FILENAME_VERSIONFILE, arcData)).trim();
-  return `https://github.com/HelpViewer/HelpViewer/releases/download/${ver}/package.zip`;
+  return `${releasesBaseAddr}/download/${ver}/package.zip`;
 }
 
 async function getLatestReleaseBundleUri()
 {
   var reply = await getReleaseBundleUri();
   const separator = ' class="Link--primary Link">';
-  const response = await fetch("https://github.com/HelpViewer/HelpViewer/releases");
+  const response = await fetch(releasesBaseAddr);
   const txt = await response.text();
   
   var ver = txt.split(separator, 2)[1]; 
