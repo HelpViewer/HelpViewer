@@ -56,6 +56,8 @@ async function loadLocalization(localizationName)
 
   Object.assign(langStrs, _lstr);
   refreshTitlesForLangStrings(Object.keys(langStrs));
+  
+  FILENAME_DEFAULT_HELPFILE = `Help-${localizationName}.zip`;
 }
 
 function refreshTitlesForLangStrings(strings) {

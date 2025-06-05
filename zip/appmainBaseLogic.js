@@ -1,6 +1,6 @@
 const C_HIDDENC = 'hidden';
 const FILENAME_1STTOPIC = 'README.md';
-const FILENAME_DEFAULT_HELPFILE = 'Help.zip';
+var FILENAME_DEFAULT_HELPFILE = 'Help.zip';
 const FILENAME_VERSIONFILE = '_version.txt';
 
 const FILENAME_BOOKO = 'book-open.png';
