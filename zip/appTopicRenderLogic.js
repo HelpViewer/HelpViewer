@@ -146,6 +146,11 @@ async function getPathData(path, heading) {
   if (bookmarkTest.length > 1) {
     path = bookmarkTest[0];
     window.location.hash = bookmarkTest[1];
+    const url = new URL(window.location.href);
+    setSearchParams(url, path, null);
+    history.replaceState(null, '', url);
+    getPathData(path, heading);
+    return;
   }
   
   SetHeaderText(heading || path);

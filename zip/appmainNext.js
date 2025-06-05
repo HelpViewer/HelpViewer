@@ -120,6 +120,8 @@ function convertRelativePathToViewerURI(val) {
 function setSearchParams(url, path, i) {
   url.searchParams.set(PAR_NAME_PAGE, path);
   pagePath = path;
-  url.searchParams.set(PAR_NAME_ID, i);
+  if (i) {
+    url.searchParams.set(PAR_NAME_ID, i);
+  }
 }
 /*E: Topic renderer logic integration */
