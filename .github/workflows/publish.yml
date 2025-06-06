@@ -100,12 +100,35 @@ jobs:
             -exec cp {} . \;
           cp -rf ../hvdata .
           zip -r -9 ../package.zip .
+          echo "::endgroup::"
+
+          echo "::group::sw.js cache list update"
+          mapfile -t bundleFileList < <(zipinfo -1 ../package.zip) | grep -v '^sw\.js$')
+          alteredNames=()
+
+          for s in "${bundleFileList[@]}"; do
+            s="/${s#./}"
+            alteredNames+=("'$s'")
+          done
+          
+          newR="const CACHE_FILES = [ ${alteredNames[*]} ];"
+          sed -i "s|^const CACHE_FILES = \[.*\];|$newR|" ../sw.js
+          echo "::endgroup::"
+
+          echo "::group::sw.js new bundling"
+          zip -u ./package.zip ../sw.js
+          echo "::endgroup::"
+
+          echo "::group::Bundling finishing"
           cd ..
           if [ -f ./package.zip ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
+          echo "::endgroup::"
+
+          echo "::group::Update service worker cache files for all bundle files"
           echo "::endgroup::"
 
       - name: Create tag
