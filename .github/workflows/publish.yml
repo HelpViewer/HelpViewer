@@ -92,7 +92,7 @@ jobs:
           cd ..
           mkdir _distrib
           cd _distrib
-          cp ../HelpViewer.htm .
+          cp ../index.html .
           cp -rf ../hvdata .
           zip -r -9 ../package.zip .
           cd ..
