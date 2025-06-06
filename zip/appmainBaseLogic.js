@@ -2,30 +2,43 @@ const C_HIDDENC = 'hidden';
 const FILENAME_1STTOPIC = 'README.md';
 var FILENAME_DEFAULT_HELPFILE = 'Help.zip';
 const FILENAME_VERSIONFILE = '_version.txt';
+const FILENAME_PRJNAME = '_prjname.txt';
 
 const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
 
-const releasesBaseAddr = 'https://github.com/HelpViewer/HelpViewer/releases';
+const releasesBaseAddr = 'https://github.com/|/releases';
 
-async function getReleaseBundleUri(exactVer)
+async function prepareReleasesBaseAddr(arc)
 {
-  var ver = exactVer || (await searchArchiveForFile(FILENAME_VERSIONFILE, arcData)).trim();
-  return `${releasesBaseAddr}/download/${ver}/package.zip`;
+  const prjName = (await searchArchiveForFile(FILENAME_PRJNAME, arc)).trim();
+  return releasesBaseAddr.replace('|', prjName);
 }
 
-async function getLatestReleaseBundleUri()
+async function getReleaseBundleUri(arc, exactVer)
 {
-  var reply = await getReleaseBundleUri();
-  const separator = ' class="Link--primary Link">';
-  const response = await fetch(releasesBaseAddr);
-  const txt = await response.text();
-  
-  var ver = txt.split(separator, 2)[1]; 
-  ver = ver.split('<', 2)[0];
-  reply = await getReleaseBundleUri(ver);
-  
-  return reply;
+  arc = arc || arcData;
+  var ver = exactVer || (await searchArchiveForFile(FILENAME_VERSIONFILE, arc)).trim();
+  return `${await prepareReleasesBaseAddr(arc)}/download/${ver}/package.zip`;
+}
+
+async function getLatestReleaseBundleUri(arc)
+{
+  try {
+    arc = arc || arcData;
+    const uri0 = await prepareReleasesBaseAddr(arc);
+    var uri = uri0 + "/latest";
+    const response = await fetch(uri, { redirect: "follow" });
+    const txt = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(txt, "text/html");
+    const h1 = doc.querySelectorAll("h1");
+    const lastH1 = h1[h1.length - 1];
+    const ver = lastH1?.innerText ?? null;
+    return getReleaseBundleUri(arc, ver);
+  } catch (error) {
+    return getReleaseBundleUri(arc, null);    
+  }
 }
 
 function nameForAnchor(text) {
