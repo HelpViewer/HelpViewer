@@ -1,4 +1,4 @@
-FROM alpine AS srcBase
+FROM alpine AS srcbase
 RUN cp /bin/busybox /busybox
 RUN apk add --no-cache curl unzip
 ARG PACKAGE_TAG
@@ -7,7 +7,7 @@ RUN mkdir -p /www/hlp && \
     unzip /tmp/package.zip -d /www
 
 FROM scratch
-COPY --from=srcBase /busybox /busybox
-COPY --from=srcBase /www /www
+COPY --from=srcbase /busybox /busybox
+COPY --from=srcbase /www /www
 
 CMD ["/busybox", "httpd", "-f", "-h", "/www"]
