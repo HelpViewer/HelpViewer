@@ -208,6 +208,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Normalize repository owner
+        if: steps.pub.outputs.exists == 'true'
+        id: normalize
+        run: |
+          echo "owner_lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build and push Docker image
         if: steps.pub.outputs.exists == 'true'
         uses: docker/build-push-action@v5
@@ -215,7 +221,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ toLower(github.repository_owner) }}/helpviewer:latest
-            ghcr.io/${{ toLower(github.repository_owner) }}/helpviewer:${{ steps.newtag.outputs.version }}
+            ghcr.io/${{ steps.normalize.outputs.owner_lc }}/helpviewer:latest
+            ghcr.io/${{ steps.normalize.outputs.owner_lc }}/helpviewer:${{ steps.newtag.outputs.version }}
           build-args: |
             PACKAGE_TAG=${{ steps.newtag.outputs.version }}
