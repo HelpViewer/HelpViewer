@@ -111,7 +111,8 @@ jobs:
             alteredNames+=("'$s'")
           done
           
-          newR="const CACHE_FILES = [ ${alteredNames[*]} ];"
+          joined=$(IFS=, ; echo "${alteredNames[*]}")
+          newR="const CACHE_FILES = [ ${joined} ];"
           echo "Newly planned cache list: ${newR}"
           sed -i "2s|.*|$newR|" ./sw.js
           echo "::endgroup::"
