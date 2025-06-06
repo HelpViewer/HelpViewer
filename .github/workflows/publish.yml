@@ -103,7 +103,7 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::sw.js cache list update"
-          mapfile -t bundleFileList < <(zipinfo -1 ../package.zip | grep -v '^sw\.js$')
+          mapfile -t bundleFileList < <(zipinfo -1 ../package.zip | grep -v '^sw\.js$' | grep -v '/$')
           alteredNames=()
 
           for s in "${bundleFileList[@]}"; do
