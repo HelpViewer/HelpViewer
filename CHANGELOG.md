@@ -2,6 +2,7 @@
 
 ## 20250606-2
 - Dockerfile - Docker images build introduced
+- Default help file path is extended to hlp/Help-[localization].zip due to possible support of injection hlp (sub)directory to Docker/Podman container
 
 ## 20250606-1
 - Main start file renamed to index.html
