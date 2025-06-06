@@ -72,7 +72,14 @@ loadLocalization(activeLanguage).then(() => {
   if (dataPath) {
     (async () => {
       // load tree data
-      archive = await loadZipFromUrl(dataPath);
+      try {
+        archive = await loadZipFromUrl(dataPath);
+      } catch {
+        msgNoData = _T(LK_MSG_NODATA);
+        contentPane.innerHTML = msgNoData;
+        SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
+        return;
+      }
       const srcTreeData = await searchArchiveForFile(FILENAME_TREE, archive);
       tree.innerHTML = linesToHtmlTree(srcTreeData);
       fixImgRelativePathToZipPaths(tree);
