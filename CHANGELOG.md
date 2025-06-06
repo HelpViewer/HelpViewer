@@ -1,5 +1,8 @@
 # Changelog
 
+## 20250606-2
+- Dockerfile - Docker images build introduced
+
 ## 20250606-1
 - Main start file renamed to index.html
 - Favicon added
