@@ -112,7 +112,8 @@ jobs:
           done
           
           newR="const CACHE_FILES = [ ${alteredNames[*]} ];"
-          sed -i "s|^const CACHE_FILES = \[.*\];|$newR|" ../sw.js
+          echo "Newly planned cache list: ${newR}"
+          sed -i "2s|.*|$newR|" ../sw.js
           echo "::endgroup::"
 
           echo "::group::sw.js new bundling"
