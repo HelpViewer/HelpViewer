@@ -23,7 +23,7 @@ window.addEventListener('popstate', () => {
     dataPath = FILENAME_DEFAULT_HELPFILE;
   }
 
-  getPathData(pagePath, pagePath);
+  getPathData(pagePath, pathHeadingAlias.get(pagePath));
   updateNavButtons(idxTreeItem);
 });
 
@@ -39,7 +39,7 @@ contentPane.addEventListener('click', function(event) {
   history.pushState({}, '', href);
   
   LoadURLParameters();
-  getPathData(pagePath, pagePath);
+  getPathData(pagePath, pathHeadingAlias.get(pagePath));
 });
 
 var archive;
@@ -79,7 +79,9 @@ loadLocalization(activeLanguage).then(() => {
       revealTreeItem(N_P_TREEITEM + idxTreeItem);
       updateNavButtons(idxTreeItem);
     
-      getPathData(pagePath, pagePath);
+      await ReadKeywordDatabase(archive);
+      
+      getPathData(pagePath, pathHeadingAlias.get(pagePath));
       
       const bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, archive);
       const bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, archive);
@@ -97,7 +99,6 @@ ul.tree details[open] > summary::before {
         );
       }
       
-      ReadKeywordDatabase(archive);
     })();
   }
 });
