@@ -1,5 +1,10 @@
 # Changelog
 
+## 20250606
+- Language directories are named according its shortcodes now
+- Keywords database alias is used as fallback text for heading if document is not starting with h1 and it has been just reloaded (F5). If it has been activated by TOC tree, then tree item name is used in heading
+- Metadata introduced : Version and project name - for application data and help file
+
 ## 20250605-1
 - Panel with glossary (keyword index)
 - Application has version about its version and ability to recover GitHub release original path
