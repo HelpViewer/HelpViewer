@@ -4,9 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Help Viewer</title>
+  <link rel="manifest" href="manifest.webmanifest" />
   <script src="hvdata/jszip.min.js"></script>
   <script src="hvdata/appmain.js"></script>
   <link rel="icon" type="image/png" href="favicon.png" />
 </head>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .catch(e => console.error('SW registration failed:', e));
+  }
+</script>
 <body class="inStandard"></body>
 </html>

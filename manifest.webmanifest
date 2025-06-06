@@ -1,0 +1,15 @@
+{
+  "short_name": "HelpViewer",
+  "name": "Help Viewer Tool",
+  "start_url": "index.html",
+  "icons": [
+    {
+      "src": "faviconPWA.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "display": "standalone",
+  "theme_color": "silver",
+  "background_color": "#ffffff"
+}
