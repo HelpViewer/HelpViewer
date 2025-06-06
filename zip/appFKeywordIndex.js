@@ -54,7 +54,7 @@ function searchKeyword(id, target) {
   
   var holder = target.parentElement;
   holder.innerHTML = linesToHtmlTree(treeData);
-  holder.querySelectorAll("details").forEach(d => d.open = true);
+  openSubtree(holder);
 }
 
 function searchKeywordE(event, id) {

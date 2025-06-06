@@ -27,4 +27,8 @@ function revealTreeItem(id) {
     parent = parent.parentElement;
   }
 }
+
+function openSubtree(parent) {
+  parent.querySelectorAll("details").forEach(d => d.open = true);
+}
 /*E: Topic tree handling */

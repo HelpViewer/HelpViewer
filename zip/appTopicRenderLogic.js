@@ -184,10 +184,7 @@ async function getPathData(path, heading) {
   }
   
   bookmarksPane.innerHTML = linesToHtmlTree(treeString);
-  
-  bookmarksPane.querySelectorAll('details').forEach(detail => {
-      detail.open = true;
-  });
+  openSubtree(bookmarksPane);
   
   if (treeString.length == 0) {
     bookmarksPaneButton.classList.add(C_HIDDENC);
