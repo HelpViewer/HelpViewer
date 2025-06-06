@@ -116,7 +116,7 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::sw.js new bundling"
-          zip -u ./package.zip ../sw.js
+          zip -u ../package.zip ../sw.js
           echo "::endgroup::"
 
           echo "::group::Bundling finishing"
