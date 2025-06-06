@@ -1,5 +1,13 @@
 # Changelog
 
+## 20250606-1
+- Main start file renamed to index.html
+- Favicon added
+- Web App Manifest, favicon for manifest
+- Favicon can be customized from help file if named favicon.png
+- Release version handling update - attachment file name can be overwritten by function argument
+- Bugfix : If zip file does not exists, application will write correctly localization string MSG_NODATA
+
 ## 20250606
 - Language directories are named according its shortcodes now
 - Keywords database alias is used as fallback text for heading if document is not starting with h1 and it has been just reloaded (F5). If it has been activated by TOC tree, then tree item name is used in heading
