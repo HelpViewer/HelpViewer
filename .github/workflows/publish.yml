@@ -113,15 +113,16 @@ jobs:
           
           newR="const CACHE_FILES = [ ${alteredNames[*]} ];"
           echo "Newly planned cache list: ${newR}"
-          sed -i "2s|.*|$newR|" ../sw.js
+          sed -i "2s|.*|$newR|" ./sw.js
           echo "::endgroup::"
 
           echo "::group::sw.js new bundling"
-          cd ..
-          zip -f package.zip sw.js
+          zip -d ../package.zip sw.js
+          zip ../package.zip sw.js
           echo "::endgroup::"
 
           echo "::group::Bundling finishing"
+          cd ..
           if [ -f ./package.zip ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
