@@ -86,7 +86,14 @@ loadLocalization(activeLanguage).then(() => {
       revealTreeItem(N_P_TREEITEM + idxTreeItem);
       updateNavButtons(idxTreeItem);
     
+      // Load keywords
       await ReadKeywordDatabase(archive);
+      
+      // Load favicon
+      const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, archive);
+      
+      if (customFavicon)
+        changeFavicon(customFavicon);
       
       getPathData(pagePath, pathHeadingAlias.get(pagePath));
       

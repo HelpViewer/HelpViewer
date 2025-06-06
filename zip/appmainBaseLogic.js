@@ -6,6 +6,7 @@ const FILENAME_PRJNAME = '_prjname.txt';
 
 const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
+const FILENAME_FAVICON = 'favicon.png';
 
 const releasesBaseAddr = 'https://github.com/|/releases';
 
@@ -104,3 +105,15 @@ async function fixImgRelativePathToZipPaths(doc)
   });
 }
 /*E: Fixing local in archive paths to base64 dump*/
+
+function changeFavicon(src) {
+  var link = document.querySelector("link[rel~='icon']");
+  
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "icon";
+    document.head.appendChild(link);
+  }
+
+  link.href = src;
+}
