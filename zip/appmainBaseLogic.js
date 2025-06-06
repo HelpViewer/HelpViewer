@@ -15,14 +15,15 @@ async function prepareReleasesBaseAddr(arc)
   return releasesBaseAddr.replace('|', prjName);
 }
 
-async function getReleaseBundleUri(arc, exactVer)
+async function getReleaseBundleUri(arc, exactVer, fileName)
 {
   arc = arc || arcData;
+  fileName = fileName || 'package.zip';
   var ver = exactVer || (await searchArchiveForFile(FILENAME_VERSIONFILE, arc)).trim();
-  return `${await prepareReleasesBaseAddr(arc)}/download/${ver}/package.zip`;
+  return `${await prepareReleasesBaseAddr(arc)}/download/${ver}/${fileName}`;
 }
 
-async function getLatestReleaseBundleUri(arc)
+async function getLatestReleaseBundleUri(arc, fileName)
 {
   try {
     arc = arc || arcData;
@@ -35,9 +36,9 @@ async function getLatestReleaseBundleUri(arc)
     const h1 = doc.querySelectorAll("h1");
     const lastH1 = h1[h1.length - 1];
     const ver = lastH1?.innerText ?? null;
-    return getReleaseBundleUri(arc, ver);
+    return getReleaseBundleUri(arc, ver, fileName);
   } catch (error) {
-    return getReleaseBundleUri(arc, null);    
+    return getReleaseBundleUri(arc, null, fileName);
   }
 }
 
