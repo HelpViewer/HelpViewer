@@ -14,6 +14,7 @@ function linesToHtmlTree(linesP) {
     if (path) {
       linksEmitted++;
       var clickEvent = '';
+      var hrefVal = '';
       
       if (path.startsWith('@')) {
         clickEvent = `return searchKeywordE(event, '${path.substring(1)}')`;
@@ -21,10 +22,15 @@ function linesToHtmlTree(linesP) {
       if (path.startsWith('#')) {
         clickEvent = `return scrollToAnchorE(event, '${path.substring(1)}')`;
       } else {
-        clickEvent = `return loadPage(event, '${path}', '${name}', ${linksEmitted})`;
+        if (path.startsWith('http')) {
+          hrefVal = path;
+          clickEvent = '';
+        } else {
+          clickEvent = `return loadPage(event, '${path}', '${name}', ${linksEmitted})`;
+        }
       }
       
-      return `<a href="" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
+      return `<a href="${hrefVal}" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
     } else {
       return `<a title="${note}">${picAdd}${name}</a>`;
     }
