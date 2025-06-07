@@ -85,9 +85,17 @@ loadLocalization(activeLanguage).then(() => {
       fixImgRelativePathToZipPaths(tree);
       revealTreeItem(N_P_TREEITEM + idxTreeItem);
       updateNavButtons(idxTreeItem);
+      
+      if (!srcTreeData) {
+        hideButton('downP-TopicTree');
+        showSidebarTab('sp-subsections');
+      }
     
       // Load keywords
-      await ReadKeywordDatabase(archive);
+      var foundKeywords = await ReadKeywordDatabase(archive);
+      
+      if (!foundKeywords)
+        hideButton('downP-Glossary');
       
       // Load favicon
       const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, archive);

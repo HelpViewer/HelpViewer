@@ -39,3 +39,9 @@ function showSidebarTab(id) {
   tab.classList.remove(C_HIDDENC);
 }
 /*E: Feature: Sidebar tabs handling */
+
+function hideButton(btnid) {
+  const button = document.getElementById(btnid);
+  if (button)
+    button.classList.add(C_HIDDENC);
+}
