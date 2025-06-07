@@ -64,6 +64,9 @@ function transformOutput(htmlTxt) {
   //code listings lines numbering
   doc.querySelectorAll('pre code').forEach((block) => {
     const lines = block.innerText.split('\n');
+    if (lines[lines.length - 1].trim() === '') {
+      lines.pop();
+    }
     block.innerHTML = lines.map(line =>
       `<span>${line}</span>`).join('\n');
     block.parentElement.classList.add('code-numbers');
