@@ -12,8 +12,12 @@ var pathHeadingAlias;
 async function ReadKeywordDatabase(arch) {
   keywordFiles = new Map();
   pathHeadingAlias = new Map();
+  var archContent = (await searchArchiveForFile(FILENAME_KEYWORDS, arch));
   
-  keywordOriginal = (await searchArchiveForFile(FILENAME_KEYWORDS, arch)).replace(/\r\n/g, "\n").split("\n");
+  if (!archContent)
+    return false;
+  
+  keywordOriginal = archContent.replace(/\r\n/g, "\n").split("\n");
   keywordSorted = [...keywordOriginal];
   keywordSorted.sort((a, b) => a.localeCompare(b));
   
@@ -21,7 +25,12 @@ async function ReadKeywordDatabase(arch) {
     if (!keywordFiles.has(kw))
       keywordFiles.set(kw, new Set());
   }
-  const kwToFilesData = (await searchArchiveForFile(FILENAME_KWTOFILES, arch)).replace(/\r\n/g, "\n").split("\n");
+  
+  archContent = (await searchArchiveForFile(FILENAME_KWTOFILES, arch));
+  const kwToFilesData = archContent.replace(/\r\n/g, "\n").split("\n");
+
+  if (!archContent)
+    return false;
 
   for (const kwf of kwToFilesData) {
     const parts = kwf.split("|", 3);
@@ -41,6 +50,7 @@ async function ReadKeywordDatabase(arch) {
     .join('\n');
 
   keywordsPane.innerHTML = linesToHtmlTree(treeData);
+  return true;
 }
 
 function searchKeyword(id, target) {
