@@ -100,6 +100,16 @@ function transformOutputConnected(doc) {
       mermaid.init();
     });
   }
+  
+  //script blocks refresh
+  const scripts = doc.querySelectorAll("script");
+  var idx = -1;
+
+  scripts.forEach((oldScript) => {
+    alert("found!");
+    idx++;
+    appendJavaScript(`scr-${idx}`, oldScript.textContent, oldScript.parentElement)
+  });
 }
 
 function transformOutputConnectedMd(doc) {
@@ -154,10 +164,16 @@ async function getPathData(path, heading) {
   }
   
   SetHeaderText(heading || path);
-  const content = await searchArchiveForFile(path, archive);
-  if (window.marked) {
-    contentPane.innerHTML = transformOutput(marked.parse(content));
+  var content = await searchArchiveForFile(path, archive);
+  
+  if (path.toLowerCase().endsWith('.md')) {
+    if (window.marked) {
+      content = marked.parse(content);
+    }
   }
+  
+  contentPane.innerHTML = transformOutput(content);
+  
   transformOutputConnected(contentPane);
   
   // additional steps for markdown
