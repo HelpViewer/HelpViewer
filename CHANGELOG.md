@@ -1,5 +1,15 @@
 # Changelog
 
+## 20250607
+- Renderer : only md files are sent to marked, searching for (only) embedded javascripts and recreating them to activate it
+- Bugfix : Loading the keyword database failed when no keyword database data was populated
+- Sidebar visibility setting state is stored in local storage
+- UI : When no TOC list or keywords list is defined, viewer will hide corresponding buttons
+- TOC tree is able to accept external link and process it correctly
+- Renderer : Removed automatic last line on code listings
+- UI : Change color button icon changed
+- Bugfix : Dependency list : updated for bundling license files
+
 ## 20250606-2
 - Dockerfile - Docker images build introduced
 - Default help file path is extended to hlp/Help-[localization].zip due to possible support of injection hlp (sub)directory to Docker/Podman container
