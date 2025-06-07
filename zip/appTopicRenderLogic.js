@@ -106,7 +106,6 @@ function transformOutputConnected(doc) {
   var idx = -1;
 
   scripts.forEach((oldScript) => {
-    alert("found!");
     idx++;
     appendJavaScript(`scr-${idx}`, oldScript.textContent, oldScript.parentElement)
   });
