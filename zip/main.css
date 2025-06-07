@@ -399,6 +399,8 @@ ul:has(li input[type="checkbox"]) {
   --c-border: black;
   --c-anchorHover: white;
   --c-contentPaneColor: black;
+  --c-line0: transparent;
+  --c-line1: transparent;
 }
 
 .inBWDuoColor a {
