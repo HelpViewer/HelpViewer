@@ -133,9 +133,6 @@ jobs:
           fi
           echo "::endgroup::"
 
-          echo "::group::Update service worker cache files for all bundle files"
-          echo "::endgroup::"
-
       - name: Create tag
         id: newtag
         if: steps.pub.outputs.exists == 'true'
@@ -211,7 +208,8 @@ jobs:
           echo "::endgroup::"
           
           echo "::group::Bundling user guide help file"
-          zip -d ./package.zip "hlp/*"
+          ls -l ./package.zip
+          tree
           zip -r ./package.zip hlp
           echo "::endgroup::"
 
