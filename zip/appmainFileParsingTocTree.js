@@ -21,6 +21,24 @@ function linesToHtmlTree(linesP) {
       } else
       if (path.startsWith('#')) {
         clickEvent = `return scrollToAnchorE(event, '${path.substring(1)}')`;
+      } else
+      if (path === '=latestApp') {
+          hrefVal = '';
+          clickEvent = '';
+          const nameO = `${N_P_TREEITEM}${linksEmitted}`;
+          getLatestReleaseBundleUri().then(hrefVal => {
+            const targetO = document.getElementById(nameO);
+            targetO.href = hrefVal;
+          });
+      } else
+      if (path === '=latestHelp') {
+          hrefVal = '';
+          clickEvent = '';
+          const nameO = `${N_P_TREEITEM}${linksEmitted}`;
+          getLatestReleaseBundleUri(archive, `Help-${activeLanguage}.zip`).then(hrefVal => {
+            const targetO = document.getElementById(nameO);
+            targetO.href = hrefVal;
+          });
       } else {
         if (path.startsWith('http')) {
           hrefVal = path;
