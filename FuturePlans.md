@@ -13,3 +13,6 @@
 - Event bus instead of interconnections
 - RSS generator
 - sitemap.xml
+- User help
+- Author help
+- Editor for creating files
