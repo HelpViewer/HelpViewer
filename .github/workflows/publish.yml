@@ -206,8 +206,6 @@ jobs:
           echo "::endgroup::"
           
           echo "::group::Bundling user guide help file"
-          ls -l ./package.zip
-          tree
           zip -r ./package.zip hlp
           echo "::endgroup::"
 
