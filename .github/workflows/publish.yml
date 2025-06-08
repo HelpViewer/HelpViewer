@@ -188,8 +188,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          release_name="${{ steps.newtag.outputs.version }}"
-          api_url="https://api.github.com/repos/HelpViewer/helpUser/releases/tags/$release_name"
+          #release_name="${{ steps.newtag.outputs.version }}"
+          #api_url="https://api.github.com/repos/HelpViewer/helpUser/releases/tags/$release_name"
+          api_url="https://api.github.com/repos/HelpViewer/helpUser/releases/latest"
           release=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$api_url")
           
           mkdir -p hlp
