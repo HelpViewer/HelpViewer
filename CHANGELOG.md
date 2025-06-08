@@ -1,5 +1,12 @@
 # Changelog
 
+## 20250608
+- Help file for user - "Quick guide" - HelpViewer/helpUser will be newly added to deployment package
+- Bugfix : empty line in keywords to files list made stopping error
+- TOC tree : introduced constants in URI of items: =latestApp => latest application version, =latestHelp => latest help project version (both version can be even higher if GitHub repository still exists and produces new releases)
+- index.html : Added meta information properties - open graph, description, application-name
+- Bugfix : CSS : BW color scheme : code listing had white background
+
 ## 20250607
 - Renderer : only md files are sent to marked, searching for (only) embedded javascripts and recreating them to activate it
 - Bugfix : Loading the keyword database failed when no keyword database data was populated
