@@ -36,7 +36,7 @@ async function ReadKeywordDatabase(arch) {
     const parts = kwf.split("|", 3);
     const doc = parts[0]?.trim() || "";
     const alias = parts[1]?.trim() || "";
-    const kwds = parts[2]?.trim().split(";");
+    const kwds = parts[2]?.trim().split(";") || [];
     pathHeadingAlias.set(doc, alias);
     
     for (const kwi of kwds) {
