@@ -186,6 +186,35 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets._TOKEN }}
 
+      - name: Download all zip assets from HelpViewer/helpUser and add it to bundle
+        if: steps.pub.outputs.exists == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          release_name="${{ steps.newtag.outputs.version }}"
+          api_url="https://api.github.com/repos/HelpViewer/helpUser/releases"
+          releases=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$api_url")
+
+          mkdir -p hlp
+
+          echo "::group::Getting user guide help files"
+          echo "$releases" | jq -c '.[]' | while read release; do
+            echo "$release" | jq -c '.assets[] | select(.name | endswith(".zip"))' | while read asset; do
+              name=$(echo "$asset" | jq -r '.name')
+              url=$(echo "$asset" | jq -r '.url')
+              echo "Downloading $name..."
+              curl -L -H "Accept: application/octet-stream" \
+                   -H "Authorization: token $GITHUB_TOKEN" \
+                   "$url" -o "hlp/$name"
+            done
+          done
+          echo "::endgroup::"
+          
+          echo "::group::Bundling user guide help file"
+          zip -d ./package.zip "hlp/*"
+          zip -r ./package.zip hlp
+          echo "::endgroup::"
+
       - name: Upload asset
         if: steps.pub.outputs.exists == 'true'
         uses: actions/upload-release-asset@v1
