@@ -187,6 +187,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets._TOKEN }}
 
       - name: Download all zip assets from HelpViewer/helpUser and add it to bundle
+        if: steps.pub.outputs.exists == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
