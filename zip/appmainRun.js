@@ -6,7 +6,7 @@ async function runApp() {
   appendCSS('mainCSS', srcMainCSS);
   
   const sequence = ['marked.min.js', 'appmainBaseLogic.js',
-    'appLocalizationSwitcher.js',  
+    'appLocalizationSwitcher.js',  'appmainHelpFileConfigFile.js',
     'appFTree.js', 'appFNavigation.js', 'appFColorTheme.js', 
     'appLayoutHandlers.js', 'appTopicRenderLogic.js',
     'appmainFileParsingTocTree.js', 'appFKeywordIndex.js', 'appmainNext.js'];

@@ -105,18 +105,39 @@ loadLocalization(activeLanguage).then(() => {
       
       getPathData(pagePath, pathHeadingAlias.get(pagePath));
       
-      const bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, archive);
-      const bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, archive);
+      var bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, archive);
+      var bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, archive);
+      var doOverride = null;
       
       if (bookOpen && bookClosed) {
+        var bookOpen = `url("${bookOpen}")`;
+        var bookClosed = `url("${bookClosed}")`;
+        doOverride = 1;
+      } else {
+        var bookOpen = configGetValue(CFG_KEY_OverrideBookIconOpened);
+        var bookClosed = configGetValue(CFG_KEY_OverrideBookIconClosed);
+        
+        if (bookOpen && bookClosed) {
+          const icon = document.createElement('span');
+          icon.innerHTML = bookOpen;
+          bookOpen = icon.innerHTML;
+          icon.innerHTML = bookClosed;
+          bookClosed = icon.innerHTML;
+          var bookOpen = `"${bookOpen}"`;
+          var bookClosed = `"${bookClosed}"`;
+          doOverride = 1;
+        }
+      }
+      
+      if (doOverride) {
         appendCSS('overridePlusMinus',
 `ul.tree details > summary::before {
-  content: url("${bookClosed}");
+  content: ${bookClosed};
 }
 
 ul.tree details[open] > summary::before {
   transform: rotate(0deg);
-  content: url("${bookOpen}");
+  content: ${bookOpen};
 }` 
         );
       }
