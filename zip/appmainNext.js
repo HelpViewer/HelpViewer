@@ -71,7 +71,7 @@ loadLocalization(activeLanguage).then(() => {
   
   if (dataPath) {
     (async () => {
-      // load tree data
+      // load zip file
       try {
         archive = await loadZipFromUrl(dataPath);
       } catch {
@@ -80,6 +80,29 @@ loadLocalization(activeLanguage).then(() => {
         SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
         return;
       }
+      
+      // load config file
+      FILE_CONFIG = (await searchArchiveForFile(FILENAME_CONFIG, archive));
+      
+      if (!FILE_CONFIG) {
+        FILE_CONFIG = null;
+      } else {
+        FILE_CONFIG = parseConfigFile(FILE_CONFIG);
+        
+        var val = configGetValue(CFG_KEY_OverrideSidebarVisible);
+        
+        if (sidebar) {
+          if (val != sidebarVisible) 
+            toggleSidebar();
+        }
+
+        val = configGetValue(CFG_KEY_OverrideColorTheme);
+        
+        if (val) 
+          setColorMode(val);
+      }
+      
+      // load tree data
       const srcTreeData = await searchArchiveForFile(FILENAME_TREE, archive);
       tree.innerHTML = linesToHtmlTree(srcTreeData);
       fixImgRelativePathToZipPaths(tree);
