@@ -26,6 +26,7 @@ function setSearchParams(url, path, i) {
 
 function SetHeaderText(txt) {
    mainTitle.innerHTML = txt;
+   document.title = txt.replace(/<[^>]+>/g, '');
 }
 
 function transformOutput(htmlTxt) {
