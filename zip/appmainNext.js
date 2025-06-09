@@ -1,4 +1,3 @@
-const PAR_NAME_DOC = 'd'; // Help file path
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
 const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';

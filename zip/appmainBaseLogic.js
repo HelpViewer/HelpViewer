@@ -1,6 +1,5 @@
 const C_HIDDENC = 'hidden';
 const FILENAME_1STTOPIC = 'README.md';
-var FILENAME_DEFAULT_HELPFILE = 'hlp/Help.zip';
 const FILENAME_CONFIG = '_config.txt';
 const FILENAME_VERSIONFILE = '_version.txt';
 const FILENAME_PRJNAME = '_prjname.txt';
