@@ -5,8 +5,8 @@ const CFG_KEY_OverrideBookIconClosed = 'OverrideBookIcon-closed';
 
 var FILE_CONFIG_DEFAULT = parseConfigFile(
 `
-${CFG_KEY_OverrideSidebarVisible}|1
-${CFG_KEY_OverrideColorTheme}|inStandard
+#${CFG_KEY_OverrideSidebarVisible}|1
+#${CFG_KEY_OverrideColorTheme}|inStandard
 #${CFG_KEY_OverrideBookIconOpened}|&#128214;
 #${CFG_KEY_OverrideBookIconClosed}|&#128216;
 `
