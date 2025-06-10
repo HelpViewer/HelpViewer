@@ -5,7 +5,7 @@ const LK_MSG_NODATA = 'MSG_NODATA';
 
 function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
-  dataPath = urlParams.get(PAR_NAME_DOC);
+  dataPath = urlParams.get(PAR_NAME_DOC)?.replace('|', activeLanguage);
   pagePath = urlParams.get(PAR_NAME_PAGE) || FILENAME_1STTOPIC;
   idxTreeItem = parseInt(urlParams.get(PAR_NAME_ID)) || 0;
 }
