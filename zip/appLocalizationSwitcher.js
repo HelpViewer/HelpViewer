@@ -52,9 +52,11 @@ async function loadLocalization(localizationName)
     langStrs[key] = () => val;
   }
   
-  langKeysDyn = Object.keys(_lstr);
-
-  Object.assign(langStrs, _lstr);
+  if (typeof _lstr !== "undefined") {
+    langKeysDyn = Object.keys(_lstr);
+    Object.assign(langStrs, _lstr);
+  }
+  
   refreshTitlesForLangStrings(Object.keys(langStrs));
   
   FILENAME_DEFAULT_HELPFILE = `hlp/Help-${localizationName}.zip`;
