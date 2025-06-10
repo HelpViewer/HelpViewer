@@ -1,6 +1,6 @@
 const FILENAME_LAYOUT = 'layout.htm';
 const FILENAME_MAINCSS = 'main.css';
-var FILENAME_DEFAULT_HELPFILE = 'hlp/Help.zip';
+var FILENAME_DEFAULT_HELPFILE = 'hlp/Help-.zip';
 
 async function initLayout(arcData) {
   const srcLayout = await searchArchiveForFile(FILENAME_LAYOUT, arcData);
