@@ -114,10 +114,16 @@ loadLocalization(activeLanguage).then(() => {
       }
     
       // Load keywords
-      var foundKeywords = await ReadKeywordDatabase(archive);
+      var foundKeywords = await readKeywordDatabase(archive, PANE_KEYWORDS_ID);
       
-      if (!foundKeywords)
+      if (foundKeywords) {
+        const pane = document.getElementById(PANE_KEYWORDS_ID);
+        
+        if (pane)
+          pane.innerHTML = linesToHtmlTree(foundKeywords);
+      } else {
         hideButton('downP-Glossary');
+      }
       
       // Load favicon
       const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, archive);

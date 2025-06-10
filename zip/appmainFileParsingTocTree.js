@@ -17,7 +17,8 @@ function linesToHtmlTree(linesP) {
       var hrefVal = '';
       
       if (path.startsWith('@')) {
-        clickEvent = `return searchKeywordE(event, '${path.substring(1)}')`;
+        path = path.substring(1).split(":");
+        clickEvent = `return searchKeywordE(event, '${path[0]}', '${path[1]}')`;
       } else
       if (path.startsWith('#')) {
         clickEvent = `return scrollToAnchorE(event, '${path.substring(1)}')`;

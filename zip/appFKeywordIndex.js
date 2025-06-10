@@ -2,14 +2,14 @@
 const FILENAME_KEYWORDS = 'keywords.lst';
 const FILENAME_KWTOFILES = 'files-keywords.lst';
 
-const keywordsPane = document.getElementById('keywordList');
+const PANE_KEYWORDS_ID = 'keywordList';
 
 var keywordOriginal;
 var keywordSorted;
 var keywordFiles;
 var pathHeadingAlias;
 
-async function ReadKeywordDatabase(arch) {
+async function readKeywordDatabase(arch, paneId = PANE_KEYWORDS_ID) {
   keywordFiles = new Map();
   pathHeadingAlias = new Map();
   var archContent = (await searchArchiveForFile(FILENAME_KEYWORDS, arch));
@@ -30,7 +30,7 @@ async function ReadKeywordDatabase(arch) {
   const kwToFilesData = archContent.replace(/\r\n/g, "\n").split("\n");
 
   if (!archContent)
-    return false;
+    return null;
 
   for (const kwf of kwToFilesData) {
     const parts = kwf.split("|", 3);
@@ -46,15 +46,14 @@ async function ReadKeywordDatabase(arch) {
   }
   
   const treeData = keywordSorted
-    .map((item, i) => `${item}|||@${item}`)
+    .map((item, i) => `${item}|||@${item}:${paneId}`)
     .join('\n');
 
-  keywordsPane.innerHTML = linesToHtmlTree(treeData);
-  return true;
+  return treeData;
 }
 
 function searchKeyword(id, target) {
-  const files = keywordFiles.get(id);
+  const files = keywordFiles.get(id) || new Set();
   
   var treeData = `${id}|||\n`;
   for (const item of files) {
@@ -62,14 +61,14 @@ function searchKeyword(id, target) {
     treeData += ` ${targetkwName}|||${item}\n`
   }
   
-  var holder = target.parentElement;
+  var holder = target;
   holder.innerHTML = linesToHtmlTree(treeData);
   openSubtree(holder);
 }
 
 function searchKeywordE(event, id) {
   event.preventDefault();
-  searchKeyword(id, event.currentTarget);
+  searchKeyword(id, event.currentTarget.parentElement);
 }
 
 /*E: Feature: Keyword index handling */
