@@ -44,7 +44,6 @@ async function readKeywordDatabase(arch, paneId = PANE_KEYWORDS_ID) {
   }
   
   keywordSorted = new Array();
-  keywordsToDismantle = new Array();
     
   for (const kw of keywordOriginal) {
     const parts = kw.split(';');
