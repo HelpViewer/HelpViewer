@@ -43,24 +43,24 @@ async function readKeywordDatabase(arch, paneId = PANE_KEYWORDS_ID) {
     }
   }
   
-  keywordSorted = new Array();
+  keywordSorted = [];
     
   for (const kw of keywordOriginal) {
     const parts = kw.split(';');
-    const base = parts[0];
-    for (const kwM of parts) {
-      keywordSorted.push(kwM);
-    }
-    
-    if (parts.length > 1) {
-      const docs = keywordFiles.get(kw);
-      delete(keywordFiles[kw]);
-      for (const kwM of parts) {
-        keywordFiles.set(kwM, docs);
-      }
+    const docs = keywordFiles.get(kw) || [];
+    keywordFiles.delete(kw);
+  
+    for (const part of parts) {
+      keywordSorted.push(part);
+  
+      const existingDocs = keywordFiles.get(part) || [];
+      const mergedDocs = Array.from(new Set([...existingDocs, ...docs]));
+  
+      keywordFiles.set(part, mergedDocs);
     }
   }
   
+  keywordSorted = [...new Set(keywordSorted)];
   keywordSorted.sort((a, b) => a.localeCompare(b));
   
   const treeData = keywordSorted
