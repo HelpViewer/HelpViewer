@@ -18,8 +18,6 @@ async function readKeywordDatabase(arch, paneId = PANE_KEYWORDS_ID) {
     return false;
   
   keywordOriginal = archContent.replace(/\r\n/g, "\n").split("\n");
-  keywordSorted = [...keywordOriginal];
-  keywordSorted.sort((a, b) => a.localeCompare(b));
   
   for (const kw of keywordOriginal) {
     if (!keywordFiles.has(kw))
@@ -45,6 +43,27 @@ async function readKeywordDatabase(arch, paneId = PANE_KEYWORDS_ID) {
     }
   }
   
+  keywordSorted = new Array();
+  keywordsToDismantle = new Array();
+    
+  for (const kw of keywordOriginal) {
+    const parts = kw.split(';');
+    const base = parts[0];
+    for (const kwM of parts) {
+      keywordSorted.push(kwM);
+    }
+    
+    if (parts.length > 1) {
+      const docs = keywordFiles.get(kw);
+      delete(keywordFiles[kw]);
+      for (const kwM of parts) {
+        keywordFiles.set(kwM, docs);
+      }
+    }
+  }
+  
+  keywordSorted.sort((a, b) => a.localeCompare(b));
+  
   const treeData = keywordSorted
     .map((item, i) => `${item}|||@${item}:${paneId}`)
     .join('\n');
@@ -61,9 +80,8 @@ function searchKeyword(id, target) {
     treeData += ` ${targetkwName}|||${item}\n`
   }
   
-  var holder = target;
-  holder.innerHTML = linesToHtmlTree(treeData);
-  openSubtree(holder);
+  target.innerHTML = linesToHtmlTree(treeData);
+  openSubtree(target);
 }
 
 function searchKeywordE(event, id) {
