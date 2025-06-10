@@ -14,6 +14,13 @@ ${CFG_KEY_OverrideColorTheme}|inStandard
 
 var FILE_CONFIG;
 
+(async () => {
+  var readConfig = (await searchArchiveForFile(FILENAME_CONFIG, arcData));
+  
+  if (readConfig)
+    FILE_CONFIG_DEFAULT = parseConfigFile(readConfig);
+})();
+
 function configGetValue(key) {
   return FILE_CONFIG?.[key] ?? FILE_CONFIG_DEFAULT[key];
 }
