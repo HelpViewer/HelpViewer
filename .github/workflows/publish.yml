@@ -79,7 +79,8 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::Add tag to zip as version info"
-          echo "$__VERSION" >> ./hvdata/data/_version.txt
+          echo "_version|$__VERSION" >> ./hvdata/data/_config.txt
+          echo "_prjname|HelpViewer/HelpViewer" >> ./hvdata/data/_config.txt
           echo "::endgroup::"
 
           echo "::group::Packaging"
