@@ -88,14 +88,14 @@ loadLocalization(activeLanguage).then(() => {
       } else {
         FILE_CONFIG = parseConfigFile(FILE_CONFIG);
         
-        var val = configGetValue(CFG_KEY_OverrideSidebarVisible);
+        var val = configGetValue(CFG_KEY_OverrideSidebarVisible, sidebarVisible);
         
         if (sidebar) {
           if (val != sidebarVisible) 
             toggleSidebar();
         }
 
-        val = configGetValue(CFG_KEY_OverrideColorTheme);
+        val = configGetValue(CFG_KEY_OverrideColorTheme, colorTheme);
         
         if (val) 
           setColorMode(val);
