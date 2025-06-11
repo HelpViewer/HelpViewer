@@ -1,6 +1,11 @@
 const C_HIDDENC = 'hidden';
 const FILENAME_1STTOPIC = 'README.md';
 const FILENAME_CONFIG = '_config.txt';
+
+const CFG_KEY__VERSION = '_version';
+const CFG_KEY__PRJNAME = '_prjname';
+const CFG_KEY__LANG = '_lang';
+
 const FILENAME_VERSIONFILE = '_version.txt';
 const FILENAME_PRJNAME = '_prjname.txt';
 

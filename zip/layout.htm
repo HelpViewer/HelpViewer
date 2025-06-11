@@ -12,6 +12,10 @@
 <ul class="tree" id="keywordList">
 </ul>
       </div>
+      <div class="sidebar-page hidden" id="sp-fulltext">
+<ul class="tree" id="fulltextList">
+</ul>
+      </div>
       <div class="sidebar-page hidden" id="sp-languages">
 <ul class="tree" id="langList">
 </ul>
@@ -20,8 +24,8 @@
         <button class="pnl-btn" onclick="showSidebarTab('sp1')" id="downP-TopicTree">&#x1F4D6;</button>
         <button class="pnl-btn" onclick="showSidebarTab('sp-subsections')" id="downP-ChapterAnchor">&#x1F516;</button>
         <button class="pnl-btn" onclick="showSidebarTab('sp-keywords')" id="downP-Glossary">&#x1F4C7;</button>
-        <!--<button class="pnl-btn" onclick="alert()">&#x1F50E;</button>
-        <button class="pnl-btn hidden" onclick="alert()">&#x1F4DD;</button>  -->
+        <button class="pnl-btn" onclick="showSidebarTab('sp-fulltext')" id="downP-Fulltext">&#x1F50E;</button>
+        <!--<button class="pnl-btn" onclick="alert()">&#x1F4DD;</button>-->
         <button class="pnl-btn" onclick="return loadPage(event, 'README.md', 'README.md', 0)" id="downP-Home">&#x1F3E1;</button>
         <button class="pnl-btn" onclick="showSidebarTab('sp-languages')" id="downP-ChangeLanguage" style="filter: grayscale(100%); font-size: 0.9em;">&#x1F310;</button>
         <button class="pnl-btn" onclick="switchColorMode()" id="downP-SwitchColorMode">&#127912;</button>
