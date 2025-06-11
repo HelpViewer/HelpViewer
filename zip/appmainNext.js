@@ -114,15 +114,26 @@ loadLocalization(activeLanguage).then(() => {
       }
     
       // Load keywords
-      var foundKeywords = await readKeywordDatabase(archive, PANE_KEYWORDS_ID);
-      
-      if (foundKeywords) {
+      const KEYWORDS = (await searchArchiveForFile(FILENAME_KEYWORDS, archive));
+
+      if (KEYWORDS) {
+        const KWTOFILES = (await searchArchiveForFile(FILENAME_KWTOFILES, archive));
+        const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
+        keywordLists.set(KLIST_NAME, klist);
+        var foundKeywords = await klist.readKeywordDatabase();
         const pane = document.getElementById(PANE_KEYWORDS_ID);
         
         if (pane)
           pane.innerHTML = linesToHtmlTree(foundKeywords);
       } else {
         hideButton('downP-Glossary');
+      }
+      
+      const FTSKEYWORDS = (await searchArchiveForFile(FILENAME_FTS_KEYWORDS, archive));
+      
+      if (FTSKEYWORDS) {
+      } else {
+        hideButton('downP-Fulltext');
       }
       
       // Load favicon
