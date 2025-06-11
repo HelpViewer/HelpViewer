@@ -22,7 +22,7 @@ window.addEventListener('popstate', () => {
     dataPath = FILENAME_DEFAULT_HELPFILE;
   }
 
-  getPathData(pagePath, pathHeadingAlias.get(pagePath));
+  getPathData(pagePath, pathHeadingAlias?.get(pagePath));
   updateNavButtons(idxTreeItem);
 });
 
@@ -38,7 +38,7 @@ contentPane.addEventListener('click', function(event) {
   history.pushState({}, '', href);
   
   LoadURLParameters();
-  getPathData(pagePath, pathHeadingAlias.get(pagePath));
+  getPathData(pagePath, pathHeadingAlias?.get(pagePath));
 });
 
 var archive;
@@ -142,7 +142,7 @@ loadLocalization(activeLanguage).then(() => {
       if (customFavicon)
         changeFavicon(customFavicon);
       
-      getPathData(pagePath, pathHeadingAlias.get(pagePath));
+      getPathData(pagePath, pathHeadingAlias?.get(pagePath));
       
       var bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, archive);
       var bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, archive);
