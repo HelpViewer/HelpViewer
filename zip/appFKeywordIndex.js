@@ -1,7 +1,8 @@
 /*S: Feature: Keyword index handling */
 // User defined word dictionary
+const FILENAME_FILES = 'files.lst';
 const FILENAME_KEYWORDS = 'keywords.lst';
-const FILENAME_KWTOFILES = 'files-keywords.lst';
+const FILENAME_KWTOFILES = 'keywords-files.lst';
 
 const PANE_KEYWORDS_ID = 'keywordList';
 
@@ -10,24 +11,36 @@ const KLIST_NAME = 'kwds';
 // Fulltext search index
 
 const FILENAME_FTS_KEYWORDS = 'fts-keywords.lst';
-const FILENAME_FTS_KWTOFILES = 'fts-files-keywords.lst';
+const FILENAME_FTS_KWTOFILES = 'fts-keywords-files.lst';
 
 const PANE_FTS_KEYWORDS_ID = 'fulltextList';
 const KLIST_FTS_NAME = 'fts';
 
 const keywordLists = new Map();
 
-var pathHeadingAlias;
+var pathHeadingAlias = new Map();
+var idxPath = [];
+
+async function getDocumentHeadingTable(data) {
+  const transformed = data.replace(/\r\n/g, "\n").split("\n");
+  
+  pathHeadingAlias = new Map();
+  idxPath = [];
+  
+  for (const kw of transformed) {
+    const [path, title] = kw.split("|");
+    idxPath.push(path || '');
+    pathHeadingAlias.set(path, title || path || '');
+  }
+}
 
 function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   var keywordOriginal;
   var keywordSorted;
   var keywordFiles;
-
+  var keywordToIndex;
+  
   async function readKeywordDatabase() {
-    keywordFiles = new Map();
-    if (!pathHeadingAlias)
-      pathHeadingAlias = new Map();
     var archContent = keywordData;
     
     if (!archContent)
@@ -35,10 +48,12 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     
     keywordOriginal = archContent.replace(/\r\n/g, "\n").split("\n");
     
-    for (const kw of keywordOriginal) {
-      if (!keywordFiles.has(kw))
-        keywordFiles.set(kw, new Set());
-    }
+    keywordToIndex = new Map();
+    keywordOriginal.forEach((line, index) => {
+      if (line.trim()) {
+        keywordToIndex.set(line, index);
+      }
+    });
     
     archContent = keywordToFilesData;
     const kwToFilesData = archContent.replace(/\r\n/g, "\n").split("\n");
@@ -46,38 +61,37 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     if (!archContent)
       return null;
   
-    for (const kwf of kwToFilesData) {
-      const parts = kwf.split("|", 3);
-      const doc = parts[0]?.trim() || "";
-      const alias = parts[1]?.trim() || "";
-      const kwds = parts[2]?.trim().split(";") || [];
-      if (!pathHeadingAlias.get(doc))
-        pathHeadingAlias.set(doc, alias);
-      
-      for (const kwi of kwds) {
-        const keyw = keywordOriginal[kwi];
-        keywordFiles.get(keyw).add(doc);
-      }
-    }
+    keywordFiles = kwToFilesData.map(kwf => kwf.split(";"));
     
-    keywordSorted = [];
-      
-    for (const kw of keywordOriginal) {
+    keywordsDivided = new Map();
+    
+    for (var i = 0; i < keywordOriginal.length; i++) {
+      const kw = keywordOriginal[i];
       const parts = kw.split(';');
-      const docs = keywordFiles.get(kw) || [];
-      keywordFiles.delete(kw);
-    
-      for (const part of parts) {
-        keywordSorted.push(part);
-    
-        const existingDocs = keywordFiles.get(part) || [];
-        const mergedDocs = Array.from(new Set([...existingDocs, ...docs]));
-    
-        keywordFiles.set(part, mergedDocs);
+      
+      if (parts.length > 1) {
+        const kwToDivide = keywordToIndex.get(kw);
+        keywordToIndex.delete(kw);
+        for (const part of parts) {
+          if (!keywordsDivided.has(part))
+            keywordsDivided.set(part, []);
+          keywordsDivided.get(part).push(i);
+        }
       }
     }
     
-    keywordSorted = [...new Set(keywordSorted)];
+    for (const [key, value] of keywordsDivided) {
+      if (value.length == 1) {
+        keywordToIndex.set(key, value[0]);
+      } else {
+        const joined = value.flatMap(kwf => keywordFiles[kwf]);
+        keywordFiles.push(joined);
+        keywordToIndex.set(key, keywordFiles.length - 1);
+      }
+    }
+    alert([...new Set(keywordsDivided.keys())]);
+    
+    keywordSorted = [...new Set(keywordToIndex.keys())];
     keywordSorted.sort((a, b) => a.localeCompare(b));
     
     const treeData = keywordSorted
@@ -88,12 +102,12 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   }
   
   function searchKeyword(id, target) {
-    const files = keywordFiles.get(id) || new Set();
+    const files = keywordFiles[keywordToIndex.get(id)] || [];
     
     var treeData = `${id}|||\n`;
     for (const item of files) {
-      var targetkwName = pathHeadingAlias.get(item) || item;
-      treeData += ` ${targetkwName}|||${item}\n`
+      var targetkwName = pathHeadingAlias.get(idxPath[item]) || idxPath[item];
+      treeData += ` ${targetkwName}|||${idxPath[item]}\n`
     }
     
     target.innerHTML = linesToHtmlTree(treeData);

@@ -112,6 +112,9 @@ loadLocalization(activeLanguage).then(() => {
         hideButton('downP-TopicTree');
         showSidebarTab('sp-subsections');
       }
+      
+      const docList = (await searchArchiveForFile(FILENAME_FILES, archive));
+      getDocumentHeadingTable(docList);
     
       // Load keywords
       const KEYWORDS = (await searchArchiveForFile(FILENAME_KEYWORDS, archive));
