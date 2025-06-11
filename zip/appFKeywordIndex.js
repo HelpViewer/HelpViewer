@@ -89,7 +89,6 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
         keywordToIndex.set(key, keywordFiles.length - 1);
       }
     }
-    alert([...new Set(keywordsDivided.keys())]);
     
     keywordSorted = [...new Set(keywordToIndex.keys())];
     keywordSorted.sort((a, b) => a.localeCompare(b));
