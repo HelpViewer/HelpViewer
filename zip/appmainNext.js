@@ -3,6 +3,10 @@ const PAR_NAME_PAGE = 'p'; // chapter page path
 const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
 const LK_MSG_NODATA = 'MSG_NODATA';
 
+const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
+const listingCount = parseInt(localStorage.getItem(KEY_LS_KWLISTINGCOUNT)) || 100;
+alert(listingCount);
+
 function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
   dataPath = urlParams.get(PAR_NAME_DOC)?.replace('__', activeLanguage);
@@ -124,7 +128,7 @@ loadLocalization(activeLanguage).then(() => {
         const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_NAME, klist);
         await klist.readKeywordDatabase();
-        var foundKeywords = klist.getTreeData();
+        var foundKeywords = klist.getTreeData(null, listingCount);
         const pane = document.getElementById(PANE_KEYWORDS_ID);
         
         if (pane)
@@ -140,7 +144,7 @@ loadLocalization(activeLanguage).then(() => {
         const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_FTS_NAME, klist);
         await klist.readKeywordDatabase();
-        var foundKeywords = klist.getTreeData();
+        var foundKeywords = klist.getTreeData(null, listingCount);
         const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
         
         if (pane)
@@ -227,7 +231,7 @@ function handleEnterOnField(event) {
   if (event.key === 'Enter') {
     event.preventDefault();
     var id = event.target.id.replace('-i', '');
-    var foundKeywords = keywordLists.get(id).getTreeData(event.target.value);
+    var foundKeywords = keywordLists.get(id).getTreeData(event.target.value, listingCount);
     const pane = document.getElementById(id);
     
     if (pane)
