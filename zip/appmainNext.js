@@ -135,6 +135,14 @@ loadLocalization(activeLanguage).then(() => {
       const FTSKEYWORDS = (await searchArchiveForFile(FILENAME_FTS_KEYWORDS, archive));
       
       if (FTSKEYWORDS) {
+        const KWTOFILES = (await searchArchiveForFile(FILENAME_FTS_KWTOFILES, archive));
+        const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
+        keywordLists.set(KLIST_FTS_NAME, klist);
+        var foundKeywords = await klist.readKeywordDatabase();
+        const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
+        
+        if (pane)
+          pane.innerHTML = linesToHtmlTree(foundKeywords);
       } else {
         hideButton('downP-Fulltext');
       }
