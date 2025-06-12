@@ -5,7 +5,6 @@ const LK_MSG_NODATA = 'MSG_NODATA';
 
 const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
 const listingCount = parseInt(localStorage.getItem(KEY_LS_KWLISTINGCOUNT)) || 100;
-alert(listingCount);
 
 function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
