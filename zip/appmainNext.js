@@ -4,7 +4,7 @@ const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
 const LK_MSG_NODATA = 'MSG_NODATA';
 
 const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
-const listingCount = parseInt(localStorage.getItem(KEY_LS_KWLISTINGCOUNT)) || 100;
+const listingCount = parseInt(localStorage.getItem(KEY_LS_KWLISTINGCOUNT)) || 50;
 
 function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
