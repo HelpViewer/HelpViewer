@@ -1,5 +1,19 @@
 # Changelog
 
+## 20250612
+- Full-text index support introduced
+- Searching in user defined keywords list
+- UI : Changes to improve WCAG/accessibility standards compliance - ariaLabels added from localization strings
+- Metadata variables are stored other way - since now there is consolidated config file inside ZIP/help file
+- Improved support of language switching (markup in data path)
+- Help files can overwrite user localstorage settings if needed
+- Keyword index database internal format changed
+- TOC tree icons can be loaded from : png image, configuration entity code, default arrow
+- Page title is took from opened document heading
+- fallback message about javascript turned off
+- fallback message about CORS instructions added (Chrome, Edge)
+- Pipeline updated
+
 ## 20250608
 - Help file for user - "Quick guide" - HelpViewer/helpUser will be newly added to deployment package
 - Bugfix : empty line in keywords to files list made stopping error
