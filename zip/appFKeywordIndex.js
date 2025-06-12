@@ -94,7 +94,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     keywordSorted.sort((a, b) => a.localeCompare(b));
   }
   
-  function getTreeData(phrase) {
+  function getTreeData(phrase, cap = 100) {
     var treeData = [];
     
     if (!phrase) {
@@ -102,6 +102,9 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     } else {
       treeData = keywordSorted.filter(word => word.includes(phrase));
     }
+    
+    if (typeof cap === 'number' && !isNaN(cap) && cap > 0)
+      treeData = treeData.slice(0, cap);
     
     treeData = treeData
       .map((item, i) => `${item}|||@${item}:${id}`)
