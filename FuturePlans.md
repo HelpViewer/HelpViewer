@@ -17,3 +17,4 @@
 - Improve reading of markdowns - filter out YAML, TOML, JSON headings (currently not touching them) - getting information partially from them
 - Allow synonyms in keywords: chair -> chair;armchair;throne -> one row will be divided into 3 words with the same mapping
 - Converting TEX file from archive to md format (investigation if possible, base support only?)
+- Improve WCAG and other standards
