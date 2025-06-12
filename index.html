@@ -29,20 +29,16 @@
 <p> ⚠ Do you see this message only? Then viewer is not reading help file content.<br>This may be caused by your browser blocking local file access (file://) due to CORS policy restrictions. </p>
 <p>You need to run your browser in mode with bypass CORS policy:</p>
 <ul>
-<li><p>Firefox:</p>
-<blockquote>
-<p>Address bar: 
-about:config</p>
-<p>search:
-privacy.file_unique_origin</p>
-<p>set to:
-false</p>
-</blockquote>
-</li>
 <li><p>Chrome:</p>
 <blockquote>
 <p>Run in CLI:
 chrome.exe --disable-site-isolation-trials --disable-web-security --user-data-dir="C:\temp"</p>
+</blockquote>
+</li>
+<li><p>Edge:</p>
+<blockquote>
+<p>Run in CLI:
+msedge --disable-web-security --user-data-dir="C:\temp"</p>
 </blockquote>
 </li>
 </ul>
