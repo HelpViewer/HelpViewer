@@ -67,14 +67,21 @@ function refreshTitlesForLangStrings(strings) {
   if (!strings) return;
   
   strings.forEach(key => {
+    const val = langStrs[key]();
     var foundO = document.getElementById(key);
     
     if (foundO) {
-      const val = langStrs[key]();
       foundO.title = val;
       foundO.ariaLabel = val;
-      if (foundO && foundO.tagName === 'INPUT') {
-        foundO.placeholder = val;
+    } else {
+      const splits = key.split('__');
+      
+      if (splits.length > 1) {
+        foundO = document.getElementById(splits[0]);
+        
+        if (foundO) {
+          foundO[splits[1]] = val;
+        }
       }
     }
   });
