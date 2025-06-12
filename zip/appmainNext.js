@@ -226,11 +226,20 @@ function setSearchParams(url, path, i) {
 }
 /*E: Topic renderer logic integration */
 
+const FTSINPUT = 'fulltextList-i';
+
 function handleEnterOnField(event) {
   if (event.key === 'Enter') {
     event.preventDefault();
     var id = event.target.id.replace('-i', '');
-    var foundKeywords = keywordLists.get(id).getTreeData(event.target.value, listingCount);
+    
+    var phrase = event.target.value;
+
+    if (event.target.id === FTSINPUT) {
+      phrase = phrase.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    
+    var foundKeywords = keywordLists.get(id).getTreeData(phrase, listingCount);
     const pane = document.getElementById(id);
     
     if (pane)
@@ -246,5 +255,5 @@ function handleEnterOnField(event) {
 var input_kw = document.getElementById('keywordList-i');
 input_kw.addEventListener('keydown', handleEnterOnField);
 
-var input_kw = document.getElementById('fulltextList-i');
+var input_kw = document.getElementById(FTSINPUT);
 input_kw.addEventListener('keydown', handleEnterOnField);
