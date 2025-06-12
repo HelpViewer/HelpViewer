@@ -1,5 +1,5 @@
   <div class="container">
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar" role="navigation">
       <div class="sidebar-page" id="sp1">
 <ul class="tree" id="tree">
 </ul>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="main" id="main">
-      <div class="header">
+      <div class="header" role="banner">
         <h1 id="mtitle">&nbsp;</h1>
         <div id="toolbar">
         <button class="hidden pnl-btn" id="showBtn" onclick="toggleSidebar()">&#x2630;</button>
@@ -45,7 +45,7 @@
         <button class="hidden pnl-btn" id="nav-right" onclick="navNext(event);">&#x27A1;</button>
         </div>
       </div>
-      <div class="content" id="content">
+      <div class="content" id="content" role="main" aria-live="polite">
       </div>
     </div>
   </div>

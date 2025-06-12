@@ -219,6 +219,7 @@ async function getPathData(path, heading) {
     }
   }
   
+  contentPane.focus();
   refreshTitlesForLangStrings(null);
   
   const id = window.location.hash.substring(1);

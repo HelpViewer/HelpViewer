@@ -72,6 +72,7 @@ function refreshTitlesForLangStrings(strings) {
     if (foundO) {
       const val = langStrs[key]();
       foundO.title = val;
+      foundO.ariaLabel = val;
     }
   });
 }
