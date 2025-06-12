@@ -6,7 +6,7 @@ const FILENAME_KWTOFILES = 'keywords-files.lst';
 
 const PANE_KEYWORDS_ID = 'keywordList';
 
-const KLIST_NAME = 'kwds';
+const KLIST_NAME = 'keywordList';
 
 // Fulltext search index
 
@@ -14,7 +14,7 @@ const FILENAME_FTS_KEYWORDS = 'fts-keywords.lst';
 const FILENAME_FTS_KWTOFILES = 'fts-keywords-files.lst';
 
 const PANE_FTS_KEYWORDS_ID = 'fulltextList';
-const KLIST_FTS_NAME = 'fts';
+const KLIST_FTS_NAME = 'fulltextList';
 
 const keywordLists = new Map();
 
@@ -92,11 +92,21 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     
     keywordSorted = [...new Set(keywordToIndex.keys())];
     keywordSorted.sort((a, b) => a.localeCompare(b));
+  }
+  
+  function getTreeData(phrase) {
+    var treeData = [];
     
-    const treeData = keywordSorted
+    if (!phrase) {
+      treeData = keywordSorted
+    } else {
+      treeData = keywordSorted.filter(word => word.includes(phrase));
+    }
+    
+    treeData = treeData
       .map((item, i) => `${item}|||@${item}:${id}`)
       .join('\n');
-  
+    
     return treeData;
   }
   
@@ -115,7 +125,8 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   
   return {
     readKeywordDatabase,
-    searchKeyword
+    searchKeyword,
+    getTreeData
   }
 }
 

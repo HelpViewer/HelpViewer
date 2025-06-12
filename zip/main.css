@@ -426,3 +426,8 @@ ul:has(li input[type="checkbox"]) {
 .treepic {
     padding-right: 0.3em;
 }
+
+.sidebar input {
+  width: 100%;
+  box-sizing: border-box;
+}

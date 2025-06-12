@@ -123,7 +123,8 @@ loadLocalization(activeLanguage).then(() => {
         const KWTOFILES = (await searchArchiveForFile(FILENAME_KWTOFILES, archive));
         const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_NAME, klist);
-        var foundKeywords = await klist.readKeywordDatabase();
+        await klist.readKeywordDatabase();
+        var foundKeywords = klist.getTreeData();
         const pane = document.getElementById(PANE_KEYWORDS_ID);
         
         if (pane)
@@ -138,11 +139,12 @@ loadLocalization(activeLanguage).then(() => {
         const KWTOFILES = (await searchArchiveForFile(FILENAME_FTS_KWTOFILES, archive));
         const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_FTS_NAME, klist);
-        var foundKeywords = await klist.readKeywordDatabase();
-        const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
+        await klist.readKeywordDatabase();
+        //var foundKeywords = klist.getTreeData();
+        //const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
         
-        if (pane)
-          pane.innerHTML = linesToHtmlTree(foundKeywords);
+        //if (pane)
+        //  pane.innerHTML = linesToHtmlTree(foundKeywords);
       } else {
         hideButton('downP-Fulltext');
       }
@@ -220,3 +222,26 @@ function setSearchParams(url, path, i) {
   }
 }
 /*E: Topic renderer logic integration */
+
+function handleEnterOnField(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    var id = event.target.id.replace('-i', '');
+    var foundKeywords = keywordLists.get(id).getTreeData(event.target.value);
+    const pane = document.getElementById(id);
+    
+    if (pane)
+      pane.innerHTML = linesToHtmlTree(foundKeywords);
+  }
+  
+  if (event.key.substring(0, 3) === 'Esc') {
+    event.target.value = "";
+    event.target.blur(); 
+  }
+}
+
+var input_kw = document.getElementById('keywordList-i');
+input_kw.addEventListener('keydown', handleEnterOnField);
+
+var input_kw = document.getElementById('fulltextList-i');
+input_kw.addEventListener('keydown', handleEnterOnField);

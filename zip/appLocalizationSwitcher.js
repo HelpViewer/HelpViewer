@@ -73,6 +73,9 @@ function refreshTitlesForLangStrings(strings) {
       const val = langStrs[key]();
       foundO.title = val;
       foundO.ariaLabel = val;
+      if (foundO && foundO.tagName === 'INPUT') {
+        foundO.placeholder = val;
+      }
     }
   });
 }
