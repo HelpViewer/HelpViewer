@@ -102,10 +102,10 @@ loadLocalization(activeLanguage).then(() => {
             toggleSidebar();
         }
 
-        val = configGetValue(CFG_KEY_OverrideColorTheme, colorTheme);
+        val = configGetValue(CFG_KEY_OverrideColorTheme, ColorTheme.getCurrentColorMode());
         
         if (val) 
-          setColorMode(val);
+          ColorTheme.setColorMode(val);
       }
       
       // load tree data
