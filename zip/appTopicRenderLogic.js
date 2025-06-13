@@ -53,6 +53,7 @@ function transformOutput(htmlTxt) {
           && !/^https?:\/\//.test(val) 
           && !val.startsWith("mailto:") 
           && !val.startsWith("tel:") 
+          && !val.startsWith("?") 
           && !val.startsWith("#")) {
           
           const newVal = convertRelativePathToViewerURI(val);

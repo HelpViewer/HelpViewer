@@ -35,7 +35,11 @@ contentPane.addEventListener('click', function(event) {
 
   const href = link.getAttribute('href');
 
-  if (href.startsWith('http') || href.startsWith('//')) return;
+  if (
+    href.startsWith('http') || 
+    href.startsWith('//') || 
+    (href.startsWith(`?${PAR_NAME_DOC}=`) && !href.startsWith(`?${PAR_NAME_DOC}=${dataPath}`) )
+  ) return;
 
   event.preventDefault();
   history.pushState({}, '', href);

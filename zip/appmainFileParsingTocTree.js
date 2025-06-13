@@ -41,7 +41,7 @@ function linesToHtmlTree(linesP) {
             targetO.href = hrefVal;
           });
       } else {
-        if (path.startsWith('http')) {
+        if (path.startsWith('http') || path.startsWith('?')) {
           hrefVal = path;
           clickEvent = '';
         } else {
