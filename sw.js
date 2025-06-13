@@ -30,3 +30,13 @@ self.addEventListener('fetch', (event) => {
       .then((response) => response || fetch(event.request))
   );
 });
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.action === 'clearCache') {
+    caches.keys().then(keyList => {
+      return Promise.all(
+        keyList.map(name => caches.delete(name))
+      );
+    });
+  }
+});
