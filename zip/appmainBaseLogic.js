@@ -6,47 +6,9 @@ const CFG_KEY__VERSION = '_version';
 const CFG_KEY__PRJNAME = '_prjname';
 const CFG_KEY__LANG = '_lang';
 
-const FILENAME_VERSIONFILE = '_version.txt';
-const FILENAME_PRJNAME = '_prjname.txt';
-
 const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
 const FILENAME_FAVICON = 'favicon.png';
-
-const releasesBaseAddr = 'https://github.com/|/releases';
-
-async function prepareReleasesBaseAddr(arc)
-{
-  const prjName = (await searchArchiveForFile(FILENAME_PRJNAME, arc)).trim();
-  return releasesBaseAddr.replace('|', prjName);
-}
-
-async function getReleaseBundleUri(arc, exactVer, fileName)
-{
-  arc = arc || arcData;
-  fileName = fileName || 'package.zip';
-  var ver = exactVer || (await searchArchiveForFile(FILENAME_VERSIONFILE, arc)).trim();
-  return `${await prepareReleasesBaseAddr(arc)}/download/${ver}/${fileName}`;
-}
-
-async function getLatestReleaseBundleUri(arc, fileName)
-{
-  try {
-    arc = arc || arcData;
-    const uri0 = await prepareReleasesBaseAddr(arc);
-    var uri = uri0 + "/latest";
-    const response = await fetch(uri, { redirect: "follow" });
-    const txt = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(txt, "text/html");
-    const h1 = doc.querySelectorAll("h1");
-    const lastH1 = h1[h1.length - 1];
-    const ver = lastH1?.innerText ?? null;
-    return getReleaseBundleUri(arc, ver, fileName);
-  } catch (error) {
-    return getReleaseBundleUri(arc, null, fileName);
-  }
-}
 
 function nameForAnchor(text) {
   return text.toLowerCase()

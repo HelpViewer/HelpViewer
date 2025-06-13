@@ -36,7 +36,7 @@ function linesToHtmlTree(linesP) {
           hrefVal = '';
           clickEvent = '';
           const nameO = `${N_P_TREEITEM}${linksEmitted}`;
-          getLatestReleaseBundleUri(archive, `Help-${activeLanguage}.zip`).then(hrefVal => {
+          getLatestReleaseBundleUri(FILE_CONFIG, `Help-${activeLanguage}.zip`).then(hrefVal => {
             const targetO = document.getElementById(nameO);
             targetO.href = hrefVal;
           });

@@ -16,7 +16,7 @@ async function runApp() {
   initLayout(arcData);
   
   const sequence = ['appmainNext0.js', 'marked.min.js', 'appmainBaseLogic.js',
-    'appLocalizationSwitcher.js',  'appmainHelpFileConfigFile.js',
+    'appLocalizationSwitcher.js',  'appmainHelpFileConfigFile.js', 'appGHIntegration.js', 
     'appFTree.js', 'appFNavigation.js', 'appFColorTheme.js', 
     'appLayoutHandlers.js', 'appTopicRenderLogic.js',
     'appmainFileParsingTocTree.js', 'appFKeywordIndex.js', 'appmainNext.js'];

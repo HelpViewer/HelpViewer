@@ -21,8 +21,8 @@ var FILE_CONFIG;
     FILE_CONFIG_DEFAULT = parseConfigFile(readConfig);
 })();
 
-function configGetValue(key, backup) {
-  return FILE_CONFIG?.[key] ?? backup ?? FILE_CONFIG_DEFAULT[key];
+function configGetValue(key, backup, CFG = FILE_CONFIG) {
+  return CFG?.[key] ?? backup ?? FILE_CONFIG_DEFAULT[key];
 }
 
 function parseConfigFile(data) {
