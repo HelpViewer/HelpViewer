@@ -14,7 +14,10 @@ function LoadURLParameters() {
 }
 
 LoadURLParameters();
-updateNavButtons(idxTreeItem);
+const treeItemHandler = () => idxTreeItem;
+var navPanel = newNavigation('nav', treeItemHandler, N_P_TREEITEM);
+window.nav = navPanel;
+navPanel.updateNavButtons(idxTreeItem);
 
 const tree = document.getElementById('tree');
 
@@ -26,7 +29,7 @@ window.addEventListener('popstate', () => {
   }
 
   getPathData(pagePath, pathHeadingAlias?.get(pagePath));
-  updateNavButtons(idxTreeItem);
+  navPanel.updateNavButtons(idxTreeItem);
 });
 
 contentPane.addEventListener('click', function(event) {
@@ -113,7 +116,7 @@ loadLocalization(activeLanguage).then(() => {
       tree.innerHTML = linesToHtmlTree(srcTreeData);
       fixImgRelativePathToZipPaths(tree);
       revealTreeItem(N_P_TREEITEM + idxTreeItem);
-      updateNavButtons(idxTreeItem);
+      navPanel.updateNavButtons(idxTreeItem);
       
       if (!srcTreeData) {
         hideButton('downP-TopicTree');

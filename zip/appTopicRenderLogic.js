@@ -144,7 +144,7 @@ async function loadPage(event, path, heading, i) {
   history.pushState(null, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
 
   await getPathData(path, heading);
-  updateNavButtons(i);
+  navPanel.updateNavButtons(i);
 
   return false;
 }
