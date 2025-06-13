@@ -5,8 +5,6 @@ const PAR_NAME_ID = 'id';
 
 function linesToHtmlTree(linesP) {
   const lines = linesP.split("\n");
-  const current = window.location.pathname + window.location.search + window.location.hash;
-  const url = new URL(current, document.baseURI);
   var linksEmitted = -1;
 
   function makeLink(name, note, path, image) {

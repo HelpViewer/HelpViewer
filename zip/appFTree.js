@@ -21,9 +21,9 @@ function revealTreeItem(id) {
 
   var parent = el.parentElement;
   while (parent) {
-    if (parent.tagName === 'DETAILS') {
+    if (parent.tagName === 'DETAILS')
       parent.open = true;
-    }
+    
     parent = parent.parentElement;
   }
 }
