@@ -140,6 +140,7 @@ loadLocalization(activeLanguage).then(() => {
         hideButton('downP-Glossary');
       }
       
+      // fulltext keywords
       const FTSKEYWORDS = (await searchArchiveForFile(FILENAME_FTS_KEYWORDS, archive));
       
       if (FTSKEYWORDS) {

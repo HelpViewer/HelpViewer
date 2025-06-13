@@ -70,7 +70,6 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
       const parts = kw.split(';');
       
       if (parts.length > 1) {
-        const kwToDivide = keywordToIndex.get(kw);
         keywordToIndex.delete(kw);
         for (const part of parts) {
           if (!keywordsDivided.has(part))
