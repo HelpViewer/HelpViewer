@@ -1,5 +1,9 @@
 # Changelog
 
+## 20250613
+- Bugfix and Refactor in appmainBaseLogic - appGHIntegration independent, configuration data loading changed to current CI pipeline state
+- Support for links to other helpfiles
+
 ## 20250612
 - Full-text index support introduced
 - Searching in user defined keywords list
