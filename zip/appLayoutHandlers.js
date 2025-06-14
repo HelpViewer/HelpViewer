@@ -1,11 +1,19 @@
 /*S: Feature: Sidebar hide/show (sidebar switching) */
+const C_TORIGHT = 'toright';
+
 const KEY_LS_SIDEBARVISIBLE = "sidebarVisible";
 const sidebarVisible = localStorage.getItem(KEY_LS_SIDEBARVISIBLE) || 1;
 
+const KEY_LS_SIDEBARSIDE = "sidebarSide";
+const sidebarSide = localStorage.getItem(KEY_LS_SIDEBARSIDE) || 1;
+
 const sidebar = document.getElementById('sidebar');
 const showBtn = document.getElementById('showBtn');
+const container = document.getElementById('container');
 
 if (sidebarVisible == 0 && sidebar) toggleSidebar();
+
+if (sidebarSide == 0 && container) toggleSidebarSide();
 
 function toggleSidebar() {
   if (sidebar.classList.contains(C_HIDDENC)) {
@@ -16,6 +24,16 @@ function toggleSidebar() {
     sidebar.classList.add(C_HIDDENC);
     showBtn.classList.remove(C_HIDDENC);
     localStorage.setItem(KEY_LS_SIDEBARVISIBLE, 0);
+  }
+}
+
+function toggleSidebarSide() {
+  if (container.classList.contains(C_TORIGHT)) {
+    container.classList.remove(C_TORIGHT);
+    localStorage.setItem(KEY_LS_SIDEBARSIDE, 1);
+  } else {
+    container.classList.add(C_TORIGHT);
+    localStorage.setItem(KEY_LS_SIDEBARSIDE, 0);
   }
 }
 /*E: Feature: Sidebar hide/show (sidebar switching) */

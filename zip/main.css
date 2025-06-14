@@ -432,3 +432,7 @@ ul:has(li input[type="checkbox"]) {
   box-sizing: border-box;
   font-size: 1.15em;
 }
+
+.toright {
+  flex-direction: row-reverse;
+}

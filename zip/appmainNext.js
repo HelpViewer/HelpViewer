@@ -24,6 +24,7 @@ const handlers = {
   'downP-Home': (event) => { loadPage(event, 'README.md', 'README.md', 0) },
   'downP-ToggleFS': (event) => { switchFullScreen() },
   'downP-Hide': (event) => { toggleSidebar() },
+  'downP-ToggleSide': (event) => { toggleSidebarSide() },
 
   'showBtn': (event) => { toggleSidebar() },
   'printBtn': (event) => { window.print() },
