@@ -435,3 +435,8 @@ ul:has(li input[type="checkbox"]) {
 .toright {
   flex-direction: row-reverse;
 }
+
+.toright .sidebar {
+  border-right: unset;
+  border-left: 1px solid var(--c-border);
+}
