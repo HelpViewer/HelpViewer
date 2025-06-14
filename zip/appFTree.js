@@ -2,7 +2,7 @@
 var idxTreeItem = 0;
 
 function loadPageByTreeId(id) {
-  const treeItem = document.getElementById(N_P_TREEITEM + id);
+  const treeItem = document.getElementById(`${N_P_TREEITEM}|${id}`);
   if (treeItem) {
     const syntheticClick = new MouseEvent("click", {
       bubbles: true,
@@ -12,7 +12,7 @@ function loadPageByTreeId(id) {
     treeItem.dispatchEvent(syntheticClick);
     idxTreeItem = id;
   }
-  revealTreeItem(N_P_TREEITEM + id);
+  revealTreeItem(`${N_P_TREEITEM}|${id}`);
 }
 
 function revealTreeItem(id) {

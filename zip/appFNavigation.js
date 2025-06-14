@@ -17,14 +17,14 @@ function newNavigation(baseName, idxTreeItem, treeBaseName = N_P_TREEITEM) {
   
   function navTop(event) {
     event.preventDefault();
-    const treeItem = document.getElementById(treeBaseName + idxT());
+    const treeItem = document.getElementById(treeBaseName + '|' + idxT());
     const upId = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(treeBaseName.length));
     loadPageByTreeId(upId);
   }
   
   function updateNavButtons(i) {
-    const prevTreeItem = document.getElementById(treeBaseName + (i - 1));
-    const nextTreeItem = document.getElementById(treeBaseName + (i + 1));
+    const prevTreeItem = document.getElementById(treeBaseName + '|' + (i - 1));
+    const nextTreeItem = document.getElementById(treeBaseName + '|' + (i + 1));
 
     if (prevTreeItem)
       navL.classList.remove(C_HIDDENC);
@@ -53,9 +53,4 @@ function newNavigation(baseName, idxTreeItem, treeBaseName = N_P_TREEITEM) {
 
 function scrollToAnchor(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-}
-
-function scrollToAnchorE(event, id) {
-  event.preventDefault();
-  scrollToAnchor(id);
 }

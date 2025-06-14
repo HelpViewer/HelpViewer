@@ -11,43 +11,33 @@ function linesToHtmlTree(linesP) {
     const picAdd = !image ? '' : `<img src="${image}" class='treepic'>`;
     if (path) {
       linksEmitted++;
-      var clickEvent = '';
+      var clickEvent = path;
       var hrefVal = '';
       
-      if (path.startsWith('@')) {
-        path = path.substring(1).split(":");
-        clickEvent = `return searchKeywordE(event, '${path[0]}', '${path[1]}')`;
-      } else
-      if (path.startsWith('#')) {
-        clickEvent = `return scrollToAnchorE(event, '${path.substring(1)}')`;
-      } else
       if (path === '=latestApp') {
-          hrefVal = '';
           clickEvent = '';
-          const nameO = `${N_P_TREEITEM}${linksEmitted}`;
+          const nameO = `${N_P_TREEITEM}|${linksEmitted}`;
           getLatestReleaseBundleUri().then(hrefVal => {
             const targetO = document.getElementById(nameO);
             targetO.href = hrefVal;
           });
       } else
       if (path === '=latestHelp') {
-          hrefVal = '';
           clickEvent = '';
-          const nameO = `${N_P_TREEITEM}${linksEmitted}`;
+          const nameO = `${N_P_TREEITEM}|${linksEmitted}`;
           getLatestReleaseBundleUri(FILE_CONFIG, `Help-${activeLanguage}.zip`).then(hrefVal => {
             const targetO = document.getElementById(nameO);
             targetO.href = hrefVal;
           });
+      } else 
+      if (path.startsWith('http') || path.startsWith('?')) {
+        hrefVal = path;
+        clickEvent = '';
       } else {
-        if (path.startsWith('http') || path.startsWith('?')) {
-          hrefVal = path;
-          clickEvent = '';
-        } else {
-          clickEvent = `return loadPage(event, '${path}', '${name}', ${linksEmitted})`;
-        }
+        clickEvent = `${path};${name}`;
       }
-      
-      return `<a href="${hrefVal}" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
+    
+      return `<a href="${hrefVal}" ${PAR_NAME_ID}="${N_P_TREEITEM}|${linksEmitted}" data-param="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
     } else {
       return `<a title="${note}">${picAdd}${name}</a>`;
     }

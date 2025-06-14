@@ -132,8 +132,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   }
 }
 
-function searchKeywordE(event, id, klist) {
-  event.preventDefault();
-  keywordLists.get(klist)?.searchKeyword(id, event.currentTarget.parentElement);
+function searchKeywordE(parentO, id, klist) {
+  keywordLists.get(klist)?.searchKeyword(id, parentO);
 }
 /*E: Feature: Keyword index handling */
