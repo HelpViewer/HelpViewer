@@ -19,6 +19,34 @@ var navPanel = newNavigation('nav', treeItemHandler, N_P_TREEITEM);
 window.nav = navPanel;
 navPanel.updateNavButtons(idxTreeItem);
 
+const handlers = {
+  'downP-SwitchColorMode': (event) => { ColorTheme.switchColorMode() },
+  'downP-Home': (event) => { loadPage(event, 'README.md', 'README.md', 0) },
+  'downP-ToggleFS': (event) => { switchFullScreen() },
+  'downP-Hide': (event) => { toggleSidebar() },
+
+  'showBtn': (event) => { toggleSidebar() },
+  'printBtn': (event) => { window.print() },
+
+  'nav-left': (event) => { nav.navPrev(event) },
+  'nav-top': (event) => { nav.navTop(event); },
+  'nav-right': (event) => { nav.navNext(event); },
+};
+
+const handlerSwitchTab = (id) => showSidebarTab(id);
+
+function handlePnlBtn(event) {
+  const id = event.currentTarget.id;
+  if (handlers[id])
+    handlers[id](event);
+  else
+    handlerSwitchTab(`sp-${id}`);
+}
+
+document.querySelectorAll('.pnl-btn').forEach(btn => {
+  btn.addEventListener('click', handlePnlBtn);
+});
+
 const tree = document.getElementById('tree');
 
 window.addEventListener('popstate', () => {
@@ -120,7 +148,7 @@ loadLocalization(activeLanguage).then(() => {
       
       if (!srcTreeData) {
         hideButton('downP-TopicTree');
-        showSidebarTab('sp-subsections');
+        showSidebarTab('sp-downP-ChapterAnchor');
       }
       
       const docList = (await searchArchiveForFile(FILENAME_FILES, archive));
