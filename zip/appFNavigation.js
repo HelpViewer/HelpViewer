@@ -13,7 +13,7 @@ function newNavigation(baseName, getId, treeBaseName = N_P_TREEITEM) {
   
   function navNext(event) {
     event.preventDefault();
-    var next = (getId() || 0)+1;
+    var next = (getId() || 1)+1;
     loadPageByTreeId(next, treeBaseName);
     updateNavButtons(next);
   }
