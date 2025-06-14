@@ -9,7 +9,7 @@ const N_P_TREEITEM_BOOKMARK = 'bmark-';
 
 function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
   const lines = linesP.split("\n");
-  var linksEmitted = -1;
+  var linksEmitted = 0;
 
   function makeLink(name, note, path, image) {
     const picAdd = !image ? '' : `<img src="${image}" class='treepic'>`;
@@ -38,7 +38,7 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
         hrefVal = path;
         clickEvent = '';
       } else {
-        clickEvent = `${path}`;
+        clickEvent = path;
       }
     
       return `<a href="${hrefVal}" ${PAR_NAME_ID}="${treename}|${linksEmitted}" data-param="${clickEvent}" title="${note}">${picAdd}${name}</a>`;

@@ -43,7 +43,7 @@ function newNavigation(baseName, getId, treeBaseName = N_P_TREEITEM) {
     else
       navR.classList.add(C_HIDDENC);
 
-    if (i <= 0)
+    if (i <= 1)
       navT.classList.add(C_HIDDENC);
     else
       navT.classList.remove(C_HIDDENC);
