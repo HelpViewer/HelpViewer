@@ -1,21 +1,37 @@
 /*S: Feature: Set color theme */
-const KEY_LS_COLORTHEME = "colorTheme";
+const ColorTheme = (() => {
+  var KEY_LS_COLORTHEME = "colorTheme";
+  
+  // reimplement yourself
+  var colorModes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
+  
+  var targetElement = document.body;
 
-// reimplement yourself
-const colorModes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
+  function init() {
+    const val = getCurrentColorMode();
+    setColorMode(val);
+  }
 
-const colorTheme = localStorage.getItem(KEY_LS_COLORTHEME) || 'inStandard';
-setColorMode(colorTheme);
+  function getCurrentColorMode() {
+    const val = localStorage.getItem(KEY_LS_COLORTHEME) || 'inStandard';
+    return val;
+  }
+  
+  function switchColorMode() {
+    const base = targetElement;
+    const idx = (colorModes.indexOf(base.classList[0]) + 1) % colorModes.length;
+    setColorMode(colorModes[idx]);
+  }
+  
+  function setColorMode(val) {
+    const base = targetElement;
+    base.className = val;
+    localStorage.setItem(KEY_LS_COLORTHEME, val);
+  }
 
-function switchColorMode() {
-  const base = document.body;
-  const idx = (colorModes.indexOf(base.classList[0]) + 1) % colorModes.length;
-  setColorMode(colorModes[idx]);
-}
+  //, KEY_LS_COLORTHEME, colorModes, targetElement
+  return { init, switchColorMode, setColorMode, getCurrentColorMode };
+})();
 
-function setColorMode(val) {
-  const base = document.body;
-  base.className = val;
-  localStorage.setItem(KEY_LS_COLORTHEME, val);
-}
+window.ColorTheme = ColorTheme;
 /*E: Feature: Set color theme */

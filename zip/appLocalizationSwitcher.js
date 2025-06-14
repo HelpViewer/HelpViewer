@@ -4,8 +4,6 @@ const langFileJS = 'lstr.js';
 const langFileTXT = 'lstr.txt';
 const languagesMainPath = 'lang/';
 
-const langTab = document.getElementById('langList');
-
 var langStrs;
 var langKeysDyn;
 
@@ -21,10 +19,10 @@ function setLanguage(val) {
 async function getLanguagesList()
 {
   var langNames = [];
-  const langs = await getZipSubdirs(languagesMainPath, arcData);
+  const langs = await _Storage.getSubdirs(STO_DATA, languagesMainPath);
   
   langs.forEach(async (val, idx) => {
-    const alias = await searchArchiveForFile(`${languagesMainPath}${val}/${langFileAlias}`, arcData) || val;
+    const alias = await _Storage.search(STO_DATA, `${languagesMainPath}${val}/${langFileAlias}`) || val;
     langNames.push(`${alias}|${val}`);
   });
   
@@ -38,10 +36,10 @@ async function loadLocalization(localizationName)
 {
   langStrs = {};
 
-  const langJS = await searchArchiveForFile(`${languagesMainPath}${localizationName}/${langFileJS}`, arcData);
+  const langJS = await _Storage.search(STO_DATA, `${languagesMainPath}${localizationName}/${langFileJS}`);
   appendJavaScript('langDynStrings', langJS, document.head);
 
-  const langFlatStrs = (await searchArchiveForFile(`${languagesMainPath}${localizationName}/${langFileTXT}`, arcData)).split("\n");
+  const langFlatStrs = (await _Storage.search(STO_DATA, `${languagesMainPath}${localizationName}/${langFileTXT}`)).split("\n");
   
   for (var i = 0; i < langFlatStrs.length; i++) {
     const line = langFlatStrs[i];

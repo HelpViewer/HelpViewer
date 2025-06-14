@@ -14,7 +14,38 @@ function LoadURLParameters() {
 }
 
 LoadURLParameters();
-updateNavButtons(idxTreeItem);
+const treeItemHandlerGet = () => idxTreeItem;
+var navPanel = newNavigation('nav', treeItemHandlerGet, N_P_TREEITEM);
+window.nav = navPanel;
+navPanel.updateNavButtons(idxTreeItem);
+
+const handlers = {
+  'downP-SwitchColorMode': (event) => { ColorTheme.switchColorMode() },
+  'downP-Home': (event) => { loadPage(event, 'README.md', 'README.md', 0) },
+  'downP-ToggleFS': (event) => { switchFullScreen() },
+  'downP-Hide': (event) => { toggleSidebar() },
+
+  'showBtn': (event) => { toggleSidebar() },
+  'printBtn': (event) => { window.print() },
+
+  'nav-left': (event) => { nav.navPrev(event) },
+  'nav-top': (event) => { nav.navTop(event); },
+  'nav-right': (event) => { nav.navNext(event); },
+};
+
+const handlerSwitchTab = (id) => showSidebarTab(id);
+
+function handlePnlBtn(event) {
+  const id = event.currentTarget.id;
+  if (handlers[id])
+    handlers[id](event);
+  else
+    handlerSwitchTab(`sp-${id}`);
+}
+
+document.querySelectorAll('.pnl-btn').forEach(btn => {
+  btn.addEventListener('click', handlePnlBtn);
+});
 
 const tree = document.getElementById('tree');
 
@@ -26,7 +57,7 @@ window.addEventListener('popstate', () => {
   }
 
   getPathData(pagePath, pathHeadingAlias?.get(pagePath));
-  updateNavButtons(idxTreeItem);
+  navPanel.updateNavButtons(idxTreeItem);
 });
 
 contentPane.addEventListener('click', function(event) {
@@ -48,11 +79,23 @@ contentPane.addEventListener('click', function(event) {
   getPathData(pagePath, pathHeadingAlias?.get(pagePath));
 });
 
-var archive;
-
 var languages = getLanguagesList();
 
+const langTab = document.getElementById('langList');
+const LANGLINKS_PREFIX = 'lng-';
+
+function handleSetLanguage(event) {
+  const target = event.target.closest('a.langLink');
+  if (!target) return;
+
+  const id = target.id.substring(LANGLINKS_PREFIX.length);
+  setLanguage(id);
+}
+
+langTab?.addEventListener('click', handleSetLanguage);
+
 loadLocalization(activeLanguage).then(() => {
+  // load languages
   languages.then((languages) => {
     langTab.innerHTML = '';
   
@@ -60,7 +103,7 @@ loadLocalization(activeLanguage).then(() => {
       const parts = languages[i].split("|");
       const alias = parts[0]?.trim() || "";
       const name = parts[1]?.trim() || "";
-      langTab.innerHTML += `<li><a class='langLink' href="" onclick="return setLanguage('${name}')" title="${alias}">${alias}</a></li>`;
+      langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;
     }  
   });
   
@@ -79,7 +122,7 @@ loadLocalization(activeLanguage).then(() => {
     (async () => {
       // load zip file
       try {
-        archive = await loadZipFromUrl(dataPath);
+        await _Storage.add(STO_HELP, dataPath);
       } catch {
         msgNoData = _T(LK_MSG_NODATA);
         contentPane.innerHTML = msgNoData;
@@ -88,7 +131,7 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // load config file
-      FILE_CONFIG = (await searchArchiveForFile(FILENAME_CONFIG, archive));
+      FILE_CONFIG = (await _Storage.search(STO_HELP, FILENAME_CONFIG));
       
       if (!FILE_CONFIG) {
         FILE_CONFIG = null;
@@ -102,32 +145,32 @@ loadLocalization(activeLanguage).then(() => {
             toggleSidebar();
         }
 
-        val = configGetValue(CFG_KEY_OverrideColorTheme, colorTheme);
+        val = configGetValue(CFG_KEY_OverrideColorTheme, ColorTheme.getCurrentColorMode());
         
         if (val) 
-          setColorMode(val);
+          ColorTheme.setColorMode(val);
       }
       
       // load tree data
-      const srcTreeData = await searchArchiveForFile(FILENAME_TREE, archive);
-      tree.innerHTML = linesToHtmlTree(srcTreeData);
+      const srcTreeData = await _Storage.search(STO_HELP, FILENAME_TREE);
+      tree.innerHTML = linesToHtmlTree(srcTreeData, N_P_TREEITEM);
       fixImgRelativePathToZipPaths(tree);
-      revealTreeItem(N_P_TREEITEM + idxTreeItem);
-      updateNavButtons(idxTreeItem);
+      revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
+      navPanel.updateNavButtons(idxTreeItem);
       
       if (!srcTreeData) {
         hideButton('downP-TopicTree');
-        showSidebarTab('sp-subsections');
+        showSidebarTab('sp-downP-ChapterAnchor');
       }
       
-      const docList = (await searchArchiveForFile(FILENAME_FILES, archive));
+      const docList = (await _Storage.search(STO_HELP, FILENAME_FILES));
       getDocumentHeadingTable(docList);
     
       // Load keywords
-      const KEYWORDS = (await searchArchiveForFile(FILENAME_KEYWORDS, archive));
+      const KEYWORDS = (await _Storage.search(STO_HELP, FILENAME_KEYWORDS));
 
       if (KEYWORDS) {
-        const KWTOFILES = (await searchArchiveForFile(FILENAME_KWTOFILES, archive));
+        const KWTOFILES = (await _Storage.search(STO_HELP, FILENAME_KWTOFILES));
         const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_NAME, klist);
         await klist.readKeywordDatabase();
@@ -135,15 +178,16 @@ loadLocalization(activeLanguage).then(() => {
         const pane = document.getElementById(PANE_KEYWORDS_ID);
         
         if (pane)
-          pane.innerHTML = linesToHtmlTree(foundKeywords);
+          pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_KWDS);
       } else {
         hideButton('downP-Glossary');
       }
       
-      const FTSKEYWORDS = (await searchArchiveForFile(FILENAME_FTS_KEYWORDS, archive));
+      // fulltext keywords
+      const FTSKEYWORDS = (await _Storage.search(STO_HELP, FILENAME_FTS_KEYWORDS));
       
       if (FTSKEYWORDS) {
-        const KWTOFILES = (await searchArchiveForFile(FILENAME_FTS_KWTOFILES, archive));
+        const KWTOFILES = (await _Storage.search(STO_HELP, FILENAME_FTS_KWTOFILES));
         const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_FTS_NAME, klist);
         await klist.readKeywordDatabase();
@@ -151,21 +195,23 @@ loadLocalization(activeLanguage).then(() => {
         const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
         
         if (pane)
-          pane.innerHTML = linesToHtmlTree(foundKeywords);
+          pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_FTS);
       } else {
         hideButton('downP-Fulltext');
       }
       
       // Load favicon
-      const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, archive);
+      const customFavicon = await _Storage.search(STO_HELP, FILENAME_FAVICON);
       
       if (customFavicon)
         changeFavicon(customFavicon);
       
+      // load chapter document
       getPathData(pagePath, pathHeadingAlias?.get(pagePath));
       
-      var bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, archive);
-      var bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, archive);
+      // override book images in tree structure
+      var bookOpen = await _Storage.search(STO_HELP, FILENAME_BOOKO);
+      var bookClosed = await _Storage.search(STO_HELP,FILENAME_BOOKC);
       var doOverride = null;
       
       if (bookOpen && bookClosed) {
@@ -206,6 +252,7 @@ ul.tree details[open] > summary::before {
 });
 
 function checkSidebarWidth() {
+  if (!sidebar) return;
   if (sidebar.offsetWidth / window.innerWidth > 0.5) {
     sidebar.classList.add("too-wide");
   } else {
@@ -224,6 +271,7 @@ function convertRelativePathToViewerURI(val) {
 function setSearchParams(url, path, i) {
   url.searchParams.set(PAR_NAME_PAGE, path);
   pagePath = path;
+  i = parseInt(i);
   if (i) {
     url.searchParams.set(PAR_NAME_ID, i);
   }
@@ -247,7 +295,7 @@ function handleEnterOnField(event) {
     const pane = document.getElementById(id);
     
     if (pane)
-      pane.innerHTML = linesToHtmlTree(foundKeywords);
+      pane.innerHTML = linesToHtmlTree(foundKeywords, "tr-" + event.target.id);
   }
   
   if (event.key.substring(0, 3) === 'Esc') {
@@ -261,3 +309,47 @@ input_kw.addEventListener('keydown', handleEnterOnField);
 
 var input_kw = document.getElementById(FTSINPUT);
 input_kw.addEventListener('keydown', handleEnterOnField);
+
+function handleClickOnTrees(event) {
+  const target = event.target;
+  if (!target) return;
+
+  const a = target.closest('a');
+  if (!a) return;
+
+  var targName = target.id.split('|');
+  var idI = targName[1];
+  targName = targName[0];
+  if (targName === N_P_TREEITEM) {
+    idI = parseInt(idI);
+    if (idI) {
+      idxTreeItem = idI;
+    }
+  }
+
+  var data = target.getAttribute('data-param');
+  if (!data) return;
+
+  data = data.split(';');
+  path = data[0];
+
+  if (path.startsWith('@')) {
+    path = path.substring(1).split(":");
+    event.preventDefault();
+    searchKeywordE(target, path[0], path[1]);
+    const p = document.createElement('span');
+    a.parentNode.replaceChild(p, a);
+    p.innerHTML = a.innerHTML;
+  } else
+  if (path.startsWith('#')) {
+    event.preventDefault();
+    scrollToAnchor(path.substring(1));
+  } else
+  {
+    loadPage(event, path, target.innerHTML, idI);
+  }
+}
+
+document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
+  tree.addEventListener('click', handleClickOnTrees);
+});

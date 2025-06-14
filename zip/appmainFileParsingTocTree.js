@@ -3,53 +3,45 @@ const N_P_TREEITEM = 'tree-';
 const FILENAME_TREE = 'tree.lst';
 const PAR_NAME_ID = 'id';
 
-function linesToHtmlTree(linesP) {
+const N_P_TREEITEM_KWDS = 'kwds-';
+const N_P_TREEITEM_FTS = 'fts-';
+const N_P_TREEITEM_BOOKMARK = 'bmark-';
+
+function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
   const lines = linesP.split("\n");
-  const current = window.location.pathname + window.location.search + window.location.hash;
-  const url = new URL(current, document.baseURI);
-  var linksEmitted = -1;
+  var linksEmitted = 0;
 
   function makeLink(name, note, path, image) {
     const picAdd = !image ? '' : `<img src="${image}" class='treepic'>`;
     if (path) {
       linksEmitted++;
-      var clickEvent = '';
+      var clickEvent = path;
       var hrefVal = '';
       
-      if (path.startsWith('@')) {
-        path = path.substring(1).split(":");
-        clickEvent = `return searchKeywordE(event, '${path[0]}', '${path[1]}')`;
-      } else
-      if (path.startsWith('#')) {
-        clickEvent = `return scrollToAnchorE(event, '${path.substring(1)}')`;
-      } else
       if (path === '=latestApp') {
-          hrefVal = '';
           clickEvent = '';
-          const nameO = `${N_P_TREEITEM}${linksEmitted}`;
+          const nameO = `${treename}|${linksEmitted}`;
           getLatestReleaseBundleUri().then(hrefVal => {
             const targetO = document.getElementById(nameO);
             targetO.href = hrefVal;
           });
       } else
       if (path === '=latestHelp') {
-          hrefVal = '';
           clickEvent = '';
-          const nameO = `${N_P_TREEITEM}${linksEmitted}`;
+          const nameO = `${treename}|${linksEmitted}`;
           getLatestReleaseBundleUri(FILE_CONFIG, `Help-${activeLanguage}.zip`).then(hrefVal => {
             const targetO = document.getElementById(nameO);
             targetO.href = hrefVal;
           });
+      } else 
+      if (path.startsWith('http') || path.startsWith('?')) {
+        hrefVal = path;
+        clickEvent = '';
       } else {
-        if (path.startsWith('http') || path.startsWith('?')) {
-          hrefVal = path;
-          clickEvent = '';
-        } else {
-          clickEvent = `return loadPage(event, '${path}', '${name}', ${linksEmitted})`;
-        }
+        clickEvent = path;
       }
-      
-      return `<a href="${hrefVal}" ${PAR_NAME_ID}="${N_P_TREEITEM}${linksEmitted}" onclick="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
+    
+      return `<a href="${hrefVal}" ${PAR_NAME_ID}="${treename}|${linksEmitted}" data-param="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
     } else {
       return `<a title="${note}">${picAdd}${name}</a>`;
     }

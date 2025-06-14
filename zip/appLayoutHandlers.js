@@ -32,11 +32,13 @@ function switchFullScreen() {
 function showSidebarTab(id) {
   const tab = document.getElementById(id);
   
-  Array.from(tab.parentElement.children).forEach(child => {
-    child.classList.add(C_HIDDENC);
-  });
-
-  tab.classList.remove(C_HIDDENC);
+  if (tab) {
+    Array.from(tab.parentElement.children).forEach(child => {
+      child.classList.add(C_HIDDENC);
+    });
+  
+    tab.classList.remove(C_HIDDENC);  
+  }
 }
 /*E: Feature: Sidebar tabs handling */
 

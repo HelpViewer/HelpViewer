@@ -81,7 +81,7 @@ function transformOutput(htmlTxt) {
 async function loadMermaid() {
   const MERMAID_ID = 'ext-mermaid';
   if (!document.getElementById(MERMAID_ID)) {
-    const srcMermaid = await searchArchiveForFile('mermaid.min.js', arcData);
+    const srcMermaid = await _Storage.search(STO_HELP, 'mermaid.min.js');
     appendJavaScript(MERMAID_ID, srcMermaid, document.head);
   }
 }
@@ -144,7 +144,7 @@ async function loadPage(event, path, heading, i) {
   history.pushState(null, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
 
   await getPathData(path, heading);
-  updateNavButtons(i);
+  navPanel.updateNavButtons(i);
 
   return false;
 }
@@ -168,7 +168,7 @@ async function getPathData(path, heading) {
   }
   
   SetHeaderText(heading || path);
-  var content = await searchArchiveForFile(path, archive);
+  var content = await _Storage.search(STO_HELP, path);
   
   if (path.toLowerCase().endsWith('.md')) {
     if (window.marked) {
@@ -203,7 +203,7 @@ async function getPathData(path, heading) {
     treeString = mainTitle.innerText + '|||\n' + treeString;
   }
   
-  bookmarksPane.innerHTML = linesToHtmlTree(treeString);
+  bookmarksPane.innerHTML = linesToHtmlTree(treeString, N_P_TREEITEM_BOOKMARK);
   openSubtree(bookmarksPane);
   
   if (treeString.length == 0) {

@@ -70,7 +70,6 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
       const parts = kw.split(';');
       
       if (parts.length > 1) {
-        const kwToDivide = keywordToIndex.get(kw);
         keywordToIndex.delete(kw);
         for (const part of parts) {
           if (!keywordsDivided.has(part))
@@ -122,7 +121,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
       treeData += ` ${targetkwName}|||${idxPath[item]}\n`
     }
     
-    target.innerHTML = linesToHtmlTree(treeData);
+    target.innerHTML = linesToHtmlTree(treeData, "kwdf-");
     openSubtree(target);
   }
   
@@ -133,8 +132,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   }
 }
 
-function searchKeywordE(event, id, klist) {
-  event.preventDefault();
-  keywordLists.get(klist)?.searchKeyword(id, event.currentTarget.parentElement);
+function searchKeywordE(parentO, id, klist) {
+  keywordLists.get(klist)?.searchKeyword(id, parentO);
 }
 /*E: Feature: Keyword index handling */

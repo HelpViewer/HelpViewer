@@ -1,58 +1,63 @@
 /*S: Feature: Right top panel, page navigation buttons */
-const navL = document.getElementById('nav-left');
-const navT = document.getElementById('nav-top');
-const navR = document.getElementById('nav-right');
-
-function navPrev(event) {
-  event.preventDefault();
-  loadPageByTreeId(idxTreeItem-1);
-}
-
-function navNext(event) {
-  event.preventDefault();
-  loadPageByTreeId(idxTreeItem+1);
-}
-
-function navTop(event) {
-  event.preventDefault();
-  const treeItem = document.getElementById(N_P_TREEITEM + idxTreeItem);
-  const upId = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(5));
-  loadPageByTreeId(upId);
-}
-
-function updateNavButtons(i) {
-  if (i >= 0) {
-    navL.classList.remove(C_HIDDENC);
-    navT.classList.remove(C_HIDDENC);
-    navR.classList.remove(C_HIDDENC);
-  } else {
-    navL.classList.add(C_HIDDENC);
-    navT.classList.add(C_HIDDENC);
-    navR.classList.add(C_HIDDENC);
+function newNavigation(baseName, getId, treeBaseName = N_P_TREEITEM) {
+  var navL = document.getElementById(`${baseName}-left`);
+  var navT = document.getElementById(`${baseName}-top`);
+  var navR = document.getElementById(`${baseName}-right`);
+  
+  function navPrev(event) {
+    event.preventDefault();
+    var next = getId()-1;
+    loadPageByTreeId(next, treeBaseName);
+    updateNavButtons(next);
   }
   
-  const currentTreeItem = document.getElementById(N_P_TREEITEM + i);
-  const nextTreeItem = document.getElementById(N_P_TREEITEM + (i + 1));
-  
-  if (i == 0) {
-    navL.classList.add(C_HIDDENC);
-    navT.classList.add(C_HIDDENC);
+  function navNext(event) {
+    event.preventDefault();
+    var next = (getId() || 1)+1;
+    loadPageByTreeId(next, treeBaseName);
+    updateNavButtons(next);
   }
   
-  if (nextTreeItem == null) {
-    navR.classList.add(C_HIDDENC);
+  function navTop(event) {
+    event.preventDefault();
+    const treeItem = document.getElementById(treeBaseName + '|' + getId());
+    const upId = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(treeBaseName.length + 1));
+    loadPageByTreeId(upId, treeBaseName);
+    updateNavButtons(upId);
+  }
+  
+  function updateNavButtons(i) {
+    i = parseInt(i);
+    var indexPrev = i - 1;
+    var indexNext = i + 1;
+    const prevTreeItem = document.getElementById(treeBaseName + '|' + indexPrev);
+    const nextTreeItem = document.getElementById(treeBaseName + '|' + indexNext);
+
+    if (prevTreeItem)
+      navL.classList.remove(C_HIDDENC);
+    else
+      navL.classList.add(C_HIDDENC);
+    
+    if (nextTreeItem)
+      navR.classList.remove(C_HIDDENC);
+    else
+      navR.classList.add(C_HIDDENC);
+
+    if (i <= 1)
+      navT.classList.add(C_HIDDENC);
+    else
+      navT.classList.remove(C_HIDDENC);
+  }
+
+  return {
+    navPrev,
+    navNext,
+    navTop,
+    updateNavButtons
   }
 }
 /*E: Feature: Right top panel, page navigation buttons */
 
 function scrollToAnchor(id) {
-  const targetO = document.getElementById(id);
-  if (targetO) {
-    targetO.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-function scrollToAnchorE(event, id) {
-  event.preventDefault();
-  scrollToAnchor(id);
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 }

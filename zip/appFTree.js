@@ -1,18 +1,19 @@
 /*S: Topic tree handling */
 var idxTreeItem = 0;
 
-function loadPageByTreeId(id) {
-  const treeItem = document.getElementById(N_P_TREEITEM + id);
+function loadPageByTreeId(id, baseName) {
+  const treeItem = document.getElementById(`${baseName}|${id}`);
   if (treeItem) {
     const syntheticClick = new MouseEvent("click", {
       bubbles: true,
       cancelable: true,
+      composed: true,
       view: window
     });
     treeItem.dispatchEvent(syntheticClick);
     idxTreeItem = id;
   }
-  revealTreeItem(N_P_TREEITEM + id);
+  revealTreeItem(`${baseName}|${id}`);
 }
 
 function revealTreeItem(id) {
@@ -21,9 +22,9 @@ function revealTreeItem(id) {
 
   var parent = el.parentElement;
   while (parent) {
-    if (parent.tagName === 'DETAILS') {
+    if (parent.tagName === 'DETAILS')
       parent.open = true;
-    }
+    
     parent = parent.parentElement;
   }
 }

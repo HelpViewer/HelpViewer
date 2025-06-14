@@ -6,14 +6,13 @@ dataPath = urlParams.get(PAR_NAME_DOC)?.replace('__', '');
 if (typeof dataPath !== 'string' || dataPath.trim() === '') {
   dataPath = FILENAME_DEFAULT_HELPFILE;
 }
-var archive;
 
 if (dataPath) {
   (async () => {
-    archive = await loadZipFromUrl(dataPath);
+    var archive = await _Storage.add(STO_HELP, dataPath);
     
     if (archive) {
-      initLayout(archive);
+      initLayout(STO_HELP);
     }
   })();
 }
