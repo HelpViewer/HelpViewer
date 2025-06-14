@@ -97,6 +97,7 @@ function handleSetLanguage(event) {
 langTab?.addEventListener('click', handleSetLanguage);
 
 loadLocalization(activeLanguage).then(() => {
+  // load languages
   languages.then((languages) => {
     langTab.innerHTML = '';
   
@@ -207,8 +208,10 @@ loadLocalization(activeLanguage).then(() => {
       if (customFavicon)
         changeFavicon(customFavicon);
       
+      // load chapter document
       getPathData(pagePath, pathHeadingAlias?.get(pagePath));
       
+      // override book images in tree structure
       var bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, archive);
       var bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, archive);
       var doOverride = null;
