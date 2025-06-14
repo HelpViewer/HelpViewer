@@ -345,7 +345,7 @@ function handleClickOnTrees(event) {
     scrollToAnchor(path.substring(1));
   } else
   {
-    loadPage(event, path, data[1], idI);
+    loadPage(event, path, target.innerHTML, idI);
   }
 }
 

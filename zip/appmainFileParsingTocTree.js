@@ -18,13 +18,6 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
       var clickEvent = path;
       var hrefVal = '';
       
-      // if (path.startsWith('@')) {
-      //   path = path.substring(1).split(":");
-      //   clickEvent = `return searchKeywordE(event, '${path[0]}', '${path[1]}')`;
-      // } else
-      // if (path.startsWith('#')) {
-      //   clickEvent = `return scrollToAnchorE(event, '${path.substring(1)}')`;
-      // } else
       if (path === '=latestApp') {
           clickEvent = '';
           const nameO = `${treename}|${linksEmitted}`;
@@ -45,7 +38,7 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
         hrefVal = path;
         clickEvent = '';
       } else {
-        clickEvent = `${path};${name}`;
+        clickEvent = `${path}`;
       }
     
       return `<a href="${hrefVal}" ${PAR_NAME_ID}="${treename}|${linksEmitted}" data-param="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
