@@ -79,8 +79,6 @@ contentPane.addEventListener('click', function(event) {
   getPathData(pagePath, pathHeadingAlias?.get(pagePath));
 });
 
-var archive;
-
 var languages = getLanguagesList();
 
 const langTab = document.getElementById('langList');
@@ -124,7 +122,7 @@ loadLocalization(activeLanguage).then(() => {
     (async () => {
       // load zip file
       try {
-        archive = await loadZipFromUrl(dataPath);
+        await _Storage.add(STO_HELP, dataPath);
       } catch {
         msgNoData = _T(LK_MSG_NODATA);
         contentPane.innerHTML = msgNoData;
@@ -133,7 +131,7 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // load config file
-      FILE_CONFIG = (await searchArchiveForFile(FILENAME_CONFIG, archive));
+      FILE_CONFIG = (await _Storage.search(STO_HELP, FILENAME_CONFIG));
       
       if (!FILE_CONFIG) {
         FILE_CONFIG = null;
@@ -154,7 +152,7 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // load tree data
-      const srcTreeData = await searchArchiveForFile(FILENAME_TREE, archive);
+      const srcTreeData = await _Storage.search(STO_HELP, FILENAME_TREE);
       tree.innerHTML = linesToHtmlTree(srcTreeData, N_P_TREEITEM);
       fixImgRelativePathToZipPaths(tree);
       revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
@@ -165,14 +163,14 @@ loadLocalization(activeLanguage).then(() => {
         showSidebarTab('sp-downP-ChapterAnchor');
       }
       
-      const docList = (await searchArchiveForFile(FILENAME_FILES, archive));
+      const docList = (await _Storage.search(STO_HELP, FILENAME_FILES));
       getDocumentHeadingTable(docList);
     
       // Load keywords
-      const KEYWORDS = (await searchArchiveForFile(FILENAME_KEYWORDS, archive));
+      const KEYWORDS = (await _Storage.search(STO_HELP, FILENAME_KEYWORDS));
 
       if (KEYWORDS) {
-        const KWTOFILES = (await searchArchiveForFile(FILENAME_KWTOFILES, archive));
+        const KWTOFILES = (await _Storage.search(STO_HELP, FILENAME_KWTOFILES));
         const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_NAME, klist);
         await klist.readKeywordDatabase();
@@ -186,10 +184,10 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // fulltext keywords
-      const FTSKEYWORDS = (await searchArchiveForFile(FILENAME_FTS_KEYWORDS, archive));
+      const FTSKEYWORDS = (await _Storage.search(STO_HELP, FILENAME_FTS_KEYWORDS));
       
       if (FTSKEYWORDS) {
-        const KWTOFILES = (await searchArchiveForFile(FILENAME_FTS_KWTOFILES, archive));
+        const KWTOFILES = (await _Storage.search(STO_HELP, FILENAME_FTS_KWTOFILES));
         const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_FTS_NAME, klist);
         await klist.readKeywordDatabase();
@@ -203,7 +201,7 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // Load favicon
-      const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, archive);
+      const customFavicon = await _Storage.search(STO_HELP, FILENAME_FAVICON);
       
       if (customFavicon)
         changeFavicon(customFavicon);
@@ -212,8 +210,8 @@ loadLocalization(activeLanguage).then(() => {
       getPathData(pagePath, pathHeadingAlias?.get(pagePath));
       
       // override book images in tree structure
-      var bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, archive);
-      var bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, archive);
+      var bookOpen = await _Storage.search(STO_HELP, FILENAME_BOOKO);
+      var bookClosed = await _Storage.search(STO_HELP,FILENAME_BOOKC);
       var doOverride = null;
       
       if (bookOpen && bookClosed) {

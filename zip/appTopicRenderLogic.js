@@ -81,7 +81,7 @@ function transformOutput(htmlTxt) {
 async function loadMermaid() {
   const MERMAID_ID = 'ext-mermaid';
   if (!document.getElementById(MERMAID_ID)) {
-    const srcMermaid = await searchArchiveForFile('mermaid.min.js', arcData);
+    const srcMermaid = await _Storage.search(STO_HELP, 'mermaid.min.js');
     appendJavaScript(MERMAID_ID, srcMermaid, document.head);
   }
 }
@@ -168,7 +168,7 @@ async function getPathData(path, heading) {
   }
   
   SetHeaderText(heading || path);
-  var content = await searchArchiveForFile(path, archive);
+  var content = await _Storage.search(STO_HELP, path);
   
   if (path.toLowerCase().endsWith('.md')) {
     if (window.marked) {

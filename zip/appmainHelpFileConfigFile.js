@@ -15,7 +15,7 @@ var FILE_CONFIG_DEFAULT = parseConfigFile(
 var FILE_CONFIG;
 
 (async () => {
-  var readConfig = (await searchArchiveForFile(FILENAME_CONFIG, arcData));
+  var readConfig = (await _Storage.search(STO_DATA, FILENAME_CONFIG));
   
   if (readConfig)
     FILE_CONFIG_DEFAULT = parseConfigFile(readConfig);
