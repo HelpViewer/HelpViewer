@@ -121,7 +121,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
       treeData += ` ${targetkwName}|||${idxPath[item]}\n`
     }
     
-    target.innerHTML = linesToHtmlTree(treeData);
+    target.innerHTML = linesToHtmlTree(treeData, "kwdf-");
     openSubtree(target);
   }
   

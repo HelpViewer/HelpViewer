@@ -203,7 +203,7 @@ async function getPathData(path, heading) {
     treeString = mainTitle.innerText + '|||\n' + treeString;
   }
   
-  bookmarksPane.innerHTML = linesToHtmlTree(treeString);
+  bookmarksPane.innerHTML = linesToHtmlTree(treeString, N_P_TREEITEM_BOOKMARK);
   openSubtree(bookmarksPane);
   
   if (treeString.length == 0) {

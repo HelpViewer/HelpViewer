@@ -14,8 +14,8 @@ function LoadURLParameters() {
 }
 
 LoadURLParameters();
-const treeItemHandler = () => idxTreeItem;
-var navPanel = newNavigation('nav', treeItemHandler, N_P_TREEITEM);
+const treeItemHandlerGet = () => idxTreeItem;
+var navPanel = newNavigation('nav', treeItemHandlerGet, N_P_TREEITEM);
 window.nav = navPanel;
 navPanel.updateNavButtons(idxTreeItem);
 
@@ -154,7 +154,7 @@ loadLocalization(activeLanguage).then(() => {
       
       // load tree data
       const srcTreeData = await searchArchiveForFile(FILENAME_TREE, archive);
-      tree.innerHTML = linesToHtmlTree(srcTreeData);
+      tree.innerHTML = linesToHtmlTree(srcTreeData, N_P_TREEITEM);
       fixImgRelativePathToZipPaths(tree);
       revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
       navPanel.updateNavButtons(idxTreeItem);
@@ -179,7 +179,7 @@ loadLocalization(activeLanguage).then(() => {
         const pane = document.getElementById(PANE_KEYWORDS_ID);
         
         if (pane)
-          pane.innerHTML = linesToHtmlTree(foundKeywords);
+          pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_KWDS);
       } else {
         hideButton('downP-Glossary');
       }
@@ -196,7 +196,7 @@ loadLocalization(activeLanguage).then(() => {
         const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
         
         if (pane)
-          pane.innerHTML = linesToHtmlTree(foundKeywords);
+          pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_FTS);
       } else {
         hideButton('downP-Fulltext');
       }
@@ -270,6 +270,7 @@ function convertRelativePathToViewerURI(val) {
 function setSearchParams(url, path, i) {
   url.searchParams.set(PAR_NAME_PAGE, path);
   pagePath = path;
+  i = parseInt(i);
   if (i) {
     url.searchParams.set(PAR_NAME_ID, i);
   }
@@ -293,7 +294,7 @@ function handleEnterOnField(event) {
     const pane = document.getElementById(id);
     
     if (pane)
-      pane.innerHTML = linesToHtmlTree(foundKeywords);
+      pane.innerHTML = linesToHtmlTree(foundKeywords, "tr-" + event.target.id);
   }
   
   if (event.key.substring(0, 3) === 'Esc') {
@@ -315,6 +316,16 @@ function handleClickOnTrees(event) {
   const a = target.closest('a');
   if (!a) return;
 
+  var targName = target.id.split('|');
+  var idI = targName[1];
+  targName = targName[0];
+  if (targName === N_P_TREEITEM) {
+    idI = parseInt(idI);
+    if (idI) {
+      idxTreeItem = idI;
+    }
+  }
+
   var data = target.getAttribute('data-param');
   if (!data) return;
 
@@ -334,7 +345,7 @@ function handleClickOnTrees(event) {
     scrollToAnchor(path.substring(1));
   } else
   {
-    loadPage(event, path, data[1]);
+    loadPage(event, path, data[1], idI);
   }
 }
 

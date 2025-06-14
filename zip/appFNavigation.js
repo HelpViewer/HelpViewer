@@ -1,30 +1,37 @@
 /*S: Feature: Right top panel, page navigation buttons */
-function newNavigation(baseName, idxTreeItem, treeBaseName = N_P_TREEITEM) {
+function newNavigation(baseName, getId, treeBaseName = N_P_TREEITEM) {
   var navL = document.getElementById(`${baseName}-left`);
   var navT = document.getElementById(`${baseName}-top`);
   var navR = document.getElementById(`${baseName}-right`);
-  const idxT = idxTreeItem;
   
   function navPrev(event) {
     event.preventDefault();
-    loadPageByTreeId(idxT()-1);
+    var next = getId()-1;
+    loadPageByTreeId(next, treeBaseName);
+    updateNavButtons(next);
   }
   
   function navNext(event) {
     event.preventDefault();
-    loadPageByTreeId(idxT()+1);
+    var next = (getId() || 0)+1;
+    loadPageByTreeId(next, treeBaseName);
+    updateNavButtons(next);
   }
   
   function navTop(event) {
     event.preventDefault();
-    const treeItem = document.getElementById(treeBaseName + '|' + idxT());
-    const upId = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(treeBaseName.length));
-    loadPageByTreeId(upId);
+    const treeItem = document.getElementById(treeBaseName + '|' + getId());
+    const upId = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(treeBaseName.length + 1));
+    loadPageByTreeId(upId, treeBaseName);
+    updateNavButtons(upId);
   }
   
   function updateNavButtons(i) {
-    const prevTreeItem = document.getElementById(treeBaseName + '|' + (i - 1));
-    const nextTreeItem = document.getElementById(treeBaseName + '|' + (i + 1));
+    var i = parseInt(i);
+    var indexPrev = i - 1;
+    var indexNext = i + 1;
+    const prevTreeItem = document.getElementById(treeBaseName + '|' + indexPrev);
+    const nextTreeItem = document.getElementById(treeBaseName + '|' + indexNext);
 
     if (prevTreeItem)
       navL.classList.remove(C_HIDDENC);
