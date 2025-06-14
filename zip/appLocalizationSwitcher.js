@@ -4,8 +4,6 @@ const langFileJS = 'lstr.js';
 const langFileTXT = 'lstr.txt';
 const languagesMainPath = 'lang/';
 
-const langTab = document.getElementById('langList');
-
 var langStrs;
 var langKeysDyn;
 

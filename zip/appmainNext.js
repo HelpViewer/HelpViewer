@@ -83,6 +83,19 @@ var archive;
 
 var languages = getLanguagesList();
 
+const langTab = document.getElementById('langList');
+const LANGLINKS_PREFIX = 'lng-';
+
+function handleSetLanguage(event) {
+  const target = event.target.closest('a.langLink');
+  if (!target) return;
+
+  const id = target.id.substring(LANGLINKS_PREFIX.length);
+  setLanguage(id);
+}
+
+langTab?.addEventListener('click', handleSetLanguage);
+
 loadLocalization(activeLanguage).then(() => {
   languages.then((languages) => {
     langTab.innerHTML = '';
@@ -91,7 +104,7 @@ loadLocalization(activeLanguage).then(() => {
       const parts = languages[i].split("|");
       const alias = parts[0]?.trim() || "";
       const name = parts[1]?.trim() || "";
-      langTab.innerHTML += `<li><a class='langLink' href="" onclick="return setLanguage('${name}')" title="${alias}">${alias}</a></li>`;
+      langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;
     }  
   });
   
