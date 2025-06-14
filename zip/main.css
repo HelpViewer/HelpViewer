@@ -137,6 +137,13 @@ ul.tree details[open] > summary::before {
   }
 }
 
+.sidebar-page-panelled {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
 .hidden {
   display: none;
 }
@@ -356,6 +363,7 @@ ul:has(li input[type="checkbox"]) {
 .toolbar-down {
   margin-top: auto;
   gap: 0;
+/*
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   background-color: var(--c-border);
@@ -363,7 +371,7 @@ ul:has(li input[type="checkbox"]) {
 
 .toolbar-down > * {
   flex: 0 0 calc(20%);
-  box-sizing: border-box;
+  box-sizing: border-box;*/
 }
 
 .sidebar-page {
