@@ -100,7 +100,7 @@ async function newStorageDir(path) {
   var storageO = await init(path);
 
   async function init(path) {
-    return path.replace('/', '');
+    return path.replace(/\/$/, '');
   }
   async function search(filePath, format = STOF_TEXT) {
     const fpath = `${storageO}/${filePath}`;
@@ -151,7 +151,11 @@ async function newStorageDir(path) {
   }
 
   async function searchImage(filePath) {
-    return `${storageO}/${filePath}`;
+    const fpath = `${storageO}/${filePath}`;
+    const response = await fetchDataOrEmpty(fpath);
+    if (response.byteLength == 0)
+      return null;
+    return fpath;
   }
 
   return {
