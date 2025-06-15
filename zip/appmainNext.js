@@ -155,7 +155,7 @@ loadLocalization(activeLanguage).then(() => {
       // load tree data
       const srcTreeData = await _Storage.search(STO_HELP, FILENAME_TREE);
       tree.innerHTML = linesToHtmlTree(srcTreeData, N_P_TREEITEM);
-      fixImgRelativePathToZipPaths(tree);
+      fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
       navPanel.updateNavButtons(idxTreeItem);
       

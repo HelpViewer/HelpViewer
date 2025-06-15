@@ -88,8 +88,8 @@ async function loadMermaid() {
 
 function transformOutputConnected(doc) {
   //relative img src paths update for ZIP structure
-  fixImgRelativePathToZipPaths(doc);
-  fixImgRelativePathToZipPaths(mainTitle);
+  fixImgRelativePathToZipPaths(doc, STO_HELP);
+  fixImgRelativePathToZipPaths(mainTitle, STO_HELP);
 
   //mermaid graphs transformation
   const codeBlocks = doc.querySelectorAll('code.language-mermaid');

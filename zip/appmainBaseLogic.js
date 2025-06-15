@@ -29,7 +29,7 @@ async function getDataOfPathInZIPImage(path, archive) {
 /*E: Zip archive reading functions */
 
 /*S: Fixing local in archive paths to base64 dump*/
-async function fixImgRelativePathToZipPaths(doc)
+async function fixImgRelativePathToZipPaths(doc, archive)
 {
   doc.querySelectorAll('img').forEach((img) => {
     (async () => {
