@@ -1,5 +1,21 @@
 # Changelog
 
+## 20250615
+- **Ability to read ZIP and disk folders since now** (data sources refactor)
+- **Modularization and internal logic refactor** (HTML : tree links and other stuff don't contain javascript direct call anymore, navigation from 1, tree item names has customizable prefix)
+- Layout : Grayscale filter removed from language button
+- Service Worker : support for message : clearCache
+- UI : Button : Switch side of sidebar
+- UI : Sedebar bottom panel has multiple rows (per 5 buttons) since now
+- Bugfixes
+  - UI : border line fixed on right side arrangement
+  - archive is a parameter in function fixImgRelativePathToZipPaths (relied on old global parameter)
+  - Keyword indexes failed when wrong data passed. Fail it with empty list instead
+  - favicon loading has been wrong and dump binary data in text
+  - images loading has been wrong and dump binary data in text
+  - images in tree node definition has been wrongly converted to correct image path
+- Improvement : images from ZIP are still loaded as base64 string, but folder structures are using plain directory path now
+
 ## 20250613
 - Bugfix and Refactor in appmainBaseLogic - appGHIntegration independent, configuration data loading changed to current CI pipeline state
 - Support for links to other helpfiles
