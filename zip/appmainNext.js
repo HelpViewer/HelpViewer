@@ -202,7 +202,7 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // Load favicon
-      const customFavicon = await _Storage.search(STO_HELP, FILENAME_FAVICON);
+      const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);
       
       if (customFavicon)
         changeFavicon(customFavicon);
