@@ -102,6 +102,8 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
       treeData = keywordSorted.filter(word => word.includes(phrase));
     }
     
+    if (!treeData) return "";
+
     if (typeof cap === 'number' && !isNaN(cap) && cap > 0)
       treeData = treeData.slice(0, cap);
     
