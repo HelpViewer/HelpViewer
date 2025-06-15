@@ -181,7 +181,7 @@ async function getPathData(path, heading) {
       const collector = document.createElement('ul');
       collector.className = 'tree';
 
-      var foundKeywords = keywordLists.get(dictionary)?.getTreeData(word, listingCount);
+      var foundKeywords = keywordLists.get(dictionary)?.getTreeData(word, 0);
       const kwFound = foundKeywords.split("\n").length;
       const collector2 = document.createElement('ul');
       collector2.className = 'tree';
