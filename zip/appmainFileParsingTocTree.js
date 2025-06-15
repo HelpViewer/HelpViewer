@@ -38,6 +38,7 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
         hrefVal = path;
         clickEvent = '';
       } else {
+        hrefVal = convertRelativePathToViewerURI(path);
         clickEvent = path;
       }
     
