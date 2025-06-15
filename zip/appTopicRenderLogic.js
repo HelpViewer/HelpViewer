@@ -178,16 +178,44 @@ async function getPathData(path, heading) {
       const word = splits[0].substring(1);
       SetHeaderText(word);
       const dictionary = splits[1];
-      const collector = document.createElement('div');
+      const collector = document.createElement('ul');
+      collector.className = 'tree';
+
+      var foundKeywords = keywordLists.get(dictionary)?.getTreeData(word, listingCount);
+      const kwFound = foundKeywords.split("\n").length;
+      const collector2 = document.createElement('ul');
+      collector2.className = 'tree';
+
+      if (foundKeywords !== "" && kwFound > 1) {
+        collector2.innerHTML = linesToHtmlTree(foundKeywords, "tr-ContentPage");
+        //alert(collector2.innerHTML);
+        //const firstList = collector2.querySelectorAll('li');
+        //collector.appendChild(firstList);
+        //collector2.innerHTML = collector.innerHTML;
+        //collector.innerHTML = '';
+      }
+
       keywordLists.get(dictionary)?.searchKeyword(word, collector);
-      const firstDetails = collector.querySelector('details')?.querySelector('ul');
+      const firstDetails = collector.querySelector('details')?.querySelector('ul').querySelectorAll('li');
 
       if (firstDetails) {
         firstDetails.className = 'tree';
-        const collector2 = document.createElement('div');
-        collector2.appendChild(firstDetails);
-        collector.innerHTML = '';
-        content = collector2.innerHTML;
+        firstDetails.forEach(li => collector2.appendChild(li));
+        //collector.appendChild(firstDetails);
+      } else {
+        collector.innerHTML = "";
+      }
+
+      if (collector2.innerHTML) {
+        const collector3 = document.createElement('ul');
+        collector3.className = 'tree';
+        collector3.innerHTML = collector2.innerHTML;
+        collector.innerHTML = "";
+        collector.appendChild(collector3);
+      }
+
+      if (collector.innerHTML) {
+        content = collector.innerHTML;
       } else {
         content = ' ';
       }
