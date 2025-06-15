@@ -21,10 +21,8 @@ function nameForAnchor(text) {
 /*S: Zip archive reading functions */
 
 async function getDataOfPathInZIPImage(path, archive) {
-  const content = await _Storage.search(archive, path, STOF_B64);
-  if (!content) return null;
-  var mimeType = 'image/' + path.split('.').pop().toLowerCase();
-  return `data:${mimeType};base64,${content}`;
+  const content = await _Storage.searchImage(archive, path);
+  return content;
 }
 /*E: Zip archive reading functions */
 

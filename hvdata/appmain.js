@@ -36,10 +36,18 @@ var _Storage = (() => {
     return await storagesC.get(key).getSubdirs(parentPath);
   }
 
+  async function searchImage(key, filePath) {
+    if (!storagesC.has(key))
+      return null;
+
+    return await storagesC.get(key).searchImage(filePath);
+  }
+
   return {
     add,
     search,
-    getSubdirs
+    getSubdirs,
+    searchImage
   };
 })();
 
@@ -74,9 +82,17 @@ async function newStorageZip(path) {
     return [...subdirs];
   }
 
+  async function searchImage(filePath) {
+    const content = await search(filePath, STOF_B64);
+    if (!content) return null;
+    var mimeType = 'image/' + filePath.split('.').pop().toLowerCase();
+    return `data:${mimeType};base64,${content}`;
+  }
+
   return {
     search,
-    getSubdirs
+    getSubdirs,
+    searchImage
   };
 }
 
@@ -134,9 +150,14 @@ async function newStorageDir(path) {
     }
   }
 
+  async function searchImage(filePath) {
+    return `${storageO}/${filePath}`;
+  }
+
   return {
     search,
-    getSubdirs
+    getSubdirs,
+    searchImage
   };
 }
 
