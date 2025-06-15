@@ -211,8 +211,8 @@ loadLocalization(activeLanguage).then(() => {
       getPathData(pagePath, pathHeadingAlias?.get(pagePath));
       
       // override book images in tree structure
-      var bookOpen = await _Storage.search(STO_HELP, FILENAME_BOOKO);
-      var bookClosed = await _Storage.search(STO_HELP,FILENAME_BOOKC);
+      var bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP);
+      var bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, STO_HELP);
       var doOverride = null;
       
       if (bookOpen && bookClosed) {
