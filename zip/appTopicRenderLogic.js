@@ -168,7 +168,29 @@ async function getPathData(path, heading) {
   }
   
   SetHeaderText(heading || path);
-  var content = await _Storage.search(STO_HELP, path);
+  var content = "";
+
+  if (path.startsWith("@")) {
+    const splits = path.split(":");
+    if (splits.length <= 1) {
+      content = "";
+    } else {
+      const word = splits[0].substring(1);
+      const dictionary = splits[1];
+      const collector = document.createElement('div');
+      keywordLists.get(dictionary)?.searchKeyword(word, collector);
+      const firstDetails = collector.querySelector('details');
+      const collector2 = document.createElement('ul');
+      collector2.className = 'tree';
+      collector2.appendChild(firstDetails);
+      collector.innerHTML = '';
+      collector.appendChild(collector2);
+      content = collector.innerHTML;
+      SetHeaderText(word);
+    }
+  } else {
+    content = await _Storage.search(STO_HELP, path);
+  }
   
   if (path.toLowerCase().endsWith('.md')) {
     if (window.marked) {
