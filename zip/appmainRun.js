@@ -15,7 +15,7 @@ async function initLayout(store) {
 async function runApp() {
   initLayout(STO_DATA);
   
-  const sequence = ['appmainNext0.js', 'marked.min.js', 'appEventBus.js', 'appmainBaseLogic.js',
+  const sequence = ['appmainNext0.js', 'marked.min.js', 'appmainBaseLogic.js',
     'appLocalizationSwitcher.js',  'appmainHelpFileConfigFile.js', 'appGHIntegration.js', 
     'appFTree.js', 'appFNavigation.js', 'appFColorTheme.js', 
     'appLayoutHandlers.js', 'appTopicRenderLogic.js',
