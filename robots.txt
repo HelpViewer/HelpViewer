@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /
+Allow: /hlp/
+Allow: /index.html
+Allow: /sitemap.xml
+Allow: /favicon.png
+Allow: /faviconPWA.png
