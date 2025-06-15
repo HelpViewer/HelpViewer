@@ -27,9 +27,9 @@ async function getDataOfPathInZIPImage(path, archive) {
 /*E: Zip archive reading functions */
 
 /*S: Fixing local in archive paths to base64 dump*/
-async function fixImgRelativePathToZipPaths(doc, archive)
+async function fixImgRelativePathToZipPaths(doc, archive, exclude = '')
 {
-  doc.querySelectorAll('img').forEach((img) => {
+  doc.querySelectorAll(`img${exclude}`).forEach((img) => {
     (async () => {
       const src = img.getAttribute('src');
       if (src && !/^https?:\/\//.test(src)) {
