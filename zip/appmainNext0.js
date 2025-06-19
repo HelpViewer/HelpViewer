@@ -13,6 +13,10 @@ if (dataPath) {
     
     if (archive) {
       initLayout(STO_HELP);
+      srcJSOverride = await _Storage.search(STO_HELP, FILENAME_JSBACKEND);
+      
+      if (!srcJSOverride)
+        srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
     }
   })();
 }
