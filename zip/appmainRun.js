@@ -29,5 +29,9 @@ async function runApp() {
     const srcMarkedJs = await _Storage.search(STO_DATA, one);
     appendJavaScript(one, srcMarkedJs, document.head);
   }
+
+  if (!srcJSOverride)
+    srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
+  
   appendJavaScript(FILENAME_JSBACKEND, srcJSOverride, document.head);
 }
