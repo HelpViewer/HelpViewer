@@ -64,4 +64,13 @@ function hideButton(btnid) {
   const button = document.getElementById(btnid);
   if (button)
     button.classList.add(C_HIDDENC);
+
+  const multilineCSS = 'multi-linePanel';
+  const panel = button.parentElement;
+
+  if (panel.querySelectorAll(`:scope > .${C_HIDDENC}`).length < 9) {
+    panel.classList.remove(multilineCSS);
+  } else {
+    panel.classList.add(multilineCSS);
+  }
 }

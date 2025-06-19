@@ -356,9 +356,12 @@ ul:has(li input[type="checkbox"]) {
 .toolbar-down {
   margin-top: auto;
   gap: 0;
+  background-color: var(--c-border);
+}
+
+.multi-linePanel {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background-color: var(--c-border);
 }
 
 .toolbar-down > * {
