@@ -8,7 +8,7 @@
   --c-tabLine0: rgba(0, 0, 0, 0);
   --c-tabLine1: var(--c-background);
   --c-anchorHover: #000;
-  --c-anchorColor: var(--c-border);
+  --c-anchorColor: #767676;
   --c-contentPaneColor: white;
 }
 
