@@ -78,7 +78,7 @@ function refreshTitlesForLangStrings(strings) {
         foundO = document.getElementById(splits[0]);
         
         if (foundO) {
-          foundO[splits[1]] = val;
+          foundO.setAttribute(splits[1], val);
         }
       }
     }
