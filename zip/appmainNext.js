@@ -96,18 +96,6 @@ function handleSetLanguage(event) {
 langTab?.addEventListener('click', handleSetLanguage);
 
 loadLocalization(activeLanguage).then(() => {
-  // load languages
-  languages.then((languages) => {
-    langTab.innerHTML = '';
-  
-    for (var i = 0; i < languages.length; i++) {
-      const parts = languages[i].split("|");
-      const alias = parts[0]?.trim() || "";
-      const name = parts[1]?.trim() || "";
-      langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;
-    }  
-  });
-  
   if (!dataPath || !pagePath) {
     SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
   }
@@ -152,6 +140,25 @@ loadLocalization(activeLanguage).then(() => {
           ColorTheme.setColorMode(val);
       }
       
+      // load languages
+      languages.then(async (languages) => {
+        var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
+        const langs = new Set(await _Storage.getSubdirs(STO_DATA, languagesMainPath));
+        langsFromHelp = langsFromHelp.filter(lang => !langs.has(lang));
+        langsFromHelp.forEach((data, idx) => {
+          languages.push(`${data}|${data}`);
+        });
+    
+        langTab.innerHTML = '';
+      
+        for (var i = 0; i < languages.length; i++) {
+          const parts = languages[i].split("|");
+          const alias = parts[0]?.trim() || "";
+          const name = parts[1]?.trim() || "";
+          langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;
+        }
+      });
+
       // load tree data
       const srcTreeData = await _Storage.search(STO_HELP, FILENAME_TREE);
       tree.innerHTML = linesToHtmlTree(srcTreeData, N_P_TREEITEM);

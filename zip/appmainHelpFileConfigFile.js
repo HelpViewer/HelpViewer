@@ -2,6 +2,7 @@ const CFG_KEY_OverrideSidebarVisible = 'OverrideSidebarVisible';
 const CFG_KEY_OverrideColorTheme = 'OverrideColorTheme';
 const CFG_KEY_OverrideBookIconOpened = 'OverrideBookIcon-opened';
 const CFG_KEY_OverrideBookIconClosed = 'OverrideBookIcon-closed';
+const CFG_KEY_Languages = '_langs';
 
 var FILE_CONFIG_DEFAULT = parseConfigFile(
 `
