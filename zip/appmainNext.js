@@ -124,6 +124,11 @@ loadLocalization(activeLanguage).then(() => {
       
       if (!FILE_CONFIG) {
         FILE_CONFIG = null;
+        // language from local storage probably does not exists, reload with english
+        if (activeLanguage !== 'en') {
+          setLanguage('en');
+          location.reload(true);  
+        }
       } else {
         FILE_CONFIG = parseConfigFile(FILE_CONFIG);
         
