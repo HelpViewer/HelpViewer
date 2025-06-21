@@ -1,5 +1,25 @@
 # Changelog
 
+## 20250621
+- Improvement : application data ZIP is backed up by try for folder name access (it can be unzipped if wanted)
+- Viewer is now able to process some extra language which is not known to viewer, but author can define it.
+  - When language from local storage does not exists within this help file, then en is selected back and page is reloaded
+- CSS : Higher contrast on anchorColor for provide WCAG compliance, Localization strings for equality of experience for all users
+- Keyword page on content panel : set list to unlimited
+- UI : Left bottom button panel is one lined with 9 or less buttons visible. When 10+ buttons are visible, then multiple rows 
+- JS with main logic can be overwritten if needed
+- UI: Layout rearranged to have content pane as close as possible to body tag
+- UI: Topic navigation aria role added
+- Improvement : support for indexing robots.txt
+- Bugfix : appEventBus will not be used for now
+- Bugfix : Tree items has also URI link on them as same as metadata for processing
+- Bugfix : Keyword page is correctly processed and subpages are shown on content panel
+- Bugfix : Keyword page on content panel : not collapsible anymore
+- Bugfix : Keyword page on content panel : produces list of similar keywords and subpages for keyword (test case: helpviewer on fulltextList)
+view is used
+- Bugfix : JS with main logic can be overwritten if needed : failed for not exist override
+- Bugfix : appLocalizationSwitcher : correction in attribute values setting
+
 ## 20250615
 - **Ability to read ZIP and disk folders since now** (data sources refactor)
 - **Modularization and internal logic refactor** (HTML : tree links and other stuff don't contain javascript direct call anymore, navigation from 1, tree item names has customizable prefix)
