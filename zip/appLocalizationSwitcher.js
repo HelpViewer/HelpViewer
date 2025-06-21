@@ -8,7 +8,8 @@ var langStrs;
 var langKeysDyn;
 
 const KEY_LS_LANG = "language";
-const activeLanguage = localStorage.getItem(KEY_LS_LANG) || 'en';
+const DEFAULT_LANG = 'en';
+const activeLanguage = localStorage.getItem(KEY_LS_LANG) || DEFAULT_LANG;
 // setLanguage must be called in UI (appmainNext.js) 
 
 function setLanguage(val) {

@@ -125,8 +125,8 @@ loadLocalization(activeLanguage).then(() => {
       if (!FILE_CONFIG) {
         FILE_CONFIG = null;
         // language from local storage probably does not exists, reload with english
-        if (activeLanguage !== 'en') {
-          setLanguage('en');
+        if (activeLanguage !== DEFAULT_LANG) {
+          setLanguage(DEFAULT_LANG);
           location.reload(true);  
         }
       } else {
