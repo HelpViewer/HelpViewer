@@ -1,5 +1,7 @@
 User-agent: *
 Disallow: /
+
+User-agent: *
 Allow: /hlp/
 Allow: /index.html
 Allow: /sitemap.xml
