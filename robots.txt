@@ -1,5 +1,6 @@
 User-agent: *
-Disallow: /
+Disallow: /hvdata/
+Disallow: /README.md
 Allow: /
 Allow: /hlp/
 Allow: /index.html
