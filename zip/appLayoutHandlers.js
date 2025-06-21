@@ -5,7 +5,7 @@ const KEY_LS_SIDEBARVISIBLE = "sidebarVisible";
 const sidebarVisible = localStorage.getItem(KEY_LS_SIDEBARVISIBLE) || 1;
 
 const KEY_LS_SIDEBARSIDE = "sidebarSide";
-const sidebarSide = localStorage.getItem(KEY_LS_SIDEBARSIDE) || 1;
+const sidebarSide = localStorage.getItem(KEY_LS_SIDEBARSIDE) || 0;
 
 const sidebar = document.getElementById('sidebar');
 const showBtn = document.getElementById('showBtn');
