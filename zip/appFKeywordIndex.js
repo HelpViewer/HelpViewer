@@ -115,7 +115,8 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   }
   
   function searchKeyword(id, target) {
-    const files = keywordFiles[keywordToIndex.get(id)] || [];
+    var files = keywordFiles[keywordToIndex.get(id)] || [];
+    files = [...new Set(files)];
     
     var treeData = `${id}|||\n`;
     for (const item of files) {
