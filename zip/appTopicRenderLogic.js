@@ -81,7 +81,7 @@ function transformOutput(htmlTxt) {
 async function loadMermaid() {
   const MERMAID_ID = 'ext-mermaid';
   if (!document.getElementById(MERMAID_ID)) {
-    const srcMermaid = await _Storage.search(STO_HELP, 'mermaid.min.js');
+    const srcMermaid = await _Storage.search(STO_DATA, 'mermaid.min.js');
     appendJavaScript(MERMAID_ID, srcMermaid, document.head);
   }
 }
