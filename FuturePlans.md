@@ -17,3 +17,4 @@
 - Converting TEX file from archive to md format (investigation if possible, base support only?)
 - Improve WCAG and other standards
 - Multiple version browsing support (need to rethink downloads and zip files storage)
+- United help system (grouping of single help files (united tree and dictionaries) - currently only links outside helpfile are allowed)
