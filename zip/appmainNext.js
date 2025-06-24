@@ -6,9 +6,12 @@ const LK_MSG_NODATA = 'MSG_NODATA';
 const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
 const listingCount = parseInt(localStorage.getItem(KEY_LS_KWLISTINGCOUNT)) || 50;
 
+var dataPathGeneral;
+
 function LoadURLParameters() {
   const urlParams = new URLSearchParams(window.location.search);
-  dataPath = urlParams.get(PAR_NAME_DOC)?.replace('__', activeLanguage);
+  dataPathGeneral = urlParams.get(PAR_NAME_DOC);
+  dataPath = dataPathGeneral?.replace('__', activeLanguage);
   pagePath = urlParams.get(PAR_NAME_PAGE) || FILENAME_1STTOPIC;
   idxTreeItem = parseInt(urlParams.get(PAR_NAME_ID)) || 0;
 }
@@ -278,7 +281,7 @@ window.addEventListener("load", checkSidebarWidth);
 
 /*S: Topic renderer logic integration */
 function convertRelativePathToViewerURI(val) {
-  return `?${PAR_NAME_DOC}=${dataPath}&${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(idxTreeItem)}`;
+  return `?${PAR_NAME_DOC}=${dataPathGeneral}&${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(idxTreeItem)}`;
 }
 
 function setSearchParams(url, path, i) {
