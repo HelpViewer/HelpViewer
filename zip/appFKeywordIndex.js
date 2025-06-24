@@ -51,7 +51,13 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     keywordToIndex = new Map();
     keywordOriginal.forEach((line, index) => {
       if (line.trim()) {
-        keywordToIndex.set(line, index);
+        const word = keywordToIndex.get(line);
+
+        if (word) {
+          keywordToIndex.set(line, `${word};${index}`);
+        } else {
+          keywordToIndex.set(line, index);
+        }
       }
     });
     
@@ -115,7 +121,8 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   }
   
   function searchKeyword(id, target) {
-    var files = keywordFiles[keywordToIndex.get(id)] || [];
+    const fileLists = String(keywordToIndex.get(id))?.split(';');
+    var files = fileLists.flatMap(k => keywordFiles[k] || []);
     files = [...new Set(files)];
     
     var treeData = `${id}|||\n`;
