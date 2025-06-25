@@ -1,14 +1,14 @@
 # HelpViewer
 
-A lightweight and simple reader for ZIP archives or directories (no matter if network or local) containing Markdown and HTML files, designed as a modern and portable help file viewer in your web browser.
+HelpViewer is a lightweight and simple reader for ZIP archives or directories—whether stored locally or on a network—containing Markdown and HTML files. It’s designed as a modern and portable help file viewer that runs directly in your web browser.
 
-It supports offline usage without a backend or local server, providing a clean and responsive interface inspired by classic desktop help viewers from the Windows era. 
+It supports offline use without requiring any backend or server, offering a clean and responsive interface inspired by the classic desktop help viewers from the Windows era.
 
-[MIT licensed][MITL].
+HelpViewer is [MIT licensed][MITL].
 
-Open this file in [HelpViewer][OpenInViewer] to see it in action or learn more on our [website][website].
+Open this file in [HelpViewer][OpenInViewer] to see it in action, or visit our [website][website] to learn more.
 
-Interested? Download HelpViewer [release package][PackLatest] and feel free to join our [Discord][Discord] user group.
+Interested? Download the latest HelpViewer [release package][PackLatest] and feel free to join our [Discord][Discord] user group.
 
 ## Features
 
