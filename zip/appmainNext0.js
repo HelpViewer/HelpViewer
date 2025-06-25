@@ -17,6 +17,9 @@ if (dataPath) {
       
       if (!srcJSOverride)
         srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
+
+      srcMainCSSPlus = await _Storage.search(STO_HELP, FILENAME_MAINCSS_PLUS);
+      srcJSOverridePlus = await _Storage.search(STO_HELP, FILENAME_JSBACKEND_PLUS);
     }
   })();
 }

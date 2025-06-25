@@ -1,10 +1,14 @@
 const FILENAME_LAYOUT = 'layout.htm';
 const FILENAME_MAINCSS = 'main.css';
 const FILENAME_JSBACKEND = 'appmainNext.js'
+const FILENAME_MAINCSS_PLUS = 'plus.css';
+const FILENAME_JSBACKEND_PLUS = 'plus.js';
 
 var FILENAME_DEFAULT_HELPFILE = 'hlp/Help-.zip';
 
 var srcJSOverride = null;
+var srcMainCSSPlus = null;
+var srcJSOverridePlus = null;
 
 async function initLayout(store) {
   const srcLayout = await _Storage.search(store, FILENAME_LAYOUT);
@@ -34,4 +38,10 @@ async function runApp() {
     srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
   
   appendJavaScript(FILENAME_JSBACKEND, srcJSOverride, document.head);
+
+  if (srcMainCSSPlus)
+    appendCSS('mainCSSPlus', srcMainCSSPlus);
+
+  if (srcJSOverridePlus)
+    appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
 }
