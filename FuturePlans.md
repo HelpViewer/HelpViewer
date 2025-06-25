@@ -18,3 +18,4 @@
 - Improve WCAG and other standards
 - Multiple version browsing support (need to rethink downloads and zip files storage)
 - United help system (grouping of single help files (united tree and dictionaries) - currently only links outside helpfile are allowed)
+- Associated topics groups (something like links/keywords/topics, see also )
