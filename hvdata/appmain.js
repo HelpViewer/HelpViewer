@@ -105,7 +105,7 @@ async function newStorageDir(path) {
     return path.replace(/\/$/, '');
   }
   async function search(filePath, format = STOF_TEXT) {
-    const fpath = `${storageO}/${filePath}`.replace('//', '/_base/');
+    const fpath = `${storageO}/${filePath}`.replace('//', '/');
     const response = await fetchDataOrEmpty(fpath);
 
     switch (format) {
