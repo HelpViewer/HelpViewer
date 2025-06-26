@@ -1,5 +1,8 @@
 # Changelog
 
+## 20250626-1
+- Bugfix : language marker __ is kept in URI as long time as possible : without specified help file it has been able to produce malformed links in chapter content text
+
 ## 20250626
 - robots.txt : updated for rights being less restrictive
 - Optimization : DEFAULT_LANG constant defined
