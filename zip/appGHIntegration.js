@@ -1,11 +1,8 @@
-const CFG_KEY_VERSIONFILE = '_version';
-const CFG_KEY_PRJNAME = '_prjname';
-
 const releasesBaseAddr = 'https://github.com/|/releases';
 
 async function prepareReleasesBaseAddr(arc)
 {
-  const prjName = configGetValue(CFG_KEY_PRJNAME, '', arc).trim();
+  const prjName = configGetValue(CFG_KEY__PRJNAME, '', arc).trim();
   return releasesBaseAddr.replace('|', prjName);
 }
 
@@ -13,7 +10,7 @@ async function getReleaseBundleUri(arc, exactVer, fileName)
 {
   arc = arc || FILE_CONFIG_DEFAULT;
   fileName = fileName || 'package.zip';
-  var ver = exactVer || configGetValue(CFG_KEY_VERSIONFILE, '', arc).trim();
+  var ver = exactVer || configGetValue(CFG_KEY__VERSION, '', arc).trim();
   return `${await prepareReleasesBaseAddr(arc)}/download/${ver}/${fileName}`;
 }
 
@@ -34,4 +31,23 @@ async function getLatestReleaseBundleUri(arc, fileName)
   } catch (error) {
     return getReleaseBundleUri(arc, null, fileName);
   }
+}
+
+async function insertDownloadLink(hereT, titleMask) {
+  const fname = 'package.zip';
+  const path = await getLatestReleaseBundleUri(null, fname);
+  const linkParts = path.split('/');
+  
+  if (titleMask) {
+    titleMask = titleMask.replace('@', linkParts[linkParts.length -2]);
+    titleMask = titleMask.replace('|', fname);
+    titleMask = titleMask.replace('_', configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT).trim());
+  } else {
+    titleMask = fname;
+  }
+
+  const linkTitle = titleMask;
+  
+  const parentO = document.getElementById(hereT);
+  parentO.innerHTML = `<a href="${path}" alt="${fname}" title= "${path}">${linkTitle}</a>`;
 }
