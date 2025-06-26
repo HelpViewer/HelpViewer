@@ -1,5 +1,8 @@
 # Changelog
 
+## 20250626-2
+- Bugfix: Read markdowns from GitHub has been broken ... Revert "Improvement: Bugfix : directory reading common data reading fix (//) ... now uses _base ...
+
 ## 20250626-1
 - Bugfix : language marker __ is kept in URI as long time as possible : without specified help file it has been able to produce malformed links in chapter content text
 
