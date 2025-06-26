@@ -281,7 +281,8 @@ window.addEventListener("load", checkSidebarWidth);
 
 /*S: Topic renderer logic integration */
 function convertRelativePathToViewerURI(val) {
-  return `?${PAR_NAME_DOC}=${dataPathGeneral}&${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(idxTreeItem)}`;
+  var pard = dataPathGeneral ? `${PAR_NAME_DOC}=${dataPathGeneral}&` : ``;
+  return `?${pard}${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(idxTreeItem)}`;
 }
 
 function setSearchParams(url, path, i) {
