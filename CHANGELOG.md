@@ -1,5 +1,21 @@
 # Changelog
 
+## 20250626
+- robots.txt : updated for rights being less restrictive
+- Optimization : DEFAULT_LANG constant defined
+- Improvement : language marker __ is kept in URI as long time as possible (sometimes there has been recognized exact language and kept in URI path)
+- Improvement : plus.css, plus.js introduced files with pure extension of Viewer functionality (until now only override has been possible)
+- Dockerfile : Optimization of kept packages in target image
+- Documentation (README.md) : upgraded, old state removed
+- Bugfixes
+  - Mermaid diagrams drawing fixed
+  - Keyword indexes has been able to return topic link multiple times in certain cases with multiple synonym usages
+  - CSS : Line border on sidebar
+  - Indexes are able to hold situation when you will declare one same word multiple times. Lists of files are joined now correctly
+  - directory reading common data reading fix (//) ... now uses _base subdirectory here to respect the standard convention like in case of GitHub helpfile repository structure
+  - CSS : Bugfix in responsive - mobile view : left panel arranged correctly over small screen, side switch button now behaves better
+  - UI : Left bottom button panel is one lined with 9 or less buttons visible.
+
 ## 20250621
 - Improvement : application data ZIP is backed up by try for folder name access (it can be unzipped if wanted)
 - Viewer is now able to process some extra language which is not known to viewer, but author can define it.
