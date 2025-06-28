@@ -105,7 +105,13 @@ async function newStorageDir(path) {
     return path.replace(/\/$/, '');
   }
   async function search(filePath, format = STOF_TEXT) {
-    const fpath = `${storageO}/${filePath}`.replace('//', '/');
+    var fpath = `${storageO}/${filePath}`;
+
+    if (fpath.startsWith('http') || fpath.startsWith('ftp'))
+      fpath = fpath.replace('//', '/');
+    else
+      fpath = fpath.replace('//', '/_base/');
+
     const response = await fetchDataOrEmpty(fpath);
 
     switch (format) {
