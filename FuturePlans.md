@@ -11,7 +11,6 @@
 - Event bus instead of interconnections
 - RSS generator
 - sitemap.xml
-- Author help
 - Editor for creating help files (possibly also sh scripts for build full text search)
 - Improve reading of markdowns - filter out YAML, TOML, JSON headings (currently not touching them) - getting information partially from them
 - Converting TEX file from archive to md format (investigation if possible, base support only?)
