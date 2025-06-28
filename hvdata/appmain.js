@@ -106,11 +106,17 @@ async function newStorageDir(path) {
   }
   async function search(filePath, format = STOF_TEXT) {
     var fpath = `${storageO}/${filePath}`;
+    const doubleSlash = '//';
+    const doubleSlashIndexLast = fpath.lastIndexOf(doubleSlash);
+    const doubleSlashIndex = fpath.indexOf(doubleSlash);
 
-    if (fpath.startsWith('http') || fpath.startsWith('ftp'))
-      fpath = fpath.replace('//', '/');
-    else
-      fpath = fpath.replace('//', '/_base/');
+    if (doubleSlashIndexLast != doubleSlashIndex && doubleSlashIndex >= 0 && doubleSlashIndexLast >= 0) {
+      var replacement = '/_base/';
+      if (fpath.startsWith('http') || fpath.startsWith('ftp'))
+        replacement = '/';
+
+      fpath = fpath.slice(0, doubleSlashIndexLast) + replacement + fpath.slice(doubleSlashIndexLast + 2);
+    }
 
     const response = await fetchDataOrEmpty(fpath);
 
