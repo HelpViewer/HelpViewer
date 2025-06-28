@@ -1,5 +1,8 @@
 # Changelog
 
+## 20250628-1
+- Bugfix: reading fix (//) ... updated replacement to only 1st from right. Previous actions harmed // just behind protocol and created relative URI path unwantedly
+
 ## 20250628
 - Bugfix: Read markdowns from GitHub has been broken; directory reading common data reading fix (//) ... now uses _base subdirectory here to respect the standard convention like in case of GitHub helpfile repository structure ... combined approach here to fulfill these requirements
 - index.html : marker when insert next src or rel link (for future processes)
