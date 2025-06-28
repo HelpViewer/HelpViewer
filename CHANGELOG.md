@@ -1,5 +1,9 @@
 # Changelog
 
+## 20250628
+- Bugfix: Read markdowns from GitHub has been broken; directory reading common data reading fix (//) ... now uses _base subdirectory here to respect the standard convention like in case of GitHub helpfile repository structure ... combined approach here to fulfill these requirements
+- index.html : marker when insert next src or rel link (for future processes)
+
 ## 20250626-2
 - Bugfix: Read markdowns from GitHub has been broken ... Revert "Improvement: Bugfix : directory reading common data reading fix (//) ... now uses _base ...
 
