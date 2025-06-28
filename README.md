@@ -4,11 +4,17 @@ HelpViewer is a lightweight and simple reader for ZIP archives or directories - 
 
 It supports offline use without requiring any backend or server, offering a clean and responsive interface inspired by the classic desktop help viewers from the Windows era.
 
-HelpViewer is [MIT licensed][MITL].
+⚖ HelpViewer is [MIT licensed][MITL].
 
-Open this file in [HelpViewer][OpenInViewer] to see it in action, or visit our [website][website] to learn more.
+👉 Open this file in [HelpViewer][OpenInViewer] to see it in action, or 
 
-Interested? Download the latest HelpViewer [release package][PackLatest] and feel free to join our [Discord][Discord] user group.
+🌐 visit our [website][website] to learn more.
+
+Interested?
+
+📦 Download the latest HelpViewer [release package][PackLatest] and feel free to 
+
+💬 join our [Discord][Discord] user group.
 
 ## Features
 
@@ -17,12 +23,14 @@ Interested? Download the latest HelpViewer [release package][PackLatest] and fee
 - Ready to work in offline mode without any backend or local server (requires disabling CORS in web browser)
 - Responsive (desktop and other devices supported)
 - Lightweight - distribution package under 1 MiB (most part of solution compressed)
+- See the [full list][Features]
 
 ## Features for authors
 
 - Single platform for rendering Markdown and HTML content (both can be present in one help ZIP file)
 - ZIP compression method supported (one single part file only)
 - Rendering diagrams by Mermaid library (included in deployment package)
+- See the [full list][FeaturesAuthor]
 
 ## How it works
 
@@ -30,6 +38,8 @@ Interested? Download the latest HelpViewer [release package][PackLatest] and fee
 2. In this session you will open **index.html** file in your browser.
 3. Set the URL parameter **?d=X**, where **X** is the path to your ZIP file or you can define path ending with **/** if you want to read a directory.  
    If you skip this step, **./hlp/Help-{current language}.zip** will be used by default.
+
+The UI is intuitive and easy to use, but if any questions arise, the [User Quick Guide][UserGuide] is there to help you.
 
 ## Used 3rd party products
 
@@ -81,3 +91,6 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [OpenInViewer]: https://helpviewer.github.io/?d=https://raw.githubusercontent.com/HelpViewer/HelpViewer/master/ "Open this file in HelpViewer"
 [Discord]: https://discord.gg/J2SjcmqHSZ "Discord user gorup"
 [PackLatest]: https://github.com/HelpViewer/HelpViewer/releases/latest "HelpViewer latest release package"
+[Features]: https://helpviewer.github.io/?p=features.md "Features list"
+[FeaturesAuthor]: https://helpviewer.github.io/?d=https%3A%2F%2Fraw.githubusercontent.com%2FHelpViewer%2FhelpAuthorsGuide%2Fmaster%2F__%2F&p=features.md "Features list for authors"
+[UserGuide]: https://helpviewer.github.io/?d=hlp-user/Help-__.zip "User quick guide"
