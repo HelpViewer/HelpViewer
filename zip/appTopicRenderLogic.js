@@ -223,7 +223,11 @@ async function getPathData(path, heading) {
     }
   } else 
   if (path.startsWith(":")) {
-    content = await _Storage.search(STO_DATA, path.substring(1));
+    if (/\.(md|htm|html)$/i.test(path)) {
+      content = await _Storage.search(STO_DATA, path.substring(1));
+    } else {
+      content = '';
+    }
   } else {
     content = await _Storage.search(STO_HELP, path);
   }
