@@ -43,9 +43,9 @@ The UI is intuitive and easy to use, but if any questions arise, the [User Quick
 
 ## Used 3rd party products
 
-- [JSZip library][JSZIP]
-- [Marked][Marked]
-- [Mermaid][Mermaid]
+- [JSZip library][JSZIP] (under MIT)
+- [Marked][Marked] (under MIT)
+- [Mermaid][Mermaid] (under MIT)
 
 ## Troubleshooting
 
