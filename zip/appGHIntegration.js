@@ -1,5 +1,17 @@
-const rawFilesBaseAddr = 'https://raw.githubusercontent.com/|/~~/__/';
+const rawFilesBaseAddr = 'https://raw.githubusercontent.com/|';
+
 const latestVerName = 'latest';
+
+function getHelpRepoUri(org, repo, langs = null, branch = 'master')
+{
+  var prjName = `${org}/${repo}/${branch}/`;
+
+  if (langs && langs !== 'off')
+    prjName = `${prjName}__/`;
+
+  const reply = `?d=${rawFilesBaseAddr.replace('|', prjName)}`;
+  return reply;
+}
 
 async function getReleaseBundleUri(arc, exactVer, fileName)
 {

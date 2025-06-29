@@ -1,0 +1,87 @@
+<h1>👀 View your own repository</h1>
+
+<style>
+.form-row {
+    display: flex;
+    gap: 1em;
+    align-items: baseline;
+    margin: 0.5em;
+}
+
+.form-row label {
+    width: 120px;
+    margin-right: 0.5em;
+    text-align: left;
+  }
+
+.form-row input {
+    flex: 1;
+}
+</style>  
+
+<p>This guide helps you see your own repository inside HelpViewer. It's not a migration - some features are limited or might not work just yet. But it might just be the first step toward choosing a tool that fits you. Just enter some information below and click the generated link to get started.</p>
+
+<p>🛈 This preview uses public content from GitHub.<br />If your repository is private, the preview will not work.<br />Everything runs in your browser only.</p>
+<p>&nbsp;</p>
+
+<div id="form">
+</div>
+
+<div class="form-row">
+<label>Link</label>
+<span id="previewLink"></span>
+</div>
+
+<script>
+function _init() {
+  const fieldOrg = 'org';
+  const fieldRepo = 'repo';
+  const fieldBranch = 'branch';
+  const fieldLanguages = 'langs';
+  
+  const formO = document.getElementById('form');
+
+  appendField(formO, fieldOrg, 'Organization/User', '');
+  appendField(formO, fieldRepo, 'Repository', '');
+  appendField(formO, fieldBranch, 'Branch/Tag', 'master');
+  appendField(formO, fieldLanguages, 'Language&nbsp;subdirectories', 'off', 'checkbox');
+
+  const iorg = document.getElementById(fieldOrg);
+  const irepo = document.getElementById(fieldRepo);
+  const ibranch = document.getElementById(fieldBranch);
+  const ilangs = document.getElementById(fieldLanguages);
+
+  const onBlur = updateLink;
+  const eventName = 'change';
+
+  iorg.addEventListener(eventName, onBlur);
+  irepo.addEventListener(eventName, onBlur);
+  ibranch.addEventListener(eventName, onBlur);
+  ilangs.addEventListener(eventName, onBlur);
+  
+  function updateLink() {
+    const org = iorg.value.trim();
+    const repo = irepo.value.trim();
+    const branch = ibranch.value.trim();
+    const langs = ilangs.checked;
+  
+    const span = document.getElementById("previewLink");
+  
+    if (org && repo) {
+      const url = getHelpRepoUri(org, repo, langs, branch);
+      span.innerHTML = `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    } else {
+      span.textContent = "";
+    }
+  }
+  
+  function appendField(target, id, title, defaultV = '', type = 'text') {
+      target.innerHTML += 
+      `<div class="form-row">
+          <label for="${id}">${title}</label>
+          <input type="${type}" id="${id}" value="${defaultV}" />
+      </div>`;
+  }
+}
+_init();
+</script>

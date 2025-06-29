@@ -221,6 +221,9 @@ async function getPathData(path, heading) {
       }
 
     }
+  } else 
+  if (path.startsWith(":")) {
+    content = await _Storage.search(STO_DATA, path.substring(1));
   } else {
     content = await _Storage.search(STO_HELP, path);
   }
