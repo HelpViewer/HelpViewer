@@ -17,6 +17,8 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
       linksEmitted++;
       var clickEvent = path;
       var hrefVal = '';
+      const myVer = configGetValue(CFG_KEY__VERSION, '').trim();
+      path = path.replace('~~', myVer);
       
       if (path === '=latestApp') {
           clickEvent = '';
