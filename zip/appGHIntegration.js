@@ -1,15 +1,27 @@
-const rawFilesBaseAddr = 'https://raw.githubusercontent.com/|';
-
 const latestVerName = 'latest';
+
+function getDateInYYYYMMDD(date)
+{
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}${mm}${dd}`;
+}
 
 function getHelpRepoUri(org, repo, langs = null, branch = 'master')
 {
+  const rawFilesBaseAddr = 'https://raw.githubusercontent.com/|';
   var prjName = `${org}/${repo}/${branch}/`;
 
   if (langs && langs !== 'off')
     prjName = `${prjName}__/`;
 
-  const reply = `?d=${rawFilesBaseAddr.replace('|', prjName)}`;
+  return rawFilesBaseAddr.replace('|', prjName);
+}
+
+function getHelpRepoUriReleaseZip(org, repo, branch = 'master')
+{
+  const reply = `https://github.com/${org}/${repo}/releases/download/${branch}/Help-__.zip`;
   return reply;
 }
 
