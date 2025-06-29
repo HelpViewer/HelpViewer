@@ -1,4 +1,4 @@
-<h1>👀 View your own repository</h1>
+<h1 id="_viewRepo-h1"></h1>
 
 <style>
 .form-row {
@@ -19,32 +19,42 @@
 }
 </style>  
 
-<p>This guide helps you see your own repository inside HelpViewer. It's not a migration - some features are limited or might not work just yet. But it might just be the first step toward choosing a tool that fits you. Just enter some information below and click the generated link to get started.</p>
+<p id="_viewRepo-par1"></p>
 
-<p>🛈 This preview uses public content from GitHub.<br />If your repository is private, the preview will not work.<br />Everything runs in your browser only.</p>
+<p id="_viewRepo-par2"></p>
 <p>&nbsp;</p>
 
 <div id="form">
 </div>
 
 <div class="form-row">
-<label>Link</label>
+<label id="_viewRepo-link"></label>
 <span id="previewLink"></span>
 </div>
 
 <script>
 function _init() {
-  const fieldOrg = 'org';
-  const fieldRepo = 'repo';
-  const fieldBranch = 'branch';
-  const fieldLanguages = 'langs';
+  const valH1 = '_viewRepo-h1';
+  const translateThis = [valH1, '_viewRepo-par1', '_viewRepo-par2', '_viewRepo-link'];
+
+  translateThis.forEach(id => {
+    var idField = id;
+    if (id === valH1) idField = 'mtitle';
+    var el = document.getElementById(idField);
+    if (el) el.innerHTML = _T(id);
+  });
+
+  const fieldOrg = '_viewRepo-org';
+  const fieldRepo = '_viewRepo-repo';
+  const fieldBranch = '_viewRepo-branch';
+  const fieldLanguages = '_viewRepo-langs';
   
   const formO = document.getElementById('form');
 
-  appendField(formO, fieldOrg, 'Organization/User', '');
-  appendField(formO, fieldRepo, 'Repository', '');
-  appendField(formO, fieldBranch, 'Branch/Tag', 'master');
-  appendField(formO, fieldLanguages, 'Language&nbsp;subdirectories', 'off', 'checkbox');
+  appendField(formO, fieldOrg, '');
+  appendField(formO, fieldRepo, '');
+  appendField(formO, fieldBranch, 'master');
+  appendField(formO, fieldLanguages, 'off', 'checkbox');
 
   const iorg = document.getElementById(fieldOrg);
   const irepo = document.getElementById(fieldRepo);
@@ -75,10 +85,10 @@ function _init() {
     }
   }
   
-  function appendField(target, id, title, defaultV = '', type = 'text') {
+  function appendField(target, id, defaultV = '', type = 'text') {
       target.innerHTML += 
       `<div class="form-row">
-          <label for="${id}">${title}</label>
+          <label for="${id}">${_T(id)}</label>
           <input type="${type}" id="${id}" value="${defaultV}" />
       </div>`;
   }
