@@ -8,11 +8,20 @@ async function getReleaseBundleUri(arc, exactVer, fileName)
 
   arc = arc || FILE_CONFIG_DEFAULT;
   fileName = fileName || 'package.zip';
-  const ver = exactVer || configGetValue(CFG_KEY__VERSION, '', arc).trim();
+  const myVer = configGetValue(CFG_KEY__VERSION, '', arc).trim();
+  const ver = exactVer || myVer;
   const prjName = configGetValue(CFG_KEY__PRJNAME, '', arc).trim();
   var uriP = releasesBaseAddr.replace('|', prjName);
+  const fallbackURI = `https://github.com/${prjName}/releases/download/${myVer}/${fileName}`
   uriP += ver === latestVerName ? latestVerName : `tags/${ver}`;
-  const response = await fetchData(uriP);
+  
+  var response;
+  try {
+    response = await fetchData(uriP);
+  } catch (error) {
+    return fallbackURI;
+  }
+  
   const decoder = new TextDecoder('utf-8');
   const txt = decoder.decode(response);
   const posKey = txt.indexOf(keyBrowserDownloadUri);
