@@ -8,6 +8,7 @@ const N_P_TREEITEM_FTS = 'fts-';
 const N_P_TREEITEM_BOOKMARK = 'bmark-';
 
 function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
+  if (!linesP) return '';
   const lines = linesP.split("\n");
   var linksEmitted = 0;
 
