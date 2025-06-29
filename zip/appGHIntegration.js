@@ -1,33 +1,34 @@
-const releasesBaseAddr = 'https://github.com/|/releases';
-
-async function prepareReleasesBaseAddr(arc)
-{
-  const prjName = configGetValue(CFG_KEY__PRJNAME, '', arc).trim();
-  return releasesBaseAddr.replace('|', prjName);
-}
+const rawFilesBaseAddr = 'https://raw.githubusercontent.com/|/~~/__/';
+const latestVerName = 'latest';
 
 async function getReleaseBundleUri(arc, exactVer, fileName)
 {
+  const releasesBaseAddr = 'https://api.github.com/repos/|/releases/';
+  const keyBrowserDownloadUri = 'browser_download_url';
+
   arc = arc || FILE_CONFIG_DEFAULT;
   fileName = fileName || 'package.zip';
-  var ver = exactVer || configGetValue(CFG_KEY__VERSION, '', arc).trim();
-  return `${await prepareReleasesBaseAddr(arc)}/download/${ver}/${fileName}`;
+  const ver = exactVer || configGetValue(CFG_KEY__VERSION, '', arc).trim();
+  const prjName = configGetValue(CFG_KEY__PRJNAME, '', arc).trim();
+  var uriP = releasesBaseAddr.replace('|', prjName);
+  uriP += ver === latestVerName ? latestVerName : `tags/${ver}`;
+  const response = await fetchData(uriP);
+  const decoder = new TextDecoder('utf-8');
+  const txt = decoder.decode(response);
+  const posKey = txt.indexOf(keyBrowserDownloadUri);
+  const endVal = `/${fileName}"`;
+  const posEndVal = txt.indexOf(endVal);
+
+  if (posKey < 0 || posEndVal < 0)
+    return null;
+
+  return txt.substring(keyBrowserDownloadUri.length + posKey + 4, posEndVal - 1 + endVal.length);
 }
 
 async function getLatestReleaseBundleUri(arc, fileName)
 {
   try {
-    arc = arc || FILE_CONFIG_DEFAULT;
-    const uri0 = await prepareReleasesBaseAddr(arc);
-    var uri = uri0 + "/latest";
-    const response = await fetch(uri, { redirect: "follow" });
-    const txt = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(txt, "text/html");
-    const h1 = doc.querySelectorAll("h1");
-    const lastH1 = h1[h1.length - 1];
-    const ver = lastH1?.innerText ?? null;
-    return getReleaseBundleUri(arc, ver, fileName);
+    return getReleaseBundleUri(arc, latestVerName, fileName);
   } catch (error) {
     return getReleaseBundleUri(arc, null, fileName);
   }
