@@ -1,12 +1,14 @@
 /*S: Topic renderer logic */
 const LK_MSG_PATH_NOT_FOUND_IN_ARCH = 'MSG_PATH_NOT_FOUND_IN_ARCH';
 
+const PANEL_NAME_CHAPTERANCHOR = 'downP-ChapterAnchor';
+
 const C_ANCHOR_CONTENT = ' #';
 
 const mainTitle = document.getElementById('mtitle');
 const contentPane = document.getElementById('content');
 const bookmarksPane = document.getElementById('subsList');
-const bookmarksPaneButton = document.getElementById('downP-ChapterAnchor');
+const bookmarksPaneButton = document.getElementById(PANEL_NAME_CHAPTERANCHOR);
 
 // interconnect with your logic
 var msgNoData = '';

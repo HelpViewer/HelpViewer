@@ -176,7 +176,7 @@ loadLocalization(activeLanguage).then(() => {
       
       if (!srcTreeData) {
         hideButton('downP-TopicTree');
-        showSidebarTab('sp-downP-ChapterAnchor');
+        showSidebarTab(`sp-${PANEL_NAME_CHAPTERANCHOR}`);
       }
       
       const docList = (await _Storage.search(STO_HELP, FILENAME_FILES));
@@ -267,17 +267,20 @@ ul.tree details[open] > summary::before {
   }
 });
 
+const C_TOOWIDE = 'too-wide';
+
 function checkSidebarWidth() {
   if (!sidebar) return;
   if (sidebar.offsetWidth / window.innerWidth > 0.5) {
-    sidebar.classList.add("too-wide");
+    sidebar.classList.add(C_TOOWIDE);
   } else {
-    sidebar.classList.remove("too-wide");
+    sidebar.classList.remove(C_TOOWIDE);
   }
 }
 
 window.addEventListener("resize", checkSidebarWidth);
 window.addEventListener("load", checkSidebarWidth);
+checkSidebarWidth();
 
 /*S: Topic renderer logic integration */
 function convertRelativePathToViewerURI(val) {
@@ -365,6 +368,15 @@ function handleClickOnTrees(event) {
   {
     loadPage(event, path, target.innerHTML, idI);
   }
+
+  if (
+    document.getElementById(`sp-${PANEL_NAME_CHAPTERANCHOR}`).classList.contains(C_HIDDENC) &&
+    document.getElementById(`sp-downP-TopicTree`).classList.contains(C_HIDDENC) &&
+    !a.id.startsWith('kwdf-|')
+  ) return;
+
+  if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
+    toggleSidebar();
 }
 
 document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
