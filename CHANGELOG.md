@@ -1,5 +1,18 @@
 # Changelog
 
+## 20250630
+- Documentation : Future plans - finished things removed
+- Documentation : Description is divided to short sentences, improved with icons and links to other focused documentations
+- Improvement : URI path for download is not gathered from HTML FE of GitHub (used API now)
+- Documentation : Explicitly mentioned MIT licenses
+- Bugfix: Improvement : URI path for download is not gathered from HTML FE of GitHub (used API now) ... fallback for no network fixed
+- Quick helper wizard for view any repository in HelpViewer (+ localization)
+- Tree paths starting with : : security improved. Only htm(l) and md can be read. Others will return no content even if exists
+- TOC tree is able to process ~~ as markup for help version (can be used for help files version adjusting dynamic way)
+- Documentation : Future plans - updated for new ideas
+- Bugfix : linesToHtmlTree returns empty response in case of wrong inputs than console error as it has been until now
+- Improvement : If there is a wide mode (mobile screen) active, then when there is any click in sidebar, the sidebar is closed after click for user to see chapter content immediately
+
 ## 20250628-1
 - Bugfix: reading fix (//) ... updated replacement to only 1st from right. Previous actions harmed // just behind protocol and created relative URI path unwantedly
 
