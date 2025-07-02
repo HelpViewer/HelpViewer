@@ -22,6 +22,8 @@ var navPanel = newNavigation('nav', treeItemHandlerGet, N_P_TREEITEM);
 window.nav = navPanel;
 navPanel.updateNavButtons(idxTreeItem);
 
+const BTN_CHANGEVERSION = 'downP-ChangeVersion';
+
 const handlers = {
   'downP-SwitchColorMode': (event) => { ColorTheme.switchColorMode() },
   'downP-Home': (event) => { loadPage(event, 'README.md', 'README.md', 0) },
@@ -35,6 +37,11 @@ const handlers = {
   'nav-left': (event) => { nav.navPrev(event) },
   'nav-top': (event) => { nav.navTop(event); },
   'nav-right': (event) => { nav.navNext(event); },
+  [BTN_CHANGEVERSION]: (event) => {
+    const pathVersions = '~' + getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
+    getPathData(pathVersions, pathVersions);
+    showSidebarTab(`sp-downP-ChapterAnchor`);
+   },
 };
 
 const handlerSwitchTab = (id) => showSidebarTab(id);
@@ -98,6 +105,8 @@ function handleSetLanguage(event) {
 
 langTab?.addEventListener('click', handleSetLanguage);
 
+var PRJNAME_VAL = null;
+
 loadLocalization(activeLanguage).then(() => {
   if (!dataPath || !pagePath) {
     SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
@@ -134,6 +143,7 @@ loadLocalization(activeLanguage).then(() => {
         }
       } else {
         FILE_CONFIG = parseConfigFile(FILE_CONFIG);
+        PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME).trim().split('/');
         
         var val = configGetValue(CFG_KEY_OverrideSidebarVisible, sidebarVisible);
         
@@ -262,7 +272,21 @@ ul.tree details[open] > summary::before {
 }` 
         );
       }
+
+      // other versions list
+      const pathVersions = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
+      var txt = null;
+      try {
+        const verList = await fetchData(pathVersions);
+        const decoder = new TextDecoder('utf-8');
+        txt = decoder.decode(verList);
+      } catch (error) {
+        txt = null;
+      }
       
+      if (txt)
+        document.getElementById(BTN_CHANGEVERSION)?.classList.remove(C_HIDDENC);
+
     })();
   }
 });

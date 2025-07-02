@@ -361,7 +361,7 @@ ul:has(li input[type="checkbox"]) {
 
 .multi-linePanel {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .toolbar-down > * {

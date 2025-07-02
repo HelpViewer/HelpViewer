@@ -1,4 +1,6 @@
 /*S: Topic renderer logic */
+const FILENAME_CHANGELOG = 'CHANGELOG.md';
+
 const LK_MSG_PATH_NOT_FOUND_IN_ARCH = 'MSG_PATH_NOT_FOUND_IN_ARCH';
 
 const PANEL_NAME_CHAPTERANCHOR = 'downP-ChapterAnchor';
@@ -230,6 +232,15 @@ async function getPathData(path, heading) {
     } else {
       content = '';
     }
+  } else 
+  if (path.startsWith("~")) {
+    try {
+      const verList = await fetchData(path.substring(1));
+      const decoder = new TextDecoder('utf-8');
+      content = decoder.decode(verList);
+    } catch (error) {
+      content = '';
+    }
   } else {
     content = await _Storage.search(STO_HELP, path);
   }
@@ -276,6 +287,29 @@ async function getPathData(path, heading) {
     bookmarksPaneButton.classList.remove(C_HIDDENC);
   }
   
+  // additional steps for files read from repository
+  if (path.startsWith("~") && path.endsWith(FILENAME_CHANGELOG)) {
+    const headings = document.querySelectorAll('h2');
+
+    headings.forEach(heading => {
+      const boomark = heading.querySelector('a');
+      const verId = heading.textContent.replace(C_ANCHOR_CONTENT, '');
+      
+      if (isNaN(Number(verId))) 
+        return;
+
+      heading.textContent = '';
+      const targURI = '?d=' + getHelpRepoUriReleaseZip(PRJNAME_VAL[0], PRJNAME_VAL[1], verId);//.replace('__', activeLanguage);
+
+      const link = document.createElement('a');
+      link.href = targURI;
+      link.textContent = verId;
+      
+      heading.appendChild(link);
+      heading.appendChild(boomark);
+    });
+  }
+
   // alternative for empty content panel
   if (content === '') {
     contentPane.innerHTML = _T(LK_MSG_PATH_NOT_FOUND_IN_ARCH);
