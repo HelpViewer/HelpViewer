@@ -301,7 +301,7 @@ async function getPathData(path, heading) {
 
       heading.textContent = '';
       const uriZIP = getHelpRepoUriReleaseZip(PRJNAME_VAL[0], PRJNAME_VAL[1], verId);
-      const targURI = '?d=' + uriZIP;
+      const targURI = `?${PAR_NAME_DOC}=${uriZIP}&${PAR_NAME_PAGE}=${pagePath}`;
 
       const link = document.createElement('a');
       link.href = targURI;
