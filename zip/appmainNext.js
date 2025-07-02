@@ -284,8 +284,12 @@ ul.tree details[open] > summary::before {
         txt = null;
       }
       
-      if (txt)
-        document.getElementById(BTN_CHANGEVERSION)?.classList.remove(C_HIDDENC);
+      var button = document.getElementById(BTN_CHANGEVERSION);
+      
+      if (txt && button) {
+        button.classList.remove(C_HIDDENC);
+        recomputeButtonPanel(button);
+      }
 
     })();
   }
