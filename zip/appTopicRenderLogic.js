@@ -299,13 +299,19 @@ async function getPathData(path, heading) {
         return;
 
       heading.textContent = '';
-      const targURI = '?d=' + getHelpRepoUriReleaseZip(PRJNAME_VAL[0], PRJNAME_VAL[1], verId);//.replace('__', activeLanguage);
+      const uriZIP = getHelpRepoUriReleaseZip(PRJNAME_VAL[0], PRJNAME_VAL[1], verId);
+      const targURI = '?d=' + uriZIP;
 
       const link = document.createElement('a');
       link.href = targURI;
       link.textContent = verId;
       
       heading.appendChild(link);
+
+      const linkDownload = document.createElement('a');
+      linkDownload.href = uriZIP.replace('__', activeLanguage);
+      linkDownload.innerText = '📥';
+      heading.appendChild(linkDownload);
       heading.appendChild(boomark);
     });
   }
