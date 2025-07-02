@@ -15,7 +15,6 @@
 - Improve reading of markdowns - filter out YAML, TOML, JSON headings (currently not touching them) - getting information partially from them
 - Converting TEX file from archive to md format (investigation if possible, base support only?)
 - Improve WCAG and other standards
-- Multiple version browsing support (need to rethink downloads and zip files storage)
 - United help system (grouping of single help files (united tree and dictionaries) - currently only links outside helpfile are allowed)
 - Associated topics groups (something like links/keywords/topics, see also )
 - Prepare process to not conflict with CORS policy
