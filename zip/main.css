@@ -371,6 +371,7 @@ ul:has(li input[type="checkbox"]) {
 
 .sidebar-page {
   overflow-y: auto;
+  flex: 1;
 }
 
 #toolbar button, .toolbar button, .pnl-btn {
