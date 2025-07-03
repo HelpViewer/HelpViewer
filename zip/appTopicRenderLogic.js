@@ -292,6 +292,8 @@ async function getPathData(path, heading) {
   if (path.startsWith("~") && path.endsWith(FILENAME_CHANGELOG)) {
     const headings = document.querySelectorAll('h2');
 
+    SetHeaderText(_T('versionList'));
+    
     headings.forEach(heading => {
       const boomark = heading.querySelector('a');
       const verId = heading.textContent.replace(C_ANCHOR_CONTENT, '');
