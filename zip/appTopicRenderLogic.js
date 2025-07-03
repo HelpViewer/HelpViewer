@@ -332,5 +332,13 @@ async function getPathData(path, heading) {
   
   const id = window.location.hash.substring(1);
   scrollToAnchor(id);
+
+  if (keywordToShow && keywordToShow.length > 0) {
+    const keywordRegex = new RegExp(keywordToShow, 'gi');
+    contentPane.innerHTML = contentPane.innerHTML.replace(
+      keywordRegex,
+      (match) => `<span class='wordFound'>${match}</span>`
+    );
+  }
 }
 /*E: Topic renderer logic */
