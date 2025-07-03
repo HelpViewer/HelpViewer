@@ -388,6 +388,10 @@ ul:has(li input[type="checkbox"]) {
   margin: 0px;
 }
 
+.sidebar.too-wide .sidebar-page, .sidebar.too-wide .toolbar-down button, .too-wide {
+  font-size: calc(1em * 1.5);
+}
+
 .inGray {
   filter: grayscale(100%);
 }
