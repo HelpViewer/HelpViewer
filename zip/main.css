@@ -389,7 +389,7 @@ ul:has(li input[type="checkbox"]) {
 }
 
 .sidebar.too-wide .sidebar-page, .sidebar.too-wide .toolbar-down button, .too-wide {
-  font-size: calc(1em * 1.5);
+  font-size: calc(1em * 1.3);
 }
 
 .too-wide .toolbar-down > * {
