@@ -1,6 +1,8 @@
 /*S: Topic renderer logic */
 const FILENAME_CHANGELOG = 'CHANGELOG.md';
 
+const MARKER_MARKWORD = '@@';
+
 const LK_MSG_PATH_NOT_FOUND_IN_ARCH = 'MSG_PATH_NOT_FOUND_IN_ARCH';
 
 const PANEL_NAME_CHAPTERANCHOR = 'downP-ChapterAnchor';
@@ -159,6 +161,12 @@ async function getPathData(path, heading) {
     pagePath = path = FILENAME_1STTOPIC;
   }
   
+  var keywordToShow = path.split(MARKER_MARKWORD);
+  path = keywordToShow[0];
+
+  if (keywordToShow.length > 1)
+    keywordToShow = keywordToShow[1];
+
   const bookmarkTest = path.split("#");
   
   if (bookmarkTest.length > 1) {
@@ -334,11 +342,33 @@ async function getPathData(path, heading) {
   scrollToAnchor(id);
 
   if (keywordToShow && keywordToShow.length > 0) {
-    const keywordRegex = new RegExp(keywordToShow, 'gi');
-    contentPane.innerHTML = contentPane.innerHTML.replace(
-      keywordRegex,
-      (match) => `<span class='wordFound'>${match}</span>`
-    );
+    const securedKeyword = keywordToShow.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(securedKeyword, 'gi');
+
+    searchOverTextNodesAndDo(contentPane, (parent) => {
+      const match = parent.nodeValue.match(regex);
+      if (match) {
+        const span = document.createElement('span');
+        span.innerHTML = parent.nodeValue.replace(regex, (m) =>
+          `<span class='wordFound'>${m}</span>`
+        );
+        parent.replaceWith(...span.childNodes);
+      }
+    });
+
+  }
+}
+
+function searchOverTextNodesAndDo(parent, action) {
+  if (parent.nodeType === Node.TEXT_NODE) {
+    action(parent);
+  } else if (
+    parent.nodeType === Node.ELEMENT_NODE &&
+    !['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parent.tagName)
+  ) {
+    for (let child of Array.from(parent.childNodes)) {
+      searchOverTextNodesAndDo(child, action);
+    }
   }
 }
 /*E: Topic renderer logic */

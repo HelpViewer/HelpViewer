@@ -10,6 +10,12 @@
   --c-anchorHover: #000;
   --c-anchorColor: #767676;
   --c-contentPaneColor: white;
+  --c-wordFound: yellow;
+}
+
+.wordFound {
+  background-color: var(--c-wordFound);
+  color: var(--c-wordFound-F);
 }
 
 html, body {
@@ -263,11 +269,11 @@ pre.code-numbers code::before {
   border-right: 1px solid var(--c-border);
 }
 
-pre.code-numbers code span {
+pre.code-numbers code span:not(.wordFound) {
   counter-increment: line;
 }
 
-pre.code-numbers code span::before {
+pre.code-numbers code span::before:not(.wordFound) {
   content: counter(line);
   display: inline-block;
   margin-left: -1em;
@@ -404,6 +410,8 @@ ul:has(li input[type="checkbox"]) {
   --c-contentPaneColor: black;
   --c-line0: transparent;
   --c-line1: transparent;
+  --c-wordFound: white;
+  --c-wordFound-F: black;
 }
 
 .inBWDuoColor a {

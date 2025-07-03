@@ -128,7 +128,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     var treeData = `${id}|||\n`;
     for (const item of files) {
       var targetkwName = pathHeadingAlias.get(idxPath[item]) || idxPath[item];
-      treeData += ` ${targetkwName}|||${idxPath[item]}\n`
+      treeData += ` ${targetkwName}|||${idxPath[item]}${MARKER_MARKWORD}${id}\n`
     }
     
     target.innerHTML = linesToHtmlTree(treeData, "kwdf-");
