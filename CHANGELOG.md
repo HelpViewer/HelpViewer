@@ -1,5 +1,10 @@
 # Changelog
 
+## 20250703
+- CSS : sidebar page is expanded over maximum part of parent
+- Bugfix : Line break on left bottom panel with buttons worked wrongly
+- Version switching introduced
+
 ## 20250630
 - Documentation : Future plans - finished things removed
 - Documentation : Description is divided to short sentences, improved with icons and links to other focused documentations
