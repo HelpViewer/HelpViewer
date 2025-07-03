@@ -306,7 +306,7 @@ async function getPathData(path, heading) {
       const boomark = heading.querySelector('a');
       const verId = heading.textContent.replace(C_ANCHOR_CONTENT, '');
       
-      if (isNaN(Number(verId))) 
+      if (isNaN(Number(verId.substring(0,8)))) 
         return;
 
       heading.textContent = '';
