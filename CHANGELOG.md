@@ -1,5 +1,11 @@
 # Changelog
 
+## 20250705
+- Improvement : HelpViewer is able to run even in full CORS now - Required files can and need to be uploaded via form (functionality is reduced - language and version switching not possible, author custom help file UI is not possible to use here in this scenario)
+- Searched word marking / highlight in chapter text (user dictionary and fulltext search)
+- If screen is too small (mobile), then text will be larger to 130%
+- Bugfix : Version switching : versions with -1 has not been processed with hyperlink
+
 ## 20250703
 - CSS : sidebar page is expanded over maximum part of parent
 - Bugfix : Line break on left bottom panel with buttons worked wrongly
