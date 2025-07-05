@@ -166,6 +166,8 @@ async function getPathData(path, heading) {
 
   if (keywordToShow.length > 1)
     keywordToShow = keywordToShow[1];
+  else
+    keywordToShow = null;
 
   const bookmarkTest = path.split("#");
   
