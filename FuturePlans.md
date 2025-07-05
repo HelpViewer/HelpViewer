@@ -11,11 +11,12 @@
 - Event bus instead of interconnections
 - RSS generator
 - sitemap.xml
-- Editor for creating help files (possibly also sh scripts for build full text search)
+- Editor for creating help files
 - Improve reading of markdowns - filter out YAML, TOML, JSON headings (currently not touching them) - getting information partially from them
 - Converting TEX file from archive to md format (investigation if possible, base support only?)
 - Improve WCAG and other standards
 - United help system (grouping of single help files (united tree and dictionaries) - currently only links outside helpfile are allowed)
 - Associated topics groups (something like links/keywords/topics, see also )
-- Prepare process to not conflict with CORS policy
 - Dead links checker
+- Idea: Explore possibilities of creating fulltext search on the fly without CI pre-built fulltext index
+- Discussion (e.g.: Disqus or other service) plugin
