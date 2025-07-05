@@ -302,6 +302,7 @@ pre.code-numbers code span::before:not(.wordFound) {
   body * {
     visibility: hidden;
     color: black;
+    --c-wordFound-F: black;
   }
 
   .main, .main * {
