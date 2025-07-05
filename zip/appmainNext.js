@@ -23,6 +23,7 @@ window.nav = navPanel;
 navPanel.updateNavButtons(idxTreeItem);
 
 const BTN_CHANGEVERSION = 'downP-ChangeVersion';
+const BTN_CHANGELANG = 'downP-ChangeLanguage';
 
 const handlers = {
   'downP-SwitchColorMode': (event) => { ColorTheme.switchColorMode() },
@@ -123,7 +124,8 @@ loadLocalization(activeLanguage).then(() => {
     (async () => {
       // load zip file
       try {
-        await _Storage.add(STO_HELP, dataPath);
+        if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
+          await _Storage.add(STO_HELP, dataPath);
       } catch {
         msgNoData = _T(LK_MSG_NODATA);
         contentPane.innerHTML = msgNoData;
@@ -289,6 +291,11 @@ ul.tree details[open] > summary::before {
       if (txt && button) {
         button.classList.remove(C_HIDDENC);
         recomputeButtonPanel(button);
+      }
+
+      if (dataPath === FILENAME_ZIP_ON_USER_INPUT) {
+        hideButton(BTN_CHANGEVERSION);
+        hideButton(BTN_CHANGELANG);
       }
 
     })();

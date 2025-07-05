@@ -15,6 +15,24 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="favicon.png">
   <meta name="robots" content="index,follow">
+  <style id="i-formsupport-css">
+    .form-row {
+        display: flex;
+        gap: 1em;
+        align-items: baseline;
+        margin: 0.5em;
+    }
+    
+    .form-row label {
+        width: 120px;
+        margin-right: 0.5em;
+        text-align: left;
+      }
+    
+    .form-row input {
+        flex: 1;
+    }
+    </style>
   <!-- %NREL% -->
 </head>
 <script>
@@ -29,7 +47,16 @@
 </noscript>
 <div id="cors-error">
 <p> ⚠ Do you see this message only? Then viewer is not reading help file content.<br>This may be caused by your browser blocking local file access (file://) due to CORS policy restrictions. </p>
-<p>You need to run your browser in mode with bypass CORS policy:</p>
+<p>You can select these files:</p>
+<form id="form">
+  <div id="formIn">
+  </div>
+  <button type="submit">Odeslat</button>
+</form>
+<script>
+  formCorsHelpFilesUpload();
+</script>
+<p>Alternatively you need to run your browser in mode with bypass CORS policy:</p>
 <ul>
 <li><p>Chrome:</p>
 <blockquote>

@@ -1,3 +1,63 @@
+const PAR_NAME_DOC = 'd'; // Help file path
+
+const id_JSAppRun = 'appRun';
+const FILENAME_ZIP_ON_USER_INPUT = '!.zip';
+
+function _T(id) {
+  return id;
+}
+
+function appendField(target, id, defaultV = '', type = 'text') {
+  target.innerHTML += 
+  `<div class="form-row">
+      <label for="${id}">${_T(id)}</label>
+      <input type="${type}" id="${id}" value="${defaultV}" />
+  </div>`;
+}
+
+function formCorsHelpFilesUpload()
+{
+  const formO = document.getElementById('formIn');
+  const fieldHvData = 'data.zip';
+  const fieldHelpLang = 'Help-(language).zip';
+  //const fieldHelpBase = 'Help-.zip';
+  const typeFile = 'file';
+
+  appendField(formO, fieldHvData, '', typeFile);
+  appendField(formO, fieldHelpLang, '', typeFile);
+  //appendField(formO, fieldHelpBase, '', typeFile);
+
+  const formM = document.getElementById('form');
+  formM.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const hvData = document.getElementById(fieldHvData);
+    const helpLang = document.getElementById(fieldHelpLang);
+
+    if (!hvData?.files?.length || !helpLang?.files?.length)
+      return;
+
+    const fileHvData = hvData.files[0];
+    const fileHelpLang = helpLang.files[0];
+
+    // var fileHelpBase = document.getElementById(fieldHelpBase);
+
+    // if (fileHelpBase?.files?.length)
+    //   fileHelpBase = fileHelpBase[0];
+    // else
+    //   fileHelpBase = null;
+
+    document.getElementById(id_JSAppRun)?.remove();
+    st = _Storage.add(STO_HELP, FILENAME_ZIP_ON_USER_INPUT, fileHelpLang).then(obsah => {
+      main(fileHvData);
+      const url = new URL(window.location.href);
+      url.searchParams.set(PAR_NAME_DOC, FILENAME_ZIP_ON_USER_INPUT);
+      window.history.pushState({}, "", url);
+    });
+
+  })
+}
+
 const STO_DATA = 'STO_DATA';
 const STO_HELP = 'STO_HELP';
 const STOF_TEXT = 'text';
@@ -13,10 +73,10 @@ const STORAGE_ENGINES = {
 var _Storage = (() => {
   var storagesC = new Map();
 
-  async function add(key, path) {
+  async function add(key, path, data = null) {
     for (const keyC in STORAGE_ENGINES) {
       if (path.endsWith(keyC)) {
-        const eng = await STORAGE_ENGINES[keyC](path);
+        const eng = await STORAGE_ENGINES[keyC](data || path);
         storagesC.set(key, eng);
         return true;
       }
@@ -179,16 +239,19 @@ async function newStorageDir(path) {
   };
 }
 
-async function main() {
+async function main(baseDataStream = null) {
   var st = null;
-  
-  try {
-    st = await _Storage.add(STO_DATA, `${DATA_FILE_PATH_BASE}.zip`);
-  } catch (error) {
-    st = await _Storage.add(STO_DATA, `${DATA_FILE_PATH_BASE}/`);
+  if (!baseDataStream) {
+    try {
+      st = await _Storage.add(STO_DATA, `${DATA_FILE_PATH_BASE}.zip`);
+    } catch (error) {
+      st = await _Storage.add(STO_DATA, `${DATA_FILE_PATH_BASE}/`);
+    }  
+  } else {
+    st = await _Storage.add(STO_DATA, `${DATA_FILE_PATH_BASE}.zip`, baseDataStream);
   }
   const srcT = await _Storage.search(STO_DATA, 'appmainRun.js');
-  appendJavaScript('appRun', srcT, document.body);
+  appendJavaScript(id_JSAppRun, srcT, document.body);
   runApp();
 }
 
@@ -206,7 +269,12 @@ async function fetchData(url) {
 const ZIPHelpers = (() => {
   async function loadZipFromUrl(url) {
     try {
-      const arrayBuffer = await fetchData(url);
+      var arrayBuffer = null;
+      if (typeof url === "string") {
+        arrayBuffer = await fetchData(url);
+      } else {
+        arrayBuffer = await url.arrayBuffer();
+      }
       const arch = await JSZip.loadAsync(arrayBuffer);
       return arch;
     } catch (error) {

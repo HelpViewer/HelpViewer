@@ -1,24 +1,5 @@
 <h1 id="_viewRepo-h1"></h1>
 
-<style>
-.form-row {
-    display: flex;
-    gap: 1em;
-    align-items: baseline;
-    margin: 0.5em;
-}
-
-.form-row label {
-    width: 120px;
-    margin-right: 0.5em;
-    text-align: left;
-  }
-
-.form-row input {
-    flex: 1;
-}
-</style>  
-
 <p id="_viewRepo-par1"></p>
 
 <p id="_viewRepo-par2"></p>
@@ -96,14 +77,6 @@ function _init() {
     } else {
       span.textContent = "";
     }
-  }
-  
-  function appendField(target, id, defaultV = '', type = 'text') {
-      target.innerHTML += 
-      `<div class="form-row">
-          <label for="${id}">${_T(id)}</label>
-          <input type="${type}" id="${id}" value="${defaultV}" />
-      </div>`;
   }
 }
 _init();
