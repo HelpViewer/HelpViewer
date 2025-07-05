@@ -403,6 +403,8 @@ ul:has(li input[type="checkbox"]) {
 
 .inBlackWhite {
   filter: grayscale(100%) contrast(200%);
+  --c-wordFound: black;
+  --c-wordFound-F: white;
 }
 
 .inStandard {
