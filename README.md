@@ -6,15 +6,25 @@ It supports offline use without requiring any backend or server, offering a clea
 
 ⚖ HelpViewer is [MIT licensed][MITL].
 
-👉 Open this file in [HelpViewer][OpenInViewer] to see it in action, or 
+👉 Open this file in [HelpViewer][OpenInViewer] to see it in action.
 
-🌐 visit our [website][website] to learn more.
+🌐 Visit our [website][website] to learn more.
 
 Interested?
 
-📦 Download the latest HelpViewer [release package][PackLatest] and feel free to 
+📦 Download the latest HelpViewer [release package][PackLatest].
 
-💬 join our [Discord][Discord] user group.
+💬 Join our [Discord][Discord] user group.
+
+Don’t want to just read other people’s help files?
+
+📘 Start to write your own [help files][AGuide].
+
+Want to be involved even more?
+
+📘 Read our [Contribution guidelines][Contrib].
+
+📜 Check out other important [project policies][DotGH].
 
 ## Features
 
@@ -98,3 +108,6 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [Features]: https://helpviewer.github.io/?p=features.md "Features list"
 [FeaturesAuthor]: https://helpviewer.github.io/?d=https%3A%2F%2Fraw.githubusercontent.com%2FHelpViewer%2FhelpAuthorsGuide%2Fmaster%2F__%2F&p=features.md "Features list for authors"
 [UserGuide]: https://helpviewer.github.io/?d=hlp-user/Help-__.zip "User quick guide"
+[Contrib]: https://helpviewer.github.io/?d=https%3A%2F%2Fraw.githubusercontent.com%2FHelpViewer%2F.github%2Fmaster%2F&p=CONTRIBUTING.md&id=4 "Contribution guidelines"
+[DotGH]: https://helpviewer.github.io/?d=https%3A%2F%2Fraw.githubusercontent.com%2FHelpViewer%2F.github%2Fmaster%2F&id=0 "Maintenance documents"
+[AGuide]: https://helpviewer.github.io/?d=hlp-aguide/Help-__.zip "Authoring guide"
