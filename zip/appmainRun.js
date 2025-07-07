@@ -26,12 +26,19 @@ async function runApp() {
   const sequence = ['appmainNext0.js', 'marked.min.js', 'appmainBaseLogic.js',
     'appLocalizationSwitcher.js',  'appmainHelpFileConfigFile.js', 'appGHIntegration.js', 
     'appFTree.js', 'appFNavigation.js', 'appFColorTheme.js', 
-    'appLayoutHandlers.js', 'appTopicRenderLogic.js',
+    'appLayoutHandlers.js', 'prism/prism.js', 'appTopicRenderLogic.js',
     'appmainFileParsingTocTree.js', 'appFKeywordIndex.js'];
 
   for (const one of sequence) {
     const srcMarkedJs = await _Storage.search(STO_DATA, one);
     appendJavaScript(one, srcMarkedJs, document.head);
+  }
+
+  const sequenceCSS = [ 'prism/prism.css', 'prism/override.css' ];
+
+  for (const one of sequenceCSS) {
+    const srcCSS = await _Storage.search(STO_DATA, one);
+    appendCSS(one, srcCSS, document.head);
   }
 
   if (!srcJSOverride)
