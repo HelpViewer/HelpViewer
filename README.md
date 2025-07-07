@@ -57,6 +57,7 @@ The UI is intuitive and easy to use, but if any questions arise, the [User Quick
 - [JSZip library][JSZIP] (under MIT)
 - [Marked][Marked] (under MIT)
 - [Mermaid][Mermaid] (under MIT)
+- [Prism][Prism] (under MIT)
 
 ## Troubleshooting
 
@@ -111,3 +112,4 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [Contrib]: https://helpviewer.github.io/?d=https%3A%2F%2Fraw.githubusercontent.com%2FHelpViewer%2F.github%2Fmaster%2F&p=CONTRIBUTING.md&id=4 "Contribution guidelines"
 [DotGH]: https://helpviewer.github.io/?d=https%3A%2F%2Fraw.githubusercontent.com%2FHelpViewer%2F.github%2Fmaster%2F&id=0 "Maintenance documents"
 [AGuide]: https://helpviewer.github.io/?d=hlp-aguide/Help-__.zip "Authoring guide"
+[Prism]: https://prismjs.com/ "Prism - syntax highlighting"
