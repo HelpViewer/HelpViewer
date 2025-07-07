@@ -2,3 +2,7 @@
 	path = zip/lang
 	url = https://github.com/HelpViewer/Translations.git
 	branch = master
+[submodule "zip/prism"]
+	path = zip/prism
+	url = https://github.com/HelpViewer/prism
+	branch = main
