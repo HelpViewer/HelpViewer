@@ -6,6 +6,9 @@ const LK_MSG_NODATA = 'MSG_NODATA';
 const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
 const listingCount = parseInt(localStorage.getItem(KEY_LS_KWLISTINGCOUNT)) || 50;
 
+const KEY_LS_PRINTICONS = "printIcons";
+const printIcons = parseInt(localStorage.getItem(KEY_LS_PRINTICONS)) || 2;
+
 var dataPathGeneral;
 
 function LoadURLParameters() {
@@ -428,6 +431,10 @@ function removeIconsForPrint() {
   var keepIconsConfig = (configGetValue(CFG_KEY_OverridePrintKeepIcons) || 0) == 1 ? 1 : 0;
   const directivePresent = contentPane.innerHTML.includes(DIRECTIVE_PRINT_KEEP_ICONS) ? 1 : 0;
   var decision = (keepIconsConfig + directivePresent) % 2;
+
+  if (printIcons == 0 || printIcons == 1)
+    decision = printIcons;
+
   if (decision == 1)
     return;
 
