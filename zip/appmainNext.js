@@ -7,7 +7,7 @@ const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
 const listingCount = parseInt(localStorage.getItem(KEY_LS_KWLISTINGCOUNT)) || 50;
 
 const KEY_LS_PRINTICONS = "printIcons";
-const printIcons = parseInt(localStorage.getItem(KEY_LS_PRINTICONS)) || 2;
+const printIcons = parseInt(localStorage.getItem(KEY_LS_PRINTICONS)) ?? 2;
 
 var dataPathGeneral;
 
