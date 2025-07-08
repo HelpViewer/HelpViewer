@@ -369,3 +369,15 @@ function searchOverTextNodesAndDo(parent, action) {
   }
 }
 /*E: Topic renderer logic */
+
+function clearIconsFromText(el) {
+  el.childNodes.forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      node.textContent = clearIconsFromTextSingleText(node.textContent);
+    }
+  });
+}
+
+function clearIconsFromTextSingleText(txt) {
+  return txt?.replace(/[^\x00-\x7F\u00A0-\u024F.,;:!?()\[\]{}<>"'@#%&*\-\s]/g, '');
+}

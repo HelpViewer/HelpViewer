@@ -419,3 +419,12 @@ function handleClickOnTrees(event) {
 document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
   tree.addEventListener('click', handleClickOnTrees);
 });
+
+function removeIconsForPrint() {
+  document.querySelectorAll('.main *').forEach(el => {
+    clearIconsFromText(el);
+  });
+  document.title = clearIconsFromTextSingleText(document.title);
+}
+
+window.addEventListener('beforeprint', removeIconsForPrint);
