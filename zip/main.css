@@ -178,7 +178,7 @@ ul.tree details[open] > summary::before {
     line-height: 1.42857143;
     word-break: break-all;
     word-wrap: break-word;
-    background-color: var(--c-background);
+    /*background-color: var(--c-background);*/
     border: 1px solid var(--c-border);
     border-radius: 4px;
     overflow: auto;
@@ -304,7 +304,7 @@ ul:has(li input[type="checkbox"]) {
 
 .inBWDuoColor {
   background: black;
-  color: white;
+  color: white !important;
   --c-background: black;
   --c-backgroundHead: black;
   --c-tabLine1: black;
@@ -315,6 +315,11 @@ ul:has(li input[type="checkbox"]) {
   --c-line1: transparent;
   --c-wordFound: white;
   --c-wordFound-F: black;
+}
+
+.inBWDuoColor .token, .inBWDuoColor code[class*=language-], .token operator {
+  color: white !important;
+  background-color: unset;
 }
 
 .inBWDuoColor a {

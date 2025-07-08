@@ -21,6 +21,13 @@ async function initLayout(store) {
 }
 
 async function runApp() {
+  const sequenceCSS = [ 'prism/prism.css', 'prism/override.css' ];
+
+  for (const one of sequenceCSS) {
+    const srcCSS = await _Storage.search(STO_DATA, one);
+    appendCSS(one, srcCSS, document.head);
+  }
+
   initLayout(STO_DATA);
   
   const sequence = ['appmainNext0.js', 'marked.min.js', 'appmainBaseLogic.js',
@@ -32,13 +39,6 @@ async function runApp() {
   for (const one of sequence) {
     const srcMarkedJs = await _Storage.search(STO_DATA, one);
     appendJavaScript(one, srcMarkedJs, document.head);
-  }
-
-  const sequenceCSS = [ 'prism/prism.css', 'prism/override.css' ];
-
-  for (const one of sequenceCSS) {
-    const srcCSS = await _Storage.search(STO_DATA, one);
-    appendCSS(one, srcCSS, document.head);
   }
 
   if (!srcJSOverride)
