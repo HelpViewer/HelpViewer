@@ -360,7 +360,7 @@ ul:has(li input[type="checkbox"]) {
 @media print {
   body * {
     visibility: hidden;
-    color: black;
+    color: black !important;
     --c-wordFound-F: black;
   }
 
