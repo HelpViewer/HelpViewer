@@ -423,7 +423,10 @@ document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
 const DIRECTIVE_PRINT_KEEP_ICONS = '<!-- @print-keep-icons -->';
 
 function removeIconsForPrint() {
-  if (contentPane.innerHTML.includes(DIRECTIVE_PRINT_KEEP_ICONS))
+  var keepIconsConfig = (configGetValue(CFG_KEY_OverridePrintKeepIcons) || 0) == 1 ? 1 : 0;
+  const directivePresent = contentPane.innerHTML.includes(DIRECTIVE_PRINT_KEEP_ICONS) ? 1 : 0;
+  var decision = (keepIconsConfig + directivePresent) % 2;
+  if (decision == 1)
     return;
 
   document.querySelectorAll('.content *').forEach(el => {
