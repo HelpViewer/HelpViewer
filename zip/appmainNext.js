@@ -421,9 +421,13 @@ document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
 });
 
 function removeIconsForPrint() {
-  document.querySelectorAll('.main *').forEach(el => {
+  document.querySelectorAll('.content *').forEach(el => {
     clearIconsFromText(el);
   });
+  
+  if (mainTitle)
+    mainTitle.innerHTML = clearIconsFromTextSingleText(mainTitle.innerHTML);
+
   document.title = clearIconsFromTextSingleText(document.title);
 }
 
