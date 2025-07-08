@@ -420,7 +420,12 @@ document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
   tree.addEventListener('click', handleClickOnTrees);
 });
 
+const DIRECTIVE_PRINT_KEEP_ICONS = '<!-- @print-keep-icons -->';
+
 function removeIconsForPrint() {
+  if (contentPane.innerHTML.includes(DIRECTIVE_PRINT_KEEP_ICONS))
+    return;
+
   document.querySelectorAll('.content *').forEach(el => {
     clearIconsFromText(el);
   });
