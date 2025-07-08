@@ -230,48 +230,6 @@ pre code.language-mermaid, pre:has(> code.language-mermaid) {
 }
 /*E: anchors in headings*/
 
-/*S: print support*/
-@media print {
-  body * {
-    visibility: hidden;
-    color: black;
-    --c-wordFound-F: black;
-  }
-
-  .main, .main * {
-    visibility: visible;
-  }
-
-  .main {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
-
-  a {
-    color: black;
-  }
-  
-  .header {
-    background-color: transparent;
-  }
-  
-  button, .anchor-link {
-    display: none !important;
-  }
-  
-  svg {
-    filter: grayscale(100%);
-  }
-  
-/*  svg path {
-    fill: gray !important;
-    stroke: gray !important;
-  }*/
-}
-/*E: print support*/
-
 li:has(input[type="checkbox"]) {
   list-style-type: none;
 }
@@ -397,3 +355,49 @@ ul:has(li input[type="checkbox"]) {
   border-left: unset;
   border-right: 1px solid var(--c-border);
 }
+
+/*S: print support*/
+@media print {
+  body * {
+    visibility: hidden;
+    color: black;
+    --c-wordFound-F: black;
+  }
+
+  .main, .main * {
+    visibility: visible;
+  }
+
+  .main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  a {
+    color: black;
+  }
+  
+  .header {
+    background-color: transparent;
+  }
+  
+  button, .anchor-link {
+    display: none !important;
+  }
+  
+  svg {
+    filter: grayscale(100%);
+  }
+
+  .too-wide {
+    font-size: calc(1em);
+  }
+  
+/*  svg path {
+    fill: gray !important;
+    stroke: gray !important;
+  }*/
+}
+/*E: print support*/
