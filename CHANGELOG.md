@@ -1,5 +1,14 @@
 # Changelog
 
+## 20250708
+- **Prism** library **integrated** to solution for code highlight
+- Improvement : appmainRun : CSS sequence introduced
+- CSS : Bugfix : Print version correctly overrides all rules now and forces font color black
+- CSS : main.css is every time the last one to manage all rules
+- Improvement : Print version is stripped out of unicode icons : skipping directive introduced, user configuration, help configuration key
+- Improvement : Open all collapsible sections in content before print
+- Documentation : updated for changes
+
 ## 20250705
 - Improvement : HelpViewer is able to run even in full CORS now - Required files can and need to be uploaded via form (functionality is reduced - language and version switching not possible, author custom help file UI is not possible to use here in this scenario)
 - Searched word marking / highlight in chapter text (user dictionary and fulltext search)
