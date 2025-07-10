@@ -275,7 +275,7 @@ async function getPathData(path, heading) {
     treeString += ' '.repeat(parseInt(a.parentElement.tagName.slice(1, 2), 10) - 1);
     treeString += a.parentElement.innerText.slice(0, -C_ANCHOR_CONTENT.length);
     treeString += '|||';
-    treeString += new URL(a.href).hash;
+    treeString += path + (new URL(a.href).hash);
     treeString += '\n';
   });
   
