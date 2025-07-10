@@ -261,6 +261,8 @@ async function getPathData(path, heading) {
       content = marked.parse(content);
     }
   }
+
+  content = content.replace(DIRECTIVE_PRINT_PAGEBREAK, DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
   
   contentPane.innerHTML = transformOutput(content);
   
@@ -337,8 +339,6 @@ async function getPathData(path, heading) {
       contentPane.innerHTML = msgNoData;
     }
   }
-
-  contentPane.innerHTML = contentPane.innerHTML.replace(DIRECTIVE_PRINT_PAGEBREAK, DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
   
   contentPane.focus();
   refreshTitlesForLangStrings(null);
