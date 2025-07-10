@@ -44,6 +44,9 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
         hrefVal = convertRelativePathToViewerURI(path);
         clickEvent = path;
       }
+
+      if (clickEvent && clickEvent.includes('#') && !clickEvent.startsWith('#'))
+        clickEvent = '#' + clickEvent.split('#')[1];
     
       return `<a href="${hrefVal}" ${PAR_NAME_ID}="${treename}|${linksEmitted}" data-param="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
     } else {
