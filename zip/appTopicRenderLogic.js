@@ -120,10 +120,13 @@ function transformOutputConnected(doc) {
 function transformOutputConnectedMd(doc) {
   // append bookmarks to chapters
   const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  const counters = [0, 0, 0, 0, 0, 0];
 
   headings.forEach(heading => {
+    const level = parseInt(heading.tagName.substring(1));
+
     if (!heading.id) {
-      heading.id = nameForAnchor(heading.textContent);
+      heading.id = nameForAnchor(heading.textContent, level, counters[level-1]++);
     }
     
     const anchor = document.createElement('a');

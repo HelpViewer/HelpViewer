@@ -10,12 +10,13 @@ const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
 const FILENAME_FAVICON = 'favicon.png';
 
-function nameForAnchor(text) {
-  return text.toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-');
+function nameForAnchor(text, level, levelCounter) {
+  return `h-${level}-${levelCounter}`;
+  // return text.toLowerCase()
+  //   .trim()
+  //   .replace(/[^\w\s-]/g, '')
+  //   .replace(/\s+/g, '-')
+  //   .replace(/-+/g, '-');
 }
 
 /*S: Zip archive reading functions */
