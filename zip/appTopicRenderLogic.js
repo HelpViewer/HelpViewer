@@ -9,6 +9,9 @@ const PANEL_NAME_CHAPTERANCHOR = 'downP-ChapterAnchor';
 
 const C_ANCHOR_CONTENT = ' #';
 
+const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
+const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
+
 const mainTitle = document.getElementById('mtitle');
 const contentPane = document.getElementById('content');
 const bookmarksPane = document.getElementById('subsList');
@@ -334,6 +337,8 @@ async function getPathData(path, heading) {
       contentPane.innerHTML = msgNoData;
     }
   }
+
+  contentPane.innerHTML = contentPane.innerHTML.replace(DIRECTIVE_PRINT_PAGEBREAK, DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
   
   contentPane.focus();
   refreshTitlesForLangStrings(null);
