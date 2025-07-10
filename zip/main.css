@@ -404,5 +404,10 @@ ul:has(li input[type="checkbox"]) {
     fill: gray !important;
     stroke: gray !important;
   }*/
+
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
 }
 /*E: print support*/
