@@ -1,5 +1,11 @@
 # Changelog
 
+## 20250711
+- **Anchor naming logic changed : Instead of slugs anchor naming is now done by level and counter pair**
+- Force page break CSS class in print mode and directive introduced
+- Bugfix : Bookmark tree has not worked when any link has been opened by right click and Open in New Tab command
+- Bugfix: index.html is valid again for W3C check
+
 ## 20250708
 - **Prism** library **integrated** to solution for code highlight
 - Improvement : appmainRun : CSS sequence introduced
