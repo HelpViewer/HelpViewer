@@ -3,6 +3,8 @@ const FILENAME_MAINCSS = 'main.css';
 const FILENAME_JSBACKEND = 'appmainNext.js'
 const FILENAME_MAINCSS_PLUS = 'plus.css';
 const FILENAME_JSBACKEND_PLUS = 'plus.js';
+const FILENAME_LIST_JS = 'js.lst';
+const FILENAME_LIST_CSS = 'css.lst';
 
 var FILENAME_DEFAULT_HELPFILE = 'hlp/Help-.zip';
 
@@ -21,7 +23,8 @@ async function initLayout(store) {
 }
 
 async function runApp() {
-  const sequenceCSS = [ 'prism/prism.css', 'prism/override.css' ];
+  var listData = await _Storage.search(STO_DATA, FILENAME_LIST_CSS);
+  const sequenceCSS = rowsToArray(listData.trim());
 
   for (const one of sequenceCSS) {
     const srcCSS = await _Storage.search(STO_DATA, one);
@@ -29,12 +32,9 @@ async function runApp() {
   }
 
   initLayout(STO_DATA);
-  
-  const sequence = ['appmainNext0.js', 'marked.min.js', 'appmainBaseLogic.js',
-    'appLocalizationSwitcher.js',  'appmainHelpFileConfigFile.js', 'appGHIntegration.js', 
-    'appFTree.js', 'appFNavigation.js', 'appFColorTheme.js', 
-    'appLayoutHandlers.js', 'prism/prism.js', 'appTopicRenderLogic.js',
-    'appmainFileParsingTocTree.js', 'appFKeywordIndex.js'];
+
+  listData = await _Storage.search(STO_DATA, FILENAME_LIST_JS);
+  const sequence = rowsToArray(listData.trim());
 
   for (const one of sequence) {
     const srcMarkedJs = await _Storage.search(STO_DATA, one);
