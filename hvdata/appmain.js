@@ -48,7 +48,7 @@ function formCorsHelpFilesUpload()
     //   fileHelpBase = null;
 
     document.getElementById(id_JSAppRun)?.remove();
-    st = _Storage.add(STO_HELP, FILENAME_ZIP_ON_USER_INPUT, fileHelpLang).then(obsah => {
+    var st = _Storage.add(STO_HELP, FILENAME_ZIP_ON_USER_INPUT, fileHelpLang).then(obsah => {
       main(fileHvData);
       const url = new URL(window.location.href);
       url.searchParams.set(PAR_NAME_DOC, FILENAME_ZIP_ON_USER_INPUT);
@@ -66,8 +66,8 @@ const STOF_B64 = 'base64';
 const DATA_FILE_PATH_BASE = 'hvdata/data';
 
 const STORAGE_ENGINES = {
-  '.zip': async (path) => newStorageZip(path),
-  '/': async (path) => newStorageDir(path),
+  '.zip': async (path) => await new StorageZip().init(path),
+  '/': async (path) => await new StorageDir().init(path),
 };
 
 var _Storage = (() => {
@@ -113,21 +113,35 @@ var _Storage = (() => {
   };
 })();
 
-async function newStorageZip(path) {
-  var storageO = await init(path);
+/**
+ * @interface
+ */
+class IStorage {
+  async init(path) {}
+  async search(filePath, format) {}
+  async getSubdirs(parentPath) {}
+  async searchImage(filePath) {}
+}
 
-  async function init(path) {
-    return await ZIPHelpers.loadZipFromUrl(path);
+class StorageZip extends IStorage {
+  constructor() {
+    super();
+    this.storageO = null;
+  }
+  
+  async init(path) {
+    this.storageO = await ZIPHelpers.loadZipFromUrl(path);
+    return this;
   }
 
-  async function search(filePath, format = STOF_TEXT) {
-    return await ZIPHelpers.searchArchiveForFile(filePath, storageO, format);
+  async search(filePath, format = STOF_TEXT) {
+    return await ZIPHelpers.searchArchiveForFile(filePath, this.storageO, format);
   }
 
-  async function getSubdirs(parentPath) {
+  async getSubdirs(parentPath) {
     const subdirs = new Set();
 
-    storageO?.forEach((relativePath, file) => {
+    this.storageO?.forEach((relativePath, file) => {
       if (relativePath.startsWith(parentPath) && relativePath !== parentPath) 
       {
         const subPath = relativePath.slice(parentPath.length);
@@ -144,28 +158,33 @@ async function newStorageZip(path) {
     return [...subdirs];
   }
 
-  async function searchImage(filePath) {
-    const content = await search(filePath, STOF_B64);
+  async searchImage(filePath) {
+    const content = await this.search(filePath, STOF_B64);
     if (!content) return null;
     var mimeType = 'image/' + filePath.split('.').pop().toLowerCase();
     return `data:${mimeType};base64,${content}`;
   }
-
-  return {
-    search,
-    getSubdirs,
-    searchImage
-  };
 }
 
-async function newStorageDir(path) {
-  var storageO = await init(path);
+function toText(ab) {
+  const decoder = new TextDecoder('utf-8');
+  const text = decoder.decode(ab);
+  return text;
+}
 
-  async function init(path) {
-    return path.replace(/\/$/, '');
+class StorageDir extends IStorage {
+  constructor() {
+    super();
+    this.storageO = null;
   }
-  async function search(filePath, format = STOF_TEXT) {
-    var fpath = `${storageO}/${filePath}`;
+  
+  async init(path) {
+    this.storageO = path.replace(/\/$/, '');
+    return this;
+  }
+
+  async search(filePath, format = STOF_TEXT) {
+    var fpath = `${this.storageO}/${filePath}`;
     const doubleSlash = '//';
     const doubleSlashIndexLast = fpath.lastIndexOf(doubleSlash);
     const doubleSlashIndex = fpath.indexOf(doubleSlash);
@@ -178,7 +197,7 @@ async function newStorageDir(path) {
       fpath = fpath.slice(0, doubleSlashIndexLast) + replacement + fpath.slice(doubleSlashIndexLast + 2);
     }
 
-    const response = await fetchDataOrEmpty(fpath);
+    const response = await this.fetchDataOrEmpty(fpath);
 
     switch (format) {
       case STOF_B64:
@@ -196,15 +215,9 @@ async function newStorageDir(path) {
     }
   }
 
-  function toText(ab) {
-    const decoder = new TextDecoder("utf-8");
-    const text = decoder.decode(ab);
-    return text;
-  }
-
-  async function getSubdirs(parentPath) {
-    const list = search(`${storageO}/${parentPath}/__dir.lst`, format = STOF_TEXT);
-    const text = toText(list);
+  async getSubdirs(parentPath) {
+    const list = this.search(`${this.storageO}/${parentPath}/__dir.lst`, STOF_TEXT);
+    var text = toText(list);
     text = text.trim().replace(/\r\n/g, "\n").split('\n');
 
     const subdirs = new Set();
@@ -215,7 +228,7 @@ async function newStorageDir(path) {
     return [...subdirs];
   }
 
-  async function fetchDataOrEmpty(url) {
+  async fetchDataOrEmpty(url) {
     try {
       const response = await fetchData(url);
       return response;
@@ -224,19 +237,13 @@ async function newStorageDir(path) {
     }
   }
 
-  async function searchImage(filePath) {
-    const fpath = `${storageO}/${filePath}`;
-    const response = await fetchDataOrEmpty(fpath);
+  async searchImage(filePath) {
+    const fpath = `${this.storageO}/${filePath}`;
+    const response = await this.fetchDataOrEmpty(fpath);
     if (response.byteLength == 0)
       return null;
     return fpath;
   }
-
-  return {
-    search,
-    getSubdirs,
-    searchImage
-  };
 }
 
 async function main(baseDataStream = null) {
