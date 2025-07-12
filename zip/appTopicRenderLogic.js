@@ -247,8 +247,7 @@ async function getPathData(path, heading) {
   if (path.startsWith("~")) {
     try {
       const verList = await fetchData(path.substring(1));
-      const decoder = new TextDecoder('utf-8');
-      content = decoder.decode(verList);
+      content = toText(verList);
     } catch (error) {
       content = '';
     }

@@ -69,7 +69,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   
     keywordFiles = kwToFilesData.map(kwf => kwf.split(";"));
     
-    keywordsDivided = new Map();
+    var keywordsDivided = new Map();
     
     for (var i = 0; i < keywordOriginal.length; i++) {
       const kw = keywordOriginal[i];

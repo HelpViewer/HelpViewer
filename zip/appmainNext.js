@@ -283,8 +283,7 @@ ul.tree details[open] > summary::before {
       var txt = null;
       try {
         const verList = await fetchData(pathVersions);
-        const decoder = new TextDecoder('utf-8');
-        txt = decoder.decode(verList);
+        txt = toText(verList);
       } catch (error) {
         txt = null;
       }
@@ -391,7 +390,7 @@ function handleClickOnTrees(event) {
   if (!data) return;
 
   data = data.split(';');
-  path = data[0];
+  var path = data[0];
 
   if (path.startsWith('@')) {
     path = path.substring(1).split(":");

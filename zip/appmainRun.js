@@ -25,7 +25,7 @@ async function runApp() {
 
   for (const one of sequenceCSS) {
     const srcCSS = await _Storage.search(STO_DATA, one);
-    appendCSS(one, srcCSS, document.head);
+    appendCSS(one, srcCSS);
   }
 
   initLayout(STO_DATA);

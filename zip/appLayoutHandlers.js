@@ -20,21 +20,21 @@ function toggleSidebar() {
   if (sidebar.classList.contains(C_HIDDENC)) {
     sidebar.classList.remove(C_HIDDENC);
     showBtn.classList.add(C_HIDDENC);
-    localStorage.setItem(KEY_LS_SIDEBARVISIBLE, 1);
+    localStorage.setItem(KEY_LS_SIDEBARVISIBLE, '1');
   } else {
     sidebar.classList.add(C_HIDDENC);
     showBtn.classList.remove(C_HIDDENC);
-    localStorage.setItem(KEY_LS_SIDEBARVISIBLE, 0);
+    localStorage.setItem(KEY_LS_SIDEBARVISIBLE, '0');
   }
 }
 
 function toggleSidebarSide() {
   if (container.classList.contains(C_TORIGHT)) {
     container.classList.remove(C_TORIGHT);
-    localStorage.setItem(KEY_LS_SIDEBARSIDE, 1);
+    localStorage.setItem(KEY_LS_SIDEBARSIDE, '1');
   } else {
     container.classList.add(C_TORIGHT);
-    localStorage.setItem(KEY_LS_SIDEBARSIDE, 0);
+    localStorage.setItem(KEY_LS_SIDEBARSIDE, '0');
   }
 }
 /*E: Feature: Sidebar hide/show (sidebar switching) */

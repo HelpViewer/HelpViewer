@@ -46,8 +46,7 @@ async function getReleaseBundleUri(arc, exactVer, fileName)
     return fallbackURI;
   }
   
-  const decoder = new TextDecoder('utf-8');
-  const txt = decoder.decode(response);
+  const txt = toText(response);
   const posKey = txt.indexOf(keyBrowserDownloadUri);
   const endVal = `/${fileName}"`;
   const posEndVal = txt.indexOf(endVal);
