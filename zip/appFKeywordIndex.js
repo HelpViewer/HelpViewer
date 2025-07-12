@@ -22,7 +22,7 @@ var pathHeadingAlias = new Map();
 var idxPath = [];
 
 async function getDocumentHeadingTable(data) {
-  const transformed = data.replace(/\r\n/g, "\n").split("\n");
+  const transformed = rowsToArray(data);
   
   pathHeadingAlias = new Map();
   idxPath = [];
@@ -46,7 +46,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     if (!archContent)
       return false;
     
-    keywordOriginal = archContent.replace(/\r\n/g, "\n").split("\n");
+    keywordOriginal = rowsToArray(archContent);
     
     keywordToIndex = new Map();
     keywordOriginal.forEach((line, index) => {
@@ -62,7 +62,7 @@ function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
     });
     
     archContent = keywordToFilesData;
-    const kwToFilesData = archContent.replace(/\r\n/g, "\n").split("\n");
+    const kwToFilesData = rowsToArray(archContent);
   
     if (!archContent)
       return null;

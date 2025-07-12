@@ -28,9 +28,8 @@ function configGetValue(key, backup, CFG = FILE_CONFIG) {
 }
 
 function parseConfigFile(data) {
-  const obj = data
-    .trim()
-    .replace(/\r\n/g, "\n").split('\n')
+  var rows = rowsToArray(data.trim());
+  const obj = rows
     .reduce((acc, line) => {
       const [key, value] = line.split('|');
       acc[key] = value;

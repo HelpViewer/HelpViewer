@@ -218,7 +218,7 @@ class StorageDir extends IStorage {
   async getSubdirs(parentPath) {
     const list = this.search(`${this.storageO}/${parentPath}/__dir.lst`, STOF_TEXT);
     var text = toText(list);
-    text = text.trim().replace(/\r\n/g, "\n").split('\n');
+    text = rowsToArray(text.trim());
 
     const subdirs = new Set();
     text?.forEach((line, index) => {
@@ -319,6 +319,11 @@ function appendJavaScript(id, content, parentO) {
   script.textContent = content;
   script.id = id;
   parentO.appendChild(script);
+}
+
+function rowsToArray(t) {
+  if (!t) return;
+  return t.replace(/\r\n|\r/g, '\n').split('\n');
 }
 
 main();
