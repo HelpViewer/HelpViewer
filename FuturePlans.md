@@ -20,3 +20,4 @@
 - Dead links checker
 - Idea: Explore possibilities of creating fulltext search on the fly without CI pre-built fulltext index
 - Discussion (e.g.: Disqus or other service) plugin
+- Plugin architecture/system
