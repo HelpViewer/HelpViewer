@@ -16,15 +16,49 @@ const EventBus = {
     }
   },
 
-  snd(event, data) {
+  snd(data, eventKeyName) {
+    var event = eventKeyName || data.eventName;
     if (this.events.has(event)) {
-      for (const callback of this.events.get(event))
-        callback(data);
+      for (const callback of this.events.get(event)) {
+        try {
+          callback(data);
+        } catch (err) {
+          console.error(`! Error in event callback for "${event}":`, err);
+        }
+      }
     }
   }
 };
 
 window.EB = EventBus;
+
+const EventDefinitions = {};
+
+class EventDefinition {
+  constructor(inputType = IEvent) {
+    this.inputType = inputType;
+  }
+
+  createInput() {
+    return new this.inputType();
+  }
+}
+
+function getEventInput(event) {
+  return EventDefinitions[event]?.createInput() || new IEvent();
+}
+
+function addEventDefinition(eventName, eventDefinition) {
+  if (!(eventDefinition instanceof EventDefinition)) {
+    console.error(`EventDefinition instances are required here in this operation!`);
+    return;
+  }
+
+  if (EventDefinitions[eventName])
+    console.warn(`Event "${eventName}" is already defined. Definition is updated now`);
+
+  EventDefinitions[eventName] = eventDefinition;
+}
 
 class IEvent {
   //static eventName = 'NewEvent';
