@@ -166,12 +166,14 @@ loadLocalization(activeLanguage).then(() => {
       // load languages
       languages.then(async (languages) => {
         var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
-        const langs = new Set(await _Storage.getSubdirs(STO_DATA, languagesMainPath));
-        langsFromHelp = langsFromHelp.filter(lang => !langs.has(lang));
-        langsFromHelp.forEach((data, idx) => {
-          languages.push(`${data}|${data}`);
-        });
-    
+        langsFromHelp = langsFromHelp.filter(lang => !languages.includes(lang));
+
+        for (const data of langsFromHelp) {
+          const alias = await _Storage.search(STO_DATA, `${languagesMainPath}${data}/${langFileAlias}`) || data;
+          languages.push(`${alias}|${data}`);
+        }
+
+        languages = [...new Set(languages)];
         langTab.innerHTML = '';
       
         for (var i = 0; i < languages.length; i++) {
