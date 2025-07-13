@@ -16,9 +16,9 @@ function appendField(target, id, defaultV = '', type = 'text') {
   </div>`;
 }
 
-function formCorsHelpFilesUpload()
+function formCorsHelpFilesUpload(formName = 'form', formInName = 'formIn')
 {
-  const formO = document.getElementById('formIn');
+  const formO = document.getElementById(formInName);
   const fieldHvData = 'data.zip';
   const fieldHelpLang = 'Help-(language).zip';
   //const fieldHelpBase = 'Help-.zip';
@@ -33,7 +33,7 @@ function formCorsHelpFilesUpload()
   button.textContent = "Send";
   formO.appendChild(button);
 
-  const formM = document.getElementById('form');
+  const formM = document.getElementById(formName);
   formM.addEventListener("submit", function(e) {
     e.preventDefault();
 
