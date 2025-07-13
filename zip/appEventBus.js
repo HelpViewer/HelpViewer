@@ -67,5 +67,6 @@ class IEvent {
     this.createdAt = new Date();
     this.eventName = this.constructor.eventName || this.constructor.name || 'UnnamedEvent';
     this.id = '';
+    this.result = undefined;
   }
 }
