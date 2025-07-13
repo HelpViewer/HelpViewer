@@ -2,6 +2,7 @@ const PAR_NAME_DOC = 'd'; // Help file path
 
 const id_JSAppRun = 'appRun';
 const FILENAME_ZIP_ON_USER_INPUT = '!.zip';
+const FILENAME_DIR_LISTING = '__dir.lst';
 
 function _T(id) {
   return id;
@@ -167,6 +168,7 @@ class StorageZip extends IStorage {
 }
 
 function toText(ab) {
+  if (!ab) return undefined;
   const decoder = new TextDecoder('utf-8');
   const text = decoder.decode(ab);
   return text;
@@ -216,7 +218,7 @@ class StorageDir extends IStorage {
   }
 
   async getSubdirs(parentPath) {
-    const list = this.search(`${this.storageO}/${parentPath}/__dir.lst`, STOF_TEXT);
+    const list = await this.search(`${this.storageO}/${parentPath}/${FILENAME_DIR_LISTING}`, STOF_TEXT);
     var text = toText(list);
     text = rowsToArray(text.trim());
 
