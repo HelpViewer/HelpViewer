@@ -1,4 +1,5 @@
 appEventBus.js
+appPlugins.js
 appmainNext0.js
 marked.min.js
 appmainBaseLogic.js
