@@ -5,6 +5,7 @@ const FILENAME_MAINCSS_PLUS = 'plus.css';
 const FILENAME_JSBACKEND_PLUS = 'plus.js';
 const FILENAME_LIST_JS = 'js.lst';
 const FILENAME_LIST_CSS = 'css.lst';
+const FILENAME_LIST_JS_PLUGINS = 'plugins.lst';
 
 var FILENAME_DEFAULT_HELPFILE = 'hlp/Help-.zip';
 
@@ -51,4 +52,24 @@ async function runApp() {
 
   if (srcJSOverridePlus)
     appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
+
+  listData = await _Storage.search(STO_DATA, FILENAME_LIST_JS_PLUGINS);
+  const sequencePlugins = rowsToArray(listData.trim());
+
+  for (const one of sequencePlugins) {
+    const names = one.split(':');
+    const name = names[0];
+    var aliases = [];
+
+    if (names.length > 1)
+      aliases = names[1].split(';');
+
+    const srcMarkedJs = await _Storage.search(STO_DATA, `plugins/${name}.js`);
+    appendJavaScript(`plugins-${name}.js`, srcMarkedJs, document.head);
+
+    for (const oneAlias of aliases) {
+      Plugins.activate(name, oneAlias, {});
+    }
+  }
+
 }

@@ -1,10 +1,22 @@
 class IPlugin {
   constructor(aliasName, data) {
     this.aliasName = aliasName || '';
+    this.unsubscribersToEB = [];
   }
 
-  async init() {}
-  async deInit() {}
+  init() {}
+
+  deInit() {
+    for (const one of this.unsubscribersToEB)
+      one();
+
+    this.unsubscribersToEB = [];
+  }
+
+  createEvent(name, handler) {
+    var unsubscribe = EventBus.sub(name, handler);
+    this.unsubscribersToEB.push(unsubscribe);
+  }
 }
 
 const Plugins = {
@@ -28,12 +40,12 @@ const Plugins = {
       return;
     }
 
-    this.pluginClasses.set(name, plugin);
+    this.pluginsClasses.set(name, plugin);
     console.log(`Plugins: registered '${name}'`);
   },
 
   activate(pluginName, aliasName, data) {
-    var plugin = this.pluginsClasses[pluginName];
+    var plugin = this.pluginsClasses.get(pluginName);
     var p = new plugin(aliasName, data);
 
     if (!p) {

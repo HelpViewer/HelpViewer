@@ -21,7 +21,14 @@ const EventBus = {
     if (this.events.has(event)) {
       for (const callback of this.events.get(event)) {
         try {
-          callback(data);
+          const result = callback(data);
+
+          if (result instanceof Promise) {
+            result.then(() => {
+            }).catch(err => {
+              console.error(`! Error in async handler for "${event}":`, err);
+            });
+          }
         } catch (err) {
           console.error(`! Error in event callback for "${event}":`, err);
         }
@@ -58,6 +65,10 @@ function addEventDefinition(eventName, eventDefinition) {
     console.warn(`Event "${eventName}" is already defined. Definition is updated now`);
 
   EventDefinitions[eventName] = eventDefinition;
+}
+
+function removeEventDefinition(eventName) {
+  delete EventDefinitions[eventName];
 }
 
 class IEvent {
