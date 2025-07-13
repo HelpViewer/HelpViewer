@@ -64,6 +64,9 @@ async function runApp() {
     if (names.length > 1)
       aliases = names[1].split(';');
 
+    if (aliases.length == 0)
+      aliases.push('');
+
     const srcMarkedJs = await _Storage.search(STO_DATA, `plugins/${name}.js`);
     appendJavaScript(`plugins-${name}.js`, srcMarkedJs, document.head);
 

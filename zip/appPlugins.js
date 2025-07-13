@@ -54,7 +54,9 @@ const Plugins = {
     }
 
     p.init();
-    this.plugins.set(this.getKey(pluginName, aliasName), p);
+    var key = this.getKey(pluginName, aliasName);
+    this.plugins.set(key, p);
+    console.log(`Plugins: activated '${key}'`);
   },
 
   getKey(pluginName, aliasName) {

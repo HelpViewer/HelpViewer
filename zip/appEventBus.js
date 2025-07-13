@@ -18,6 +18,7 @@ const EventBus = {
 
   snd(data, eventKeyName) {
     var event = eventKeyName || data.eventName;
+    
     if (this.events.has(event)) {
       for (const callback of this.events.get(event)) {
         try {
@@ -79,5 +80,6 @@ class IEvent {
     this.eventName = this.constructor.eventName || this.constructor.name || 'UnnamedEvent';
     this.id = '';
     this.result = undefined;
+    this.doneHandler = undefined;
   }
 }
