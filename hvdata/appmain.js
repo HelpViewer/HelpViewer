@@ -168,7 +168,10 @@ class StorageZip extends IStorage {
 }
 
 function toText(ab) {
-  if (!ab) return undefined;
+  if (!ab) return '';
+  if (typeof ab === 'string') return ab;
+  if (ab instanceof String) return ab.valueOf();
+  
   const decoder = new TextDecoder('utf-8');
   const text = decoder.decode(ab);
   return text;
@@ -197,6 +200,9 @@ class StorageDir extends IStorage {
         replacement = '/';
 
       fpath = fpath.slice(0, doubleSlashIndexLast) + replacement + fpath.slice(doubleSlashIndexLast + 2);
+    } else {
+      if (!fpath.startsWith('http') && !fpath.startsWith('ftp'))
+        fpath = fpath.replace(doubleSlash, '/');
     }
 
     const response = await this.fetchDataOrEmpty(fpath);
@@ -218,7 +224,7 @@ class StorageDir extends IStorage {
   }
 
   async getSubdirs(parentPath) {
-    const list = await this.search(`${this.storageO}/${parentPath}/${FILENAME_DIR_LISTING}`, STOF_TEXT);
+    const list = await this.search(`${parentPath}/${FILENAME_DIR_LISTING}`, STOF_TEXT);
     var text = toText(list);
     text = rowsToArray(text.trim());
 
