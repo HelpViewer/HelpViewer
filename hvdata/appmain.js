@@ -27,6 +27,11 @@ function formCorsHelpFilesUpload()
   appendField(formO, fieldHvData, '', typeFile);
   appendField(formO, fieldHelpLang, '', typeFile);
   //appendField(formO, fieldHelpBase, '', typeFile);
+  
+  const button = document.createElement("button");
+  button.type = "submit";
+  button.textContent = "Send";
+  formO.appendChild(button);
 
   const formM = document.getElementById('form');
   formM.addEventListener("submit", function(e) {
