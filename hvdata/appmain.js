@@ -16,11 +16,11 @@ function appendField(target, id, defaultV = '', type = 'text') {
   </div>`;
 }
 
-function formCorsHelpFilesUpload(formName = 'form', formInName = 'formIn')
+function formCorsHelpFilesUpload(fieldHelpLangTitle = 'Help-(language).zip', fieldHvDataTitle = 'data.zip', formName = 'form', formInName = 'formIn')
 {
   const formO = document.getElementById(formInName);
-  const fieldHvData = 'data.zip';
-  const fieldHelpLang = 'Help-(language).zip';
+  const fieldHvData = fieldHvDataTitle;
+  const fieldHelpLang = fieldHelpLangTitle;
   //const fieldHelpBase = 'Help-.zip';
   const typeFile = 'file';
 
