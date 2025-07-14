@@ -66,7 +66,14 @@ const Plugins = {
 
   activate(pluginName, aliasName, data) {
     var plugin = this.pluginsClasses.get(pluginName);
-    var p = new plugin(aliasName, data);
+    var p = null;
+
+    try {
+      p = new plugin(aliasName, data);
+    } catch (error) {
+      p = null;
+      plugin = pluginName;
+    }
 
     if (!p) {
       console.error(`Plugin ${plugin} establishment failed!`);

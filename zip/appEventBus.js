@@ -44,6 +44,7 @@ const EventBus = {
 window.EB = EventBus;
 
 const EventDefinitions = {};
+const EventNames = {};
 
 class EventDefinition {
   constructor(inputType = IEvent, eventName = undefined) {
@@ -73,6 +74,7 @@ function addEventDefinition(eventName, eventDefinition) {
     console.warn(`Event "${eventName}" is already defined. Definition is updated now`);
 
   EventDefinitions[eventName] = eventDefinition;
+  EventNames[eventName] = eventName;
 }
 
 function removeEventDefinition(eventName) {
