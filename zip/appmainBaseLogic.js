@@ -23,15 +23,13 @@ function nameForAnchor(text, level, levelCounter) {
 
 async function getDataOfPathInZIPImage(path, archive) {
   return new Promise((resolve, reject) => {
-  var input = getEventInput(EVT_STORAGE_GET_IMAGE);
+    var input = getEventInput(EVT_STORAGE_GET_IMAGE);
 
-  input.fileName = path;
-  input.storageName = archive;
-  input.doneHandler = (d) => resolve(d.result);
+    input.fileName = path;
+    input.storageName = archive;
+    input.doneHandler = (d) => resolve(d.result);
 
-  EventBus.snd(input);
-  // const content = await _Storage.searchImage(archive, path);
-  // return content;
+    EventBus.snd(input);
   });
 }
 /*E: Zip archive reading functions */

@@ -18,10 +18,13 @@ const EventBus = {
 
   snd(data, eventKeyName) {
     var event = eventKeyName || data.eventName;
-    
+
     if (this.events.has(event)) {
       for (const callback of this.events.get(event)) {
         try {
+          if (data && data.requiresDoneHandler && !data.doneHandler)
+            console.warn(`! Data object for ${event} has defined doneHandler property as required.`);
+
           const result = callback(data);
 
           if (result instanceof Promise) {
@@ -43,12 +46,16 @@ window.EB = EventBus;
 const EventDefinitions = {};
 
 class EventDefinition {
-  constructor(inputType = IEvent) {
+  constructor(inputType = IEvent, eventName = undefined) {
     this.inputType = inputType;
+    this.eventName = eventName;
   }
 
   createInput() {
-    return new this.inputType();
+    var input = new this.inputType();
+    if (this.eventName)
+      input.eventName = this.eventName;
+    return input;
   }
 }
 
@@ -81,5 +88,6 @@ class IEvent {
     this.id = '';
     this.result = undefined;
     this.doneHandler = undefined;
+    this.requiresDoneHandler = false;
   }
 }
