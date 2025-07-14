@@ -243,17 +243,20 @@ loadLocalization(activeLanguage).then(() => {
       getPathData(pagePath, pathHeadingAlias?.get(pagePath));
       
       // override book images in tree structure
-      var bookOpen = await getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP);
-      var bookClosed = await getDataOfPathInZIPImage(FILENAME_BOOKC, STO_HELP);
+      var [bookOpen, bookClosed] = await Promise.all([
+        getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP),
+        getDataOfPathInZIPImage(FILENAME_BOOKC, STO_HELP),
+      ]);
+
       var doOverride = null;
       
       if (bookOpen && bookClosed) {
-        var bookOpen = `url("${bookOpen}")`;
-        var bookClosed = `url("${bookClosed}")`;
+        bookOpen = `url("${bookOpen}")`;
+        bookClosed = `url("${bookClosed}")`;
         doOverride = 1;
       } else {
-        var bookOpen = configGetValue(CFG_KEY_OverrideBookIconOpened);
-        var bookClosed = configGetValue(CFG_KEY_OverrideBookIconClosed);
+        bookOpen = configGetValue(CFG_KEY_OverrideBookIconOpened);
+        bookClosed = configGetValue(CFG_KEY_OverrideBookIconClosed);
         
         if (bookOpen && bookClosed) {
           const icon = document.createElement('span');
@@ -261,8 +264,8 @@ loadLocalization(activeLanguage).then(() => {
           bookOpen = icon.innerHTML;
           icon.innerHTML = bookClosed;
           bookClosed = icon.innerHTML;
-          var bookOpen = `"${bookOpen}"`;
-          var bookClosed = `"${bookClosed}"`;
+          bookOpen = `"${bookOpen}"`;
+          bookClosed = `"${bookClosed}"`;
           doOverride = 1;
         }
       }
