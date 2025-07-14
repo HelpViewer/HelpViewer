@@ -21,7 +21,7 @@ function nameForAnchor(text, level, levelCounter) {
 
 /*S: Zip archive reading functions */
 
-async function getDataOfPathInZIPImage(path, archive) {
+function getDataOfPathInZIPImage(path, archive) {
   return sendEventWProm(EVT_STORAGE_GET_IMAGE, (input) => {
     input.fileName = path;
     input.storageName = archive;
@@ -30,18 +30,16 @@ async function getDataOfPathInZIPImage(path, archive) {
 /*E: Zip archive reading functions */
 
 /*S: Fixing local in archive paths to base64 dump*/
-async function fixImgRelativePathToZipPaths(doc, archive, exclude = '')
+function fixImgRelativePathToZipPaths(doc, archive, exclude = '')
 {
   doc.querySelectorAll(`img${exclude}`).forEach((img) => {
-    (async () => {
-      const src = img.getAttribute('src');
-      if (src && !/^https?:\/\//.test(src)) {
-        const data = await getDataOfPathInZIPImage(src, archive);
-        if (data) {
+    const src = img.getAttribute('src');
+    if (src && !/^https?:\/\//.test(src)) {
+      getDataOfPathInZIPImage(src, archive).then((data) => {
+        if (data)
           img.src = data;
-        }
-      }
-    })();
+      });
+    }
   });
 }
 /*E: Fixing local in archive paths to base64 dump*/
