@@ -79,6 +79,25 @@ function removeEventDefinition(eventName) {
   delete EventDefinitions[eventName];
 }
 
+function sendEventWPromise(eventData) {
+  return new Promise((resolve, reject) => {
+    eventData.doneHandler = (d) => resolve(d.result);
+    try {
+      EventBus.snd(eventData);
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+function sendEventWProm(eventName, eventDataInit) {
+  const eventData = getEventInput(eventName);
+  if (typeof eventDataInit === 'function')
+    eventDataInit(eventData);
+
+  return sendEventWPromise(eventData);
+}
+
 class IEvent {
   //static eventName = 'NewEvent';
 
