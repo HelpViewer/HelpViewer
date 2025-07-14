@@ -2,22 +2,25 @@ class pStorage extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
   }
+
+  static eventDefinitions = [];
   
   init() {
     var h_EVT_STORAGE_GET = this.wrapAsyncHandler((data) =>
       _Storage.search(data.storageName, data.fileName, data.format)
     );
-    this.createEvent(EVT_STORAGE_GET, h_EVT_STORAGE_GET, StorageGet);
+    pStorage.eventDefinitions.push([EVT_STORAGE_GET, StorageGet, h_EVT_STORAGE_GET]);
 
     var h_EVT_STORAGE_GET_IMAGE = this.wrapAsyncHandler((data) =>
       _Storage.searchImage(data.storageName, data.fileName)
     );
-    this.createEvent(EVT_STORAGE_GET_IMAGE, h_EVT_STORAGE_GET_IMAGE, StorageGetImages);
+    pStorage.eventDefinitions.push([EVT_STORAGE_GET_IMAGE, StorageGetImages, h_EVT_STORAGE_GET_IMAGE]);
 
     var h_EVT_STORAGE_ADD = this.wrapAsyncHandler((data) =>
       _Storage.add(data.storageName, data.fileName, data.fileData)
     );
-    this.createEvent(EVT_STORAGE_ADD, h_EVT_STORAGE_ADD, StorageAdd);
+    pStorage.eventDefinitions.push([EVT_STORAGE_ADD, StorageAdd, h_EVT_STORAGE_ADD]);
+    super.init();
   }
   
   deInit() {

@@ -1,10 +1,16 @@
 class IPlugin {
+  static eventDefinitions = [];
+
   constructor(aliasName, data) {
     this.aliasName = aliasName || '';
     this.unsubscribersToEB = [];
   }
 
-  init() {}
+  init() {
+    this.constructor.eventDefinitions.forEach(([name, cls, fn]) => {
+      this.createEvent(name, fn, cls);
+    });
+  }
 
   deInit() {
     for (const one of this.unsubscribersToEB)
