@@ -13,9 +13,23 @@ class IPlugin {
     this.unsubscribersToEB = [];
   }
 
-  createEvent(name, handler) {
+  createEvent(name, handler, dataClass = IEvent) {
     var unsubscribe = EventBus.sub(name, handler);
     this.unsubscribersToEB.push(unsubscribe);
+    addEventDefinition(name, new EventDefinition(dataClass, name));
+  }
+
+  wrapAsyncHandler(fn) {
+    return function(data) {
+      const reply = fn(data);
+      data.result = reply;
+      if (reply && typeof reply.then === "function") {
+        reply.then(res => {
+          data.result = res;
+          data.doneHandler?.(data);
+        });
+      }
+    };
   }
 }
 
