@@ -141,7 +141,9 @@ class pGets extends IPlugin {
   }
 }
   
-function getDifferenceTwoObjects(obj1, obj2) {
+function getDifferenceTwoObjects(obj1i, obj2i) {
+  const obj1 = obj1i || {};
+  const obj2 = obj2i || {};
   const diffs = {};
   const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
 
