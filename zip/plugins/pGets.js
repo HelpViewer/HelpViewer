@@ -126,7 +126,7 @@ class pGets extends IPlugin {
   onUriChanged() {
     const parOld = Object.assign({}, this.params);
     this.h_EVT_GETS_LOAD(null);
-    const summary = getDifference(parOld, this.params);
+    const summary = getDifferenceTwoObjects(parOld, this.params);
     const changes = getEventInput(pGets.EVT_GETS_CHANGES);
 
     for (const key in summary) {
@@ -141,7 +141,7 @@ class pGets extends IPlugin {
   }
 }
   
-function getDifference(obj1, obj2) {
+function getDifferenceTwoObjects(obj1, obj2) {
   const diffs = {};
   const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
 
