@@ -20,8 +20,11 @@ class IPlugin {
   }
 
   createEvent(name, handler, dataClass = IEvent) {
-    var unsubscribe = EventBus.sub(name, handler);
-    this.unsubscribersToEB.push(unsubscribe);
+    if (handler != null) {
+      var unsubscribe = EventBus.sub(name, handler);
+      this.unsubscribersToEB.push(unsubscribe);  
+    }
+    
     addEventDefinition(name, new EventDefinition(dataClass, name));
   }
 

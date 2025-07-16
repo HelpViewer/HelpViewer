@@ -21,6 +21,15 @@ function nameForAnchor(text, level, levelCounter) {
 
 /*S: Zip archive reading functions */
 
+function storageSearch(key, filePath, format = STOF_TEXT) {
+  const xEVT_STORAGE_GET = EventNames.StorageGet;
+  return sendEventWProm(xEVT_STORAGE_GET, (input) => {
+    input.fileName = filePath;
+    input.storageName = key;
+    input.format = format;
+  });
+}
+
 function getDataOfPathInZIPImage(path, archive) {
   const xEVT_STORAGE_GET_IMAGE = EventNames.StorageGetImages;
   return sendEventWProm(xEVT_STORAGE_GET_IMAGE, (input) => {
