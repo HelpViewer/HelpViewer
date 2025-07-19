@@ -33,9 +33,9 @@ class pGets extends IPlugin {
 
   constructor(aliasName, data) {
     super(aliasName, data);
-    this.params = undefined;
-    this.location = undefined;
-    this.hash = undefined;
+    this.params = {};
+    this.location = '';
+    this.hash = '';
   }
 
   static eventDefinitions = [];
@@ -57,7 +57,7 @@ class pGets extends IPlugin {
     pGets.eventDefinitions.push([pGets.EVT_GETS_GET, GetsGet, h_EVT_GETS_GET]);
 
     var h_EVT_GETS_SET = (data) => {
-      if (!data || data.kvlist.size == 0 || data.unset.length == 0)
+      if (!data || data.kvlist.size == 0)
         return;
 
       const changes = new GetsChanges();
@@ -77,7 +77,7 @@ class pGets extends IPlugin {
       for (const [key, value] of data.kvlist)
       {
         if (this.params[key] != value)
-          changes.set(key, value);
+          changes.changes.set(key, value);
         this.params[key] = value;
       }
 
@@ -99,7 +99,8 @@ class pGets extends IPlugin {
     window.addEventListener('hashchange', this.onUriChanged);
 
     super.init();
-    this.h_EVT_GETS_LOAD();
+    //this.h_EVT_GETS_LOAD();
+    this.onUriChanged();
   }
   
   deInit() {
@@ -124,7 +125,8 @@ class pGets extends IPlugin {
   };
 
   onUriChanged() {
-    const parOld = Object.assign({}, this.params);
+    const parOld = getObjectCopy(this.params);
+    alert(parOld);
     this.h_EVT_GETS_LOAD(null);
     const summary = getDifferenceTwoObjects(parOld, this.params);
     const changes = getEventInput(pGets.EVT_GETS_CHANGES);
@@ -154,6 +156,10 @@ function getDifferenceTwoObjects(obj1i, obj2i) {
   });
 
   return diffs;
+}
+
+function getObjectCopy(obj) {
+  return JSON.parse(JSON.stringify(obj));
 }
 
 Plugins.catalogize(pGets);
