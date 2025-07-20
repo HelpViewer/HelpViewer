@@ -13,6 +13,7 @@ var dataPathGeneral;
 
 function LoadURLParameters() {
   var handler = (x) => x;
+  alert('xx: ' + getGets(PAR_NAME_DOC, handler));
   dataPathGeneral = getGets(PAR_NAME_DOC, handler);
   dataPath = dataPathGeneral?.replace('__', activeLanguage);
   pagePath = getGets(PAR_NAME_PAGE, handler) || FILENAME_1STTOPIC;
@@ -333,12 +334,12 @@ function convertRelativePathToViewerURI(val) {
 }
 
 function setSearchParams(url, path, i) {
-  url.searchParams.set(PAR_NAME_PAGE, path);
-  pagePath = path;
-  i = parseInt(i);
-  if (i) {
-    url.searchParams.set(PAR_NAME_ID, i);
-  }
+  setToHrefByValues((x) => {
+    x.kvlist.set(PAR_NAME_PAGE, path);
+    i = parseInt(i);
+    if (i)
+      x.kvlist.set(PAR_NAME_ID, i);
+  });
 }
 /*E: Topic renderer logic integration */
 

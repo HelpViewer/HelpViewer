@@ -72,9 +72,19 @@ function setToHref(uri) {
   });
 }
 
-function getGets(name, handler) {
+function getGets(name, handler = null) {
   return sendEvent(EventNames.GetsGet, (d) => {
     d.name = name;
     d.conversionHandler = handler;
   });
+}
+
+function setToHrefByValues(init) {
+  sendEvent(EventNames.GetsSet, init);
+}
+
+function setBookmark(bookmark) {
+  setToHrefByValues((x) => {
+    x.kvlist.set(PLG_KEY_HASH, bookmark);
+  });  
 }

@@ -8,6 +8,7 @@ const LK_MSG_PATH_NOT_FOUND_IN_ARCH = 'MSG_PATH_NOT_FOUND_IN_ARCH';
 const PANEL_NAME_CHAPTERANCHOR = 'downP-ChapterAnchor';
 
 const C_ANCHOR_CONTENT = ' #';
+const PLG_KEY_HASH = '_hash';
 
 const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
 const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
@@ -144,12 +145,9 @@ function transformOutputConnectedMd(doc) {
 async function loadPage(event, path, heading, i) {
   event.preventDefault();
 
-  const current = window.location.pathname + window.location.search + window.location.hash;
-  const url = new URL(current, document.baseURI);
-  setSearchParams(url, path, i);
+  setSearchParams(null, path, i);
   idxTreeItem = i;
-  setToHref(`${url.pathname}?${url.searchParams.toString()}${url.hash}`);
-
+  
   await getPathData(path, heading);
   navPanel.updateNavButtons(i);
 
@@ -174,11 +172,7 @@ async function getPathData(path, heading) {
   
   if (bookmarkTest.length > 1) {
     path = bookmarkTest[0];
-    window.location.hash = bookmarkTest[1];
-    const url = new URL(window.location.href);
-    setSearchParams(url, path, null);
-    //history.replaceState(null, '', url);
-    setToHref(url);
+    setBookmark(bookmarkTest[1]);
     getPathData(path, heading);
     return;
   }
@@ -343,7 +337,7 @@ async function getPathData(path, heading) {
   contentPane.focus();
   refreshTitlesForLangStrings(null);
   
-  const id = window.location.hash.substring(1);
+  const id = getGets(PLG_KEY_HASH, null)?.substring(1);
   scrollToAnchor(id);
 
   if (keywordToShow && keywordToShow.length > 0) {

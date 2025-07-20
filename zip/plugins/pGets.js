@@ -69,8 +69,10 @@ class pGets extends IPlugin {
       data.unset.forEach((x) => delete this.params[x]);
 
       var hash = undefined;
+      var onlyHash = false;
       if (data.kvlist.has(GETS_KEY_HASH)) {
         hash = this.params[GETS_KEY_HASH];
+        onlyHash = (data.kvlist.size == 1);
         data.kvlist.delete(GETS_KEY_HASH);
       }
 
@@ -87,12 +89,26 @@ class pGets extends IPlugin {
         this.params[key] = value;
       }
 
-      const newUrlParams = new URLSearchParams(this.params);
+      const filteredParams = Object.entries(this.params).filter(([key, _]) => !key.startsWith('_'));
+      const newUrlParams = new URLSearchParams(filteredParams);
       const url = new URL(window.location.href);
       url.search = newUrlParams.toString();
-      url.hash = hash;
-      url.pathname = pathname;
+
+      if (hash)
+        url.hash = hash;
+
+      if (pathname)
+        url.pathname = pathname;
       
+      this.h_EVT_GETS_LOAD(null);
+
+      if (onlyHash) {
+        alert('onlyHash!');
+        location.hash = hash;
+        this.onUriChanged();
+        return;
+      }
+
       history.pushState(null, "", url.toString());
       this.onUriChanged();
     };
@@ -102,19 +118,18 @@ class pGets extends IPlugin {
       if (data.href == undefined)
         return;
       
+      this.h_EVT_GETS_LOAD(null);
       history.pushState({}, '', data.href);
       this.onUriChanged();
     };
 
     pGets.eventDefinitions.push([pGets.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
-    
     pGets.eventDefinitions.push([pGets.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
 
     window.addEventListener('popstate', this.onUriChanged);
     window.addEventListener('hashchange', this.onUriChanged);
 
     super.init();
-    //this.h_EVT_GETS_LOAD();
     this.onUriChanged();
   }
   
@@ -132,12 +147,12 @@ class pGets extends IPlugin {
   h_EVT_GETS_LOAD(data) {
     const url = new URL(window.location.href);
     const urlParams = new URLSearchParams(url.search);
+    const hash = window.location.hash;
+    const pathname = window.location.pathname;
 
-    const hash = window.location.hash
     if (hash)
       urlParams.set(GETS_KEY_HASH, hash);
 
-    const pathname = window.location.pathname;
     if (pathname)
       urlParams.set(GETS_KEY_PATH, pathname);
     
