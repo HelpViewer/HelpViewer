@@ -4,10 +4,10 @@ const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
 const LK_MSG_NODATA = 'MSG_NODATA';
 
 const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
-const listingCount = parseInt(localStorage.getItem(KEY_LS_KWLISTINGCOUNT)) || 50;
+const listingCount = parseInt(getUserConfigValue(KEY_LS_KWLISTINGCOUNT)) || 50;
 
 const KEY_LS_PRINTICONS = "printIcons";
-const printIcons = parseInt(localStorage.getItem(KEY_LS_PRINTICONS)) ?? 2;
+const printIcons = parseInt(getUserConfigValue(KEY_LS_PRINTICONS)) ?? 2;
 
 var dataPathGeneral;
 

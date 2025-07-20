@@ -13,7 +13,7 @@ const ColorTheme = (() => {
   }
 
   function getCurrentColorMode() {
-    const val = localStorage.getItem(KEY_LS_COLORTHEME) || 'inStandard';
+    const val = getUserConfigValue(KEY_LS_COLORTHEME) || 'inStandard';
     return val;
   }
   
@@ -26,7 +26,7 @@ const ColorTheme = (() => {
   function setColorMode(val) {
     const base = targetElement;
     base.className = val;
-    localStorage.setItem(KEY_LS_COLORTHEME, val);
+    setUserConfigValue(KEY_LS_COLORTHEME, val);
   }
 
   //, KEY_LS_COLORTHEME, colorModes, targetElement

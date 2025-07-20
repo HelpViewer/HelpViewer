@@ -2,10 +2,10 @@
 const C_TORIGHT = 'toright';
 
 const KEY_LS_SIDEBARVISIBLE = "sidebarVisible";
-const sidebarVisible = localStorage.getItem(KEY_LS_SIDEBARVISIBLE) || 1;
+const sidebarVisible = getUserConfigValue(KEY_LS_SIDEBARVISIBLE) || 1;
 
 const KEY_LS_SIDEBARSIDE = "sidebarSide";
-const sidebarSide = localStorage.getItem(KEY_LS_SIDEBARSIDE) || 0;
+const sidebarSide = getUserConfigValue(KEY_LS_SIDEBARSIDE) || 0;
 
 const sidebar = document.getElementById('sidebar');
 const showBtn = document.getElementById('showBtn');
@@ -20,21 +20,21 @@ function toggleSidebar() {
   if (sidebar.classList.contains(C_HIDDENC)) {
     sidebar.classList.remove(C_HIDDENC);
     showBtn.classList.add(C_HIDDENC);
-    localStorage.setItem(KEY_LS_SIDEBARVISIBLE, '1');
+    setUserConfigValue(KEY_LS_SIDEBARVISIBLE, '1');
   } else {
     sidebar.classList.add(C_HIDDENC);
     showBtn.classList.remove(C_HIDDENC);
-    localStorage.setItem(KEY_LS_SIDEBARVISIBLE, '0');
+    setUserConfigValue(KEY_LS_SIDEBARVISIBLE, '0');
   }
 }
 
 function toggleSidebarSide() {
   if (container.classList.contains(C_TORIGHT)) {
     container.classList.remove(C_TORIGHT);
-    localStorage.setItem(KEY_LS_SIDEBARSIDE, '1');
+    setUserConfigValue(KEY_LS_SIDEBARSIDE, '1');
   } else {
     container.classList.add(C_TORIGHT);
-    localStorage.setItem(KEY_LS_SIDEBARSIDE, '0');
+    setUserConfigValue(KEY_LS_SIDEBARSIDE, '0');
   }
 }
 /*E: Feature: Sidebar hide/show (sidebar switching) */

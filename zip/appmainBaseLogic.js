@@ -111,7 +111,7 @@ function getUserConfigValue(key) {
 }
 
 function setUserConfigValue(key, value) {
-  sendEvent(EventNames.UserConfigGet, (d) => {
+  sendEvent(EventNames.UserConfigSet, (d) => {
     d.key = key;
     d.value = value
   });

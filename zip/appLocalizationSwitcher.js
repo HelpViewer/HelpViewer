@@ -35,7 +35,7 @@ function loadLocalization(localizationName) {
   });
 
   FILENAME_DEFAULT_HELPFILE = `hlp/Help-${localizationName}.zip`;
-  localStorage.setItem(KEY_LS_LANG, localizationName);
+  setUserConfigValue(KEY_LS_LANG, localizationName);
 
   return Promise.resolve();
 }
