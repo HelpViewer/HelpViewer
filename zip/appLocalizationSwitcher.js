@@ -1,5 +1,6 @@
 /*S: Feature: Language switching management */
 const DEFAULT_LANG = 'en';
+const KEY_LS_LANG = "language";
 
 function _T(key) {
   var data;
@@ -34,7 +35,7 @@ function loadLocalization(localizationName) {
   });
 
   FILENAME_DEFAULT_HELPFILE = `hlp/Help-${localizationName}.zip`;
-  localStorage.setItem(pLocalizationSwitcher.KEY_LS_LANG, localizationName);
+  localStorage.setItem(KEY_LS_LANG, localizationName);
 
   return Promise.resolve();
 }
