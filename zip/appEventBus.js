@@ -106,6 +106,7 @@ function sendEvent(eventName, eventDataInit) {
     eventDataInit(eventData);
 
   EventBus.snd(eventData);
+  return eventData.result;
 }
 
 class IEvent {

@@ -71,3 +71,10 @@ function setToHref(uri) {
     d.href = uri;
   });
 }
+
+function getGets(name, handler) {
+  return sendEvent(EventNames.GetsGet, (d) => {
+    d.name = name;
+    d.conversionHandler = handler;
+  });
+}

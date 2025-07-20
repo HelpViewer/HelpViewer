@@ -6,6 +6,7 @@ class GetsGet extends IEvent {
     super();
     this.name = '';
     this.conversionHandler = undefined;
+    this.result = undefined;
   }
 }
 
@@ -57,7 +58,7 @@ class pGets extends IPlugin {
       if (data.conversionHandler && typeof data.conversionHandler === 'function')
         val = data.conversionHandler(val);
 
-      return val;
+      data.result = val;
     };
     pGets.eventDefinitions.push([pGets.EVT_GETS_GET, GetsGet, h_EVT_GETS_GET]);
 

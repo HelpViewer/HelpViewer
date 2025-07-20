@@ -12,11 +12,11 @@ const printIcons = parseInt(localStorage.getItem(KEY_LS_PRINTICONS)) ?? 2;
 var dataPathGeneral;
 
 function LoadURLParameters() {
-  const urlParams = new URLSearchParams(window.location.search);
-  dataPathGeneral = urlParams.get(PAR_NAME_DOC);
+  var handler = (x) => x;
+  dataPathGeneral = getGets(PAR_NAME_DOC, handler);
   dataPath = dataPathGeneral?.replace('__', activeLanguage);
-  pagePath = urlParams.get(PAR_NAME_PAGE) || FILENAME_1STTOPIC;
-  idxTreeItem = parseInt(urlParams.get(PAR_NAME_ID)) || 0;
+  pagePath = getGets(PAR_NAME_PAGE, handler) || FILENAME_1STTOPIC;
+  idxTreeItem = parseInt(getGets(PAR_NAME_ID, handler)) || 0;
 }
 
 LoadURLParameters();

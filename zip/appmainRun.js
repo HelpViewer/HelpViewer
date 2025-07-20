@@ -42,17 +42,6 @@ async function runApp() {
     appendJavaScript(one, srcMarkedJs, document.head);
   }
 
-  if (!srcJSOverride)
-    srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
-  
-  appendJavaScript(FILENAME_JSBACKEND, srcJSOverride, document.head);
-
-  if (srcMainCSSPlus)
-    appendCSS('mainCSSPlus', srcMainCSSPlus);
-
-  if (srcJSOverridePlus)
-    appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
-
   listData = await _Storage.search(STO_DATA, FILENAME_LIST_JS_PLUGINS);
   const sequencePlugins = rowsToArray(listData.trim());
 
@@ -74,5 +63,16 @@ async function runApp() {
       Plugins.activate(name, oneAlias, {});
     }
   }
+
+  if (!srcJSOverride)
+    srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
+  
+  appendJavaScript(FILENAME_JSBACKEND, srcJSOverride, document.head);
+
+  if (srcMainCSSPlus)
+    appendCSS('mainCSSPlus', srcMainCSSPlus);
+
+  if (srcJSOverridePlus)
+    appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
 
 }
