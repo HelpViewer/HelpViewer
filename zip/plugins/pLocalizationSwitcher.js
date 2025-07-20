@@ -84,14 +84,10 @@ class pLocalizationSwitcher extends IPlugin {
 
   async _storageGetSubdirs(key, filePath) {
     const xEVT_STORAGE_GET_SUBDIRS = 'EVT_STORAGE_GET_SUBDIRS';
-    var data;
-    sendEvent(xEVT_STORAGE_GET_SUBDIRS, (input) => {
+    return sendEvent(xEVT_STORAGE_GET_SUBDIRS, (input) => {
       input.fileName = filePath;
       input.storageName = key;
-      data = input;
     });
-
-    return data.result;
   }
 
   async getLanguagesList(additional)

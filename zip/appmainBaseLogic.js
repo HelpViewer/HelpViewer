@@ -101,13 +101,9 @@ function setToBookmark(bookmark) {
 
 /*S: Plugin: pUserConfig */
 function getUserConfigValue(key) {
-  var data;
-  sendEvent(EventNames.UserConfigGet, (d) => {
+  return sendEvent(EventNames.UserConfigGet, (d) => {
     d.key = key;
-    data = d;
   });
-
-  return data.result;
 }
 
 function setUserConfigValue(key, value) {

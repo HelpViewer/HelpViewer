@@ -3,30 +3,19 @@ const DEFAULT_LANG = 'en';
 const KEY_LS_LANG = "language";
 
 function _T(key) {
-  var data;
-  sendEvent(EventNames.LocTranslate, (d) => {
+  return sendEvent(EventNames.LocTranslate, (d) => {
     d.name = key;
-    data = d;
   });
-  return data.result;
 }
 
 function getActiveLanguage() {
-  var data;
-  sendEvent('GET_ACTIVE_LANGUAGE', (d) => {
-    data = d;
-  });
-  return data.result;
+  return sendEvent('GET_ACTIVE_LANGUAGE');
 }
 
 function getLanguagesList(additionalList = null) {
-  var data;
-  sendEvent('GET_LANGUAGES', (d) => {
+  return sendEvent('GET_LANGUAGES', (d) => {
     d.additional = additionalList;
-    data = d;
   });
-
-  return data.result;
 }
 
 function loadLocalization(localizationName) {
