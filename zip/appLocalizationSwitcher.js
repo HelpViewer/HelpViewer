@@ -24,6 +24,7 @@ function getLanguagesList(additionalList = null) {
     d.additional = additionalList;
     data = d;
   });
+
   return data.result;
 }
 
@@ -33,6 +34,7 @@ function loadLocalization(localizationName) {
   });
 
   FILENAME_DEFAULT_HELPFILE = `hlp/Help-${localizationName}.zip`;
+  localStorage.setItem(pLocalizationSwitcher.KEY_LS_LANG, localizationName);
 
   return Promise.resolve();
 }

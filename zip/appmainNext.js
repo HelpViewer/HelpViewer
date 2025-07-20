@@ -106,7 +106,7 @@ function handleSetLanguage(event) {
   if (!target) return;
 
   const id = target.id.substring(LANGLINKS_PREFIX.length);
-  setLanguage(id);
+  loadLocalization(id);
 }
 
 langTab?.addEventListener('click', handleSetLanguage);
@@ -145,7 +145,7 @@ loadLocalization(activeLanguage).then(() => {
         FILE_CONFIG = null;
         // language from local storage probably does not exists, reload with english
         if (activeLanguage !== DEFAULT_LANG) {
-          setLanguage(DEFAULT_LANG);
+          loadLocalization(DEFAULT_LANG);
           location.reload(true);  
         }
       } else {
