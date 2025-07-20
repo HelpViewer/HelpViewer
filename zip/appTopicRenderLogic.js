@@ -319,7 +319,7 @@ async function getPathData(path, heading) {
       heading.appendChild(link);
 
       const linkDownload = document.createElement('a');
-      linkDownload.href = uriZIP.replace('__', activeLanguage);
+      linkDownload.href = uriZIP.replace('__', getActiveLanguage());
       linkDownload.innerText = '📥';
       heading.appendChild(linkDownload);
       heading.appendChild(boomark);

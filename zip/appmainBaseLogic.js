@@ -30,6 +30,14 @@ function storageSearch(key, filePath, format = STOF_TEXT) {
   });
 }
 
+function storageGetSubdirs(key, filePath) {
+  const xEVT_STORAGE_GET_SUBDIRS = 'EVT_STORAGE_GET_SUBDIRS';
+  return sendEventWProm(xEVT_STORAGE_GET_SUBDIRS, (input) => {
+    input.fileName = filePath;
+    input.storageName = key;
+  });
+}
+
 function getDataOfPathInZIPImage(path, archive) {
   const xEVT_STORAGE_GET_IMAGE = EventNames.StorageGetImages;
   return sendEventWProm(xEVT_STORAGE_GET_IMAGE, (input) => {
@@ -66,6 +74,7 @@ function changeFavicon(src) {
   link.href = src;
 }
 
+/*S: Plugin: pGets */
 function setToHref(uri) {
   sendEvent(EventNames.GetsSetHref, (d) => {
     d.href = uri;
@@ -88,3 +97,4 @@ function setToBookmark(bookmark) {
     d.bookmark = bookmark;
   });
 }
+/*E: Plugin: pGets */

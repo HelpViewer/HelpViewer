@@ -11,6 +11,8 @@ const printIcons = parseInt(localStorage.getItem(KEY_LS_PRINTICONS)) ?? 2;
 
 var dataPathGeneral;
 
+var activeLanguage = getActiveLanguage();
+
 function LoadURLParameters() {
   var handler = (x) => x;
   dataPathGeneral = getGets(PAR_NAME_DOC, handler);
@@ -167,13 +169,7 @@ loadLocalization(activeLanguage).then(() => {
       languages.then(async (languages) => {
         var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
         langsFromHelp = langsFromHelp.filter(lang => !languages.includes(lang));
-
-        for (const data of langsFromHelp) {
-          const alias = await _Storage.search(STO_DATA, `${languagesMainPath}${data}/${langFileAlias}`) || data;
-          languages.push(`${alias}|${data}`);
-        }
-
-        languages = [...new Set(languages)];
+        languages = await getLanguagesList(langsFromHelp);
         langTab.innerHTML = '';
       
         for (var i = 0; i < languages.length; i++) {
