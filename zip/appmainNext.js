@@ -139,7 +139,7 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // load config file
-      FILE_CONFIG = (await _Storage.search(STO_HELP, FILENAME_CONFIG));
+      FILE_CONFIG = (await storageSearch(STO_HELP, FILENAME_CONFIG));
       
       if (!FILE_CONFIG) {
         FILE_CONFIG = null;
@@ -181,7 +181,7 @@ loadLocalization(activeLanguage).then(() => {
       });
 
       // load tree data
-      const srcTreeData = await _Storage.search(STO_HELP, FILENAME_TREE);
+      const srcTreeData = await storageSearch(STO_HELP, FILENAME_TREE);
       tree.innerHTML = linesToHtmlTree(srcTreeData, N_P_TREEITEM);
       fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
@@ -192,14 +192,14 @@ loadLocalization(activeLanguage).then(() => {
         showSidebarTab(`sp-${PANEL_NAME_CHAPTERANCHOR}`);
       }
       
-      const docList = (await _Storage.search(STO_HELP, FILENAME_FILES));
+      const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
       getDocumentHeadingTable(docList);
     
       // Load keywords
-      const KEYWORDS = (await _Storage.search(STO_HELP, FILENAME_KEYWORDS));
+      const KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
 
       if (KEYWORDS) {
-        const KWTOFILES = (await _Storage.search(STO_HELP, FILENAME_KWTOFILES));
+        const KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
         const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_NAME, klist);
         await klist.readKeywordDatabase();
@@ -213,10 +213,10 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // fulltext keywords
-      const FTSKEYWORDS = (await _Storage.search(STO_HELP, FILENAME_FTS_KEYWORDS));
+      const FTSKEYWORDS = (await storageSearch(STO_HELP, FILENAME_FTS_KEYWORDS));
       
       if (FTSKEYWORDS) {
-        const KWTOFILES = (await _Storage.search(STO_HELP, FILENAME_FTS_KWTOFILES));
+        const KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
         const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
         keywordLists.set(KLIST_FTS_NAME, klist);
         await klist.readKeywordDatabase();

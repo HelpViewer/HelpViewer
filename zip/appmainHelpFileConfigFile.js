@@ -17,7 +17,7 @@ var FILE_CONFIG_DEFAULT = parseConfigFile(
 var FILE_CONFIG;
 
 (async () => {
-  var readConfig = (await _Storage.search(STO_DATA, FILENAME_CONFIG));
+  var readConfig = (await storageSearch(STO_DATA, FILENAME_CONFIG));
   
   if (readConfig)
     FILE_CONFIG_DEFAULT = parseConfigFile(readConfig);

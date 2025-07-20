@@ -80,7 +80,7 @@ function transformOutput(htmlTxt) {
 async function loadMermaid() {
   const MERMAID_ID = 'ext-mermaid';
   if (!document.getElementById(MERMAID_ID)) {
-    const srcMermaid = await _Storage.search(STO_DATA, 'mermaid.min.js');
+    const srcMermaid = await storageSearch(STO_DATA, 'mermaid.min.js');
     appendJavaScript(MERMAID_ID, srcMermaid, document.head);
   }
 }
@@ -234,7 +234,7 @@ async function getPathData(path, heading) {
   } else 
   if (path.startsWith(":")) {
     if (/\.(md|htm|html)$/i.test(path)) {
-      content = await _Storage.search(STO_DATA, path.substring(1));
+      content = await storageSearch(STO_DATA, path.substring(1));
     } else {
       content = '';
     }
@@ -247,7 +247,7 @@ async function getPathData(path, heading) {
       content = '';
     }
   } else {
-    content = await _Storage.search(STO_HELP, path);
+    content = await storageSearch(STO_HELP, path);
   }
   
   if (path.toLowerCase().endsWith('.md')) {
