@@ -42,8 +42,6 @@ class pGets extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
     this.params = {};
-    this.location = '';
-    this.hash = '';
   }
 
   static eventDefinitions = [];
@@ -70,13 +68,15 @@ class pGets extends IPlugin {
 
       data.unset.forEach((x) => delete this.params[x]);
 
+      var hash = undefined;
       if (data.kvlist.has(GETS_KEY_HASH)) {
-        this.hash = this.params[GETS_KEY_HASH];
+        hash = this.params[GETS_KEY_HASH];
         data.kvlist.delete(GETS_KEY_HASH);
       }
 
+      var pathname = undefined;
       if (data.kvlist.has(GETS_KEY_PATH)) {
-        this.pathname = this.params[GETS_KEY_PATH];
+        pathname = this.params[GETS_KEY_PATH];
         data.kvlist.delete(GETS_KEY_PATH);
       }
 
@@ -90,8 +90,8 @@ class pGets extends IPlugin {
       const newUrlParams = new URLSearchParams(this.params);
       const url = new URL(window.location.href);
       url.search = newUrlParams.toString();
-      url.hash = this.hash;
-      url.pathname = this.pathname;
+      url.hash = hash;
+      url.pathname = pathname;
       
       history.pushState(null, "", url.toString());
       this.onUriChanged();
@@ -130,20 +130,18 @@ class pGets extends IPlugin {
   }
 
   h_EVT_GETS_LOAD(data) {
-    this.location = window.location.href;
-    const url = new URL(this.location);
-    this.hash = window.location.hash;
-    this.pathname = window.location.pathname;
+    const url = new URL(window.location.href);
     const urlParams = new URLSearchParams(url.search);
 
-    if (this.hash)
-      urlParams.set(GETS_KEY_HASH, this.hash);
+    const hash = window.location.hash
+    if (hash)
+      urlParams.set(GETS_KEY_HASH, hash);
 
-    if (this.pathname)
-      urlParams.set(GETS_KEY_PATH, this.pathname);
+    const pathname = window.location.pathname;
+    if (pathname)
+      urlParams.set(GETS_KEY_PATH, pathname);
     
     this.params = Object.fromEntries(urlParams.entries());
-    const keys = Object.keys(this.params);
   };
 
   onUriChanged() {
