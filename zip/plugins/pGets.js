@@ -135,8 +135,8 @@ class pGets extends IPlugin {
     this.hash = window.location.hash;
     this.pathname = window.location.pathname;
     const urlParams = new URLSearchParams(url.search);
-    urlParams[GETS_KEY_HASH] = this.hash;
-    urlParams[GETS_KEY_PATH] = this.pathname;
+    urlParams.set(GETS_KEY_HASH, this.hash);
+    urlParams.set(GETS_KEY_PATH, this.pathname);
     this.params = Object.fromEntries(urlParams.entries());
     const keys = Object.keys(this.params);
   };
