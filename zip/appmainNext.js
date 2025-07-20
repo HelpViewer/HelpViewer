@@ -88,7 +88,7 @@ contentPane.addEventListener('click', function(event) {
   ) return;
 
   event.preventDefault();
-  history.pushState({}, '', href);
+  setToHref(href);
   
   LoadURLParameters();
   getPathData(pagePath, pathHeadingAlias?.get(pagePath));
@@ -453,3 +453,8 @@ function removeIconsForPrint() {
 }
 
 window.addEventListener('beforeprint', removeIconsForPrint);
+
+EventBus.sub("GetsChanges", (data) => {
+  alert("unsets: " + data.unset);
+  alert("changes: " + Array.from(data.changes.keys()));
+});

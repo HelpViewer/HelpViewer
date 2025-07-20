@@ -17,6 +17,13 @@ class GetsSet extends IEvent {
   }
 }
 
+class GetsSetHref extends IEvent {
+  constructor() {
+    super();
+    this.href = undefined;
+  }
+}
+
 class GetsChanges extends IEvent {
   constructor() {
     super();
@@ -26,9 +33,9 @@ class GetsChanges extends IEvent {
 }
 
 class pGets extends IPlugin {
-  static EVT_GETS_LOAD = 'EVT_GETS_LOAD';
   static EVT_GETS_GET = GetsGet.name;
   static EVT_GETS_SET = GetsSet.name;
+  static EVT_GETS_SET_HREF = GetsSetHref.name;
   static EVT_GETS_CHANGES = GetsChanges.name;
 
   constructor(aliasName, data) {
@@ -41,8 +48,6 @@ class pGets extends IPlugin {
   static eventDefinitions = [];
   
   init() {
-    pGets.eventDefinitions.push([pGets.EVT_GETS_LOAD, IEvent, this.h_EVT_GETS_LOAD]);
-
     var h_EVT_GETS_GET = (data) => {
       if (!this.params) 
         this.h_EVT_GETS_LOAD(data);
@@ -88,10 +93,19 @@ class pGets extends IPlugin {
       url.pathname = this.pathname;
       
       history.pushState(null, "", url.toString());
-
       this.onUriChanged();
     };
     pGets.eventDefinitions.push([pGets.EVT_GETS_SET, GetsSet, h_EVT_GETS_SET]);
+
+    var h_EVT_GETS_SET_HREF = (data) => {
+      if (data.href == undefined)
+        return;
+      
+      history.pushState({}, '', data.href);
+      this.onUriChanged();
+    };
+
+    pGets.eventDefinitions.push([pGets.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
     
     pGets.eventDefinitions.push([pGets.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
 
@@ -105,9 +119,9 @@ class pGets extends IPlugin {
   
   deInit() {
     super.deInit();
-    removeEventDefinition(pGets.EVT_GETS_LOAD);
     removeEventDefinition(pGets.EVT_GETS_GET);
     removeEventDefinition(pGets.EVT_GETS_SET);
+    removeEventDefinition(pGets.EVT_GETS_SET_HREF);
     removeEventDefinition(pGets.EVT_GETS_CHANGES);
 
     window.removeEventListener('popstate', this.onUriChanged);
@@ -116,30 +130,31 @@ class pGets extends IPlugin {
 
   h_EVT_GETS_LOAD(data) {
     this.location = window.location.href;
+    const url = new URL(this.location);
     this.hash = window.location.hash;
     this.pathname = window.location.pathname;
-    const urlParams = new URLSearchParams(this.location.search);
+    const urlParams = new URLSearchParams(url.search);
     urlParams[GETS_KEY_HASH] = this.hash;
     urlParams[GETS_KEY_PATH] = this.pathname;
     this.params = Object.fromEntries(urlParams.entries());
+    const keys = Object.keys(this.params);
   };
 
   onUriChanged() {
     const parOld = getObjectCopy(this.params);
-    alert(parOld);
     this.h_EVT_GETS_LOAD(null);
     const summary = getDifferenceTwoObjects(parOld, this.params);
-    const changes = getEventInput(pGets.EVT_GETS_CHANGES);
 
-    for (const key in summary) {
-      if (summary[key].new == undefined) {
-        changes.unset.push(key);
-        continue;
-      }
-
-      changes.changes.set(key, summary[key].new);
-    }
-    EventBus.snd(changes);
+    sendEvent(pGets.EVT_GETS_CHANGES, (changes) => {
+      for (const key in summary) {
+        if (summary[key].new == undefined) {
+          changes.unset.push(key);
+          continue;
+        }
+  
+        changes.changes.set(key, summary[key].new);
+      }  
+    });
   }
 }
   
@@ -150,7 +165,7 @@ function getDifferenceTwoObjects(obj1i, obj2i) {
   const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
 
   keys.forEach((key) => {
-    if (obj1[key] !== obj2[key]) {
+    if (obj1[key] != obj2[key]) {
       diffs[key] = { old: obj1[key], new: obj2[key] };
     }
   });

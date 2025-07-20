@@ -100,6 +100,14 @@ function sendEventWProm(eventName, eventDataInit) {
   return sendEventWPromise(eventData);
 }
 
+function sendEvent(eventName, eventDataInit) {
+  const eventData = getEventInput(eventName);
+  if (typeof eventDataInit === 'function')
+    eventDataInit(eventData);
+
+  EventBus.snd(eventData);
+}
+
 class IEvent {
   //static eventName = 'NewEvent';
 

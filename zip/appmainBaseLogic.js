@@ -65,3 +65,9 @@ function changeFavicon(src) {
 
   link.href = src;
 }
+
+function setToHref(uri) {
+  sendEvent(EventNames.GetsSetHref, (d) => {
+    d.href = uri;
+  });
+}

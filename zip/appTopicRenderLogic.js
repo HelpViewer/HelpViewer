@@ -148,7 +148,7 @@ async function loadPage(event, path, heading, i) {
   const url = new URL(current, document.baseURI);
   setSearchParams(url, path, i);
   idxTreeItem = i;
-  history.pushState(null, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
+  setToHref(`${url.pathname}?${url.searchParams.toString()}${url.hash}`);
 
   await getPathData(path, heading);
   navPanel.updateNavButtons(i);
@@ -177,7 +177,8 @@ async function getPathData(path, heading) {
     window.location.hash = bookmarkTest[1];
     const url = new URL(window.location.href);
     setSearchParams(url, path, null);
-    history.replaceState(null, '', url);
+    //history.replaceState(null, '', url);
+    setToHref(url);
     getPathData(path, heading);
     return;
   }
