@@ -98,3 +98,22 @@ function setToBookmark(bookmark) {
   });
 }
 /*E: Plugin: pGets */
+
+/*S: Plugin: pUserConfig */
+function getUserConfigValue(key) {
+  var data;
+  sendEvent(EventNames.UserConfigGet, (d) => {
+    d.key = key;
+    data = d;
+  });
+
+  return data.result;
+}
+
+function setUserConfigValue(key, value) {
+  sendEvent(EventNames.UserConfigGet, (d) => {
+    d.key = key;
+    d.value = value
+  });
+}
+/*E: Plugin: pUserConfig */

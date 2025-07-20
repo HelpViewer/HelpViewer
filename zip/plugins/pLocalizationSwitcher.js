@@ -71,8 +71,7 @@ class pLocalizationSwitcher extends IPlugin {
   static langFileTXT = 'lstr.txt';
   static languagesMainPath = 'lang/';
   
-  static activeLanguage = localStorage.getItem(KEY_LS_LANG) || DEFAULT_LANG;
-  // setLanguage must be called in UI (appmainNext.js) 
+  static activeLanguage = getUserConfigValue(KEY_LS_LANG) || DEFAULT_LANG;
   
   async _storageSearch(filePath, format = STOF_TEXT) {
     const xEVT_STORAGE_GET = EventNames.StorageGet;
