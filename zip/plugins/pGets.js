@@ -25,6 +25,13 @@ class GetsSetHref extends IEvent {
   }
 }
 
+class GetsSetToBookmark extends IEvent {
+  constructor() {
+    super();
+    this.bookmark = undefined;
+  }
+}
+
 class GetsChanges extends IEvent {
   constructor() {
     super();
@@ -38,6 +45,7 @@ class pGets extends IPlugin {
   static EVT_GETS_SET = GetsSet.name;
   static EVT_GETS_SET_HREF = GetsSetHref.name;
   static EVT_GETS_CHANGES = GetsChanges.name;
+  static EVT_GETS_SET_TO_BOOKMARK = GetsSetToBookmark.name;
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -69,10 +77,8 @@ class pGets extends IPlugin {
       data.unset.forEach((x) => delete this.params[x]);
 
       var hash = undefined;
-      var onlyHash = false;
       if (data.kvlist.has(GETS_KEY_HASH)) {
         hash = this.params[GETS_KEY_HASH];
-        onlyHash = (data.kvlist.size == 1);
         data.kvlist.delete(GETS_KEY_HASH);
       }
 
@@ -102,13 +108,6 @@ class pGets extends IPlugin {
       
       this.h_EVT_GETS_LOAD(null);
 
-      if (onlyHash) {
-        alert('onlyHash!');
-        location.hash = hash;
-        this.onUriChanged();
-        return;
-      }
-
       history.pushState(null, "", url.toString());
       this.onUriChanged();
     };
@@ -124,6 +123,20 @@ class pGets extends IPlugin {
     };
 
     pGets.eventDefinitions.push([pGets.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
+
+    var h_EVT_GETS_SET_TO_BOOKMARK = (data) => {
+      if (data.bookmark == undefined)
+        return;
+      
+      this.h_EVT_GETS_LOAD(null);
+      location.hash = data.bookmark;
+      const url = new URL(window.location.href);
+      history.replaceState(null, '', url);
+      this.onUriChanged();
+    };
+
+    pGets.eventDefinitions.push([pGets.EVT_GETS_SET_TO_BOOKMARK, GetsSetToBookmark, h_EVT_GETS_SET_TO_BOOKMARK]);
+
     pGets.eventDefinitions.push([pGets.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
 
     window.addEventListener('popstate', this.onUriChanged);

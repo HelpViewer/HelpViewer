@@ -13,7 +13,6 @@ var dataPathGeneral;
 
 function LoadURLParameters() {
   var handler = (x) => x;
-  alert('xx: ' + getGets(PAR_NAME_DOC, handler));
   dataPathGeneral = getGets(PAR_NAME_DOC, handler);
   dataPath = dataPathGeneral?.replace('__', activeLanguage);
   pagePath = getGets(PAR_NAME_PAGE, handler) || FILENAME_1STTOPIC;

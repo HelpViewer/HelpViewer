@@ -83,8 +83,8 @@ function setToHrefByValues(init) {
   sendEvent(EventNames.GetsSet, init);
 }
 
-function setBookmark(bookmark) {
-  setToHrefByValues((x) => {
-    x.kvlist.set(PLG_KEY_HASH, bookmark);
-  });  
+function setToBookmark(bookmark) {
+  sendEvent(EventNames.GetsSetToBookmark, (d) => {
+    d.bookmark = bookmark;
+  });
 }

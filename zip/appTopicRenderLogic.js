@@ -172,7 +172,7 @@ async function getPathData(path, heading) {
   
   if (bookmarkTest.length > 1) {
     path = bookmarkTest[0];
-    setBookmark(bookmarkTest[1]);
+    setToBookmark(bookmarkTest[1]);
     getPathData(path, heading);
     return;
   }
