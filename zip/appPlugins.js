@@ -29,7 +29,14 @@ class IPlugin {
 
   createEvent(name, handler, dataClass = IEvent) {
     if (handler != null) {
-      var unsubscribe = EventBus.sub(name, handler);
+      var handlerFilterId = (d) => {
+        if (this.aliasName == '' || d.id == this.aliasName)
+          handler(d);
+        else
+          console.warn(`! [EventBus] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${this.aliasName}".`);
+      };
+
+      var unsubscribe = EventBus.sub(name, handlerFilterId);
       this.unsubscribersToEB.push(unsubscribe);  
     }
     
