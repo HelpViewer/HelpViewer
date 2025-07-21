@@ -117,8 +117,14 @@ function getCurrentColorMode() {
 }
 
 function setColorMode(colorTheme = undefined) {
-  return sendEvent(EventNames.ColorThemeSet, (d) => {
+  sendEvent(EventNames.ColorThemeSet, (d) => {
     d.name = colorTheme;
   });
 }
 /*E: Plugin: pColorTheme */
+
+/*S: Plugin: pPluginManagement */
+function getPluginsState() {
+  return sendEvent('PluginsDump');
+}
+/*E: Plugin: pPluginManagement */

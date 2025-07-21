@@ -5,7 +5,6 @@ class ColorThemeGet extends IEvent {
   }
 }
 
-
 class ColorThemeSet extends IEvent {
   constructor() {
     super();
