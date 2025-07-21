@@ -41,8 +41,6 @@ const EventBus = {
   }
 };
 
-window.EB = EventBus;
-
 const EventDefinitions = {};
 const EventNames = {};
 

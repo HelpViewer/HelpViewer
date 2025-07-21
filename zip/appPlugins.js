@@ -112,8 +112,6 @@ const Plugins = {
   }
 };
 
-window.PLG = Plugins;
-
 function inheritsFrom(cls, base) {
   while (cls && cls !== Function.prototype) {
     if (cls === base) return true;
