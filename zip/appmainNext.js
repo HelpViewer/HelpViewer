@@ -31,7 +31,7 @@ const BTN_CHANGEVERSION = 'downP-ChangeVersion';
 const BTN_CHANGELANG = 'downP-ChangeLanguage';
 
 const handlers = {
-  'downP-SwitchColorMode': (event) => { ColorTheme.switchColorMode() },
+  'downP-SwitchColorMode': (event) => { setColorMode() },
   'downP-Home': (event) => { loadPage(event, 'README.md', 'README.md', 0) },
   'downP-ToggleFS': (event) => { switchFullScreen() },
   'downP-Hide': (event) => { toggleSidebar() },
@@ -159,10 +159,7 @@ loadLocalization(activeLanguage).then(() => {
             toggleSidebar();
         }
 
-        val = configGetValue(CFG_KEY_OverrideColorTheme, ColorTheme.getCurrentColorMode());
-        
-        if (val) 
-          ColorTheme.setColorMode(val);
+        setColorMode(getCurrentColorMode());
       }
       
       // load languages

@@ -110,3 +110,15 @@ function setUserConfigValue(key, value) {
   });
 }
 /*E: Plugin: pUserConfig */
+
+/*S: Plugin: pColorTheme */
+function getCurrentColorMode() {
+  return sendEvent(EventNames.ColorThemeGet);
+}
+
+function setColorMode(colorTheme = undefined) {
+  return sendEvent(EventNames.ColorThemeSet, (d) => {
+    d.name = colorTheme;
+  });
+}
+/*E: Plugin: pColorTheme */

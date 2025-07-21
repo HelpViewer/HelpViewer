@@ -8,7 +8,6 @@ appmainHelpFileConfigFile.js
 appGHIntegration.js
 appFTree.js
 appFNavigation.js
-appFColorTheme.js
 appLayoutHandlers.js
 prism/prism.js
 appTopicRenderLogic.js
