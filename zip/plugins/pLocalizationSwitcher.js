@@ -59,11 +59,6 @@ class pLocalizationSwitcher extends IPlugin {
   
   deInit() {
     super.deInit();
-    removeEventDefinition(pLocalizationSwitcher.EVT_LOC_TRANSLATE);
-    removeEventDefinition(pLocalizationSwitcher.EVT_LOC_GET_ACTIVE_LANGUAGE);
-    removeEventDefinition(pLocalizationSwitcher.EVT_LOC_LANGUAGES);
-    removeEventDefinition(pLocalizationSwitcher.EVT_LOC_LOAD);
-    removeEventDefinition(pLocalizationSwitcher.EVT_LOC_REFRESH);
   }
 
   static langFileAlias = 'lname.txt';

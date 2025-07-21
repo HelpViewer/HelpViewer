@@ -20,7 +20,6 @@ class pPluginManagement extends IPlugin {
 
   deInit() {
     super.deInit();
-    removeEventDefinition(pPluginManagement.EVT_PD_GET);
   }
 }
 

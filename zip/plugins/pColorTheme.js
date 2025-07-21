@@ -37,8 +37,6 @@ class pColorTheme extends IPlugin {
 
   deInit() {
     super.deInit();
-    removeEventDefinition(pColorTheme.EVT_CT_GET);
-    removeEventDefinition(pColorTheme.EVT_CT_SET);
   }
 
   /*S: Feature: Set color theme */

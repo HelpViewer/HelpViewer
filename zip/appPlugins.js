@@ -13,6 +13,14 @@ class IPlugin {
   }
 
   deInit() {
+    const defs = this.constructor.eventDefinitions;
+    
+    if (Array.isArray(defs)) {
+      for (const [eventName] of defs) {
+        removeEventDefinition(eventName);
+      }
+    }
+
     for (const one of this.unsubscribersToEB)
       one();
 
@@ -93,7 +101,7 @@ const Plugins = {
     return `${pluginName}:${aliasName}`;
   },
 
-  deactivate(pluginName, aliasName) {
+  deactivate(pluginName, aliasName = '') {
     var key = this.getKey(pluginName, aliasName);
     var plugin = this.plugins.get(key);
     if (!plugin)

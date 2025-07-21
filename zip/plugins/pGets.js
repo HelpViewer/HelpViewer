@@ -148,10 +148,6 @@ class pGets extends IPlugin {
   
   deInit() {
     super.deInit();
-    removeEventDefinition(pGets.EVT_GETS_GET);
-    removeEventDefinition(pGets.EVT_GETS_SET);
-    removeEventDefinition(pGets.EVT_GETS_SET_HREF);
-    removeEventDefinition(pGets.EVT_GETS_CHANGES);
 
     window.removeEventListener('popstate', this.onUriChanged);
     window.removeEventListener('hashchange', this.onUriChanged);

@@ -36,8 +36,6 @@ class pUserConfig extends IPlugin {
 
   deInit() {
     super.deInit();
-    removeEventDefinition(pUserConfig.EVT_UC_GET);
-    removeEventDefinition(pUserConfig.EVT_UC_SET);
   }
 }
 

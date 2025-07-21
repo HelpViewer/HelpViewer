@@ -64,10 +64,6 @@ class pStorage extends IPlugin {
   
   deInit() {
     super.deInit();
-    removeEventDefinition(pStorage.EVT_STORAGE_GET);
-    removeEventDefinition(pStorage.EVT_STORAGE_GET_IMAGE);
-    removeEventDefinition(pStorage.EVT_STORAGE_ADD);
-    removeEventDefinition(pStorage.EVT_STORAGE_GET_SUBDIRS);
   }
 }
 
