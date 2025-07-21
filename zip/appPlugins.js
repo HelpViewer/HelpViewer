@@ -31,7 +31,7 @@ class IPlugin {
   createEvent(name, handler, dataClass = IEvent) {
     if (handler != null) {
       var handlerFilterId = (d) => {
-        if (this.aliasName == '' || d.id == this.aliasName)
+        if (!d.id || this.aliasName == '' || d.id == this.aliasName)
           handler(d);
         else
           console.warn(`! [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${this.aliasName}".`);
