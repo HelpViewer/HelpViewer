@@ -3,6 +3,7 @@ class IPlugin {
 
   constructor(aliasName, data) {
     this.aliasName = aliasName || '';
+    this.data = data;
     this.unsubscribersToEB = [];
   }
 
@@ -33,7 +34,7 @@ class IPlugin {
         if (this.aliasName == '' || d.id == this.aliasName)
           handler(d);
         else
-          console.warn(`! [EventBus] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${this.aliasName}".`);
+          console.warn(`! [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${this.aliasName}".`);
       };
 
       var unsubscribe = EventBus.sub(name, handlerFilterId);
