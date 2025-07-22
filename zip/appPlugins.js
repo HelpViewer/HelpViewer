@@ -5,6 +5,7 @@ class IPlugin {
     this.aliasName = aliasName || '';
     this.data = data;
     this.unsubscribersToEB = [];
+    this.eventIdStrict = false;
   }
 
   init() {
@@ -31,7 +32,7 @@ class IPlugin {
   createEvent(name, handler, dataClass = IEvent) {
     if (handler != null) {
       var handlerFilterId = (d) => {
-        if (!d.id || this.aliasName == '' || d.id == this.aliasName)
+        if (d.id == this.aliasName || (!this.eventIdStrict && (!d.id || this.aliasName == '')))
           handler(d);
         else
           console.warn(`! [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${this.aliasName}".`);
