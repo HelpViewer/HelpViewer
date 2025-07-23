@@ -130,6 +130,7 @@ class pLocalizationSwitcher extends IPlugin {
     }
 
     this.refreshTitlesForLangStrings(Object.keys(this.langStrs));
+    setUserConfigValue(KEY_LS_LANG, localizationName);
   }
   
   refreshTitlesForLangStrings(strings) {

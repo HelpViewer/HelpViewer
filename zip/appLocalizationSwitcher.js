@@ -24,7 +24,6 @@ function loadLocalization(localizationName) {
   });
 
   FILENAME_DEFAULT_HELPFILE = `hlp/Help-${localizationName}.zip`;
-  setUserConfigValue(KEY_LS_LANG, localizationName);
 
   return Promise.resolve();
 }
