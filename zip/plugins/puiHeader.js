@@ -1,0 +1,55 @@
+class HeaderSet extends IEvent {
+  constructor() {
+    super();
+    this.payload = '&nbsp;';
+  }
+}
+
+class puiHeader extends IPlugin {
+  static EVT_HEAD_SET = HeaderSet.name;
+  static EVT_HEAD_GET = 'HeaderGet';
+
+  constructor(aliasName, data) {
+    super(aliasName, data);
+  }
+
+  static eventDefinitions = [];
+
+  static addition = '<div class="header" role="banner"><h1 id="mtitle">&nbsp;</h1><div id="toolbar" role="navigation"></div></div>';
+
+  init() {
+    const containerMain = document.getElementById('main');
+    const tmpDiv = document.createElement('div');
+    tmpDiv.innerHTML = puiHeader.addition;
+    const node = tmpDiv.firstChild;
+    if (containerMain && node)
+      containerMain.prepend(node);
+
+    const mainTitle = document.getElementById('mtitle');
+
+    var h_EVT_HEAD_SET = (data) => {
+      if (typeof data.payload === 'function') {
+        data.payload(mainTitle);
+      } else {
+        mainTitle.innerHTML = data.payload;
+      }
+      data.result = true;
+    }
+    puiHeader.eventDefinitions.push([puiHeader.EVT_HEAD_SET, HeaderSet, h_EVT_HEAD_SET]);
+
+    var h_EVT_HEAD_GET = (data) => {
+      data.result = mainTitle?.innerHTML ?? '';
+    }
+    puiHeader.eventDefinitions.push([puiHeader.EVT_HEAD_GET, IEvent, h_EVT_HEAD_GET]);
+
+    super.init();
+  }
+
+  deInit() {
+    const header = document.getElementById('header');
+    header?.remove();
+    super.deInit();
+  }
+}
+
+Plugins.catalogize(puiHeader);

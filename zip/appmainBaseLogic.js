@@ -128,3 +128,13 @@ function getPluginsState() {
   return sendEvent('PluginsDump');
 }
 /*E: Plugin: pPluginManagement */
+
+/*S: Plugin: puiHeader */
+function setHeader(txt) {
+  return sendEvent('HeaderSet', (x) => x.payload = txt);
+}
+
+function getHeader() {
+  return sendEvent('HeaderGet');
+}
+/*E: Plugin: puiHeader */

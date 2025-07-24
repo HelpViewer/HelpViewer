@@ -439,8 +439,7 @@ function removeIconsForPrint() {
     clearIconsFromText(el);
   });
   
-  if (mainTitle)
-    mainTitle.innerHTML = clearIconsFromTextSingleText(mainTitle.innerHTML);
+  setHeader(clearIconsFromTextSingleText(getHeader()));
 
   document.title = clearIconsFromTextSingleText(document.title);
 }

@@ -13,7 +13,6 @@ const PLG_KEY_HASH = '_hash';
 const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
 const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
 
-const mainTitle = document.getElementById('mtitle');
 const contentPane = document.getElementById('content');
 const bookmarksPane = document.getElementById('subsList');
 const bookmarksPaneButton = document.getElementById(PANEL_NAME_CHAPTERANCHOR);
@@ -35,8 +34,7 @@ function setSearchParams(url, path, i) {
 }
 
 function SetHeaderText(txt) {
-  if (mainTitle)
-    mainTitle.innerHTML = txt;
+  setHeader(txt);
   document.title = txt.replace(/<[^>]+>/g, '');
 }
 
@@ -89,8 +87,7 @@ async function loadMermaid() {
 function transformOutputConnected(doc) {
   //relative img src paths update for ZIP structure
   fixImgRelativePathToZipPaths(doc, STO_HELP);
-  if (mainTitle)
-    fixImgRelativePathToZipPaths(mainTitle, STO_HELP, ":not(.treepic)");
+  setHeader((x) => fixImgRelativePathToZipPaths(x, STO_HELP, ":not(.treepic)"));
 
   //mermaid graphs transformation
   const codeBlocks = doc.querySelectorAll('code.language-mermaid');
@@ -284,7 +281,7 @@ async function getPathData(path, heading) {
   });
   
   if (treeString.slice(0, 1) === ' ') {
-    treeString = (mainTitle?.innerText ?? '') + '|||\n' + treeString;
+    treeString = getHeader() + '|||\n' + treeString;
   }
   
   bookmarksPane.innerHTML = linesToHtmlTree(treeString, N_P_TREEITEM_BOOKMARK);
