@@ -35,8 +35,9 @@ function setSearchParams(url, path, i) {
 }
 
 function SetHeaderText(txt) {
-   mainTitle.innerHTML = txt;
-   document.title = txt.replace(/<[^>]+>/g, '');
+  if (mainTitle)
+    mainTitle.innerHTML = txt;
+  document.title = txt.replace(/<[^>]+>/g, '');
 }
 
 function transformOutput(htmlTxt) {
@@ -88,7 +89,8 @@ async function loadMermaid() {
 function transformOutputConnected(doc) {
   //relative img src paths update for ZIP structure
   fixImgRelativePathToZipPaths(doc, STO_HELP);
-  fixImgRelativePathToZipPaths(mainTitle, STO_HELP, ":not(.treepic)");
+  if (mainTitle)
+    fixImgRelativePathToZipPaths(mainTitle, STO_HELP, ":not(.treepic)");
 
   //mermaid graphs transformation
   const codeBlocks = doc.querySelectorAll('code.language-mermaid');
@@ -282,7 +284,7 @@ async function getPathData(path, heading) {
   });
   
   if (treeString.slice(0, 1) === ' ') {
-    treeString = mainTitle.innerText + '|||\n' + treeString;
+    treeString = (mainTitle?.innerText ?? '') + '|||\n' + treeString;
   }
   
   bookmarksPane.innerHTML = linesToHtmlTree(treeString, N_P_TREEITEM_BOOKMARK);

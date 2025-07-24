@@ -27,6 +27,7 @@ function newNavigation(baseName, getId, treeBaseName = N_P_TREEITEM) {
   }
   
   function updateNavButtons(i) {
+    if (!navL || !navT || !navR) return;
     i = parseInt(i);
     var indexPrev = i - 1;
     var indexNext = i + 1;

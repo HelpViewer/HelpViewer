@@ -10,7 +10,6 @@ const sidebarSide = getUserConfigValue(KEY_LS_SIDEBARSIDE) || 0;
 const sidebar = document.getElementById('sidebar');
 const showBtn = document.getElementById('showBtn');
 const container = document.getElementById('container');
-const containerMain = document.getElementById('main');
 
 if (sidebarVisible == 0 && sidebar) toggleSidebar();
 
@@ -71,6 +70,8 @@ function hideButton(btnid) {
 
 function recomputeButtonPanel(button)
 {
+  if (!button) return;
+  
   const multilineCSS = 'multi-linePanel';
   const panel = button.parentElement;
   const len = panel.querySelectorAll(`:scope > :not(.${C_HIDDENC})`).length;
