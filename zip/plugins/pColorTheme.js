@@ -25,11 +25,11 @@ class pColorTheme extends IPlugin {
   init() {
     var h_EVT_CT_GET = (data) =>
       data.result = pColorTheme.ColorTheme.getCurrentColorMode();
-    pColorTheme.eventDefinitions.push([pColorTheme.EVT_CT_GET, StorageGetSubdirs, h_EVT_CT_GET]);
+    pColorTheme.eventDefinitions.push([pColorTheme.EVT_CT_GET, ColorThemeGet, h_EVT_CT_GET]);
 
     var h_EVT_CT_SET = (data) =>
       pColorTheme.ColorTheme.setColorMode(data.name);
-    pColorTheme.eventDefinitions.push([pColorTheme.EVT_CT_SET, StorageGetSubdirs, h_EVT_CT_SET]);
+    pColorTheme.eventDefinitions.push([pColorTheme.EVT_CT_SET, ColorThemeSet, h_EVT_CT_SET]);
 
     super.init();
     pColorTheme.ColorTheme.init();
