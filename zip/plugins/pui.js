@@ -27,7 +27,7 @@ class pui extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    EventBus.sub(EventNames.ClickedEvent, this._processClickedEvent);
+    this.subscribed = EventBus.sub(EventNames.ClickedEvent, this._processClickedEvent);
 
     var h_EVT_CLICK_HANDLER_REGISTER = (reply) => {
       if (!reply.handlerId || !reply.handler)
@@ -58,6 +58,7 @@ class pui extends IPlugin {
 
   deInit() {
     this.btnHandlers = undefined;
+    this.subscribed?.();
 
     super.deInit();
   }

@@ -33,7 +33,6 @@ class pClickDispatcher extends IPlugin {
       d.target = d.event?.target;
       d.elementId = d.target?.id
       const splits = d.elementId?.replace('-', '|').split('|').filter(Boolean) ?? [];
-      alert(splits);
       d.elementIdRoot = splits[0];
       d.elementIdVal = splits[1];
     });
