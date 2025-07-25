@@ -60,7 +60,9 @@ async function runApp() {
     appendJavaScript(`plugins-${name}.js`, srcMarkedJs, document.head);
 
     for (const oneAlias of aliases) {
-      Plugins.activate(name, oneAlias, {});
+      const configFileRaw = await _Storage.search(STO_DATA, `plugins-config/${name}_${oneAlias}.cfg`);
+      const configFileStruct = parseConfigFile(configFileRaw || '|');
+      Plugins.activate(name, oneAlias, configFileStruct || {});
     }
   }
 
