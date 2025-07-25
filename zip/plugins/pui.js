@@ -7,8 +7,17 @@ class ButtonCreate extends IEvent {
   }
 }
 
+class ClickHandlerRegister extends IEvent {
+  constructor() {
+    super();
+    this.handlerId = undefined;
+    this.handler = undefined;
+  }
+}
+
 class pui extends IPlugin {
   static EVT_BUTTON_CREATE = ButtonCreate.name;
+  static EVT_CLICK_HANDLER_REGISTER = ClickHandlerRegister.name;
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -20,6 +29,14 @@ class pui extends IPlugin {
   init() {
     EventBus.sub(EventNames.ClickedEvent, this._processClickedEvent);
 
+    var h_EVT_CLICK_HANDLER_REGISTER = (reply) => {
+      if (!reply.handlerId || !reply.handler)
+        return;
+      this.btnHandlers.set(reply.handlerId, reply.handler);
+      reply.result = reply.handlerId;
+    }
+    pui.eventDefinitions.push([pui.EVT_CLICK_HANDLER_REGISTER, ClickHandlerRegister, h_EVT_CLICK_HANDLER_REGISTER]);
+
     var h_EVT_BUTTON_CREATE = (reply) => {
       if (!reply.buttonId)
         return;
@@ -29,9 +46,8 @@ class pui extends IPlugin {
       button.id = reply.buttonId;
       button.textContent = reply.caption;
 
-      if (reply.handler) {
-        this.btnHandlers.set(reply.buttonId, reply.handler);
-      }
+      if (reply.handler)
+        h_EVT_CLICK_HANDLER_REGISTER({ handlerId: reply.buttonId, handler: reply.handler});
 
       reply.result = button;
     }
@@ -47,7 +63,7 @@ class pui extends IPlugin {
   }
 
   _processClickedEvent(e) {
-    this.btnHandlers.get(e.elementId)?.(e);
+    (this.btnHandlers.get(e.elementId) || this.btnHandlers.get(e.elementIdRoot))?.(e);
   }
 }
 
