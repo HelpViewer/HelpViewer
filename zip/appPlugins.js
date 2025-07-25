@@ -3,7 +3,7 @@ class IPlugin {
 
   constructor(aliasName, data) {
     this.aliasName = aliasName || '';
-    this.data = data;
+    this.config = data;
     this.unsubscribersToEB = [];
     this.eventIdStrict = false;
   }

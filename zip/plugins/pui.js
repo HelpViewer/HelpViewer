@@ -15,19 +15,32 @@ class ClickHandlerRegister extends IEvent {
   }
 }
 
+class ButtonSend extends IEvent {
+  constructor() {
+    super();
+    this.button = undefined;
+    this.id = undefined;
+  }
+}
+
+const UI_PLUGIN_SIDEBAR = 'sidebar';
+const UI_PLUGIN_HEADER = 'header';
+
 class pui extends IPlugin {
   static EVT_BUTTON_CREATE = ButtonCreate.name;
   static EVT_CLICK_HANDLER_REGISTER = ClickHandlerRegister.name;
+  static EVT_BUTTON_SEND = ButtonSend.name;
 
   constructor(aliasName, data) {
     super(aliasName, data);
     this.btnHandlers = new Map();
+    alert('>> ' + this.config['A']);
   }
 
   static eventDefinitions = [];
 
   init() {
-    this.subscribed = EventBus.sub(EventNames.ClickedEvent, this._processClickedEvent);
+    this.subscribed = EventBus.sub(EventNames.ClickedEvent, this._processClickedEvent.bind(this));
 
     var h_EVT_CLICK_HANDLER_REGISTER = (reply) => {
       if (!reply.handlerId || !reply.handler)
@@ -53,11 +66,13 @@ class pui extends IPlugin {
     }
     pui.eventDefinitions.push([pui.EVT_BUTTON_CREATE, ButtonCreate, h_EVT_BUTTON_CREATE]);
 
+    pui.eventDefinitions.push([pui.EVT_BUTTON_SEND, ButtonSend, null]); // outside event handlers
+
     super.init();
   }
 
   deInit() {
-    this.btnHandlers = undefined;
+    this.btnHandlers.clear();
     this.subscribed?.();
 
     super.deInit();
@@ -69,3 +84,25 @@ class pui extends IPlugin {
 }
 
 Plugins.catalogize(pui);
+
+function createButtonAcceptHandler(pluginInstance, toolbar) {
+  return function(reply) {
+    if (!reply || reply.id !== pluginInstance.aliasName || !reply.button)
+      return;
+    toolbar?.appendChild(reply.button);
+    reply.result = true;
+  };
+}
+
+function uiAddButton(id, caption, handler, target) {
+  const button = sendEvent(pui.EVT_BUTTON_CREATE, (x) => {
+    x.buttonId = id;
+    x.caption = caption;
+    x.handler = handler;
+  });
+
+  sendEvent(pui.EVT_BUTTON_SEND, (x) => {
+    x.button = button;
+    x.id = target;
+  });
+}

@@ -32,12 +32,14 @@ class puiSidebar extends IPlugin {
 
   init() {
     const containerMain = document.getElementById('container');
-    const sidebar = this._getSidebar();
     const tmpDiv = document.createElement('div');
     tmpDiv.innerHTML = puiSidebar.addition;
     const node = tmpDiv.firstChild;
     if (containerMain && node)
       containerMain.append(node);
+
+    const sidebar = this._getSidebar();
+    const toolbar = document.getElementById('toolbar-down');
 
     var h_EVT_SIDE_PAGE_CREATE = (reply) => {
       if (!reply.pageId)
@@ -68,15 +70,16 @@ class puiSidebar extends IPlugin {
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_TREEVIEW_CREATE, TreeViewCreate, h_EVT_SIDE_TREEVIEW_CREATE]);
 
+    this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
+
     super.init();
   }
 
   deInit() {
     this._getSidebar()?.remove();
+    this.subscribedButtonAccept?.();
     super.deInit();
   }
 }
 
 Plugins.catalogize(puiSidebar);
-
-//<button class="pnl-btn" id="downP-Hide">X</button>

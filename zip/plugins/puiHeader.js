@@ -26,6 +26,7 @@ class puiHeader extends IPlugin {
       containerMain.prepend(node);
 
     const mainTitle = document.getElementById('mtitle');
+    const toolbar = document.getElementById('toolbar');
 
     var h_EVT_HEAD_SET = (data) => {
       if (typeof data.payload === 'function') {
@@ -42,12 +43,15 @@ class puiHeader extends IPlugin {
     }
     puiHeader.eventDefinitions.push([puiHeader.EVT_HEAD_GET, IEvent, h_EVT_HEAD_GET]);
 
+    this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
+
     super.init();
   }
 
   deInit() {
     const header = document.getElementById('header');
     header?.remove();
+    this.subscribedButtonAccept?.();
     super.deInit();
   }
 }
