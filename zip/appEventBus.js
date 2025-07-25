@@ -26,6 +26,8 @@ const EventBus = {
             console.warn(`! Data object for ${event} has defined doneHandler property as required.`);
 
           const result = callback(data);
+          
+          if (data?.stop === true) break;
 
           if (result instanceof Promise) {
             result.then(() => {
@@ -117,5 +119,6 @@ class IEvent {
     this.result = undefined;
     this.doneHandler = undefined;
     this.requiresDoneHandler = false;
+    this.stop = false;
   }
 }
