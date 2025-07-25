@@ -5,4 +5,6 @@ pStorage
 pLocalizationSwitcher
 pColorTheme
 pClickDispatcher
+pui
 puiHeader
+puiSidebar
