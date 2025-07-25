@@ -138,3 +138,40 @@ function getHeader() {
   return sendEvent('HeaderGet');
 }
 /*E: Plugin: puiHeader */
+
+/*S: Plugin: pui */
+function uiAddButton(id, caption, handler, target) {
+  const button = sendEvent(pui.EVT_BUTTON_CREATE, (x) => {
+    x.buttonId = id;
+    x.caption = caption;
+    x.handler = handler;
+  });
+
+  sendEvent(pui.EVT_BUTTON_SEND, (x) => {
+    x.button = button;
+    x.id = target;
+  });
+
+  return button;
+}
+/*E: Plugin: pui */
+
+/*S: Plugin: puiSidebar */
+function uiAddSidebarPage(id, role) {
+  const page = sendEvent(puiSidebar.EVT_SIDE_PAGE_CREATE, (x) => {
+    x.pageId = id;
+    x.role = role;
+  });
+
+  return page;
+}
+
+function uiAddTreeView(id, page) {
+  const treeView = sendEvent(puiSidebar.EVT_SIDE_TREEVIEW_CREATE, (x) => {
+    x.page = page;
+    x.treeViewId = id;
+  });
+
+  return treeView;
+}
+/*E: Plugin: puiSidebar */

@@ -18,6 +18,8 @@ class puiSidebar extends IPlugin {
   static EVT_SIDE_PAGE_CREATE = SidebarPageCreate.name;
   static EVT_SIDE_TREEVIEW_CREATE = TreeViewCreate.name;
 
+  static toolbarButtonIdRoot = 'downP';
+
   constructor(aliasName, data) {
     super(aliasName, data);
   }
@@ -31,6 +33,11 @@ class puiSidebar extends IPlugin {
   }
 
   init() {
+    sendEvent(EventNames.ClickHandlerRegister, (y) => {
+      y.handlerId = puiSidebar.toolbarButtonIdRoot;
+      y.handler = puiSidebar._processClickedBottomPanelEvent;
+    });
+
     const containerMain = document.getElementById('container');
     const tmpDiv = document.createElement('div');
     tmpDiv.innerHTML = puiSidebar.addition;
@@ -80,6 +87,29 @@ class puiSidebar extends IPlugin {
     this.subscribedButtonAccept?.();
     super.deInit();
   }
+
+  static _processClickedBottomPanelEvent(ev) {
+    if (ev.elementIdRoot != puiSidebar.toolbarButtonIdRoot)
+      return;
+
+    alert(`sp-${ev.elementId}`);
+    puiSidebar.showSidebarTab(`sp-${ev.elementId}`);
+    ev.stop = true;
+  }
+
+  /*S: Feature: Sidebar tabs handling */
+  static showSidebarTab(id) {
+    const tab = document.getElementById(id);
+    
+    if (tab) {
+      Array.from(tab.parentElement.children).forEach(child => {
+        child.classList.add(C_HIDDENC);
+      });
+    
+      tab.classList.remove(C_HIDDENC);  
+    }
+  }
+  /*E: Feature: Sidebar tabs handling */
 }
 
 Plugins.catalogize(puiSidebar);

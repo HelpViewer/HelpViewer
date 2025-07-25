@@ -34,7 +34,6 @@ class pui extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
     this.btnHandlers = new Map();
-    alert('>> ' + this.config['A']);
   }
 
   static eventDefinitions = [];
@@ -92,17 +91,4 @@ function createButtonAcceptHandler(pluginInstance, toolbar) {
     toolbar?.appendChild(reply.button);
     reply.result = true;
   };
-}
-
-function uiAddButton(id, caption, handler, target) {
-  const button = sendEvent(pui.EVT_BUTTON_CREATE, (x) => {
-    x.buttonId = id;
-    x.caption = caption;
-    x.handler = handler;
-  });
-
-  sendEvent(pui.EVT_BUTTON_SEND, (x) => {
-    x.button = button;
-    x.id = target;
-  });
 }
