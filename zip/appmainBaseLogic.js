@@ -174,4 +174,12 @@ function uiAddTreeView(id, page) {
 
   return treeView;
 }
+
+function showSidebarTab(id) {
+  //TODO: Temporary
+  id = id.startsWith('sp-') ? id.substring(3) : id;
+  return sendEvent(EventNames.SidebarPageShow, (x) => {
+    x.pageId = id;
+  });
+}
 /*E: Plugin: puiSidebar */

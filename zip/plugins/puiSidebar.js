@@ -14,8 +14,16 @@ class TreeViewCreate extends IEvent {
   }
 }
 
+class SidebarPageShow extends IEvent {
+  constructor() {
+    super();
+    this.pageId = undefined;
+  }
+}
+
 class puiSidebar extends IPlugin {
   static EVT_SIDE_PAGE_CREATE = SidebarPageCreate.name;
+  static EVT_SIDE_PAGE_SHOW = SidebarPageShow.name;
   static EVT_SIDE_TREEVIEW_CREATE = TreeViewCreate.name;
 
   static toolbarButtonIdRoot = 'downP';
@@ -64,6 +72,14 @@ class puiSidebar extends IPlugin {
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_PAGE_CREATE, SidebarPageCreate, h_EVT_SIDE_PAGE_CREATE]);
 
+    var h_EVT_SIDE_PAGE_SHOW = (reply) => {
+      if (!reply.pageId)
+        return;
+
+      reply.result = puiSidebar.showSidebarTab(`sp-${reply.pageId}`);
+    }
+    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_PAGE_SHOW, SidebarPageShow, h_EVT_SIDE_PAGE_SHOW]);
+
     var h_EVT_SIDE_TREEVIEW_CREATE = (reply) => {
       if (!reply.treeViewId || !reply.page)
         return;
@@ -92,8 +108,7 @@ class puiSidebar extends IPlugin {
     if (ev.elementIdRoot != puiSidebar.toolbarButtonIdRoot)
       return;
 
-    alert(`sp-${ev.elementId}`);
-    puiSidebar.showSidebarTab(`sp-${ev.elementId}`);
+    ev.result = puiSidebar.showSidebarTab(`sp-${ev.elementId}`);
     ev.stop = true;
   }
 
@@ -106,7 +121,8 @@ class puiSidebar extends IPlugin {
         child.classList.add(C_HIDDENC);
       });
     
-      tab.classList.remove(C_HIDDENC);  
+      tab.classList.remove(C_HIDDENC);
+      return tab;
     }
   }
   /*E: Feature: Sidebar tabs handling */
