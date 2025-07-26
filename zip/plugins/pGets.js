@@ -108,7 +108,7 @@ class pGets extends IPlugin {
       this.h_EVT_GETS_LOAD(null);
 
       history.pushState(null, "", url.toString());
-      this.onUriChanged();
+      this.onUriChanged(data.eventId);
     };
     pGets.eventDefinitions.push([pGets.EVT_GETS_SET, GetsSet, h_EVT_GETS_SET]);
 
@@ -118,7 +118,7 @@ class pGets extends IPlugin {
       
       this.h_EVT_GETS_LOAD(null);
       history.pushState({}, '', data.href);
-      this.onUriChanged();
+      this.onUriChanged(data.eventId);
     };
 
     pGets.eventDefinitions.push([pGets.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
@@ -131,7 +131,7 @@ class pGets extends IPlugin {
       location.hash = data.bookmark;
       const url = new URL(window.location.href);
       history.replaceState(null, '', url);
-      this.onUriChanged();
+      this.onUriChanged(data.eventId);
     };
 
     pGets.eventDefinitions.push([pGets.EVT_GETS_SET_TO_BOOKMARK, GetsSetToBookmark, h_EVT_GETS_SET_TO_BOOKMARK]);
@@ -167,12 +167,15 @@ class pGets extends IPlugin {
     this.params = Object.fromEntries(urlParams.entries());
   };
 
-  onUriChanged() {
+  onUriChanged(parentEventId) {
     const parOld = getObjectCopy(this.params);
     this.h_EVT_GETS_LOAD(null);
     const summary = getDifferenceTwoObjects(parOld, this.params);
 
     sendEvent(pGets.EVT_GETS_CHANGES, (changes) => {
+      if (parentEventId === 'string')
+        changes.parentEventId = parentEventId;
+
       for (const key in summary) {
         if (summary[key].new == undefined) {
           changes.unset.push(key);

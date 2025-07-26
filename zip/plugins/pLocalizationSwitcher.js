@@ -45,7 +45,7 @@ class pLocalizationSwitcher extends IPlugin {
     pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_LANGUAGES, LocGetLanguages, h_EVT_LOC_LANGUAGES]);
 
     var h_EVT_LOC_LOAD = (data) => {
-      this.loadLocalization(data.name);
+      this.loadLocalization(data.name, data.eventId);
     };
     pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_LOAD, LocTranslate, h_EVT_LOC_LOAD]);
 
@@ -95,7 +95,7 @@ class pLocalizationSwitcher extends IPlugin {
   //lstr.js format: var _lstr must be implemented by files
   //lstr.txt format - one row = one key: key|value(|continuous value allowed)
   //lstr.* must be defined in codepage UTF-8 no BOM (65001)
-  async loadLocalization(localizationName)
+  async loadLocalization(localizationName, parentEventId)
   {
     this.langStrs = {};
   
@@ -123,6 +123,7 @@ class pLocalizationSwitcher extends IPlugin {
     
     sendEvent(pLocalizationSwitcher.EVT_LOC_LOADED, (x) => {
       x.name = localizationName;
+      x.parentEventId = parentEventId;
     });
   }
   
