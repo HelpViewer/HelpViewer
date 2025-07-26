@@ -15,7 +15,7 @@ class puiHeader extends IPlugin {
 
   static eventDefinitions = [];
 
-  static addition = '<div class="header" role="banner"><h1 id="mtitle">&nbsp;</h1><div id="toolbar" role="navigation"></div></div>';
+  static addition = '<div class="header" id="header" role="banner"><h1 id="mtitle">&nbsp;</h1><div id="toolbar" role="navigation"></div></div>';
 
   init() {
     const containerMain = document.getElementById('main');
