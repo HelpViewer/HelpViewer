@@ -56,13 +56,10 @@ async function runApp() {
     if (aliases.length == 0)
       aliases.push('');
 
-    const srcMarkedJs = await _Storage.search(STO_DATA, `plugins/${name}.js`);
-    appendJavaScript(`plugins-${name}.js`, srcMarkedJs, document.head);
+    await loadPlugin(name, `plugins/${name}.js`, STO_DATA);
 
     for (const oneAlias of aliases) {
-      const configFileRaw = await _Storage.search(STO_DATA, `plugins-config/${name}_${oneAlias}.cfg`);
-      const configFileStruct = parseConfigFile(configFileRaw || '|');
-      Plugins.activate(name, oneAlias, configFileStruct || {});
+      await activatePlugin(name, oneAlias);
     }
   }
 
@@ -76,5 +73,15 @@ async function runApp() {
 
   if (srcJSOverridePlus)
     appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
+}
 
+async function loadPlugin(name, file, source = STO_DATA) {
+  const srcMarkedJs = await _Storage.search(source, file);
+  appendJavaScript(`plugins-${name}.js`, srcMarkedJs, document.head);
+}
+
+async function activatePlugin(name, alias, source = STO_DATA) {
+  const configFileRaw = await _Storage.search(source, `plugins-config/${name}_${alias}.cfg`);
+  const configFileStruct = parseConfigFile(configFileRaw || '|');
+  Plugins.activate(name, alias, configFileStruct || {});
 }
