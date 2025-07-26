@@ -18,26 +18,30 @@ const EventBus = {
 
   snd(data, eventKeyName) {
     var event = eventKeyName || data.eventName;
+    var handlers = this.events.get(event);
 
-    if (this.events.has(event)) {
-      for (const callback of this.events.get(event)) {
-        try {
-          if (data && data.requiresDoneHandler && !data.doneHandler)
-            console.warn(`! Data object for ${event} has defined doneHandler property as required.`);
+    if (!handlers || handlers.length === 0) {
+      console.warn(`! Event ${event} has no listeners.`);
+      return;
+    }
 
-          const result = callback(data);
-          
-          if (data?.stop === true) break;
+    for (const callback of handlers) {
+      try {
+        if (data && data.requiresDoneHandler && !data.doneHandler)
+          console.warn(`! Data object for ${event} has defined doneHandler property as required.`);
 
-          if (result instanceof Promise) {
-            result.then(() => {
-            }).catch(err => {
-              console.error(`! Error in async handler for "${event}":`, err);
-            });
-          }
-        } catch (err) {
-          console.error(`! Error in event callback for "${event}":`, err);
+        const result = callback(data);
+        
+        if (data?.stop === true) break;
+
+        if (result instanceof Promise) {
+          result.then(() => {
+          }).catch(err => {
+            console.error(`! Error in async handler for "${event}":`, err);
+          });
         }
+      } catch (err) {
+        console.error(`! Error in event callback for "${event}":`, err);
       }
     }
   }
@@ -105,6 +109,7 @@ function sendEvent(eventName, eventDataInit) {
   if (typeof eventDataInit === 'function')
     eventDataInit(eventData);
 
+  eventData.eventName = eventName;
   EventBus.snd(eventData);
   return eventData.result;
 }
