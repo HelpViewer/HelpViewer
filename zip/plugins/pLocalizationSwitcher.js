@@ -146,7 +146,10 @@ class pLocalizationSwitcher extends IPlugin {
           foundO = document.getElementById(splits[0]);
           
           if (foundO) {
-            foundO.setAttribute(splits[1], val);
+            if (splits[1] in foundO)
+              foundO[splits[1]] = val;
+            else
+              foundO.setAttribute(splits[1], val);
           }
         }
       }
