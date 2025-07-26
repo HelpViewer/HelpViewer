@@ -5,34 +5,43 @@ class puiSidebarVisibilityToggle extends IPlugin {
 
   static eventDefinitions = [];
 
-  static sidebarVisible = getUserConfigValue(KEY_LS_SIDEBARVISIBLE) || 1;
+  static KEY_CFG_HIDE = 'HIDE';
+  static KEY_CFG_SHOW = 'SHOW';
+  static KEY_CFG_STOREKEY = 'STOREKEY';
 
   static ID_DOWNPB = 'downP-Hide';
   static ID_TOPPB = 'showBtn';
 
-  static buttons = [];
+  static buttonHide;
+  static buttonShow;
 
   init() {
-    puiSidebarVisibilityToggle.buttons.push(uiAddButton(puiSidebarVisibilityToggle.ID_DOWNPB, '❌︎', this._sidebarToggle(), UI_PLUGIN_SIDEBAR));
-    puiSidebarVisibilityToggle.buttons.push(uiAddButton(puiSidebarVisibilityToggle.ID_TOPPB, '☰', this._sidebarToggle(), UI_PLUGIN_HEADER));
+    const KEY_LS_SIDEBARVISIBLE = this.config[puiSidebarVisibilityToggle.KEY_CFG_STOREKEY];
+    var sidebarVisible = getUserConfigValue(KEY_LS_SIDEBARVISIBLE) || 1;
+    
+    var _sidebarToggle = (evt) => {
+      const newState = toggleSidebar();
+      sidebarVisible = newState;
+      toggleVisibility(puiSidebarVisibilityToggle.buttonShow, !newState);
+      setUserConfigValue(KEY_LS_SIDEBARVISIBLE, String(Number(newState)));
+    }
+  
+    puiSidebarVisibilityToggle.buttonHide = uiAddButton(puiSidebarVisibilityToggle.ID_DOWNPB, this.config[puiSidebarVisibilityToggle.KEY_CFG_HIDE], _sidebarToggle, UI_PLUGIN_SIDEBAR);
+    puiSidebarVisibilityToggle.buttonShow = uiAddButton(puiSidebarVisibilityToggle.ID_TOPPB, this.config[puiSidebarVisibilityToggle.KEY_CFG_SHOW], _sidebarToggle, UI_PLUGIN_HEADER);
 
-    puiSidebarVisibilityToggle.buttons[1]
-    if (sidebarVisible)
+    toggleVisibility(puiSidebarVisibilityToggle.buttonShow, !sidebarVisible);
 
-      else 
+    if (sidebarVisible == 0)
+      _sidebarToggle();
 
     super.init();
   }
 
   deInit() {
-    puiSidebarVisibilityToggle.buttons.forEach((btn) => btn?.remove());
+    puiSidebarVisibilityToggle.buttonHide?.remove();
+    puiSidebarVisibilityToggle.buttonShow?.remove();
 
     super.deInit();
-  }
-
-  _sidebarToggle() {
-    const newState = toggleSidebar();
-    setUserConfigValue(KEY_LS_SIDEBARVISIBLE, String(Number(newState)));
   }
 }
 

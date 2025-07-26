@@ -107,21 +107,7 @@ class puiSidebar extends IPlugin {
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_TREEVIEW_CREATE, TreeViewCreate, h_EVT_SIDE_TREEVIEW_CREATE]);
 
     var h_EVT_SIDE_VISIBILITY_SET = (reply) => {
-      if (!sidebar) return;
-      const currentlyHidden = sidebar.classList.contains(C_HIDDENC);
-
-      if (reply.value == undefined)
-        reply.value = currentlyHidden;
-
-      if (reply.value) {
-        if (currentlyHidden)
-          sidebar.classList.remove(C_HIDDENC);
-      } else {
-        if (!currentlyHidden)
-          sidebar.classList.add(C_HIDDENC);
-      }
-
-      reply.target = reply.value;
+      reply.result = toggleVisibility(sidebar, reply.value);
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_VISIBILITY_SET, SidebarVisibilitySet, h_EVT_SIDE_VISIBILITY_SET]);
 

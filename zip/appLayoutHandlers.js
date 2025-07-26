@@ -1,7 +1,6 @@
 /*S: Feature: Sidebar hide/show (sidebar switching) */
 const C_TORIGHT = 'toright';
 
-const KEY_LS_SIDEBARVISIBLE = "sidebarVisible";
 const KEY_LS_SIDEBARSIDE = "sidebarSide";
 const sidebarSide = getUserConfigValue(KEY_LS_SIDEBARSIDE) || 0;
 
@@ -9,21 +8,26 @@ const sidebar = document.getElementById('sidebar');
 const showBtn = document.getElementById('showBtn');
 const container = document.getElementById('container');
 
-if (sidebarVisible == 0 && sidebar) toggleSidebar();
+function toggleVisibility(target, newVal) {
+  if (!target) return;
+  const currentlyHidden = target.classList.contains(C_HIDDENC);
+  var newValue = newVal;
+
+  if (newValue == undefined)
+    newValue = currentlyHidden;
+
+  if (newValue) {
+    if (currentlyHidden)
+      target.classList.remove(C_HIDDENC);
+  } else {
+    if (!currentlyHidden)
+      target.classList.add(C_HIDDENC);
+  }
+
+  return newValue;
+}
 
 if (sidebarSide == 0 && container) toggleSidebarSide();
-
-function xtoggleSidebar() {
-  if (sidebar.classList.contains(C_HIDDENC)) {
-    sidebar.classList.remove(C_HIDDENC);
-    showBtn.classList.add(C_HIDDENC);
-    setUserConfigValue(KEY_LS_SIDEBARVISIBLE, '1');
-  } else {
-    sidebar.classList.add(C_HIDDENC);
-    showBtn.classList.remove(C_HIDDENC);
-    setUserConfigValue(KEY_LS_SIDEBARVISIBLE, '0');
-  }
-}
 
 function toggleSidebarSide() {
   if (container.classList.contains(C_TORIGHT)) {
