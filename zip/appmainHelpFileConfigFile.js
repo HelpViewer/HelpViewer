@@ -26,14 +26,3 @@ var FILE_CONFIG;
 function configGetValue(key, backup, CFG = FILE_CONFIG) {
   return CFG?.[key] ?? backup ?? FILE_CONFIG_DEFAULT[key];
 }
-
-function parseConfigFile(data) {
-  var rows = rowsToArray(data.trim());
-  const obj = rows
-    .reduce((acc, line) => {
-      const [key, value] = line.split('|');
-      acc[key] = value;
-      return acc;
-    }, {});
-  return obj;
-}

@@ -85,3 +85,14 @@ async function activatePlugin(name, alias, source = STO_DATA) {
   const configFileStruct = parseConfigFile(configFileRaw || '|');
   Plugins.activate(name, alias, configFileStruct || {});
 }
+
+function parseConfigFile(data) {
+  var rows = rowsToArray(data.trim());
+  const obj = rows
+    .reduce((acc, line) => {
+      const [key, value] = line.split('|');
+      acc[key] = value;
+      return acc;
+    }, {});
+  return obj;
+}
