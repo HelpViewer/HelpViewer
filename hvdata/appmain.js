@@ -1,5 +1,17 @@
 const DEBUG_MODE = true;
 
+function newUID(length = 8) {
+  var str = '';
+
+  while (str.length <= length)
+    str += Math.random().toString(36).slice(2);
+
+  str = str.slice(0, length);
+  //log(`newUID of length ${length} emitted: ${str}`);
+
+  return str;
+}
+
 function log(msg, ...dataI) {
   if (!DEBUG_MODE || !msg) return;
 
@@ -26,8 +38,7 @@ function log(msg, ...dataI) {
       break;
   
     default:
-      if (hasSeverity) 
-      {
+      if (hasSeverity) {
         msg = `${severity} ${msg}`;
         data[0] = msg;
       }
