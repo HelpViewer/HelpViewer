@@ -1,3 +1,34 @@
+const DEBUG_MODE = true;
+
+function log(msg) {
+  if (!DEBUG_MODE || !msg) return;
+
+  var severity = msg[0];
+  const hasSeverity = msg[1] == ' ';
+
+  if (hasSeverity) {
+    msg = msg.substring(2);
+  } else {
+    severity = undefined;
+  }
+
+  switch (severity?.toUpperCase()) {
+    case 'W':
+      console.warn(msg);
+      break;
+
+    case 'E':
+      console.error(msg);
+      break;
+  
+    default:
+      if (hasSeverity) 
+        msg = `${severity} ${msg}`;
+      console.log(msg);
+      break;
+  }
+}
+
 const PAR_NAME_DOC = 'd'; // Help file path
 
 const id_JSAppRun = 'appRun';

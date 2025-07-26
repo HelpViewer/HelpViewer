@@ -119,7 +119,7 @@ loadLocalization(activeLanguage).then(() => {
   }
   
   if (!dataPath) {
-    console.log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);
+    log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);
     dataPath = FILENAME_DEFAULT_HELPFILE;
     msgNoData = _T(LK_MSG_NODATA);
     contentPane.innerHTML = msgNoData;

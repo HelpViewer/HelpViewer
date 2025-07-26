@@ -35,7 +35,7 @@ class IPlugin {
         if (d.id == this.aliasName || (!this.eventIdStrict && (!d.id || this.aliasName == '')))
           handler(d);
         else
-          console.warn(`! [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${this.aliasName}".`);
+          log(`W [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${this.aliasName}".`);
       };
 
       var unsubscribe = EventBus.sub(name, handlerFilterId);
@@ -65,23 +65,23 @@ const Plugins = {
 
   catalogize(plugin) {
     if (typeof plugin !== 'function') {
-      console.error('Plugins: object is not a class/constructor: ', plugin);
+      log('E Plugins: object is not a class/constructor: ', plugin);
       return;
     }
 
     const name = plugin.name;
     if (!name) {
-      console.error('Plugins: class is anonymous!');
+      log('E Plugins: class is anonymous!');
       return;
     }
 
     if (!inheritsFrom(plugin, IPlugin)) {
-      console.error(`Plugins: ${name} class not inherits from IPlugin!`);
+      log(`E Plugins: ${name} class not inherits from IPlugin!`);
       return;
     }
 
     this.pluginsClasses.set(name, plugin);
-    console.log(`Plugins: registered '${name}'`);
+    log(`Plugins: registered '${name}'`);
   },
 
   activate(pluginName, aliasName, data) {
@@ -96,14 +96,14 @@ const Plugins = {
     }
 
     if (!p) {
-      console.error(`Plugin ${plugin} establishment failed!`);
+      log(`E Plugin ${plugin} establishment failed!`);
       return;
     }
 
     p.init();
     var key = this.getKey(pluginName, aliasName);
     this.plugins.set(key, p);
-    console.log(`Plugins: activated '${key}'`);
+    log(`Plugins: activated '${key}'`);
   },
 
   getKey(pluginName, aliasName) {

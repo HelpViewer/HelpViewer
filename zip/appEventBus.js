@@ -21,14 +21,14 @@ const EventBus = {
     var handlers = this.events.get(event);
 
     if (!handlers || handlers.length === 0) {
-      console.warn(`! Event ${event} has no listeners.`);
+      log(`W Event ${event} has no listeners.`);
       return;
     }
 
     for (const callback of handlers) {
       try {
         if (data && data.requiresDoneHandler && !data.doneHandler)
-          console.warn(`! Data object for ${event} has defined doneHandler property as required.`);
+          log(`W Data object for ${event} has defined doneHandler property as required.`);
 
         const result = callback(data);
         
@@ -37,11 +37,11 @@ const EventBus = {
         if (result instanceof Promise) {
           result.then(() => {
           }).catch(err => {
-            console.error(`! Error in async handler for "${event}":`, err);
+            log(`E Error in async handler for "${event}":`, err);
           });
         }
       } catch (err) {
-        console.error(`! Error in event callback for "${event}":`, err);
+        log(`E Error in event callback for "${event}":`, err);
       }
     }
   }
@@ -54,7 +54,7 @@ const EventNames = new Proxy({}, {
       return inst[p];
     } else {
       const pn = p.toString();
-      console.error(`! Event ${pn} currently is not defined.`);
+      log(`E Event ${pn} currently is not defined.`);
       return pn;
     }
   }
@@ -80,12 +80,12 @@ function getEventInput(event) {
 
 function addEventDefinition(eventName, eventDefinition) {
   if (!(eventDefinition instanceof EventDefinition)) {
-    console.error(`EventDefinition instances are required here in this operation!`);
+    log(`E EventDefinition instances are required here in this operation!`);
     return;
   }
 
   if (EventDefinitions[eventName])
-    console.warn(`Event "${eventName}" is already defined. Definition is updated now`);
+    log(`W Event "${eventName}" is already defined. Definition is updated now`);
 
   EventDefinitions[eventName] = eventDefinition;
   EventNames[eventName] = eventName;
