@@ -118,6 +118,7 @@ class puiSidebar extends IPlugin {
     this._checkSidebarWidth();
 
     super.init();
+    this.eventIdStrict = true;
   }
 
   deInit() {

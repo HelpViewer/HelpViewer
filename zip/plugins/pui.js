@@ -23,9 +23,6 @@ class ButtonSend extends IEvent {
   }
 }
 
-const UI_PLUGIN_SIDEBAR = 'sidebar';
-const UI_PLUGIN_HEADER = 'header';
-
 class pui extends IPlugin {
   static EVT_BUTTON_CREATE = ButtonCreate.name;
   static EVT_CLICK_HANDLER_REGISTER = ClickHandlerRegister.name;

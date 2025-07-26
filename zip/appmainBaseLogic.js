@@ -10,6 +10,9 @@ const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
 const FILENAME_FAVICON = 'favicon.png';
 
+const UI_PLUGIN_SIDEBAR = 'sidebar';
+const UI_PLUGIN_HEADER = 'header';
+
 function nameForAnchor(text, level, levelCounter) {
   return `h-${level}-${levelCounter}`;
   // return text.toLowerCase()
@@ -161,6 +164,7 @@ function uiAddSidebarPage(id, role) {
   return sendEvent(EventNames.SidebarPageCreate, (x) => {
     x.pageId = id;
     x.role = role;
+    x.id = UI_PLUGIN_SIDEBAR;
   });
 }
 
@@ -168,6 +172,7 @@ function uiAddTreeView(id, page) {
   return sendEvent(EventNames.TreeViewCreate, (x) => {
     x.page = page;
     x.treeViewId = id;
+    x.id = UI_PLUGIN_SIDEBAR;
   });
 }
 
@@ -176,12 +181,14 @@ function showSidebarTab(id) {
   id = id.startsWith('sp-') ? id.substring(3) : id;
   return sendEvent(EventNames.SidebarPageShow, (x) => {
     x.pageId = id;
+    x.id = UI_PLUGIN_SIDEBAR;
   });
 }
 
 function toggleSidebar(newVisibility) {
   return sendEvent(EventNames.SidebarVisibilitySet, (x) => {
     x.value = newVisibility;
+    x.id = UI_PLUGIN_SIDEBAR;
   });
 }
 /*E: Plugin: puiSidebar */
