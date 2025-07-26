@@ -48,7 +48,17 @@ const EventBus = {
 };
 
 const EventDefinitions = {};
-const EventNames = {};
+const EventNames = new Proxy({}, {
+  get(inst, p) {
+    if (p in inst) {
+      return inst[p];
+    } else {
+      const pn = p.toString();
+      console.error(`! Event ${pn} currently is not defined.`);
+      return pn;
+    }
+  }
+});
 
 class EventDefinition {
   constructor(inputType = IEvent, eventName = undefined) {
