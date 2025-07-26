@@ -301,22 +301,7 @@ ul.tree details[open] > summary::before {
   }
 });
 
-const C_TOOWIDE = 'too-wide';
 
-function checkSidebarWidth() {
-  if (!sidebar) return;
-  if (sidebar.offsetWidth / window.innerWidth > 0.5) {
-    sidebar.classList.add(C_TOOWIDE);
-    contentPane.classList.add(C_TOOWIDE);
-  } else {
-    sidebar.classList.remove(C_TOOWIDE);
-    contentPane.classList.remove(C_TOOWIDE);
-  }
-}
-
-window.addEventListener("resize", checkSidebarWidth);
-window.addEventListener("load", checkSidebarWidth);
-checkSidebarWidth();
 
 /*S: Topic renderer logic integration */
 function convertRelativePathToViewerURI(val) {

@@ -1,3 +1,5 @@
+const C_TOOWIDE = 'too-wide';
+
 class SidebarPageCreate extends IEvent {
   constructor() {
     super();
@@ -95,10 +97,16 @@ class puiSidebar extends IPlugin {
 
     this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
 
+    window.addEventListener("resize", this._checkSidebarWidth);
+    window.addEventListener("load", this._checkSidebarWidth);
+    this._checkSidebarWidth();
+
     super.init();
   }
 
   deInit() {
+    window.removeEventListener("resize", this._checkSidebarWidth);
+    window.removeEventListener("load", this._checkSidebarWidth);
     this._getSidebar()?.remove();
     this.subscribedButtonAccept?.();
     super.deInit();
@@ -126,6 +134,17 @@ class puiSidebar extends IPlugin {
     }
   }
   /*E: Feature: Sidebar tabs handling */
+
+  _checkSidebarWidth() {
+    if (!sidebar) return;
+    if (sidebar.offsetWidth / window.innerWidth > 0.5) {
+      sidebar.classList.add(C_TOOWIDE);
+      contentPane.classList.add(C_TOOWIDE);
+    } else {
+      sidebar.classList.remove(C_TOOWIDE);
+      contentPane.classList.remove(C_TOOWIDE);
+    }
+  }
 }
 
 Plugins.catalogize(puiSidebar);
