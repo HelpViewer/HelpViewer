@@ -158,21 +158,17 @@ function uiAddButton(id, caption, handler, target) {
 
 /*S: Plugin: puiSidebar */
 function uiAddSidebarPage(id, role) {
-  const page = sendEvent(EventNames.SidebarPageCreate, (x) => {
+  return sendEvent(EventNames.SidebarPageCreate, (x) => {
     x.pageId = id;
     x.role = role;
   });
-
-  return page;
 }
 
 function uiAddTreeView(id, page) {
-  const treeView = sendEvent(EventNames.TreeViewCreate, (x) => {
+  return sendEvent(EventNames.TreeViewCreate, (x) => {
     x.page = page;
     x.treeViewId = id;
   });
-
-  return treeView;
 }
 
 function showSidebarTab(id) {

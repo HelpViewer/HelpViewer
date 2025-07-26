@@ -18,6 +18,7 @@ class pLocalizationSwitcher extends IPlugin {
   static EVT_LOC_GET_ACTIVE_LANGUAGE = 'GET_ACTIVE_LANGUAGE';
   static EVT_LOC_LANGUAGES = 'GET_LANGUAGES';
   static EVT_LOC_LOAD = 'LOC_LOAD';
+  static EVT_LOC_LOADED = 'LOC_LOADED';
   static EVT_LOC_REFRESH = 'LOC_REFRESH';
 
   constructor(aliasName, data) {
@@ -54,6 +55,8 @@ class pLocalizationSwitcher extends IPlugin {
     };
     pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_REFRESH, IEvent, h_EVT_LOC_REFRESH]);
 
+    pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_LOADED, LocTranslate, null]); // outside event handlers
+
     super.init();
   }
   
@@ -69,26 +72,13 @@ class pLocalizationSwitcher extends IPlugin {
   static activeLanguage = getUserConfigValue(KEY_LS_LANG) || DEFAULT_LANG;
   
   async _storageSearch(filePath, format = STOF_TEXT) {
-    const xEVT_STORAGE_GET = EventNames.StorageGet;
-    return sendEventWProm(xEVT_STORAGE_GET, (input) => {
-      input.fileName = filePath;
-      input.storageName = STO_DATA;
-      input.format = format;
-    });
-  }
-
-  async _storageGetSubdirs(key, filePath) {
-    const xEVT_STORAGE_GET_SUBDIRS = 'EVT_STORAGE_GET_SUBDIRS';
-    return sendEvent(xEVT_STORAGE_GET_SUBDIRS, (input) => {
-      input.fileName = filePath;
-      input.storageName = key;
-    });
+    return storageSearch(STO_DATA, filePath, format);
   }
 
   async getLanguagesList(additional)
   {
     var langNames = [];
-    const langs = await this._storageGetSubdirs(STO_DATA, pLocalizationSwitcher.languagesMainPath);
+    const langs = await storageGetSubdirs(STO_DATA, pLocalizationSwitcher.languagesMainPath);
 
     if (additional && Array.isArray(additional))
       langs.push(...additional);
@@ -131,6 +121,10 @@ class pLocalizationSwitcher extends IPlugin {
 
     this.refreshTitlesForLangStrings(Object.keys(this.langStrs));
     setUserConfigValue(KEY_LS_LANG, localizationName);
+    
+    sendEvent(pLocalizationSwitcher.EVT_LOC_LOADED, (x) => {
+      x.name = localizationName;
+    });
   }
   
   refreshTitlesForLangStrings(strings) {
