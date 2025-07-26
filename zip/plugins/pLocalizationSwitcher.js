@@ -2,7 +2,6 @@ class LocTranslate extends IEvent {
   constructor() {
     super();
     this.name = undefined;
-    this.result = undefined;
   }
 }
 

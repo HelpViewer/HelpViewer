@@ -6,7 +6,6 @@ class GetsGet extends IEvent {
     super();
     this.name = '';
     this.conversionHandler = undefined;
-    this.result = undefined;
   }
 }
 
