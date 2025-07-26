@@ -139,17 +139,16 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       // load config file
-      FILE_CONFIG = (await storageSearch(STO_HELP, FILENAME_CONFIG));
+      var FILE_CONFIG_TEST = (await storageSearch(STO_HELP, FILENAME_CONFIG));
       
-      if (!FILE_CONFIG) {
-        FILE_CONFIG = null;
+      if (!FILE_CONFIG_TEST) {
         // language from local storage probably does not exists, reload with english
         if (activeLanguage !== DEFAULT_LANG) {
           loadLocalization(DEFAULT_LANG);
           location.reload(true);  
         }
       } else {
-        FILE_CONFIG = parseConfigFile(FILE_CONFIG);
+        await configFileReload(FILE_CONFIG);
         PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME).trim().split('/');
         
         var val = configGetValue(CFG_KEY_OverrideSidebarVisible, sidebarVisible);

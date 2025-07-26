@@ -93,6 +93,7 @@ const Plugins = {
     } catch (error) {
       p = null;
       plugin = pluginName;
+      log(`E Plugin ${plugin} error!`, error);
     }
 
     if (!p) {

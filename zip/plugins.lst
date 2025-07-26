@@ -2,6 +2,8 @@ pPluginManagement
 pUserConfig
 pGets
 pStorage
+pConfigFile:FILE_CONFIG_DEFAULT
+pConfigFile:FILE_CONFIG
 pLocalizationSwitcher
 pColorTheme
 pClickDispatcher

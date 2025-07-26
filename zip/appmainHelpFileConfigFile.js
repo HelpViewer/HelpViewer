@@ -5,24 +5,19 @@ const CFG_KEY_OverrideBookIconClosed = 'OverrideBookIcon-closed';
 const CFG_KEY_OverridePrintKeepIcons = 'OverridePrintKeepIcons';
 const CFG_KEY_Languages = '_langs';
 
-var FILE_CONFIG_DEFAULT = parseConfigFile(
-`
-#${CFG_KEY_OverrideSidebarVisible}|1
-#${CFG_KEY_OverrideColorTheme}|inStandard
-#${CFG_KEY_OverrideBookIconOpened}|&#128214;
-#${CFG_KEY_OverrideBookIconClosed}|&#128216;
-`
-);
-
-var FILE_CONFIG;
-
-(async () => {
-  var readConfig = (await storageSearch(STO_DATA, FILENAME_CONFIG));
-  
-  if (readConfig)
-    FILE_CONFIG_DEFAULT = parseConfigFile(readConfig);
-})();
+const FILE_CONFIG_DEFAULT = 'FILE_CONFIG_DEFAULT';
+const FILE_CONFIG = 'FILE_CONFIG';
 
 function configGetValue(key, backup, CFG = FILE_CONFIG) {
-  return CFG?.[key] ?? backup ?? FILE_CONFIG_DEFAULT[key];
+  return sendEvent(EventNames.ConfigFileGet, (x) => {
+    x.key = key;
+    x.backup = backup;
+    x.id = CFG;
+  });
+}
+
+function configFileReload(CFG = FILE_CONFIG) {
+  return sendEventWProm(EventNames.ConfigFileReload, (x) => {
+    x.id = CFG;
+  });
 }
