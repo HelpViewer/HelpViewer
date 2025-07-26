@@ -141,13 +141,13 @@ function getHeader() {
 
 /*S: Plugin: pui */
 function uiAddButton(id, caption, handler, target) {
-  const button = sendEvent(pui.EVT_BUTTON_CREATE, (x) => {
+  const button = sendEvent(EventNames.ButtonCreate, (x) => {
     x.buttonId = id;
     x.caption = caption;
     x.handler = handler;
   });
 
-  sendEvent(pui.EVT_BUTTON_SEND, (x) => {
+  sendEvent(EventNames.ButtonSend, (x) => {
     x.button = button;
     x.id = target;
   });
@@ -158,7 +158,7 @@ function uiAddButton(id, caption, handler, target) {
 
 /*S: Plugin: puiSidebar */
 function uiAddSidebarPage(id, role) {
-  const page = sendEvent(puiSidebar.EVT_SIDE_PAGE_CREATE, (x) => {
+  const page = sendEvent(EventNames.SidebarPageCreate, (x) => {
     x.pageId = id;
     x.role = role;
   });
@@ -167,7 +167,7 @@ function uiAddSidebarPage(id, role) {
 }
 
 function uiAddTreeView(id, page) {
-  const treeView = sendEvent(puiSidebar.EVT_SIDE_TREEVIEW_CREATE, (x) => {
+  const treeView = sendEvent(EventNames.TreeViewCreate, (x) => {
     x.page = page;
     x.treeViewId = id;
   });
