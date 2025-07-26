@@ -151,12 +151,7 @@ loadLocalization(activeLanguage).then(() => {
         await configFileReload(FILE_CONFIG);
         PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME).trim().split('/');
         
-        var val = configGetValue(CFG_KEY_OverrideSidebarVisible, sidebarVisible);
-        
-        if (sidebar) {
-          if (val != sidebarVisible) 
-            toggleSidebar();
-        }
+        toggleSidebar(configGetValue(CFG_KEY_OverrideSidebarVisible, sidebarVisible));
 
         setColorMode(getCurrentColorMode());
       }

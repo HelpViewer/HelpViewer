@@ -23,10 +23,18 @@ class SidebarPageShow extends IEvent {
   }
 }
 
+class SidebarVisibilitySet extends IEvent {
+  constructor() {
+    super();
+    this.value = undefined;
+  }
+}
+
 class puiSidebar extends IPlugin {
   static EVT_SIDE_PAGE_CREATE = SidebarPageCreate.name;
   static EVT_SIDE_PAGE_SHOW = SidebarPageShow.name;
   static EVT_SIDE_TREEVIEW_CREATE = TreeViewCreate.name;
+  static EVT_SIDE_VISIBILITY_SET = SidebarVisibilitySet.name;
 
   static toolbarButtonIdRoot = 'downP';
 
@@ -35,6 +43,8 @@ class puiSidebar extends IPlugin {
   }
 
   static eventDefinitions = [];
+
+  static sidebar;
 
   static addition = '<div class="sidebar" id="sidebar" role="navigation"><div class="toolbar toolbar-down multi-linePanel" id="toolbar-down"></div></div>';
 
@@ -56,6 +66,7 @@ class puiSidebar extends IPlugin {
       containerMain.append(node);
 
     const sidebar = this._getSidebar();
+    puiSidebar.sidebar = sidebar;
     const toolbar = document.getElementById('toolbar-down');
 
     var h_EVT_SIDE_PAGE_CREATE = (reply) => {
@@ -94,6 +105,25 @@ class puiSidebar extends IPlugin {
       reply.result = obj;
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_TREEVIEW_CREATE, TreeViewCreate, h_EVT_SIDE_TREEVIEW_CREATE]);
+
+    var h_EVT_SIDE_VISIBILITY_SET = (reply) => {
+      if (!sidebar) return;
+      const currentlyHidden = sidebar.classList.contains(C_HIDDENC);
+
+      if (reply.value == undefined)
+        reply.value = currentlyHidden;
+
+      if (reply.value) {
+        if (currentlyHidden)
+          sidebar.classList.remove(C_HIDDENC);
+      } else {
+        if (!currentlyHidden)
+          sidebar.classList.add(C_HIDDENC);
+      }
+
+      reply.target = reply.value;
+    }
+    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_VISIBILITY_SET, SidebarVisibilitySet, h_EVT_SIDE_VISIBILITY_SET]);
 
     this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
 
@@ -136,6 +166,7 @@ class puiSidebar extends IPlugin {
   /*E: Feature: Sidebar tabs handling */
 
   _checkSidebarWidth() {
+    const sidebar = puiSidebar.sidebar;
     if (!sidebar) return;
     if (sidebar.offsetWidth / window.innerWidth > 0.5) {
       sidebar.classList.add(C_TOOWIDE);

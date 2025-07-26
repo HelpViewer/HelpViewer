@@ -2,8 +2,6 @@
 const C_TORIGHT = 'toright';
 
 const KEY_LS_SIDEBARVISIBLE = "sidebarVisible";
-const sidebarVisible = getUserConfigValue(KEY_LS_SIDEBARVISIBLE) || 1;
-
 const KEY_LS_SIDEBARSIDE = "sidebarSide";
 const sidebarSide = getUserConfigValue(KEY_LS_SIDEBARSIDE) || 0;
 
@@ -15,7 +13,7 @@ if (sidebarVisible == 0 && sidebar) toggleSidebar();
 
 if (sidebarSide == 0 && container) toggleSidebarSide();
 
-function toggleSidebar() {
+function xtoggleSidebar() {
   if (sidebar.classList.contains(C_HIDDENC)) {
     sidebar.classList.remove(C_HIDDENC);
     showBtn.classList.add(C_HIDDENC);

@@ -178,4 +178,10 @@ function showSidebarTab(id) {
     x.pageId = id;
   });
 }
+
+function toggleSidebar(newVisibility) {
+  return sendEvent(EventNames.SidebarVisibilitySet, (x) => {
+    x.value = newVisibility;
+  });
+}
 /*E: Plugin: puiSidebar */

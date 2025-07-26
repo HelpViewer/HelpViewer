@@ -10,3 +10,4 @@ pClickDispatcher
 pui
 puiHeader:header
 puiSidebar:sidebar
+puiSidebarVisibilityToggle
