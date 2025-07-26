@@ -1,6 +1,6 @@
 const DEBUG_MODE = true;
 
-function log(msg) {
+function log(msg, ...dataI) {
   if (!DEBUG_MODE || !msg) return;
 
   var severity = msg[0];
@@ -12,19 +12,26 @@ function log(msg) {
     severity = undefined;
   }
 
+  const data = [msg];
+  if (dataI.length > 0)
+    data.push(...dataI);
+
   switch (severity?.toUpperCase()) {
     case 'W':
-      console.warn(msg);
+      console.warn(...data);
       break;
 
     case 'E':
-      console.error(msg);
+      console.error(...data);
       break;
   
     default:
       if (hasSeverity) 
+      {
         msg = `${severity} ${msg}`;
-      console.log(msg);
+        data[0] = msg;
+      }
+      console.log(...data);
       break;
   }
 }

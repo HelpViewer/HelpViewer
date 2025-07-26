@@ -19,6 +19,7 @@ const EventBus = {
   snd(data, eventKeyName) {
     var event = eventKeyName || data.eventName;
     var handlers = this.events.get(event);
+    log(`Event ${event} arrived. Data:`, data);
 
     if (!handlers || handlers.length === 0) {
       log(`W Event ${event} has no listeners.`);
