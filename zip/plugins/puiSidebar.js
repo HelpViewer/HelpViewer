@@ -81,7 +81,7 @@ class puiSidebar extends IPlugin {
       if (reply.role)
         div.setAttribute('role', reply.role);
 
-      sidebar.prepend(div);
+      sidebar.insertBefore(div, toolbar);
       reply.result = div;
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_PAGE_CREATE, SidebarPageCreate, h_EVT_SIDE_PAGE_CREATE]);
@@ -116,7 +116,7 @@ class puiSidebar extends IPlugin {
       const C_TORIGHT = 'toright';
       reply.result = !toggleCSSClass(sidebar?.parentElement, C_TORIGHT);
     }
-    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_SIDE_TOGGLE, SidebarVisibilitySet, h_EVT_SIDE_SIDE_TOGGLE]);
+    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_SIDE_TOGGLE, IEvent, h_EVT_SIDE_SIDE_TOGGLE]);
 
     this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
 
