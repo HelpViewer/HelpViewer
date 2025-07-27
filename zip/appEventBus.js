@@ -117,10 +117,11 @@ function sendEventWProm(eventName, eventDataInit) {
 
 function sendEvent(eventName, eventDataInit) {
   const eventData = getEventInput(eventName);
+  eventData.eventName = eventName;
+
   if (typeof eventDataInit === 'function')
     eventDataInit(eventData);
 
-  eventData.eventName = eventName;
   EventBus.snd(eventData);
   return eventData.result;
 }
