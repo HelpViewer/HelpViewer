@@ -19,7 +19,7 @@ class puiSidebarVisibilityToggle extends IPlugin {
     const KEY_LS_SIDEBARVISIBLE = this.config[puiSidebarVisibilityToggle.KEY_CFG_STOREKEY];
     var sidebarVisible = getUserConfigValue(KEY_LS_SIDEBARVISIBLE) || 1;
     
-    var _sidebarToggle = (evt) => {
+    const _sidebarToggle = (evt) => {
       const newState = toggleSidebar();
       sidebarVisible = newState;
       toggleVisibility(puiSidebarVisibilityToggle.buttonShow, !newState);

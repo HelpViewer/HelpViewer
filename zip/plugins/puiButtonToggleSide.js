@@ -22,7 +22,7 @@ class puiButtonToggleSide extends IPlugin {
       setUserConfigValue(KEY_LS_SIDEBARSIDE, String(Number(resolution)));
     }
 
-    var _buttonAction = (evt) => {
+    const _buttonAction = (evt) => {
       toggleSidebarSideHandler();
     }
   

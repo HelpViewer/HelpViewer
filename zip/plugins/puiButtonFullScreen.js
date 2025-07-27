@@ -12,7 +12,7 @@ class puiButtonFullScreen extends IPlugin {
   static button;
 
   init() {
-    var _buttonAction = (evt) => {
+    const _buttonAction = (evt) => {
       document.fullscreenElement 
         ? document.exitFullscreen() 
         : document.documentElement.requestFullscreen();  
