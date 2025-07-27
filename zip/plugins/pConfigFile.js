@@ -17,8 +17,7 @@ class pConfigFile extends IPlugin {
     super(aliasName, data);
     this.CFG = undefined;
 
-    if (aliasName === FILE_CONFIG_DEFAULT)
-      this._loadCFG();
+    this._loadCFG();
   }
 
   static eventDefinitions = [];

@@ -131,6 +131,7 @@ loadLocalization(activeLanguage).then(() => {
       try {
         if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
           await _Storage.add(STO_HELP, dataPath);
+        configFileReload(FILE_CONFIG);
       } catch {
         msgNoData = _T(LK_MSG_NODATA);
         contentPane.innerHTML = msgNoData;

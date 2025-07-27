@@ -10,6 +10,8 @@ class puiButtonChangeLanguage extends IPlugin {
   static KEY_CFG_ID = 'ID';
   static KEY_CFG_CAPTION = 'CAPTION';
   static KEY_CFG_TARGET = 'TARGET';
+
+  static LANGLINKS_PREFIX = 'lng';
   
   init() {
     const T = puiButtonChangeLanguage;
@@ -22,7 +24,7 @@ class puiButtonChangeLanguage extends IPlugin {
     const reply = uiAddButton(cfgId, cfgCaption, cfgTarget, H_BUTTON_WITH_TAB);
     TI.button = reply[0];
     TI.tab = reply[1];
-    const langTab = uiAddTreeView('langList_NEW', TI.tab);
+    const langTab = uiAddTreeView('langList', TI.tab);
 
     const _buttonAction = (evt) => {
       alert('async1');
@@ -30,34 +32,25 @@ class puiButtonChangeLanguage extends IPlugin {
       alert('async2');
       var languages = getLanguagesList(langsFromHelp);
       log(languages);
-      languages.then((languages1) => {
+      languages.then((languages) => {
         alert('async3');
         langTab.innerHTML = '';
       
-        for (var i = 0; i < languages1.length; i++) {
+        for (var i = 0; i < languages.length; i++) {
           alert('async4: ' + i.toString());
-          const parts = languages1[i].split("|");
+          const parts = languages[i].split("|");
           const alias = parts[0]?.trim() || "";
           const name = parts[1]?.trim() || "";
-          langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;
+          langTab.innerHTML += `<li><a class='langLink' href="" id="${T.LANGLINKS_PREFIX}|${name}" title="${alias}">${alias}</a></li>`;
         }  
       });
-      //alert('btn');
-      // (async () => {
-
-
-
-      //   // var languages = getLanguagesList();
-      //   // alert('xxx ' + languages);
-
-      //   // languages.then(async (x) => {
-      //   //   alert('awaitnute: ' + x);
-
-      //   // } );
-      // })();
       showSidebarTab(TI?.tab?.id);
     }
     registerOnClick(TI.button.id, _buttonAction);
+    registerOnClick(T.LANGLINKS_PREFIX, (e) => {
+      e.event.preventDefault();
+      loadLocalization(e.elementIdVal);
+    });
   
     super.init();
   }
