@@ -181,6 +181,10 @@ class puiSidebar extends IPlugin {
       return;
 
     ev.result = puiSidebar.showSidebarTab(`sp-${ev.elementId}`);
+
+    if (!ev.result)
+      log(`W Tab [sp-${ev.elementId}] not found on sidebar! Event id: ${ev.eventId}`);
+    
     ev.stop = true;
   }
 
