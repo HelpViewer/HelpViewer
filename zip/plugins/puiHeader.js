@@ -28,7 +28,7 @@ class puiHeader extends IPlugin {
     const mainTitle = document.getElementById('mtitle');
     const toolbar = document.getElementById('toolbar');
 
-    var h_EVT_HEAD_SET = (data) => {
+    const h_EVT_HEAD_SET = (data) => {
       if (typeof data.payload === 'function') {
         data.payload(mainTitle);
       } else {
@@ -38,7 +38,7 @@ class puiHeader extends IPlugin {
     }
     puiHeader.eventDefinitions.push([puiHeader.EVT_HEAD_SET, HeaderSet, h_EVT_HEAD_SET]);
 
-    var h_EVT_HEAD_GET = (data) => {
+    const h_EVT_HEAD_GET = (data) => {
       data.result = mainTitle?.innerHTML ?? '';
     }
     puiHeader.eventDefinitions.push([puiHeader.EVT_HEAD_GET, IEvent, h_EVT_HEAD_GET]);

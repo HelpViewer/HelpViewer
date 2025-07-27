@@ -79,7 +79,7 @@ class puiSidebar extends IPlugin {
     puiSidebar.sidebar = sidebar;
     const toolbar = document.getElementById('toolbar-down');
 
-    var h_EVT_SIDE_PAGE_CREATE = (reply) => {
+    const h_EVT_SIDE_PAGE_CREATE = (reply) => {
       if (!reply.pageId)
         return;
       
@@ -95,7 +95,7 @@ class puiSidebar extends IPlugin {
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_PAGE_CREATE, SidebarPageCreate, h_EVT_SIDE_PAGE_CREATE]);
 
-    var h_EVT_SIDE_PAGE_SHOW = (reply) => {
+    const h_EVT_SIDE_PAGE_SHOW = (reply) => {
       if (!reply.pageId)
         return;
 
@@ -103,7 +103,7 @@ class puiSidebar extends IPlugin {
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_PAGE_SHOW, SidebarPageShow, h_EVT_SIDE_PAGE_SHOW]);
 
-    var h_EVT_SIDE_TREEVIEW_CREATE = (reply) => {
+    const h_EVT_SIDE_TREEVIEW_CREATE = (reply) => {
       if (!reply.treeViewId || !reply.page)
         return;
       
@@ -116,18 +116,18 @@ class puiSidebar extends IPlugin {
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_TREEVIEW_CREATE, TreeViewCreate, h_EVT_SIDE_TREEVIEW_CREATE]);
 
-    var h_EVT_SIDE_VISIBILITY_SET = (reply) => {
+    const h_EVT_SIDE_VISIBILITY_SET = (reply) => {
       reply.result = toggleVisibility(sidebar, reply.value);
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_VISIBILITY_SET, SidebarVisibilitySet, h_EVT_SIDE_VISIBILITY_SET]);
 
-    var h_EVT_SIDE_SIDE_TOGGLE = (reply) => {
+    const h_EVT_SIDE_SIDE_TOGGLE = (reply) => {
       const C_TORIGHT = 'toright';
       reply.result = !toggleCSSClass(sidebar?.parentElement, C_TORIGHT);
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_SIDE_TOGGLE, IEvent, h_EVT_SIDE_SIDE_TOGGLE]);
 
-    var h_EVT_SIDE_VISIBILITY_SET_BUTTON = (reply) => {
+    const h_EVT_SIDE_VISIBILITY_SET_BUTTON = (reply) => {
       const button = sidebar.querySelector(`#${reply.buttonId}`);
       if (!button) 
         return;
@@ -138,7 +138,7 @@ class puiSidebar extends IPlugin {
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_VISIBILITY_SET_BUTTON, SidebarVisibilitySetButton, h_EVT_SIDE_VISIBILITY_SET_BUTTON]);
     
     const baseButtonAccept = createButtonAcceptHandler(this, toolbar);
-    var h_buttonAccept = (reply) =>
+    const h_buttonAccept = (reply) =>
     {
       baseButtonAccept(reply);
       puiSidebar.recomputeButtonPanel(reply.button);

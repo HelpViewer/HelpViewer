@@ -23,11 +23,11 @@ class pColorTheme extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    var h_EVT_CT_GET = (data) =>
+    const h_EVT_CT_GET = (data) =>
       data.result = pColorTheme.ColorTheme.getCurrentColorMode();
     pColorTheme.eventDefinitions.push([pColorTheme.EVT_CT_GET, ColorThemeGet, h_EVT_CT_GET]);
 
-    var h_EVT_CT_SET = (data) =>
+    const h_EVT_CT_SET = (data) =>
       pColorTheme.ColorTheme.setColorMode(data.name);
     pColorTheme.eventDefinitions.push([pColorTheme.EVT_CT_SET, ColorThemeSet, h_EVT_CT_SET]);
 

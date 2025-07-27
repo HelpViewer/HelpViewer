@@ -54,7 +54,7 @@ class pGets extends IPlugin {
   static eventDefinitions = [];
   
   init() {
-    var h_EVT_GETS_GET = (data) => {
+    const h_EVT_GETS_GET = (data) => {
       if (!this.params) 
         this.h_EVT_GETS_LOAD(data);
 
@@ -67,7 +67,7 @@ class pGets extends IPlugin {
     };
     pGets.eventDefinitions.push([pGets.EVT_GETS_GET, GetsGet, h_EVT_GETS_GET]);
 
-    var h_EVT_GETS_SET = (data) => {
+    const h_EVT_GETS_SET = (data) => {
       if (!data || data.kvlist.size == 0)
         return;
 
@@ -112,7 +112,7 @@ class pGets extends IPlugin {
     };
     pGets.eventDefinitions.push([pGets.EVT_GETS_SET, GetsSet, h_EVT_GETS_SET]);
 
-    var h_EVT_GETS_SET_HREF = (data) => {
+    const h_EVT_GETS_SET_HREF = (data) => {
       if (data.href == undefined)
         return;
       
@@ -123,7 +123,7 @@ class pGets extends IPlugin {
 
     pGets.eventDefinitions.push([pGets.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
 
-    var h_EVT_GETS_SET_TO_BOOKMARK = (data) => {
+    const h_EVT_GETS_SET_TO_BOOKMARK = (data) => {
       if (data.bookmark == undefined)
         return;
       

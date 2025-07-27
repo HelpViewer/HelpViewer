@@ -41,22 +41,22 @@ class pStorage extends IPlugin {
   static eventDefinitions = [];
   
   init() {
-    var h_EVT_STORAGE_GET = IPlugin.wrapAsyncHandler((data) =>
+    const h_EVT_STORAGE_GET = IPlugin.wrapAsyncHandler((data) =>
       _Storage.search(data.storageName, data.fileName, data.format)
     );
     pStorage.eventDefinitions.push([pStorage.EVT_STORAGE_GET, StorageGet, h_EVT_STORAGE_GET]);
 
-    var h_EVT_STORAGE_GET_IMAGE = IPlugin.wrapAsyncHandler((data) =>
+    const h_EVT_STORAGE_GET_IMAGE = IPlugin.wrapAsyncHandler((data) =>
       _Storage.searchImage(data.storageName, data.fileName)
     );
     pStorage.eventDefinitions.push([pStorage.EVT_STORAGE_GET_IMAGE, StorageGetImages, h_EVT_STORAGE_GET_IMAGE]);
 
-    var h_EVT_STORAGE_ADD = IPlugin.wrapAsyncHandler((data) =>
+    const h_EVT_STORAGE_ADD = IPlugin.wrapAsyncHandler((data) =>
       _Storage.add(data.storageName, data.fileName, data.fileData)
     );
     pStorage.eventDefinitions.push([pStorage.EVT_STORAGE_ADD, StorageAdd, h_EVT_STORAGE_ADD]);
 
-    var h_EVT_STORAGE_GET_SUBDIRS = (data) =>
+    const h_EVT_STORAGE_GET_SUBDIRS = (data) =>
       data.result = _Storage.getSubdirs(data.storageName, data.fileName);
     pStorage.eventDefinitions.push([pStorage.EVT_STORAGE_GET_SUBDIRS, StorageGetSubdirs, h_EVT_STORAGE_GET_SUBDIRS]);
     super.init();

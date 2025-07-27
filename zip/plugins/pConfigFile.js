@@ -24,12 +24,12 @@ class pConfigFile extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    var h_EVT_CF_GET = (data) => {
+    const h_EVT_CF_GET = (data) => {
       data.result = this._configGetValue(data.key, data.backup);  
     }
     pConfigFile.eventDefinitions.push([pConfigFile.EVT_CF_GET, ConfigFileGet, h_EVT_CF_GET]);
 
-    var h_EVT_CF_RELOAD = IPlugin.wrapAsyncHandler((data) => {
+    const h_EVT_CF_RELOAD = IPlugin.wrapAsyncHandler((data) => {
       this._loadCFG();
       data.result = this.aliasName;
     });

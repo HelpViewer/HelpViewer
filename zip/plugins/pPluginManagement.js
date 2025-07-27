@@ -8,7 +8,7 @@ class pPluginManagement extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    var h_EVT_UC_GET = (data) => {
+    const h_EVT_UC_GET = (data) => {
       data.result = [];
       data.result.push(Array.from(Plugins.pluginsClasses.keys()));
       data.result.push(Array.from(Plugins.plugins.keys()));

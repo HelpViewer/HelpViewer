@@ -29,27 +29,27 @@ class pLocalizationSwitcher extends IPlugin {
   static eventDefinitions = [];
   
   init() {
-    var h_EVT_LOC_TRANSLATE = (data) => {
+    const h_EVT_LOC_TRANSLATE = (data) => {
       data.result = this._T(data.name);
     };
     pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_TRANSLATE, LocTranslate, h_EVT_LOC_TRANSLATE]);
 
-    var h_EVT_LOC_GET_ACTIVE_LANGUAGE = (data) => {
+    const h_EVT_LOC_GET_ACTIVE_LANGUAGE = (data) => {
       data.result = pLocalizationSwitcher.activeLanguage;
     };
     pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_GET_ACTIVE_LANGUAGE, IEvent, h_EVT_LOC_GET_ACTIVE_LANGUAGE]);
 
-    var h_EVT_LOC_LANGUAGES = (data) => {
+    const h_EVT_LOC_LANGUAGES = (data) => {
       data.result = this.getLanguagesList(data.additional);
     };
     pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_LANGUAGES, LocGetLanguages, h_EVT_LOC_LANGUAGES]);
 
-    var h_EVT_LOC_LOAD = (data) => {
+    const h_EVT_LOC_LOAD = (data) => {
       this.loadLocalization(data.name, data.eventId);
     };
     pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_LOAD, LocTranslate, h_EVT_LOC_LOAD]);
 
-    var h_EVT_LOC_REFRESH = (data) => {
+    const h_EVT_LOC_REFRESH = (data) => {
       this.refreshTitlesForLangStrings(null);
     };
     pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_REFRESH, IEvent, h_EVT_LOC_REFRESH]);

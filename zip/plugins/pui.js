@@ -41,7 +41,7 @@ class pui extends IPlugin {
     }
     this.subscribed = EventBus.sub(EventNames.ClickedEvent, _processClickedEvent);
 
-    var h_EVT_CLICK_HANDLER_REGISTER = (reply) => {
+    const h_EVT_CLICK_HANDLER_REGISTER = (reply) => {
       if (!reply.handlerId || !reply.handler)
         return;
       this.btnHandlers.set(reply.handlerId, reply.handler);
@@ -49,7 +49,7 @@ class pui extends IPlugin {
     }
     pui.eventDefinitions.push([pui.EVT_CLICK_HANDLER_REGISTER, ClickHandlerRegister, h_EVT_CLICK_HANDLER_REGISTER]);
 
-    var h_EVT_BUTTON_CREATE = (reply) => {
+    const h_EVT_BUTTON_CREATE = (reply) => {
       if (!reply.buttonId)
         return;
       
