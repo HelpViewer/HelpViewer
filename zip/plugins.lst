@@ -11,4 +11,5 @@ pui
 puiHeader:header
 puiSidebar:sidebar
 puiSidebarVisibilityToggle
+puiButtonToggleSide
 puiButtonFullScreen

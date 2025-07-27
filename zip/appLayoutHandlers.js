@@ -1,8 +1,4 @@
 /*S: Feature: Sidebar hide/show (sidebar switching) */
-const C_TORIGHT = 'toright';
-
-const KEY_LS_SIDEBARSIDE = "sidebarSide";
-const sidebarSide = getUserConfigValue(KEY_LS_SIDEBARSIDE) || 0;
 
 const sidebar = document.getElementById('sidebar');
 const showBtn = document.getElementById('showBtn');
@@ -27,18 +23,17 @@ function toggleVisibility(target, newVal) {
   return newValue;
 }
 
-if (sidebarSide == 0 && container) toggleSidebarSide();
+function toggleCSSClass(target, className) {
+  if (!target) return;
+  const currentlyFound = target.classList.contains(className);
 
-function toggleSidebarSide() {
-  if (container.classList.contains(C_TORIGHT)) {
-    container.classList.remove(C_TORIGHT);
-    setUserConfigValue(KEY_LS_SIDEBARSIDE, '1');
-  } else {
-    container.classList.add(C_TORIGHT);
-    setUserConfigValue(KEY_LS_SIDEBARSIDE, '0');
-  }
+  if (currentlyFound)
+    target.classList.remove(className);
+  else
+    target.classList.add(className);
+
+  return !currentlyFound;
 }
-/*E: Feature: Sidebar hide/show (sidebar switching) */
 
 function hideButton(btnid) {
   const button = document.getElementById(btnid);

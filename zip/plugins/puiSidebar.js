@@ -35,6 +35,7 @@ class puiSidebar extends IPlugin {
   static EVT_SIDE_PAGE_SHOW = SidebarPageShow.name;
   static EVT_SIDE_TREEVIEW_CREATE = TreeViewCreate.name;
   static EVT_SIDE_VISIBILITY_SET = SidebarVisibilitySet.name;
+  static EVT_SIDE_SIDE_TOGGLE = 'EVT_SIDE_SIDE_TOGGLE';
 
   static toolbarButtonIdRoot = 'downP';
 
@@ -110,6 +111,12 @@ class puiSidebar extends IPlugin {
       reply.result = toggleVisibility(sidebar, reply.value);
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_VISIBILITY_SET, SidebarVisibilitySet, h_EVT_SIDE_VISIBILITY_SET]);
+
+    var h_EVT_SIDE_SIDE_TOGGLE = (reply) => {
+      const C_TORIGHT = 'toright';
+      reply.result = !toggleCSSClass(sidebar?.parentElement, C_TORIGHT);
+    }
+    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_SIDE_TOGGLE, SidebarVisibilitySet, h_EVT_SIDE_SIDE_TOGGLE]);
 
     this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
 
