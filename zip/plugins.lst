@@ -10,6 +10,7 @@ pClickConverter
 pui
 puiHeader:header
 puiSidebar:sidebar
+puiButtonColorTheme
 puiButtonToggleSide
 puiButtonFullScreen
 puiSidebarVisibilityToggle

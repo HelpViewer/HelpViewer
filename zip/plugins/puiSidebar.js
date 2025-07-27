@@ -56,7 +56,7 @@ class puiSidebar extends IPlugin {
 
   static addition = '<div class="sidebar" id="sidebar" role="navigation"><div class="toolbar toolbar-down multi-linePanel" id="toolbar-down"></div></div>';
 
-  _getSidebar() {
+  prigetSidebar() {
     return document.getElementById('sidebar');
   }
 
@@ -75,7 +75,7 @@ class puiSidebar extends IPlugin {
     if (containerMain && node)
       containerMain.append(node);
 
-    const sidebar = TI._getSidebar();
+    const sidebar = TI.prigetSidebar();
     const toolbar = document.getElementById('toolbar-down');
 
     const h_EVT_SIDE_PAGE_CREATE = (reply) => {
@@ -155,7 +155,7 @@ class puiSidebar extends IPlugin {
   deInit() {
     window.removeEventListener("resize", this._checkSidebarWidth);
     window.removeEventListener("load", this._checkSidebarWidth);
-    this._getSidebar()?.remove();
+    this.prigetSidebar()?.remove();
     this.subscribedButtonAccept?.();
     super.deInit();
   }
@@ -204,7 +204,7 @@ class puiSidebar extends IPlugin {
   /*E: Feature: Sidebar tabs handling */
 
   _checkSidebarWidth() {
-    const sidebar = this._getSidebar();
+    const sidebar = this.prigetSidebar();
     if (!sidebar) return;
     if (sidebar.offsetWidth / window.innerWidth > 0.5) {
       sidebar.classList.add(C_TOOWIDE);
