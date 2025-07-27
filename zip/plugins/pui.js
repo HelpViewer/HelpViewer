@@ -36,7 +36,10 @@ class pui extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    this.subscribed = EventBus.sub(EventNames.ClickedEvent, this._processClickedEvent.bind(this));
+    const _processClickedEvent = (e) => {
+      (this.btnHandlers.get(e.elementId) || this.btnHandlers.get(e.elementIdRoot))?.(e);
+    }
+    this.subscribed = EventBus.sub(EventNames.ClickedEvent, _processClickedEvent);
 
     var h_EVT_CLICK_HANDLER_REGISTER = (reply) => {
       if (!reply.handlerId || !reply.handler)
@@ -72,10 +75,6 @@ class pui extends IPlugin {
     this.subscribed?.();
 
     super.deInit();
-  }
-
-  _processClickedEvent(e) {
-    (this.btnHandlers.get(e.elementId) || this.btnHandlers.get(e.elementIdRoot))?.(e);
   }
 }
 
