@@ -57,8 +57,9 @@ class pStorage extends IPlugin {
     );
     T.eventDefinitions.push([T.EVT_STORAGE_ADD, StorageAdd, h_EVT_STORAGE_ADD]);
 
-    const h_EVT_STORAGE_GET_SUBDIRS = (data) =>
-      data.result = _Storage.getSubdirs(data.storageName, data.fileName);
+    const h_EVT_STORAGE_GET_SUBDIRS = IPlugin.wrapAsyncHandler((data) =>
+      _Storage.getSubdirs(data.storageName, data.fileName)
+    );
     T.eventDefinitions.push([T.EVT_STORAGE_GET_SUBDIRS, StorageGetSubdirs, h_EVT_STORAGE_GET_SUBDIRS]);
     super.init();
   }
