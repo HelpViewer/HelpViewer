@@ -18,7 +18,7 @@ class puiButtonFullScreen extends IPlugin {
         : document.documentElement.requestFullscreen();  
     }
   
-    puiButtonFullScreen.button = uiAddButton(this.config[puiButtonFullScreen.KEY_CFG_ID], this.config[puiButtonFullScreen.KEY_CFG_CAPTION], _buttonAction, this.config[puiButtonFullScreen.KEY_CFG_TARGET]);
+    puiButtonFullScreen.button = uiAddButton(this.config[puiButtonFullScreen.KEY_CFG_ID], this.config[puiButtonFullScreen.KEY_CFG_CAPTION], this.config[puiButtonFullScreen.KEY_CFG_TARGET], _buttonAction);
 
     super.init();
   }

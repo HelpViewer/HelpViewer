@@ -142,12 +142,22 @@ function getHeader() {
 }
 /*E: Plugin: puiHeader */
 
+const H_BUTTON_WITH_TAB = 'H_BUTTON_WITH_TAB';
+
+/**
+ * @param {null | Function | H_BUTTON_WITH_TAB} [handler]
+ */
 /*S: Plugin: pui */
-function uiAddButton(id, caption, handler, target) {
+function uiAddButton(id, caption, target, handler = null) {
+  if (handler === H_BUTTON_WITH_TAB)
+    uiAddSidebarPage(id);
+
   const button = sendEvent(EventNames.ButtonCreate, (x) => {
     x.buttonId = id;
     x.caption = caption;
-    x.handler = handler;
+
+    if (handler && handler != H_BUTTON_WITH_TAB)
+      x.handler = handler;
   });
 
   sendEvent(EventNames.ButtonSend, (x) => {

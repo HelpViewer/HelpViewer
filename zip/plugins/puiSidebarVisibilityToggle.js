@@ -26,8 +26,8 @@ class puiSidebarVisibilityToggle extends IPlugin {
       setUserConfigValue(KEY_LS_SIDEBARVISIBLE, String(Number(newState)));
     }
   
-    puiSidebarVisibilityToggle.buttonHide = uiAddButton(puiSidebarVisibilityToggle.ID_DOWNPB, this.config[puiSidebarVisibilityToggle.KEY_CFG_HIDE], _sidebarToggle, UI_PLUGIN_SIDEBAR);
-    puiSidebarVisibilityToggle.buttonShow = uiAddButton(puiSidebarVisibilityToggle.ID_TOPPB, this.config[puiSidebarVisibilityToggle.KEY_CFG_SHOW], _sidebarToggle, UI_PLUGIN_HEADER);
+    puiSidebarVisibilityToggle.buttonHide = uiAddButton(puiSidebarVisibilityToggle.ID_DOWNPB, this.config[puiSidebarVisibilityToggle.KEY_CFG_HIDE], UI_PLUGIN_SIDEBAR, _sidebarToggle);
+    puiSidebarVisibilityToggle.buttonShow = uiAddButton(puiSidebarVisibilityToggle.ID_TOPPB, this.config[puiSidebarVisibilityToggle.KEY_CFG_SHOW], UI_PLUGIN_HEADER, _sidebarToggle);
 
     toggleVisibility(puiSidebarVisibilityToggle.buttonShow, !sidebarVisible);
 

@@ -26,7 +26,7 @@ class puiButtonToggleSide extends IPlugin {
       toggleSidebarSideHandler();
     }
   
-    puiButtonToggleSide.button = uiAddButton(this.config[puiButtonToggleSide.KEY_CFG_ID], this.config[puiButtonToggleSide.KEY_CFG_CAPTION], _buttonAction, this.config[puiButtonToggleSide.KEY_CFG_TARGET]);
+    puiButtonToggleSide.button = uiAddButton(this.config[puiButtonToggleSide.KEY_CFG_ID], this.config[puiButtonToggleSide.KEY_CFG_CAPTION], this.config[puiButtonToggleSide.KEY_CFG_TARGET], _buttonAction);
 
     if (state == 0) 
       toggleSidebarSideHandler();
