@@ -6,7 +6,7 @@ pConfigFile:FILE_CONFIG_DEFAULT
 pConfigFile:FILE_CONFIG
 pLocalizationSwitcher
 pColorTheme
-pClickDispatcher
+pClickConverter
 pui
 puiHeader:header
 puiSidebar:sidebar

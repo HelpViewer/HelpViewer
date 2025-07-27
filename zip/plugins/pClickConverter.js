@@ -10,7 +10,7 @@ class ClickedEvent extends IEvent {
   }
 }
 
-class pClickDispatcher extends IPlugin {
+class pClickConverter extends IPlugin {
   static EVT_CD_CLICK = ClickedEvent.name;
 
   constructor(aliasName, data) {
@@ -20,7 +20,7 @@ class pClickDispatcher extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    pClickDispatcher.eventDefinitions.push([pClickDispatcher.EVT_CD_CLICK, ClickedEvent, null]); // outside event handlers
+    pClickConverter.eventDefinitions.push([pClickConverter.EVT_CD_CLICK, ClickedEvent, null]); // outside event handlers
 
     document.body.addEventListener('click', this._processClick);
 
@@ -28,7 +28,7 @@ class pClickDispatcher extends IPlugin {
   }
   
   _processClick(evt) {
-    sendEvent(pClickDispatcher.EVT_CD_CLICK, (d) => {
+    sendEvent(pClickConverter.EVT_CD_CLICK, (d) => {
       d.event = evt;
       d.target = d.event?.target;
       d.elementId = d.target?.id
@@ -45,4 +45,4 @@ class pClickDispatcher extends IPlugin {
   }
 }
 
-Plugins.catalogize(pClickDispatcher);
+Plugins.catalogize(pClickConverter);
