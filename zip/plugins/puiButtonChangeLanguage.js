@@ -29,13 +29,14 @@ class puiButtonChangeLanguage extends IPlugin {
       var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
       alert('async2');
       var languages = getLanguagesList(langsFromHelp);
-      languages.then((languages) => {
+      log(languages);
+      languages.then((languages1) => {
         alert('async3');
         langTab.innerHTML = '';
       
-        for (var i = 0; i < languages.length; i++) {
+        for (var i = 0; i < languages1.length; i++) {
           alert('async4: ' + i.toString());
-          const parts = languages[i].split("|");
+          const parts = languages1[i].split("|");
           const alias = parts[0]?.trim() || "";
           const name = parts[1]?.trim() || "";
           langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;

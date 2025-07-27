@@ -40,9 +40,9 @@ class pLocalizationSwitcher extends IPlugin {
     };
     T.eventDefinitions.push([T.EVT_LOC_GET_ACTIVE_LANGUAGE, IEvent, h_EVT_LOC_GET_ACTIVE_LANGUAGE]);
 
-    const h_EVT_LOC_LANGUAGES = IPlugin.wrapAsyncHandler((data) => {
-      this.getLanguagesList(data.additional);
-    });
+    const h_EVT_LOC_LANGUAGES = (data) => {
+      data.result = this.getLanguagesList(data.additional);
+    };
     T.eventDefinitions.push([T.EVT_LOC_LANGUAGES, LocGetLanguages, h_EVT_LOC_LANGUAGES]);
 
     const h_EVT_LOC_LOAD = (data) => {
