@@ -13,7 +13,7 @@ function getActiveLanguage() {
 }
 
 function getLanguagesList(additionalList = null) {
-  return sendEvent('GET_LANGUAGES', (d) => {
+  return sendEventWProm(EventNames.LocGetLanguages, (d) => {
     d.additional = additionalList;
   });
 }
