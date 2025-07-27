@@ -292,7 +292,7 @@ async function getPathData(path, heading) {
   } else {
     bookmarksPaneButton.classList.remove(C_HIDDENC);
   }
-  recomputeButtonPanel(bookmarksPaneButton);
+  //----recomputeButtonPanel(bookmarksPaneButton);
   
   // additional steps for files read from repository
   if (path.startsWith("~") && path.endsWith(FILENAME_CHANGELOG)) {

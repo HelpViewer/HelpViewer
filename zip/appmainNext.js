@@ -284,7 +284,7 @@ ul.tree details[open] > summary::before {
       
       if (txt && button) {
         button.classList.remove(C_HIDDENC);
-        recomputeButtonPanel(button);
+        //----recomputeButtonPanel(button);
       }
 
       if (dataPath === FILENAME_ZIP_ON_USER_INPUT) {

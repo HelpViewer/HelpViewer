@@ -30,12 +30,21 @@ class SidebarVisibilitySet extends IEvent {
   }
 }
 
+class SidebarVisibilitySetButton extends IEvent {
+  constructor() {
+    super();
+    this.value = undefined;
+    this.buttonId = undefined;
+  }
+}
+
 class puiSidebar extends IPlugin {
   static EVT_SIDE_PAGE_CREATE = SidebarPageCreate.name;
   static EVT_SIDE_PAGE_SHOW = SidebarPageShow.name;
   static EVT_SIDE_TREEVIEW_CREATE = TreeViewCreate.name;
   static EVT_SIDE_VISIBILITY_SET = SidebarVisibilitySet.name;
   static EVT_SIDE_SIDE_TOGGLE = 'EVT_SIDE_SIDE_TOGGLE';
+  static EVT_SIDE_VISIBILITY_SET_BUTTON = SidebarVisibilitySetButton.name;
 
   static toolbarButtonIdRoot = 'downP';
 
@@ -118,14 +127,30 @@ class puiSidebar extends IPlugin {
     }
     puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_SIDE_TOGGLE, IEvent, h_EVT_SIDE_SIDE_TOGGLE]);
 
-    this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
+    var h_EVT_SIDE_VISIBILITY_SET_BUTTON = (reply) => {
+      const button = sidebar.querySelector(`#${reply.buttonId}`);
+      if (!button) 
+        return;
+
+      reply.result = toggleVisibility(button, reply.value);
+      puiSidebar.recomputeButtonPanel(button);
+    }
+    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_VISIBILITY_SET_BUTTON, SidebarVisibilitySetButton, h_EVT_SIDE_VISIBILITY_SET_BUTTON]);
+    
+    const baseButtonAccept = createButtonAcceptHandler(this, toolbar);
+    var h_buttonAccept = (reply) =>
+    {
+      baseButtonAccept(reply);
+      puiSidebar.recomputeButtonPanel(reply.button);
+    }
+    this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, h_buttonAccept);
 
     window.addEventListener("resize", this._checkSidebarWidth);
     window.addEventListener("load", this._checkSidebarWidth);
     this._checkSidebarWidth();
 
     super.init();
-    this.eventIdStrict = true;
+    //this.eventIdStrict = true;
   }
 
   deInit() {
@@ -134,6 +159,21 @@ class puiSidebar extends IPlugin {
     this._getSidebar()?.remove();
     this.subscribedButtonAccept?.();
     super.deInit();
+  }
+
+  static recomputeButtonPanel(button)
+  {
+    if (!button) return;
+    
+    const multilineCSS = 'multi-linePanel';
+    const panel = button.parentElement;
+    const len = panel.querySelectorAll(`:scope > :not(.${C_HIDDENC})`).length;
+  
+    if (len <= 9) {
+      panel.classList.remove(multilineCSS);
+    } else {
+      panel.classList.add(multilineCSS);
+    }
   }
 
   static _processClickedBottomPanelEvent(ev) {

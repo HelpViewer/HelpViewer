@@ -35,25 +35,9 @@ function toggleCSSClass(target, className) {
   return !currentlyFound;
 }
 
-function hideButton(btnid) {
-  const button = document.getElementById(btnid);
-  if (button)
-    button.classList.add(C_HIDDENC);
-
-  recomputeButtonPanel(button);
-}
-
-function recomputeButtonPanel(button)
-{
-  if (!button) return;
-  
-  const multilineCSS = 'multi-linePanel';
-  const panel = button.parentElement;
-  const len = panel.querySelectorAll(`:scope > :not(.${C_HIDDENC})`).length;
-
-  if (len <= 9) {
-    panel.classList.remove(multilineCSS);
-  } else {
-    panel.classList.add(multilineCSS);
-  }
+function hideButton(btnid, newVisibility = false) {
+  return sendEvent(EventNames.SidebarVisibilitySetButton, (x) => {
+    x.value = newVisibility;
+    x.buttonId = btnid;
+  });
 }
