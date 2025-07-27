@@ -41,13 +41,11 @@ class puiNavigation extends IPlugin {
 
       const updateNavButtons = (i) => {
         i = parseInt(i);
-        alert('updateNavButtons : ' + i);
         var indexPrev = i - 1;
         var indexNext = i + 1;
         const prevTreeItem = document.getElementById(treeId + '|' + indexPrev);
         const nextTreeItem = document.getElementById(treeId + '|' + indexNext);
 
-        alert('updateNavButtons : ' + prevTreeItem + ' ' + nextTreeItem + '(' + indexPrev + ' ' + nextTreeItem + ' )');
         toggleVisibility(puiNavigation.buttonLeft, !!prevTreeItem);
         toggleVisibility(puiNavigation.buttonRight, !!nextTreeItem);
         toggleVisibility(puiNavigation.buttonTop, !(i <= 1));
