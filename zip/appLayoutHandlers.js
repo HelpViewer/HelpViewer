@@ -40,14 +40,6 @@ function toggleSidebarSide() {
 }
 /*E: Feature: Sidebar hide/show (sidebar switching) */
 
-/*S: Feature: Switch fullscreen */
-function switchFullScreen() {
-  document.fullscreenElement 
-    ? document.exitFullscreen() 
-    : document.documentElement.requestFullscreen();
-}
-/*E: Feature: Switch fullscreen */
-
 function hideButton(btnid) {
   const button = document.getElementById(btnid);
   if (button)
