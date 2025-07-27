@@ -41,3 +41,7 @@ function hideButton(btnid, newVisibility = false) {
     x.buttonId = btnid;
   });
 }
+
+function scrollToAnchor(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}

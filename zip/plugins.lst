@@ -13,3 +13,4 @@ puiSidebar:sidebar
 puiButtonToggleSide
 puiButtonFullScreen
 puiSidebarVisibilityToggle
+puiNavigation:nav

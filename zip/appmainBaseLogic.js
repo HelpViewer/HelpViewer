@@ -196,16 +196,18 @@ function showSidebarTab(id) {
   });
 }
 
-function toggleSidebar(newVisibility) {
-  return sendEvent(EventNames.SidebarVisibilitySet, (x) => {
-    x.value = newVisibility;
-    x.id = UI_PLUGIN_SIDEBAR;
-  });
-}
-
 function toggleSidebarSide() {
   return sendEvent(EventNames.EVT_SIDE_SIDE_TOGGLE, (x) => {
     x.id = UI_PLUGIN_SIDEBAR;
   });
 }
 /*E: Plugin: puiSidebar */
+
+/*E: Plugin: puiSidebarVisibilityToggle */
+function toggleSidebar(newVisibility) {
+  return sendEvent(EventNames.SidebarVisibilitySet, (x) => {
+    x.value = newVisibility;
+    x.id = UI_PLUGIN_SIDEBAR;
+  });
+}
+/*E: Plugin: puiSidebarVisibilityToggle */
