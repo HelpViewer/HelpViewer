@@ -16,7 +16,9 @@ class puiSidebarVisibilityToggle extends IPlugin {
   static buttonShow;
 
   init() {
-    const KEY_LS_SIDEBARVISIBLE = this.config[puiSidebarVisibilityToggle.KEY_CFG_STOREKEY];
+    const KEY_LS_SIDEBARVISIBLE = this.config[puiSidebarVisibilityToggle.KEY_CFG_STOREKEY] || 'sidebarVisible';
+    const captionHide = this.config[puiSidebarVisibilityToggle.KEY_CFG_HIDE] || '❌︎';
+    const captionShow = this.config[puiSidebarVisibilityToggle.KEY_CFG_SHOW] || '☰';
     var sidebarVisible = getUserConfigValue(KEY_LS_SIDEBARVISIBLE) || 1;
     
     const _sidebarToggle = (evt) => {
@@ -26,8 +28,8 @@ class puiSidebarVisibilityToggle extends IPlugin {
       setUserConfigValue(KEY_LS_SIDEBARVISIBLE, String(Number(newState)));
     }
   
-    puiSidebarVisibilityToggle.buttonHide = uiAddButton(puiSidebarVisibilityToggle.ID_DOWNPB, this.config[puiSidebarVisibilityToggle.KEY_CFG_HIDE], UI_PLUGIN_SIDEBAR, _sidebarToggle);
-    puiSidebarVisibilityToggle.buttonShow = uiAddButton(puiSidebarVisibilityToggle.ID_TOPPB, this.config[puiSidebarVisibilityToggle.KEY_CFG_SHOW], UI_PLUGIN_HEADER, _sidebarToggle);
+    puiSidebarVisibilityToggle.buttonHide = uiAddButton(puiSidebarVisibilityToggle.ID_DOWNPB, captionHide, UI_PLUGIN_SIDEBAR, _sidebarToggle);
+    puiSidebarVisibilityToggle.buttonShow = uiAddButton(puiSidebarVisibilityToggle.ID_TOPPB, captionShow, UI_PLUGIN_HEADER, _sidebarToggle);
 
     toggleVisibility(puiSidebarVisibilityToggle.buttonShow, !sidebarVisible);
 

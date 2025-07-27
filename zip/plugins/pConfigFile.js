@@ -44,7 +44,9 @@ class pConfigFile extends IPlugin {
   }
 
   async _loadCFG() {
-    const found = await storageSearch(this.config[pConfigFile.KEY_CFG_STORAGE], this.config[pConfigFile.KEY_CFG_FILENAME]);
+    const cfgStorage = this.config[pConfigFile.KEY_CFG_STORAGE] || 'STO_DATA';
+    const cfgFileName = this.config[pConfigFile.KEY_CFG_FILENAME] || '_config.txt';
+    const found = await storageSearch(cfgStorage, cfgFileName);
     this.CFG = parseConfigFile(found);
   }
 

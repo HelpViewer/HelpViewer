@@ -13,7 +13,7 @@ class puiButtonToggleSide extends IPlugin {
   static button;
 
   init() {
-    const KEY_LS_SIDEBARSIDE = this.config[puiButtonToggleSide.KEY_CFG_STOREKEY];
+    const KEY_LS_SIDEBARSIDE = this.config[puiButtonToggleSide.KEY_CFG_STOREKEY] || 'sidebarSide';
     var state = getUserConfigValue(KEY_LS_SIDEBARSIDE) || 0;
     
     var toggleSidebarSideHandler = () => {
@@ -26,7 +26,11 @@ class puiButtonToggleSide extends IPlugin {
       toggleSidebarSideHandler();
     }
   
-    puiButtonToggleSide.button = uiAddButton(this.config[puiButtonToggleSide.KEY_CFG_ID], this.config[puiButtonToggleSide.KEY_CFG_CAPTION], this.config[puiButtonToggleSide.KEY_CFG_TARGET], _buttonAction);
+    const cfgId = this.config[puiButtonFullScreen.KEY_CFG_ID] || 'downP-ToggleSide';
+    const cfgCaption = this.config[puiButtonFullScreen.KEY_CFG_CAPTION] || '↔';
+    const cfgTarget = this.config[puiButtonFullScreen.KEY_CFG_TARGET] || UI_PLUGIN_SIDEBAR;
+
+    puiButtonToggleSide.button = uiAddButton(cfgId, cfgCaption, cfgTarget, _buttonAction);
 
     if (state == 0) 
       toggleSidebarSideHandler();
