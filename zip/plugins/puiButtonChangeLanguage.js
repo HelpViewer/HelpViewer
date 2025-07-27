@@ -27,17 +27,13 @@ class puiButtonChangeLanguage extends IPlugin {
     const langTab = uiAddTreeView('langList', TI.tab);
 
     const _buttonAction = (evt) => {
-      alert('async1');
       var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
-      alert('async2');
       var languages = getLanguagesList(langsFromHelp);
-      log(languages);
+
       languages.then((languages) => {
-        alert('async3');
         langTab.innerHTML = '';
       
         for (var i = 0; i < languages.length; i++) {
-          alert('async4: ' + i.toString());
           const parts = languages[i].split("|");
           const alias = parts[0]?.trim() || "";
           const name = parts[1]?.trim() || "";
