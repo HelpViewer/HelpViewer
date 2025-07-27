@@ -29,7 +29,7 @@ class pConfigFile extends IPlugin {
     }
     pConfigFile.eventDefinitions.push([pConfigFile.EVT_CF_GET, ConfigFileGet, h_EVT_CF_GET]);
 
-    var h_EVT_CF_RELOAD = this.wrapAsyncHandler((data) => {
+    var h_EVT_CF_RELOAD = IPlugin.wrapAsyncHandler((data) => {
       this._loadCFG();
       data.result = this.aliasName;
     });

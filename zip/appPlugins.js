@@ -45,7 +45,7 @@ class IPlugin {
     addEventDefinition(name, new EventDefinition(dataClass, name));
   }
 
-  wrapAsyncHandler(fn) {
+  static wrapAsyncHandler(fn) {
     return function(data) {
       const reply = fn(data);
       data.result = reply;
