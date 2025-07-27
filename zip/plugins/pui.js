@@ -99,3 +99,10 @@ function createButtonAcceptHandler(pluginInstance, toolbar) {
     reply.result = true;
   };
 }
+
+function registerOnClick(handlerId, handler) {
+  return sendEvent(pui.EVT_CLICK_HANDLER_REGISTER, (d) => {
+    d.handlerId = handlerId;
+    d.handler = handler;
+  });
+}
