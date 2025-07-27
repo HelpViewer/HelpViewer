@@ -1,5 +1,5 @@
 // File formats
-const N_P_TREEITEM = 'tree-';
+const N_P_TREEITEM = 'tree';
 const FILENAME_TREE = 'tree.lst';
 const PAR_NAME_ID = 'id';
 

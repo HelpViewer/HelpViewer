@@ -334,7 +334,7 @@ async function getPathData(path, heading) {
   }
   
   contentPane.focus();
-  refreshTitlesForLangStrings(null);
+  refreshTitlesForLangStrings();
   
   const id = getGets(PLG_KEY_HASH, null)?.substring(1);
   scrollToAnchor(id);
