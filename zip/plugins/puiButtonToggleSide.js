@@ -1,6 +1,7 @@
 class puiButtonToggleSide extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
+    this.button = undefined;
   }
 
   static eventDefinitions = [];
@@ -10,10 +11,10 @@ class puiButtonToggleSide extends IPlugin {
   static KEY_CFG_TARGET = 'TARGET';
   static KEY_CFG_STOREKEY = 'STOREKEY';
 
-  static button;
-
   init() {
-    const KEY_LS_SIDEBARSIDE = this.config[puiButtonToggleSide.KEY_CFG_STOREKEY] || 'sidebarSide';
+    const T = puiButtonToggleSide;
+    const TI = this;
+    const KEY_LS_SIDEBARSIDE = this.config[T.KEY_CFG_STOREKEY] || 'sidebarSide';
     var state = getUserConfigValue(KEY_LS_SIDEBARSIDE) || 0;
     
     var toggleSidebarSideHandler = () => {
@@ -26,11 +27,11 @@ class puiButtonToggleSide extends IPlugin {
       toggleSidebarSideHandler();
     }
   
-    const cfgId = this.config[puiButtonToggleSide.KEY_CFG_ID] || 'downP-ToggleSide';
-    const cfgCaption = this.config[puiButtonToggleSide.KEY_CFG_CAPTION] || '↔';
-    const cfgTarget = this.config[puiButtonToggleSide.KEY_CFG_TARGET] || UI_PLUGIN_SIDEBAR;
+    const cfgId = this.config[T.KEY_CFG_ID] || 'downP-ToggleSide';
+    const cfgCaption = this.config[T.KEY_CFG_CAPTION] || '↔';
+    const cfgTarget = this.config[T.KEY_CFG_TARGET] || UI_PLUGIN_SIDEBAR;
 
-    puiButtonToggleSide.button = uiAddButton(cfgId, cfgCaption, cfgTarget, _buttonAction);
+    TI.button = uiAddButton(cfgId, cfgCaption, cfgTarget, _buttonAction);
 
     if (state == 0) 
       toggleSidebarSideHandler();
@@ -39,7 +40,7 @@ class puiButtonToggleSide extends IPlugin {
   }
 
   deInit() {
-    puiButtonToggleSide.button?.remove();
+    this.button?.remove();
 
     super.deInit();
   }

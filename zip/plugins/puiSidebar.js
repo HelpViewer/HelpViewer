@@ -54,8 +54,6 @@ class puiSidebar extends IPlugin {
 
   static eventDefinitions = [];
 
-  static sidebar;
-
   static addition = '<div class="sidebar" id="sidebar" role="navigation"><div class="toolbar toolbar-down multi-linePanel" id="toolbar-down"></div></div>';
 
   _getSidebar() {
@@ -63,20 +61,21 @@ class puiSidebar extends IPlugin {
   }
 
   init() {
+    const T = puiSidebar;
+    const TI = this;
     sendEvent(EventNames.ClickHandlerRegister, (y) => {
-      y.handlerId = puiSidebar.toolbarButtonIdRoot;
-      y.handler = puiSidebar._processClickedBottomPanelEvent;
+      y.handlerId = T.toolbarButtonIdRoot;
+      y.handler = T._processClickedBottomPanelEvent;
     });
 
     const containerMain = document.getElementById('container');
     const tmpDiv = document.createElement('div');
-    tmpDiv.innerHTML = puiSidebar.addition;
+    tmpDiv.innerHTML = T.addition;
     const node = tmpDiv.firstChild;
     if (containerMain && node)
       containerMain.append(node);
 
-    const sidebar = this._getSidebar();
-    puiSidebar.sidebar = sidebar;
+    const sidebar = TI._getSidebar();
     const toolbar = document.getElementById('toolbar-down');
 
     const h_EVT_SIDE_PAGE_CREATE = (reply) => {
@@ -93,15 +92,15 @@ class puiSidebar extends IPlugin {
       sidebar.insertBefore(div, toolbar);
       reply.result = div;
     }
-    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_PAGE_CREATE, SidebarPageCreate, h_EVT_SIDE_PAGE_CREATE]);
+    T.eventDefinitions.push([T.EVT_SIDE_PAGE_CREATE, SidebarPageCreate, h_EVT_SIDE_PAGE_CREATE]);
 
     const h_EVT_SIDE_PAGE_SHOW = (reply) => {
       if (!reply.pageId)
         return;
 
-      reply.result = puiSidebar.showSidebarTab(`sp-${reply.pageId}`);
+      reply.result = T.showSidebarTab(`sp-${reply.pageId}`);
     }
-    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_PAGE_SHOW, SidebarPageShow, h_EVT_SIDE_PAGE_SHOW]);
+    T.eventDefinitions.push([T.EVT_SIDE_PAGE_SHOW, SidebarPageShow, h_EVT_SIDE_PAGE_SHOW]);
 
     const h_EVT_SIDE_TREEVIEW_CREATE = (reply) => {
       if (!reply.treeViewId || !reply.page)
@@ -114,18 +113,18 @@ class puiSidebar extends IPlugin {
       reply.page.appendChild(obj);
       reply.result = obj;
     }
-    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_TREEVIEW_CREATE, TreeViewCreate, h_EVT_SIDE_TREEVIEW_CREATE]);
+    T.eventDefinitions.push([T.EVT_SIDE_TREEVIEW_CREATE, TreeViewCreate, h_EVT_SIDE_TREEVIEW_CREATE]);
 
     const h_EVT_SIDE_VISIBILITY_SET = (reply) => {
       reply.result = toggleVisibility(sidebar, reply.value);
     }
-    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_VISIBILITY_SET, SidebarVisibilitySet, h_EVT_SIDE_VISIBILITY_SET]);
+    T.eventDefinitions.push([T.EVT_SIDE_VISIBILITY_SET, SidebarVisibilitySet, h_EVT_SIDE_VISIBILITY_SET]);
 
     const h_EVT_SIDE_SIDE_TOGGLE = (reply) => {
       const C_TORIGHT = 'toright';
       reply.result = !toggleCSSClass(sidebar?.parentElement, C_TORIGHT);
     }
-    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_SIDE_TOGGLE, IEvent, h_EVT_SIDE_SIDE_TOGGLE]);
+    T.eventDefinitions.push([T.EVT_SIDE_SIDE_TOGGLE, IEvent, h_EVT_SIDE_SIDE_TOGGLE]);
 
     const h_EVT_SIDE_VISIBILITY_SET_BUTTON = (reply) => {
       const button = sidebar.querySelector(`#${reply.buttonId}`);
@@ -133,21 +132,21 @@ class puiSidebar extends IPlugin {
         return;
 
       reply.result = toggleVisibility(button, reply.value);
-      puiSidebar.recomputeButtonPanel(button);
+      T.recomputeButtonPanel(button);
     }
-    puiSidebar.eventDefinitions.push([puiSidebar.EVT_SIDE_VISIBILITY_SET_BUTTON, SidebarVisibilitySetButton, h_EVT_SIDE_VISIBILITY_SET_BUTTON]);
+    T.eventDefinitions.push([T.EVT_SIDE_VISIBILITY_SET_BUTTON, SidebarVisibilitySetButton, h_EVT_SIDE_VISIBILITY_SET_BUTTON]);
     
-    const baseButtonAccept = createButtonAcceptHandler(this, toolbar);
+    const baseButtonAccept = createButtonAcceptHandler(TI, toolbar);
     const h_buttonAccept = (reply) =>
     {
       baseButtonAccept(reply);
-      puiSidebar.recomputeButtonPanel(reply.button);
+      T.recomputeButtonPanel(reply.button);
     }
-    this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, h_buttonAccept);
+    TI.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, h_buttonAccept);
 
-    window.addEventListener("resize", this._checkSidebarWidth);
-    window.addEventListener("load", this._checkSidebarWidth);
-    this._checkSidebarWidth();
+    window.addEventListener("resize", TI._checkSidebarWidth);
+    window.addEventListener("load", TI._checkSidebarWidth);
+    TI._checkSidebarWidth();
 
     super.init();
     //this.eventIdStrict = true;
@@ -177,10 +176,11 @@ class puiSidebar extends IPlugin {
   }
 
   static _processClickedBottomPanelEvent(ev) {
-    if (ev.elementIdRoot != puiSidebar.toolbarButtonIdRoot)
+    const T = puiSidebar;
+    if (ev.elementIdRoot != T.toolbarButtonIdRoot)
       return;
 
-    ev.result = puiSidebar.showSidebarTab(`sp-${ev.elementId}`);
+    ev.result = T.showSidebarTab(`sp-${ev.elementId}`);
 
     if (!ev.result)
       log(`W Tab [sp-${ev.elementId}] not found on sidebar! Event id: ${ev.eventId}`);
@@ -204,7 +204,7 @@ class puiSidebar extends IPlugin {
   /*E: Feature: Sidebar tabs handling */
 
   _checkSidebarWidth() {
-    const sidebar = puiSidebar.sidebar;
+    const sidebar = this._getSidebar();
     if (!sidebar) return;
     if (sidebar.offsetWidth / window.innerWidth > 0.5) {
       sidebar.classList.add(C_TOOWIDE);

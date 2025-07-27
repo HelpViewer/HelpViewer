@@ -1,6 +1,8 @@
 class puiSidebarVisibilityToggle extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
+    this.buttonHide = undefined;
+    this.buttonShow = undefined;
   }
 
   static eventDefinitions = [];
@@ -12,26 +14,25 @@ class puiSidebarVisibilityToggle extends IPlugin {
   static ID_DOWNPB = 'downP-Hide';
   static ID_TOPPB = 'showBtn';
 
-  static buttonHide;
-  static buttonShow;
-
   init() {
-    const KEY_LS_SIDEBARVISIBLE = this.config[puiSidebarVisibilityToggle.KEY_CFG_STOREKEY] || 'sidebarVisible';
-    const captionHide = this.config[puiSidebarVisibilityToggle.KEY_CFG_HIDE] || '❌︎';
-    const captionShow = this.config[puiSidebarVisibilityToggle.KEY_CFG_SHOW] || '☰';
+    const T = puiSidebarVisibilityToggle;
+    const TI = this;
+    const KEY_LS_SIDEBARVISIBLE = this.config[T.KEY_CFG_STOREKEY] || 'sidebarVisible';
+    const captionHide = this.config[T.KEY_CFG_HIDE] || '❌︎';
+    const captionShow = this.config[T.KEY_CFG_SHOW] || '☰';
     var sidebarVisible = getUserConfigValue(KEY_LS_SIDEBARVISIBLE) || 1;
     
     const _sidebarToggle = (evt) => {
       const newState = toggleSidebar();
       sidebarVisible = newState;
-      toggleVisibility(puiSidebarVisibilityToggle.buttonShow, !newState);
+      toggleVisibility(TI.buttonShow, !newState);
       setUserConfigValue(KEY_LS_SIDEBARVISIBLE, String(Number(newState)));
     }
   
-    puiSidebarVisibilityToggle.buttonHide = uiAddButton(puiSidebarVisibilityToggle.ID_DOWNPB, captionHide, UI_PLUGIN_SIDEBAR, _sidebarToggle);
-    puiSidebarVisibilityToggle.buttonShow = uiAddButton(puiSidebarVisibilityToggle.ID_TOPPB, captionShow, UI_PLUGIN_HEADER, _sidebarToggle);
+    TI.buttonHide = uiAddButton(T.ID_DOWNPB, captionHide, UI_PLUGIN_SIDEBAR, _sidebarToggle);
+    TI.buttonShow = uiAddButton(T.ID_TOPPB, captionShow, UI_PLUGIN_HEADER, _sidebarToggle);
 
-    toggleVisibility(puiSidebarVisibilityToggle.buttonShow, !sidebarVisible);
+    toggleVisibility(TI.buttonShow, !sidebarVisible);
 
     if (sidebarVisible == 0)
       _sidebarToggle();
@@ -40,8 +41,9 @@ class puiSidebarVisibilityToggle extends IPlugin {
   }
 
   deInit() {
-    puiSidebarVisibilityToggle.buttonHide?.remove();
-    puiSidebarVisibilityToggle.buttonShow?.remove();
+    const T = this;
+    T.buttonHide?.remove();
+    T.buttonShow?.remove();
 
     super.deInit();
   }

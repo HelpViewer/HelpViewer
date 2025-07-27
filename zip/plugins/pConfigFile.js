@@ -24,16 +24,17 @@ class pConfigFile extends IPlugin {
   static eventDefinitions = [];
 
   init() {
+    const T = pConfigFile;
     const h_EVT_CF_GET = (data) => {
       data.result = this._configGetValue(data.key, data.backup);  
     }
-    pConfigFile.eventDefinitions.push([pConfigFile.EVT_CF_GET, ConfigFileGet, h_EVT_CF_GET]);
+    T.eventDefinitions.push([T.EVT_CF_GET, ConfigFileGet, h_EVT_CF_GET]);
 
     const h_EVT_CF_RELOAD = IPlugin.wrapAsyncHandler((data) => {
       this._loadCFG();
       data.result = this.aliasName;
     });
-    pConfigFile.eventDefinitions.push([pConfigFile.EVT_CF_RELOAD, IEvent, h_EVT_CF_RELOAD]);
+    T.eventDefinitions.push([T.EVT_CF_RELOAD, IEvent, h_EVT_CF_RELOAD]);
 
     this.eventIdStrict = true;
     super.init();
@@ -44,8 +45,9 @@ class pConfigFile extends IPlugin {
   }
 
   async _loadCFG() {
-    const cfgStorage = this.config[pConfigFile.KEY_CFG_STORAGE] || 'STO_DATA';
-    const cfgFileName = this.config[pConfigFile.KEY_CFG_FILENAME] || '_config.txt';
+    const T = pConfigFile;
+    const cfgStorage = this.config[T.KEY_CFG_STORAGE] || 'STO_DATA';
+    const cfgFileName = this.config[T.KEY_CFG_FILENAME] || '_config.txt';
     const found = await storageSearch(cfgStorage, cfgFileName);
     this.CFG = parseConfigFile(found);
   }

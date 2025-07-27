@@ -29,32 +29,33 @@ class pLocalizationSwitcher extends IPlugin {
   static eventDefinitions = [];
   
   init() {
+    const T = pLocalizationSwitcher;
     const h_EVT_LOC_TRANSLATE = (data) => {
       data.result = this._T(data.name);
     };
-    pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_TRANSLATE, LocTranslate, h_EVT_LOC_TRANSLATE]);
+    T.eventDefinitions.push([T.EVT_LOC_TRANSLATE, LocTranslate, h_EVT_LOC_TRANSLATE]);
 
     const h_EVT_LOC_GET_ACTIVE_LANGUAGE = (data) => {
-      data.result = pLocalizationSwitcher.activeLanguage;
+      data.result = T.activeLanguage;
     };
-    pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_GET_ACTIVE_LANGUAGE, IEvent, h_EVT_LOC_GET_ACTIVE_LANGUAGE]);
+    T.eventDefinitions.push([T.EVT_LOC_GET_ACTIVE_LANGUAGE, IEvent, h_EVT_LOC_GET_ACTIVE_LANGUAGE]);
 
     const h_EVT_LOC_LANGUAGES = (data) => {
       data.result = this.getLanguagesList(data.additional);
     };
-    pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_LANGUAGES, LocGetLanguages, h_EVT_LOC_LANGUAGES]);
+    T.eventDefinitions.push([T.EVT_LOC_LANGUAGES, LocGetLanguages, h_EVT_LOC_LANGUAGES]);
 
     const h_EVT_LOC_LOAD = (data) => {
       this.loadLocalization(data.name, data.eventId);
     };
-    pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_LOAD, LocTranslate, h_EVT_LOC_LOAD]);
+    T.eventDefinitions.push([T.EVT_LOC_LOAD, LocTranslate, h_EVT_LOC_LOAD]);
 
     const h_EVT_LOC_REFRESH = (data) => {
       this.refreshTitlesForLangStrings(null);
     };
-    pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_REFRESH, IEvent, h_EVT_LOC_REFRESH]);
+    T.eventDefinitions.push([T.EVT_LOC_REFRESH, IEvent, h_EVT_LOC_REFRESH]);
 
-    pLocalizationSwitcher.eventDefinitions.push([pLocalizationSwitcher.EVT_LOC_LOADED, LocTranslate, null]); // outside event handlers
+    T.eventDefinitions.push([T.EVT_LOC_LOADED, LocTranslate, null]); // outside event handlers
 
     super.init();
   }
@@ -76,14 +77,15 @@ class pLocalizationSwitcher extends IPlugin {
 
   async getLanguagesList(additional)
   {
+    const T = pLocalizationSwitcher;
     var langNames = [];
-    const langs = await storageGetSubdirs(STO_DATA, pLocalizationSwitcher.languagesMainPath);
+    const langs = await storageGetSubdirs(STO_DATA, T.languagesMainPath);
 
     if (additional && Array.isArray(additional))
       langs.push(...additional);
 
     for (const val of langs) {
-      const alias = await this._storageSearch(`${pLocalizationSwitcher.languagesMainPath}${val}/${pLocalizationSwitcher.langFileAlias}`) || val;
+      const alias = await this._storageSearch(`${T.languagesMainPath}${val}/${T.langFileAlias}`) || val;
       langNames.push(`${alias}|${val}`);
     };
 
@@ -97,12 +99,13 @@ class pLocalizationSwitcher extends IPlugin {
   //lstr.* must be defined in codepage UTF-8 no BOM (65001)
   async loadLocalization(localizationName, parentEventId)
   {
+    const T = pLocalizationSwitcher;
     this.langStrs = {};
   
-    const langJS = await this._storageSearch(`${pLocalizationSwitcher.languagesMainPath}${localizationName}/${pLocalizationSwitcher.langFileJS}`);
+    const langJS = await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileJS}`);
     appendJavaScript('langDynStrings', langJS, document.head);
 
-    const langFlatStrs = (await this._storageSearch(`${pLocalizationSwitcher.languagesMainPath}${localizationName}/${pLocalizationSwitcher.langFileTXT}`)).split("\n");
+    const langFlatStrs = (await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileTXT}`)).split("\n");
     
     for (var i = 0; i < langFlatStrs.length; i++) {
       const line = langFlatStrs[i];
@@ -119,10 +122,10 @@ class pLocalizationSwitcher extends IPlugin {
     }
 
     this.refreshTitlesForLangStrings(Object.keys(this.langStrs));
-    pLocalizationSwitcher.activeLanguage = localizationName;
+    T.activeLanguage = localizationName;
     setUserConfigValue(KEY_LS_LANG, localizationName);
     
-    sendEvent(pLocalizationSwitcher.EVT_LOC_LOADED, (x) => {
+    sendEvent(T.EVT_LOC_LOADED, (x) => {
       x.name = localizationName;
       x.parentEventId = parentEventId;
     });

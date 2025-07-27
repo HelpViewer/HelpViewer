@@ -36,6 +36,7 @@ class pui extends IPlugin {
   static eventDefinitions = [];
 
   init() {
+    const T = pui;
     const _processClickedEvent = (e) => {
       const foundExactEqual = this.btnHandlers.get(e.elementId);
       const foundRootEqual = this.btnHandlers.get(e.elementIdRoot);
@@ -57,7 +58,7 @@ class pui extends IPlugin {
       this.btnHandlers.set(reply.handlerId, reply.handler);
       reply.result = reply.handlerId;
     }
-    pui.eventDefinitions.push([pui.EVT_CLICK_HANDLER_REGISTER, ClickHandlerRegister, h_EVT_CLICK_HANDLER_REGISTER]);
+    T.eventDefinitions.push([T.EVT_CLICK_HANDLER_REGISTER, ClickHandlerRegister, h_EVT_CLICK_HANDLER_REGISTER]);
 
     const h_EVT_BUTTON_CREATE = (reply) => {
       if (!reply.buttonId)
@@ -73,9 +74,9 @@ class pui extends IPlugin {
 
       reply.result = button;
     }
-    pui.eventDefinitions.push([pui.EVT_BUTTON_CREATE, ButtonCreate, h_EVT_BUTTON_CREATE]);
+    T.eventDefinitions.push([T.EVT_BUTTON_CREATE, ButtonCreate, h_EVT_BUTTON_CREATE]);
 
-    pui.eventDefinitions.push([pui.EVT_BUTTON_SEND, ButtonSend, null]); // outside event handlers
+    T.eventDefinitions.push([T.EVT_BUTTON_SEND, ButtonSend, null]); // outside event handlers
 
     super.init();
   }

@@ -11,6 +11,9 @@ class NavigationMove extends IEvent {
 class puiNavigation extends IPlugin {
     constructor(aliasName, data) {
       super(aliasName, data);
+      this.buttonLeft = undefined;
+      this.buttonTop = undefined;
+      this.buttonRight = undefined;
     }
   
     static eventDefinitions = [];
@@ -19,19 +22,17 @@ class puiNavigation extends IPlugin {
     static KEY_CFG_TREE_ID = 'TREEID';
     static KEY_CFG_PARAM_ID_NAME = 'IDNAMEGETPAR';
   
-    static buttonLeft;
-    static buttonTop;
-    static buttonRight;
-
     static EVT_NAV_MOVE = NavigationMove.name;
 
     init() {
-      puiNavigation.eventDefinitions.push([puiNavigation.EVT_NAV_MOVE, NavigationMove, null]); // outside event handlers
+      const T = puiNavigation;
+      const TI = this;
+      T.eventDefinitions.push([T.EVT_NAV_MOVE, NavigationMove, null]); // outside event handlers
 
       const baseId = this.aliasName;
-      const target = this.config[puiNavigation.KEY_CFG_TARGET] || 'header';
-      const treeId = this.config[puiNavigation.KEY_CFG_TREE_ID] || 'tree';
-      const parIdName = this.config[puiNavigation.KEY_CFG_PARAM_ID_NAME] || 'id';
+      const target = this.config[T.KEY_CFG_TARGET] || 'header';
+      const treeId = this.config[T.KEY_CFG_TREE_ID] || 'tree';
+      const parIdName = this.config[T.KEY_CFG_PARAM_ID_NAME] || 'id';
 
       const idLeft = `${baseId}-left`;
       const idTop = `${baseId}-top`;
@@ -46,9 +47,9 @@ class puiNavigation extends IPlugin {
         const prevTreeItem = document.getElementById(treeId + '|' + indexPrev);
         const nextTreeItem = document.getElementById(treeId + '|' + indexNext);
 
-        toggleVisibility(puiNavigation.buttonLeft, !!prevTreeItem);
-        toggleVisibility(puiNavigation.buttonRight, !!nextTreeItem);
-        toggleVisibility(puiNavigation.buttonTop, !(i <= 1));
+        toggleVisibility(TI.buttonLeft, !!prevTreeItem);
+        toggleVisibility(TI.buttonRight, !!nextTreeItem);
+        toggleVisibility(TI.buttonTop, !(i <= 1));
       }
 
       const _buttonAction = (evt, next, direction) => {
@@ -60,7 +61,7 @@ class puiNavigation extends IPlugin {
         if (next == current)
           return;
 
-        sendEvent(puiNavigation.EVT_NAV_MOVE, (data) => {
+        sendEvent(T.EVT_NAV_MOVE, (data) => {
           data.id = this.aliasName;
           data.treeId = treeId;
           data.previousId = current;
@@ -74,7 +75,7 @@ class puiNavigation extends IPlugin {
         const next = getId()-1;
         _buttonAction(evt, next, -1);
       }
-      puiNavigation.buttonLeft = uiAddButton(idLeft, '⬅', target, _buttonActionLeft);
+      TI.buttonLeft = uiAddButton(idLeft, '⬅', target, _buttonActionLeft);
   
       const _buttonActionTop = (evt) => {
         const current = getId();
@@ -84,13 +85,13 @@ class puiNavigation extends IPlugin {
           next = 1;
         _buttonAction(evt, next, 0);
       }
-      puiNavigation.buttonTop = uiAddButton(idTop, '⬆', target, _buttonActionTop);
+      TI.buttonTop = uiAddButton(idTop, '⬆', target, _buttonActionTop);
 
       const _buttonActionRight = (evt) => {
         const next = getId()+1;
         _buttonAction(evt, next, 1);
       }
-      puiNavigation.buttonRight = uiAddButton(idRight, '➡', target, _buttonActionRight);
+      TI.buttonRight = uiAddButton(idRight, '➡', target, _buttonActionRight);
 
       super.init();
       this.eventIdStrict = true;
@@ -99,9 +100,10 @@ class puiNavigation extends IPlugin {
     }
   
     deInit() {
-      puiNavigation.buttonLeft?.remove();
-      puiNavigation.buttonTop?.remove();
-      puiNavigation.buttonRight?.remove();
+      const T = this;
+      T.buttonLeft?.remove();
+      T.buttonTop?.remove();
+      T.buttonRight?.remove();
   
       super.deInit();
     }

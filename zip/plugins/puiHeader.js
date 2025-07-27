@@ -18,9 +18,10 @@ class puiHeader extends IPlugin {
   static addition = '<div class="header" id="header" role="banner"><h1 id="mtitle">&nbsp;</h1><div id="toolbar" role="navigation"></div></div>';
 
   init() {
+    const T = puiHeader;
     const containerMain = document.getElementById('main');
     const tmpDiv = document.createElement('div');
-    tmpDiv.innerHTML = puiHeader.addition;
+    tmpDiv.innerHTML = T.addition;
     const node = tmpDiv.firstChild;
     if (containerMain && node)
       containerMain.prepend(node);
@@ -36,12 +37,12 @@ class puiHeader extends IPlugin {
       }
       data.result = true;
     }
-    puiHeader.eventDefinitions.push([puiHeader.EVT_HEAD_SET, HeaderSet, h_EVT_HEAD_SET]);
+    T.eventDefinitions.push([T.EVT_HEAD_SET, HeaderSet, h_EVT_HEAD_SET]);
 
     const h_EVT_HEAD_GET = (data) => {
       data.result = mainTitle?.innerHTML ?? '';
     }
-    puiHeader.eventDefinitions.push([puiHeader.EVT_HEAD_GET, IEvent, h_EVT_HEAD_GET]);
+    T.eventDefinitions.push([T.EVT_HEAD_GET, IEvent, h_EVT_HEAD_GET]);
 
     this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
 

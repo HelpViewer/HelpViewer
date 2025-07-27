@@ -54,6 +54,7 @@ class pGets extends IPlugin {
   static eventDefinitions = [];
   
   init() {
+    const T = pGets;
     const h_EVT_GETS_GET = (data) => {
       if (!this.params) 
         this.h_EVT_GETS_LOAD(data);
@@ -65,7 +66,7 @@ class pGets extends IPlugin {
 
       data.result = val;
     };
-    pGets.eventDefinitions.push([pGets.EVT_GETS_GET, GetsGet, h_EVT_GETS_GET]);
+    T.eventDefinitions.push([T.EVT_GETS_GET, GetsGet, h_EVT_GETS_GET]);
 
     const h_EVT_GETS_SET = (data) => {
       if (!data || data.kvlist.size == 0)
@@ -110,7 +111,7 @@ class pGets extends IPlugin {
       history.pushState(null, "", url.toString());
       this.onUriChanged(data.eventId);
     };
-    pGets.eventDefinitions.push([pGets.EVT_GETS_SET, GetsSet, h_EVT_GETS_SET]);
+    T.eventDefinitions.push([T.EVT_GETS_SET, GetsSet, h_EVT_GETS_SET]);
 
     const h_EVT_GETS_SET_HREF = (data) => {
       if (data.href == undefined)
@@ -121,7 +122,7 @@ class pGets extends IPlugin {
       this.onUriChanged(data.eventId);
     };
 
-    pGets.eventDefinitions.push([pGets.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
+    T.eventDefinitions.push([T.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
 
     const h_EVT_GETS_SET_TO_BOOKMARK = (data) => {
       if (data.bookmark == undefined)
@@ -134,9 +135,9 @@ class pGets extends IPlugin {
       this.onUriChanged(data.eventId);
     };
 
-    pGets.eventDefinitions.push([pGets.EVT_GETS_SET_TO_BOOKMARK, GetsSetToBookmark, h_EVT_GETS_SET_TO_BOOKMARK]);
+    T.eventDefinitions.push([T.EVT_GETS_SET_TO_BOOKMARK, GetsSetToBookmark, h_EVT_GETS_SET_TO_BOOKMARK]);
 
-    pGets.eventDefinitions.push([pGets.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
+    T.eventDefinitions.push([T.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
 
     window.addEventListener('popstate', this.onUriChanged);
     window.addEventListener('hashchange', this.onUriChanged);
@@ -168,11 +169,12 @@ class pGets extends IPlugin {
   };
 
   onUriChanged(parentEventId) {
+    const T = pGets;
     const parOld = getObjectCopy(this.params);
     this.h_EVT_GETS_LOAD(null);
     const summary = getDifferenceTwoObjects(parOld, this.params);
 
-    sendEvent(pGets.EVT_GETS_CHANGES, (changes) => {
+    sendEvent(T.EVT_GETS_CHANGES, (changes) => {
       if (parentEventId === 'string')
         changes.parentEventId = parentEventId;
 
