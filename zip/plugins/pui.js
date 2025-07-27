@@ -45,6 +45,8 @@ class pui extends IPlugin {
         e.forwarded = foundExactEqual ? e.elementId : foundRootEqual ? e.elementIdRoot : false;
         log(`Event ${EventNames.ClickedEvent} (${e.eventId}) forwarded by id: ${e.forwarded}`);
         found(e);
+      } else {
+        log(`E Event ${EventNames.ClickedEvent} (${e.eventId}) cannot be forwarded by any of ids: ${e.elementId}, ${e.elementIdRoot}`);        
       }
     }
     this.subscribed = EventBus.sub(EventNames.ClickedEvent, _processClickedEvent);
