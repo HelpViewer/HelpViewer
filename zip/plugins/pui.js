@@ -37,7 +37,15 @@ class pui extends IPlugin {
 
   init() {
     const _processClickedEvent = (e) => {
-      (this.btnHandlers.get(e.elementId) || this.btnHandlers.get(e.elementIdRoot))?.(e);
+      const foundExactEqual = this.btnHandlers.get(e.elementId);
+      const foundRootEqual = this.btnHandlers.get(e.elementIdRoot);
+      const found = foundExactEqual || foundRootEqual;
+
+      if (found) {
+        e.forwarded = foundExactEqual ? e.elementId : foundRootEqual ? e.elementIdRoot : false;
+        log(`Event ${EventNames.ClickedEvent} (${e.eventId}) forwarded by id: ${e.forwarded}`);
+        found(e);
+      }
     }
     this.subscribed = EventBus.sub(EventNames.ClickedEvent, _processClickedEvent);
 

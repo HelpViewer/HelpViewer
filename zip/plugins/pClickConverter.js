@@ -7,6 +7,7 @@ class ClickedEvent extends IEvent {
     this.elementIdVal = null;
     this.target = null;
     this.event = null;
+    this.forwarded = false;
   }
 }
 
