@@ -146,12 +146,10 @@ const H_BUTTON_WITH_TAB = 'H_BUTTON_WITH_TAB';
 
 /**
  * @param {null | Function | H_BUTTON_WITH_TAB} [handler]
+ * @returns For handler not equal to H_BUTTON_WITH_TAB button HTML element, for handler equal to H_BUTTON_WITH_TAB HTML element array of [button, page]
  */
 /*S: Plugin: pui */
 function uiAddButton(id, caption, target, handler = null) {
-  if (handler === H_BUTTON_WITH_TAB)
-    uiAddSidebarPage(id);
-
   const button = sendEvent(EventNames.ButtonCreate, (x) => {
     x.buttonId = id;
     x.caption = caption;
@@ -164,6 +162,9 @@ function uiAddButton(id, caption, target, handler = null) {
     x.button = button;
     x.id = target;
   });
+
+  if (handler === H_BUTTON_WITH_TAB)
+    return [button, uiAddSidebarPage(id)];
 
   return button;
 }
