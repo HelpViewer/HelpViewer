@@ -76,14 +76,19 @@ async function runApp() {
 }
 
 async function loadPlugin(name, file, source = STO_DATA) {
+  const appendingAlias = name.replaceAll('/', '_');
+  log(`Plugins: loading from file '${file}' under internal alias ${appendingAlias} ...'`);
   const srcMarkedJs = await _Storage.search(source, file);
-  appendJavaScript(`plugins-${name}.js`, srcMarkedJs, document.head);
+  appendJavaScript(`plugins-${appendingAlias}.js`, srcMarkedJs, document.head);
 }
 
 async function activatePlugin(name, alias, source = STO_DATA) {
-  const configFileRaw = await _Storage.search(source, `plugins-config/${name}_${alias}.cfg`);
+  const pluginPureName = name.split('/').pop();
+  const cfgFile = `plugins-config/${name}_${alias}.cfg`;
+  log(`Plugins: loading configuration for plugin ${pluginPureName} (${name}) from file '${cfgFile} ...'`);
+  const configFileRaw = await _Storage.search(source, cfgFile);
   const configFileStruct = parseConfigFile(configFileRaw || '|');
-  Plugins.activate(name, alias, configFileStruct || {});
+  Plugins.activate(pluginPureName, alias, configFileStruct || {});
 }
 
 function parseConfigFile(data) {
