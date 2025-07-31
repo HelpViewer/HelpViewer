@@ -10,6 +10,7 @@ class puiButtonChangeLanguage extends IPlugin {
   static KEY_CFG_ID = 'ID';
   static KEY_CFG_CAPTION = 'CAPTION';
   static KEY_CFG_TARGET = 'TARGET';
+  static KEY_CFG_TEMPLATE = 'LINKTEMPLATE';
 
   static LANGLINKS_PREFIX = 'lng';
   
@@ -20,6 +21,7 @@ class puiButtonChangeLanguage extends IPlugin {
     const cfgId = TI.config[T.KEY_CFG_ID] || 'downP-ChangeLanguage';
     const cfgCaption = TI.config[T.KEY_CFG_CAPTION] || '🌐';
     const cfgTarget = TI.config[T.KEY_CFG_TARGET] || UI_PLUGIN_SIDEBAR;
+    const cfgTemplate = TI.config[T.KEY_CFG_TEMPLATE] || "<li><a class='langLink' href='' id='%ID%' title='%A%'>%A%</a></li>";
 
     const reply = uiAddButton(cfgId, cfgCaption, cfgTarget, H_BUTTON_WITH_TAB);
     TI.button = reply[0];
@@ -37,7 +39,8 @@ class puiButtonChangeLanguage extends IPlugin {
           const parts = languages[i].split("|");
           const alias = parts[0]?.trim() || "";
           const name = parts[1]?.trim() || "";
-          langTab.innerHTML += `<li><a class='langLink' href="" id="${T.LANGLINKS_PREFIX}|${name}" title="${alias}">${alias}</a></li>`;
+          const linkSrc = cfgTemplate.replaceAll('%ID%', `${T.LANGLINKS_PREFIX}|${name}`).replaceAll('%A%', alias);
+          langTab.innerHTML += linkSrc;
         }  
       });
       showSidebarTab(TI?.tab?.id);
