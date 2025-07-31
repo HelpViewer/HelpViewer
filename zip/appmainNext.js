@@ -424,7 +424,7 @@ function removeIconsForPrint() {
   document.title = clearIconsFromTextSingleText(document.title);
 }
 
-window.addEventListener('beforeprint', removeIconsForPrint);
+EventBus.sub('BeforePrint', removeIconsForPrint);
 
 EventBus.sub("GetsChanges", (data) => {
   alert("unsets: " + data.unset);
