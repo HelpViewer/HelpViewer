@@ -97,6 +97,8 @@ class puiNavigation extends IPlugin {
       this.eventIdStrict = true;
 
       updateNavButtons(getId());
+
+      EventBus.sub("GetsChanges", (data) => updateNavButtons(getId()));
     }
   
     deInit() {

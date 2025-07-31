@@ -143,7 +143,8 @@ class pGets extends IPlugin {
     window.addEventListener('hashchange', this.onUriChanged);
 
     super.init();
-    this.onUriChanged();
+
+    EventBus.sub(EVT_PluginsLoadingFinished, (d) => this.onUriChanged());
   }
   
   deInit() {

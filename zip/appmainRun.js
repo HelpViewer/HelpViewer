@@ -7,6 +7,8 @@ const FILENAME_LIST_JS = 'js.lst';
 const FILENAME_LIST_CSS = 'css.lst';
 const FILENAME_LIST_JS_PLUGINS = 'plugins.lst';
 
+const EVT_PluginsLoadingFinished = 'PluginsLoadingFinished';
+
 var FILENAME_DEFAULT_HELPFILE = 'hlp/Help-.zip';
 
 var srcJSOverride = null;
@@ -62,6 +64,8 @@ async function runApp() {
       await activatePlugin(name, oneAlias);
     }
   }
+
+  sendEvent(EVT_PluginsLoadingFinished);
 
   if (!srcJSOverride)
     srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
