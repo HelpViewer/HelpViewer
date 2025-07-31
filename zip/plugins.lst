@@ -10,11 +10,11 @@ pClickConverter
 pui
 puiHeader:header
 puiSidebar:sidebar
-pPrePrintEvent
-puiButtonPrint
 puiButtonChangeLanguage
 puiButtonColorTheme
 puiButtonToggleSide
 puiButtonFullScreen
 puiSidebarVisibilityToggle
+pPrePrintEvent
+puiButtonPrint
 puiNavigation:nav
