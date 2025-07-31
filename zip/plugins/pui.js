@@ -23,10 +23,20 @@ class ButtonSend extends IEvent {
   }
 }
 
+class ElementSetVisibility extends IEvent {
+  constructor() {
+    super();
+    this.value = undefined;
+    this.elementId = undefined;
+    this.element = undefined;
+  }
+}
+
 class pui extends IPlugin {
   static EVT_BUTTON_CREATE = ButtonCreate.name;
   static EVT_CLICK_HANDLER_REGISTER = ClickHandlerRegister.name;
   static EVT_BUTTON_SEND = ButtonSend.name;
+  static EVT_ELEMENT_SET_VISIBILITY = ElementSetVisibility.name;
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -75,6 +85,16 @@ class pui extends IPlugin {
       reply.result = button;
     }
     T.eventDefinitions.push([T.EVT_BUTTON_CREATE, ButtonCreate, h_EVT_BUTTON_CREATE]);
+
+    const h_EVT_ELEMENT_SET_VISIBILITY = (reply) => {
+      const button = document.getElementById(reply.elementId);
+      if (!button) 
+        return;
+
+      reply.element = button;
+      reply.result = toggleVisibility(button, reply.value);
+    }
+    T.eventDefinitions.push([T.EVT_ELEMENT_SET_VISIBILITY, ElementSetVisibility, h_EVT_ELEMENT_SET_VISIBILITY]);
 
     T.eventDefinitions.push([T.EVT_BUTTON_SEND, ButtonSend, null]); // outside event handlers
 

@@ -36,9 +36,9 @@ function toggleCSSClass(target, className) {
 }
 
 function hideButton(btnid, newVisibility = false) {
-  return sendEvent(EventNames.SidebarVisibilitySetButton, (x) => {
+  return sendEvent(EventNames.ElementSetVisibility, (x) => {
     x.value = newVisibility;
-    x.buttonId = btnid;
+    x.elementId = btnid;
   });
 }
 

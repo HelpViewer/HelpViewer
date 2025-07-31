@@ -30,21 +30,12 @@ class SidebarVisibilitySet extends IEvent {
   }
 }
 
-class SidebarVisibilitySetButton extends IEvent {
-  constructor() {
-    super();
-    this.value = undefined;
-    this.buttonId = undefined;
-  }
-}
-
 class puiSidebar extends IPlugin {
   static EVT_SIDE_PAGE_CREATE = SidebarPageCreate.name;
   static EVT_SIDE_PAGE_SHOW = SidebarPageShow.name;
   static EVT_SIDE_TREEVIEW_CREATE = TreeViewCreate.name;
   static EVT_SIDE_VISIBILITY_SET = SidebarVisibilitySet.name;
   static EVT_SIDE_SIDE_TOGGLE = 'EVT_SIDE_SIDE_TOGGLE';
-  static EVT_SIDE_VISIBILITY_SET_BUTTON = SidebarVisibilitySetButton.name;
 
   static toolbarButtonIdRoot = 'downP';
 
@@ -125,16 +116,6 @@ class puiSidebar extends IPlugin {
       reply.result = !toggleCSSClass(sidebar?.parentElement, C_TORIGHT);
     }
     T.eventDefinitions.push([T.EVT_SIDE_SIDE_TOGGLE, IEvent, h_EVT_SIDE_SIDE_TOGGLE]);
-
-    const h_EVT_SIDE_VISIBILITY_SET_BUTTON = (reply) => {
-      const button = sidebar.querySelector(`#${reply.buttonId}`);
-      if (!button) 
-        return;
-
-      reply.result = toggleVisibility(button, reply.value);
-      T.recomputeButtonPanel(button);
-    }
-    T.eventDefinitions.push([T.EVT_SIDE_VISIBILITY_SET_BUTTON, SidebarVisibilitySetButton, h_EVT_SIDE_VISIBILITY_SET_BUTTON]);
     
     const baseButtonAccept = createButtonAcceptHandler(TI, toolbar);
     const h_buttonAccept = (reply) =>
@@ -143,6 +124,8 @@ class puiSidebar extends IPlugin {
       T.recomputeButtonPanel(reply.button);
     }
     TI.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, h_buttonAccept);
+
+    EventBus.sub(EventNames.ElementSetVisibility, (x) => T.recomputeButtonPanel(x.element));
 
     window.addEventListener("resize", TI._checkSidebarWidth);
     window.addEventListener("load", TI._checkSidebarWidth);
