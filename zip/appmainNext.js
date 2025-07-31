@@ -430,3 +430,12 @@ EventBus.sub("GetsChanges", (data) => {
   alert("unsets: " + data.unset);
   alert("changes: " + Array.from(data.changes.keys()));
 });
+
+EventBus.sub("LOC_LOADED", (d) => {
+  activeLanguage = getActiveLanguage();
+  LoadURLParameters();
+  _Storage.add(STO_HELP, dataPath).then((x) => {
+    configFileReload(FILE_CONFIG);
+    getPathData(pagePath, pathHeadingAlias?.get(pagePath));
+  });
+});

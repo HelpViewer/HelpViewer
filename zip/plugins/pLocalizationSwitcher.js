@@ -107,6 +107,12 @@ class pLocalizationSwitcher extends IPlugin {
 
     const langFlatStrs = (await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileTXT}`)).split("\n");
     
+    if (!langFlatStrs || langFlatStrs.length == 0  || langFlatStrs == '') {
+      loadLocalization(DEFAULT_LANG);
+      //this.loadLocalization(DEFAULT_LANG, parentEventId);
+      return;
+    }
+
     for (var i = 0; i < langFlatStrs.length; i++) {
       const line = langFlatStrs[i];
       const trimmed = line.trim();

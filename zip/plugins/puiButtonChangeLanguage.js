@@ -48,6 +48,7 @@ class puiButtonChangeLanguage extends IPlugin {
     registerOnClick(TI.button.id, _buttonAction);
     registerOnClick(T.LANGLINKS_PREFIX, (e) => {
       loadLocalization(e.elementIdVal);
+      e.event.preventDefault();
     });
   
     super.init();
