@@ -143,14 +143,15 @@ class puiButton extends IPlugin {
     this.DEFAULT_KEY_CFG_TARGET = this.DEFAULT_KEY_CFG_TARGET || UI_PLUGIN_SIDEBAR;
   }
 
-  init() {
+  init(handler = null) {
     const T = puiButton;
     const TI = this;
     this.cfgId = this.config[T.KEY_CFG_ID] || TI.DEFAULT_KEY_CFG_ID;
     this.cfgCaption = this.config[T.KEY_CFG_CAPTION] || TI.DEFAULT_KEY_CFG_CAPTION;
     this.cfgTarget = this.config[T.KEY_CFG_TARGET] || TI.DEFAULT_KEY_CFG_TARGET;
 
-    this.button = uiAddButton(this.cfgId, this.cfgCaption, this.cfgTarget, (evt) => this._buttonAction(evt));
+    const handlerResolved = handler ? handler : (evt) => this._buttonAction(evt);
+    this.button = uiAddButton(this.cfgId, this.cfgCaption, this.cfgTarget, handlerResolved);
 
     super.init();
   }
@@ -163,5 +164,37 @@ class puiButton extends IPlugin {
 
   _buttonAction(evt) {
     log('W puiButton._buttonAction must be overriden in ' + this.constructor.name);
+  }
+}
+
+class puiButtonTab extends puiButton {
+  static eventDefinitions = [];
+
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.tab = undefined;
+  }
+
+  init() {
+    super.init(H_BUTTON_WITH_TAB);
+    const TI = this;
+    TI.tab = TI.button[1];
+    TI.button = TI.button[0];
+    registerOnClick(TI.button.id, (evt) => TI._buttonAction(evt));
+  }
+
+  deInit() {
+    this.tab?.remove();
+
+    super.deInit();
+  }
+
+  _preShowAction(evt) {
+    log('W puiButtonTab._preShowAction must be overriden in ' + this.constructor.name);
+  }
+
+  _buttonAction(evt) {
+    this._preShowAction(evt);
+    showSidebarTab(this.tab?.id);
   }
 }
