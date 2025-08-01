@@ -41,6 +41,8 @@ class puiSidebar extends IPlugin {
 
   constructor(aliasName, data) {
     super(aliasName, data);
+
+    this.handler_checkSidebarWidth = (evt) => this._checkSidebarWidth();
   }
 
   static eventDefinitions = [];
@@ -127,8 +129,8 @@ class puiSidebar extends IPlugin {
 
     EventBus.sub(EventNames.ElementSetVisibility, (x) => T.recomputeButtonPanel(x.element));
 
-    window.addEventListener("resize", TI._checkSidebarWidth);
-    window.addEventListener("load", TI._checkSidebarWidth);
+    window.addEventListener("resize", this.handler_checkSidebarWidth);
+    window.addEventListener("load", this.handler_checkSidebarWidth);
     TI._checkSidebarWidth();
 
     super.init();
@@ -136,8 +138,8 @@ class puiSidebar extends IPlugin {
   }
 
   deInit() {
-    window.removeEventListener("resize", this._checkSidebarWidth);
-    window.removeEventListener("load", this._checkSidebarWidth);
+    window.removeEventListener("resize", this.handler_checkSidebarWidth);
+    window.removeEventListener("load", this.handler_checkSidebarWidth);
     this.prigetSidebar()?.remove();
     this.subscribedButtonAccept?.();
     super.deInit();
