@@ -43,6 +43,7 @@ class puiSidebar extends IPlugin {
     super(aliasName, data);
 
     this.handler_checkSidebarWidth = (evt) => this._checkSidebarWidth();
+    this.contentPane = document.getElementById('content');
   }
 
   static eventDefinitions = [];
@@ -193,10 +194,10 @@ class puiSidebar extends IPlugin {
     if (!sidebar) return;
     if (sidebar.offsetWidth / window.innerWidth > 0.5) {
       sidebar.classList.add(C_TOOWIDE);
-      contentPane.classList.add(C_TOOWIDE);
+      this.contentPane.classList.add(C_TOOWIDE);
     } else {
       sidebar.classList.remove(C_TOOWIDE);
-      contentPane.classList.remove(C_TOOWIDE);
+      this.contentPane.classList.remove(C_TOOWIDE);
     }
   }
 }
