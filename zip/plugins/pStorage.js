@@ -8,6 +8,14 @@ class StorageAdd extends IEvent {
   }
 }
 
+class StorageAdded extends IEvent {
+  constructor() {
+    super();
+    this.fileName = '';
+    this.storageName = '';
+  }
+}
+
 class StorageGet extends IEvent {
   constructor() {
     super();
@@ -30,6 +38,7 @@ class StorageGetImages extends StorageGet {
 
 class pStorage extends IPlugin {
   static EVT_STORAGE_ADD = StorageAdd.name;
+  static EVT_STORAGE_ADDED = StorageAdded.name;
   static EVT_STORAGE_GET = StorageGet.name;
   static EVT_STORAGE_GET_IMAGE = StorageGetImages.name;
   static EVT_STORAGE_GET_SUBDIRS = 'EVT_STORAGE_GET_SUBDIRS';
@@ -52,10 +61,21 @@ class pStorage extends IPlugin {
     );
     T.eventDefinitions.push([T.EVT_STORAGE_GET_IMAGE, StorageGetImages, h_EVT_STORAGE_GET_IMAGE]);
 
-    const h_EVT_STORAGE_ADD = IPlugin.wrapAsyncHandler((data) =>
-      _Storage.add(data.storageName, data.fileName, data.fileData)
-    );
+    const h_EVT_STORAGE_ADD = IPlugin.wrapAsyncHandler((data) => {
+      var reply = _Storage.add(data.storageName, data.fileName, data.fileData);
+
+      reply.then((x) => {
+        sendEvent(T.EVT_STORAGE_ADDED, (evt) => {
+          evt.fileName = data.fileName;
+          evt.storageName = data.storageName;
+        });
+      });
+
+      return reply;
+    });
     T.eventDefinitions.push([T.EVT_STORAGE_ADD, StorageAdd, h_EVT_STORAGE_ADD]);
+
+    T.eventDefinitions.push([T.EVT_STORAGE_ADDED, StorageAdded, null]); // outside event handlers
 
     const h_EVT_STORAGE_GET_SUBDIRS = IPlugin.wrapAsyncHandler((data) =>
       _Storage.getSubdirs(data.storageName, data.fileName)

@@ -23,6 +23,13 @@ function nameForAnchor(text, level, levelCounter) {
 }
 
 /*S: Zip archive reading functions */
+function storageAdd(filePath, storageName, fileData = undefined) {
+  return sendEventWProm(EventNames.StorageAdd, (input) => {
+    input.fileName = filePath;
+    input.fileData = fileData;
+    input.storageName = storageName;
+  });
+}
 
 function storageSearch(key, filePath, format = STOF_TEXT) {
   return sendEventWProm(EventNames.StorageGet, (input) => {

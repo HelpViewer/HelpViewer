@@ -130,7 +130,8 @@ loadLocalization(activeLanguage).then(() => {
       // load zip file
       try {
         if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
-          await _Storage.add(STO_HELP, dataPath);
+          //await _Storage.add(STO_HELP, dataPath);
+          await storageAdd(dataPath, STO_HELP);
         configFileReload(FILE_CONFIG);
       } catch {
         msgNoData = _T(LK_MSG_NODATA);
