@@ -1,31 +1,24 @@
-class puiButtonPrint extends IPlugin {
+class puiButtonPrint extends puiButton {
   constructor(aliasName, data) {
     super(aliasName, data);
-    this.button = undefined;
+
+    this.DEFAULT_KEY_CFG_ID = 'printBtn';
+    this.DEFAULT_KEY_CFG_CAPTION = '🖨️';
+    this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_HEADER;
   }
 
   static eventDefinitions = [];
 
-  static KEY_CFG_ID = 'ID';
-  static KEY_CFG_CAPTION = 'CAPTION';
-  static KEY_CFG_TARGET = 'TARGET';
-
   init() {
-    const T = puiButtonPrint;
-    const _buttonAction = (evt) => window.print();
-  
-    const cfgId = this.config[T.KEY_CFG_ID] || 'printBtn';
-    const cfgCaption = this.config[T.KEY_CFG_CAPTION] || '🖨️';
-    const cfgTarget = this.config[T.KEY_CFG_TARGET] || UI_PLUGIN_HEADER;
-    this.button = uiAddButton(cfgId, cfgCaption, cfgTarget, _buttonAction);
-
     super.init();
   }
 
   deInit() {
-    this.button?.remove();
-
     super.deInit();
+  }
+
+  _buttonAction(evt) {
+    window.print();
   }
 }
 

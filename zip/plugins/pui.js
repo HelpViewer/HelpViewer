@@ -126,3 +126,42 @@ function registerOnClick(handlerId, handler) {
     d.handler = handler;
   });
 }
+
+class puiButton extends IPlugin {
+  static eventDefinitions = [];
+
+  static KEY_CFG_ID = 'ID';
+  static KEY_CFG_CAPTION = 'CAPTION';
+  static KEY_CFG_TARGET = 'TARGET';
+
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.button = undefined;
+
+    this.DEFAULT_KEY_CFG_ID = this.DEFAULT_KEY_CFG_ID || 'downP-X';
+    this.DEFAULT_KEY_CFG_CAPTION = this.DEFAULT_KEY_CFG_CAPTION || 'X';
+    this.DEFAULT_KEY_CFG_TARGET = this.DEFAULT_KEY_CFG_TARGET || UI_PLUGIN_SIDEBAR;
+  }
+
+  init() {
+    const T = puiButton;
+    const TI = this;
+    this.cfgId = this.config[T.KEY_CFG_ID] || TI.DEFAULT_KEY_CFG_ID;
+    this.cfgCaption = this.config[T.KEY_CFG_CAPTION] || TI.DEFAULT_KEY_CFG_CAPTION;
+    this.cfgTarget = this.config[T.KEY_CFG_TARGET] || TI.DEFAULT_KEY_CFG_TARGET;
+
+    this.button = uiAddButton(this.cfgId, this.cfgCaption, this.cfgTarget, (evt) => this._buttonAction(evt));
+
+    super.init();
+  }
+
+  deInit() {
+    this.button?.remove();
+
+    super.deInit();
+  }
+
+  _buttonAction(evt) {
+    log('W puiButton._buttonAction must be overriden in ' + this.constructor.name);
+  }
+}
