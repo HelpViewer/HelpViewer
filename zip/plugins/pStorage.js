@@ -65,10 +65,7 @@ class pStorage extends IPlugin {
       var reply = _Storage.add(data.storageName, data.fileName, data.fileData);
 
       reply.then((x) => {
-        sendEvent(T.EVT_STORAGE_ADDED, (evt) => {
-          evt.fileName = data.fileName;
-          evt.storageName = data.storageName;
-        });
+        storageAddedNotification(data.fileName, data.storageName);
       });
 
       return reply;

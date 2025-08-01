@@ -31,6 +31,13 @@ function storageAdd(filePath, storageName, fileData = undefined) {
   });
 }
 
+function storageAddedNotification(fileName, storageName) {
+  sendEvent(EventNames.StorageAdded, (evt) => {
+    evt.fileName = fileName;
+    evt.storageName = storageName;
+  });
+}
+
 function storageSearch(key, filePath, format = STOF_TEXT) {
   return sendEventWProm(EventNames.StorageGet, (input) => {
     input.fileName = filePath;
