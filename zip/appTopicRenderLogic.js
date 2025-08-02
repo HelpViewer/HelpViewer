@@ -142,13 +142,13 @@ function transformOutputConnectedMd(doc) {
 }
 
 async function loadPage(event, path, heading, i) {
-  event.preventDefault();
+  event?.preventDefault();
 
   setSearchParams(null, path, i);
   idxTreeItem = i;
   
   await getPathData(path, heading);
-  navPanel.updateNavButtons(i);
+  //navPanel.updateNavButtons(i);
 
   return false;
 }

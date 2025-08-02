@@ -4,6 +4,7 @@ class NavigationMove extends IEvent {
     this.treeId = null;
     this.previousId = 0;
     this.newId = 0;
+    this.newIdTreeItem = undefined;
     this.direction = undefined;
     this.paramIdName = undefined;
   }
@@ -66,6 +67,7 @@ class puiNavigation extends IPlugin {
           data.treeId = treeId;
           data.previousId = current;
           data.newId = next;
+          data.newIdTreeItem = treeId + '|' + next;
           data.direction = direction;
           data.paramIdName = parIdName;
         });
@@ -98,7 +100,7 @@ class puiNavigation extends IPlugin {
 
       updateNavButtons(getId());
 
-      EventBus.sub("GetsChanges", (data) => updateNavButtons(getId()));
+      this.subscribedGets = EventBus.sub("GetsChanges", (data) => updateNavButtons(getId()));
     }
   
     deInit() {
@@ -106,6 +108,7 @@ class puiNavigation extends IPlugin {
       T.buttonLeft?.remove();
       T.buttonTop?.remove();
       T.buttonRight?.remove();
+      T.subscribedGets?.();
   
       super.deInit();
     }

@@ -128,7 +128,7 @@ class puiSidebar extends IPlugin {
     }
     TI.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, h_buttonAccept);
 
-    EventBus.sub(EventNames.ElementSetVisibility, (x) => T.recomputeButtonPanel(x.element));
+    TI.subscribedSetVisibility = EventBus.sub(EventNames.ElementSetVisibility, (x) => T.recomputeButtonPanel(x.element));
 
     window.addEventListener("resize", this.handler_checkSidebarWidth);
     window.addEventListener("load", this.handler_checkSidebarWidth);
@@ -143,6 +143,7 @@ class puiSidebar extends IPlugin {
     window.removeEventListener("load", this.handler_checkSidebarWidth);
     this.prigetSidebar()?.remove();
     this.subscribedButtonAccept?.();
+    this.subscribedSetVisibility?.();
     super.deInit();
   }
 

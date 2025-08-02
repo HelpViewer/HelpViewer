@@ -442,3 +442,7 @@ EventBus.sub("LOC_LOADED", (d) => {
     getPathData(pagePath, pathHeadingAlias?.get(pagePath));
   });
 });
+
+EventBus.sub("NavigationMove", (d) => {
+  loadPageByTreeId(d.newId, d.treeId);
+});
