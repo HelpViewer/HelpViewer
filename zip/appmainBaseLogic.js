@@ -225,3 +225,13 @@ function toggleSidebar(newVisibility) {
   });
 }
 /*E: Plugin: puiSidebarVisibilityToggle */
+
+/*E: Plugin: puiButtonTabTree */
+function setTreeData(data, target, append = false) {
+  return sendEvent(EventNames.SetTreeData, (x) => {
+    x.data = data;
+    x.targetTree = target;
+    x.append = append;
+  });
+}
+/*E: Plugin: puiButtonTabTree */

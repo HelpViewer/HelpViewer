@@ -198,3 +198,73 @@ class puiButtonTab extends puiButton {
     showSidebarTab(this.tab?.id);
   }
 }
+
+class SetTreeData extends IEvent {
+  constructor() {
+    super();
+    this.data = undefined;
+    this.targetTree = undefined;
+    this.append = false;
+  }
+}
+
+class puiButtonTabTree extends puiButtonTab {
+  static EVT_SET_TREE_DATA = SetTreeData.name;
+  static EVT_TREE_DATA_CHANGED = 'TreeDataChanged';
+
+  static eventDefinitions = [];
+
+  static KEY_CFG_TREEID = 'TREEID';
+
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.tree = undefined;
+
+    this.DEFAULT_KEY_CFG_TREEID = 'tree';
+    this.eventIdStrict = true;
+  }
+
+  init() {
+    const TI = this;
+    const T = this.constructor;
+
+    const h_EVT_SET_TREE_DATA = (data) => {
+      if (data.id != this.aliasName)
+        return;
+
+      if (!data.append)
+        tree.textContent = '';
+
+      tree.insertAdjacentHTML('beforeend', linesToHtmlTree(data.data, this.cfgTreeId));
+
+      data.targetTree = this.cfgTreeId;
+      data.result = this.aliasName;
+
+      sendEvent(T.EVT_TREE_DATA_CHANGED, (dc) => {
+        dc.data = data.data;
+        dc.targetTree = data.targetTree;
+        dc.append = data.append;
+      });
+    };
+    T.eventDefinitions.push([T.EVT_SET_TREE_DATA, SetTreeData, h_EVT_SET_TREE_DATA]);
+    T.eventDefinitions.push([T.EVT_TREE_DATA_CHANGED, SetTreeData, null]); // outside event handlers
+
+    super.init();
+    TI._preStandardInit();
+
+    this.cfgTreeId = this.config[T.KEY_CFG_TREEID] || TI.DEFAULT_KEY_CFG_TREEID;
+    this.tree = uiAddTreeView(TI.cfgTreeId, TI.tab);
+
+    registerOnClick(TI.cfgTreeId, (e) => this._treeClick(e));
+  }
+
+  deInit() {
+    super.deInit();
+  }
+
+  _preStandardInit() {
+  }
+
+  _treeClick(e) {
+  }
+}

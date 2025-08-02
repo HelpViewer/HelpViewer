@@ -100,7 +100,8 @@ class puiNavigation extends IPlugin {
 
       updateNavButtons(getId());
 
-      this.subscribedGets = EventBus.sub("GetsChanges", (data) => updateNavButtons(getId()));
+      this.subscribedGets = EventBus.sub(EventNames.GetsChanges, (data) => updateNavButtons(getId()));
+      this.subscribedTreeChange = EventBus.sub(EventNames.TreeDataChanged, (data) => updateNavButtons(getId()));
     }
   
     deInit() {
@@ -109,6 +110,7 @@ class puiNavigation extends IPlugin {
       T.buttonTop?.remove();
       T.buttonRight?.remove();
       T.subscribedGets?.();
+      T.subscribedTreeChange?.();
   
       super.deInit();
     }

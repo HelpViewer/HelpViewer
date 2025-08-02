@@ -10,6 +10,7 @@ pClickConverter
 pui
 puiHeader:header
 puiSidebar:sidebar
+puiButtonTOC
 puiButtonChangeLanguage
 puiButtonColorTheme
 puiButtonToggleSide
