@@ -304,9 +304,9 @@ ul.tree details[open] > summary::before {
 
 
 /*S: Topic renderer logic integration */
-function convertRelativePathToViewerURI(val) {
+function convertRelativePathToViewerURI(val, id = undefined) {
   var pard = dataPathGeneral ? `${PAR_NAME_DOC}=${dataPathGeneral}&` : ``;
-  return `?${pard}${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(idxTreeItem)}`;
+  return `?${pard}${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(id || idxTreeItem)}`;
 }
 
 function setSearchParams(url, path, i) {
