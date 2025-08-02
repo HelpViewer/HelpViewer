@@ -54,7 +54,7 @@ class pGets extends IPlugin {
   static eventDefinitions = [];
   
   init() {
-    const T = pGets;
+    const T = this.constructor;
     const h_EVT_GETS_GET = (data) => {
       if (!this.params) 
         this.h_EVT_GETS_LOAD(data);
@@ -170,7 +170,7 @@ class pGets extends IPlugin {
   };
 
   onUriChanged(parentEventId) {
-    const T = pGets;
+    const T = this.constructor;
     const parOld = getObjectCopy(this.params);
     this.h_EVT_GETS_LOAD(null);
     const summary = getDifferenceTwoObjects(parOld, this.params);

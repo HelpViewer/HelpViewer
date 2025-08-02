@@ -23,7 +23,7 @@ class pConfigFile extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    const T = pConfigFile;
+    const T = this.constructor;
     const h_EVT_CF_GET = (data) => {
       data.result = this._configGetValue(data.key, data.backup);  
     }
@@ -44,7 +44,7 @@ class pConfigFile extends IPlugin {
   }
 
   async _loadCFG() {
-    const T = pConfigFile;
+    const T = this.constructor;
     const cfgStorage = this.config[T.KEY_CFG_STORAGE] || 'STO_DATA';
     const cfgFileName = this.config[T.KEY_CFG_FILENAME] || '_config.txt';
     const found = await storageSearch(cfgStorage, cfgFileName);

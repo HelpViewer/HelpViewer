@@ -26,7 +26,7 @@ class puiNavigation extends IPlugin {
     static EVT_NAV_MOVE = NavigationMove.name;
 
     init() {
-      const T = puiNavigation;
+      const T = this.constructor;
       const TI = this;
       T.eventDefinitions.push([T.EVT_NAV_MOVE, NavigationMove, null]); // outside event handlers
 

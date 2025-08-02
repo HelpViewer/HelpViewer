@@ -14,7 +14,7 @@ class puiButtonChangeLanguage extends puiButtonTab {
   
   init() {
     super.init();
-    const T = puiButtonChangeLanguage;
+    const T = this.constructor;
     const TI = this;
   
     this.cfgTemplate = TI.config[T.KEY_CFG_TEMPLATE] || "<li><a class='langLink' href='' id='%ID%' title='%A%'>%A%</a></li>";
@@ -31,7 +31,7 @@ class puiButtonChangeLanguage extends puiButtonTab {
   }
 
   _preShowAction(evt) {
-    const T = puiButtonChangeLanguage;
+    const T = this.constructor;
     var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
     var languages = getLanguagesList(langsFromHelp);
 

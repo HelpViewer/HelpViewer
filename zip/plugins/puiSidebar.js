@@ -55,7 +55,7 @@ class puiSidebar extends IPlugin {
   }
 
   init() {
-    const T = puiSidebar;
+    const T = this.constructor;
     const TI = this;
     sendEvent(EventNames.ClickHandlerRegister, (y) => {
       y.handlerId = T.toolbarButtonIdRoot;
@@ -163,7 +163,7 @@ class puiSidebar extends IPlugin {
   }
 
   static _processClickedBottomPanelEvent(ev) {
-    const T = puiSidebar;
+    const T = this.constructor;
     if (ev.elementIdRoot != T.toolbarButtonIdRoot)
       return;
 

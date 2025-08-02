@@ -23,7 +23,7 @@ class pUserConfig extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    const T = pUserConfig;
+    const T = this.constructor;
     const h_EVT_UC_GET = (data) =>
       data.result = localStorage.getItem(data.key);
     T.eventDefinitions.push([T.EVT_UC_GET, UserConfigGet, h_EVT_UC_GET]);

@@ -46,7 +46,7 @@ class pui extends IPlugin {
   static eventDefinitions = [];
 
   init() {
-    const T = pui;
+    const T = this.constructor;
     const _processClickedEvent = (e) => {
       const foundExactEqual = this.btnHandlers.get(e.elementId);
       const foundRootEqual = this.btnHandlers.get(e.elementIdRoot);
@@ -144,7 +144,7 @@ class puiButton extends IPlugin {
   }
 
   init(handler = null) {
-    const T = puiButton;
+    const T = this.constructor;
     const TI = this;
     this.cfgId = this.config[T.KEY_CFG_ID] || TI.DEFAULT_KEY_CFG_ID;
     this.cfgCaption = this.config[T.KEY_CFG_CAPTION] || TI.DEFAULT_KEY_CFG_CAPTION;

@@ -50,7 +50,7 @@ class pStorage extends IPlugin {
   static eventDefinitions = [];
   
   init() {
-    const T = pStorage;
+    const T = this.constructor;
     const h_EVT_STORAGE_GET = IPlugin.wrapAsyncHandler((data) =>
       _Storage.search(data.storageName, data.fileName, data.format)
     );

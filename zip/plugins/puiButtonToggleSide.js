@@ -12,7 +12,7 @@ class puiButtonToggleSide extends puiButton {
   static KEY_CFG_STOREKEY = 'STOREKEY';
 
   init() {
-    const T = puiButtonToggleSide;
+    const T = this.constructor;
     this.KEY_LS_SIDEBARSIDE = this.config[T.KEY_CFG_STOREKEY] || 'sidebarSide';
     this.state = getUserConfigValue(this.KEY_LS_SIDEBARSIDE) || 0;
     

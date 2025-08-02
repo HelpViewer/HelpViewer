@@ -29,7 +29,7 @@ class pLocalizationSwitcher extends IPlugin {
   static eventDefinitions = [];
   
   init() {
-    const T = pLocalizationSwitcher;
+    const T = this.constructor;
     const h_EVT_LOC_TRANSLATE = (data) => {
       data.result = this._T(data.name);
     };
@@ -77,7 +77,7 @@ class pLocalizationSwitcher extends IPlugin {
 
   async getLanguagesList(additional)
   {
-    const T = pLocalizationSwitcher;
+    const T = this.constructor;
     var langNames = [];
     const langs = await storageGetSubdirs(STO_DATA, T.languagesMainPath);
 
@@ -99,7 +99,7 @@ class pLocalizationSwitcher extends IPlugin {
   //lstr.* must be defined in codepage UTF-8 no BOM (65001)
   async loadLocalization(localizationName, parentEventId)
   {
-    const T = pLocalizationSwitcher;
+    const T = this.constructor;
     this.langStrs = {};
   
     const langJS = await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileJS}`);

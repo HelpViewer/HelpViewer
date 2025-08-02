@@ -15,7 +15,7 @@ class puiSidebarVisibilityToggle extends IPlugin {
   static ID_TOPPB = 'showBtn';
 
   init() {
-    const T = puiSidebarVisibilityToggle;
+    const T = this.constructor;
     const TI = this;
     const KEY_LS_SIDEBARVISIBLE = this.config[T.KEY_CFG_STOREKEY] || 'sidebarVisible';
     const captionHide = this.config[T.KEY_CFG_HIDE] || '❌︎';

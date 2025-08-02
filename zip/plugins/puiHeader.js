@@ -18,7 +18,7 @@ class puiHeader extends IPlugin {
   static addition = '<div class="header" id="header" role="banner"><h1 id="mtitle">&nbsp;</h1><div id="toolbar" role="navigation"></div></div>';
 
   init() {
-    const T = puiHeader;
+    const T = this.constructor;
     const containerMain = document.getElementById('main');
     const tmpDiv = document.createElement('div');
     tmpDiv.innerHTML = T.addition;
