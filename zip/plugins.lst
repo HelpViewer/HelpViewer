@@ -1,5 +1,6 @@
 pPluginManagement
 pUserConfig
+pChapterIndexFile
 pGets
 pStorage
 pConfigFile:FILE_CONFIG_DEFAULT

@@ -73,8 +73,8 @@ window.addEventListener('popstate', () => {
     dataPath = FILENAME_DEFAULT_HELPFILE;
   }
 
-  getPathData(pagePath, pathHeadingAlias?.get(pagePath));
   navPanel.updateNavButtons(idxTreeItem);
+  getPathData(pagePath, getChapterAlternativeHeading(pagePath));
 });
 
 contentPane.addEventListener('click', function(event) {
@@ -93,7 +93,7 @@ contentPane.addEventListener('click', function(event) {
   setToHref(href);
   
   LoadURLParameters();
-  getPathData(pagePath, pathHeadingAlias?.get(pagePath));
+  getPathData(pagePath, getChapterAlternativeHeading(pagePath));
 });
 
 var languages = getLanguagesList();
@@ -189,7 +189,7 @@ loadLocalization(activeLanguage).then(() => {
       }
       
       const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
-      getDocumentHeadingTable(docList);
+      setChapterIndex(docList);
     
       // Load keywords
       const KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
@@ -232,7 +232,7 @@ loadLocalization(activeLanguage).then(() => {
         changeFavicon(customFavicon);
       
       // load chapter document
-      getPathData(pagePath, pathHeadingAlias?.get(pagePath));
+      getPathData(pagePath, getChapterAlternativeHeading(pagePath));
       
       // override book images in tree structure
       var [bookOpen, bookClosed] = await Promise.all([
@@ -440,7 +440,7 @@ EventBus.sub("LOC_LOADED", (d) => {
   LoadURLParameters();
   _Storage.add(STO_HELP, dataPath).then((x) => {
     configFileReload(FILE_CONFIG);
-    getPathData(pagePath, pathHeadingAlias?.get(pagePath));
+    getPathData(pagePath, getChapterAlternativeHeading(pagePath));
   });
 });
 

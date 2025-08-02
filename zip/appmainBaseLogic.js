@@ -235,3 +235,17 @@ function setTreeData(data, target, append = false) {
   });
 }
 /*E: Plugin: puiButtonTabTree */
+
+/*E: Plugin: pChapterIndexFile */
+function getChapterAlternativeHeading(chapterPath) {
+  return sendEvent(EventNames.ChapterIndexFileGetData, (x) => {
+    x.key = chapterPath;
+  });
+}
+
+function setChapterIndex(data) {
+  return sendEvent(EventNames.ChapterIndexFileSetData, (x) => {
+    x.data = data;
+  });
+}
+/*E: Plugin: pChapterIndexFile */

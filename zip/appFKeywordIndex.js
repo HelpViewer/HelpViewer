@@ -18,22 +18,6 @@ const KLIST_FTS_NAME = 'fulltextList';
 
 const keywordLists = new Map();
 
-var pathHeadingAlias = new Map();
-var idxPath = [];
-
-async function getDocumentHeadingTable(data) {
-  const transformed = rowsToArray(data);
-  
-  pathHeadingAlias = new Map();
-  idxPath = [];
-  
-  for (const kw of transformed) {
-    const [path, title] = kw.split("|");
-    idxPath.push(path || '');
-    pathHeadingAlias.set(path, title || path || '');
-  }
-}
-
 function newKeywordDatabase(id = KLIST_NAME, keywordData, keywordToFilesData) {
   var keywordOriginal;
   var keywordSorted;
