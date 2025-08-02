@@ -56,10 +56,13 @@ class pGets extends IPlugin {
   init() {
     const T = this.constructor;
     const h_EVT_GETS_GET = (data) => {
-      if (!this.params) 
-        this.h_EVT_GETS_LOAD(data);
+      const url = new URL(window.location.href);
+      const urlParams = new URLSearchParams(url.search);
+        // if (!this.params) 
+      //   this.h_EVT_GETS_LOAD(data);
 
-      var val = this.params[data.name];
+      // var val = this.params[data.name];
+      var val = urlParams.get(data.name);
 
       if (data.conversionHandler && typeof data.conversionHandler === 'function')
         val = data.conversionHandler(val);
