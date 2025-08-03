@@ -41,8 +41,6 @@ class pIndexFile extends IPlugin {
     const aliasName = this.aliasName;
 
     const h_EVT_IF_SET = (data) => {
-      //if (data.id != this.aliasName) return;
-      alert(`!!::!! ${data.id} != ${aliasName} --- event strict: ${this.eventIdStrict}`);
       index = newKeywordDatabase(aliasName, data.keywords.toLowerCase(), data.mapping);
       data.result = index.readKeywordDatabase();
 

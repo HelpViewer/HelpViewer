@@ -18,7 +18,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
 
     this.subscribeIFLoaded = EventBus.sub(EventNames.IndexFileLoaded, (x) => {
       const alias = this.aliasName;
-      alert(`:: ${x.id} != ${alias}`);
+      
       if (x.id != alias)
         return;
 
