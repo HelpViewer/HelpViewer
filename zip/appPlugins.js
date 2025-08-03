@@ -31,11 +31,13 @@ class IPlugin {
 
   createEvent(name, handler, dataClass = IEvent) {
     if (handler != null) {
+      const alias = this.aliasName;
+      const strictSwitch = this.eventIdStrict;
       var handlerFilterId = (d) => {
-        if (d.id == this.aliasName || (!this.eventIdStrict && (!d.id || this.aliasName == '')))
+        if (d.id == alias || (!strictSwitch && (!d.id || alias == '')))
           handler(d);
         else
-          log(`W [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${this.aliasName}".`);
+          log(`W [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${alias}".`);
       };
 
       var unsubscribe = EventBus.sub(name, handlerFilterId);

@@ -36,11 +36,13 @@ class pIndexFile extends IPlugin {
 
   init() {
     const T = this.constructor;
+    T.eventDefinitions = [];
     var index;
     const aliasName = this.aliasName;
 
     const h_EVT_IF_SET = (data) => {
-      alert(`!!::!! ${data.id} != ${this.aliasName} --- event strict: ${this.eventIdStrict}`);
+      //if (data.id != this.aliasName) return;
+      alert(`!!::!! ${data.id} != ${aliasName} --- event strict: ${this.eventIdStrict}`);
       index = newKeywordDatabase(aliasName, data.keywords.toLowerCase(), data.mapping);
       data.result = index.readKeywordDatabase();
 
@@ -49,17 +51,19 @@ class pIndexFile extends IPlugin {
         r.result = data.result > 0;
       });
     }
-    T.eventDefinitions.push([T.EVT_IF_SET, IndexFileSetData, h_EVT_IF_SET]);
+    T.eventDefinitions.push([T.EVT_IF_SET, IndexFileSetData, h_EVT_IF_SET.bind(this)]);
 
     const h_EVT_IF_GET = (data) => {
+      //if (data.id != this.aliasName) return;
       data.result = index.getTreeData(data.key, data.cap);
     }
-    T.eventDefinitions.push([T.EVT_IF_GET, IndexFileGetData, h_EVT_IF_GET]);
+    T.eventDefinitions.push([T.EVT_IF_GET, IndexFileGetData, h_EVT_IF_GET.bind(this)]);
 
     const h_EVT_IF_GETKDW = (data) => {
+      //if (data.id != this.aliasName) return;
       data.result = index.searchKeyword(data.key);
     }
-    T.eventDefinitions.push([T.EVT_IF_GETKDW, IndexFileGetKeywordData, h_EVT_IF_GETKDW]);
+    T.eventDefinitions.push([T.EVT_IF_GETKDW, IndexFileGetKeywordData, h_EVT_IF_GETKDW.bind(this)]);
 
     T.eventDefinitions.push([T.EVT_IF_LOADED, IEvent, null]); // outside event handlers
     

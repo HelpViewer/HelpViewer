@@ -17,14 +17,16 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     hideButton(this.button.id, false);
 
     this.subscribeIFLoaded = EventBus.sub(EventNames.IndexFileLoaded, (x) => {
-      alert(`:: ${x.id} != ${this.aliasName}`);
-      if (x.id != this.aliasName)
+      const alias = this.aliasName;
+      alert(`:: ${x.id} != ${alias}`);
+      if (x.id != alias)
         return;
 
       hideButton(this.button.id, x.result);
 
       const target = document.getElementById(this.cfgTreeId);
-      this._requestIndexData(target, this.aliasName);
+      const T = this.constructor;
+      T._requestIndexData(target, alias);
     });
   }
   
@@ -66,7 +68,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     this.tab?.insertAdjacentHTML('afterbegin', `<input type="text" id="${fieldId}"></input>`);
     const field = document.getElementById(fieldId);
     const T = this.constructor;
-    field.addEventListener('keydown', T._handleEnterOnField);
+    field.addEventListener('keydown', T._handleEnterOnField.bind(this));
   }
 
   static _handleEnterOnField(event) {
@@ -82,7 +84,8 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
       var phrase = event.target.value;  
       phrase = phrase.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       
-      this._requestIndexData(pane, id, phrase);
+      const T = this.constructor;
+      T._requestIndexData(pane, id, phrase);
     }
     
     if (event.key.substring(0, 3) === 'Esc') {
@@ -91,7 +94,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     }
   }
 
-  _requestIndexData(target, alias, phrase = '', count = null) {
+  static _requestIndexData(target, alias, phrase = '', count = null) {
     const foundKeywords = getIndexFileData(alias, phrase, count);
     target.innerHTML = linesToHtmlTree(foundKeywords, alias);
   }

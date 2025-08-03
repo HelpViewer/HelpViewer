@@ -44,6 +44,7 @@ class puiSidebar extends IPlugin {
 
     this.handler_checkSidebarWidth = (evt) => this._checkSidebarWidth();
     this.contentPane = document.getElementById('content');
+    this.eventIdStrict = true;
   }
 
   static eventDefinitions = [];
