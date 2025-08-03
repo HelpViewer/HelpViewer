@@ -90,6 +90,7 @@ function addEventDefinition(eventName, eventDefinition) {
 
   EventDefinitions[eventName] = eventDefinition;
   EventNames[eventName] = eventName;
+  log(`Event "${eventName}" defined.`);
 }
 
 function removeEventDefinition(eventName) {

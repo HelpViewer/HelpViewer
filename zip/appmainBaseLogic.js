@@ -22,6 +22,43 @@ function nameForAnchor(text, level, levelCounter) {
   //   .replace(/-+/g, '-');
 }
 
+const UserDataFileLoadedFileType = {
+  LOCALDIR: 'LOCALDIR',
+  LOCALARC: 'LOCALARC',
+  INPUTFIELD: 'INPUTFIELD',
+  NETWORK: 'NETWORK'
+};
+
+class UserDataFileLoaded extends IEvent {
+  constructor() {
+    super();
+    this.fileName = undefined;
+    this.fileType = undefined;
+  }
+}
+
+{
+  const name = UserDataFileLoaded.name;
+  const dataClass = UserDataFileLoaded;
+  addEventDefinition(name, new EventDefinition(dataClass, name));
+}
+
+function notifyUserDataFileLoaded(fileName) {
+  sendEvent(EventNames.UserDataFileLoaded, (ed) => {
+    ed.fileName = fileName;
+    
+    if (ed.fileName === FILENAME_ZIP_ON_USER_INPUT) {
+      ed.fileType = UserDataFileLoadedFileType.INPUTFIELD;
+    } else if (/^(https?|ftp):\/\//i.test(ed.fileName)) {
+      ed.fileType = UserDataFileLoadedFileType.NETWORK;
+    } else if (ed.fileName.endsWith('.zip')) {
+      ed.fileType = UserDataFileLoadedFileType.LOCALARC;
+    } else if (ed.fileName.endsWith('/')) {
+      ed.fileType = UserDataFileLoadedFileType.LOCALDIR;
+    }
+  });
+}
+
 /*S: Zip archive reading functions */
 function storageAdd(filePath, storageName, fileData = undefined) {
   return sendEventWProm(EventNames.StorageAdd, (input) => {
