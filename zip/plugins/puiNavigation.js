@@ -81,9 +81,16 @@ class puiNavigation extends IPlugin {
       const _buttonActionTop = (evt) => {
         const current = getId();
         const treeItem = document.getElementById(treeId + '|' + current);
-        var next = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(treeId.length + 1));
+        var next = 1;
+        
+        try {
+          next = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(treeId.length + 1));
+        } catch (error) {
+        }
+
         if (current == next)
           next = 1;
+
         _buttonAction(evt, next, 0);
       }
       TI.buttonTop = uiAddButton(idTop, '⬆', target, _buttonActionTop);
