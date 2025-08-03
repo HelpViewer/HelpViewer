@@ -217,7 +217,7 @@ function toggleSidebarSide() {
 }
 /*E: Plugin: puiSidebar */
 
-/*E: Plugin: puiSidebarVisibilityToggle */
+/*S: Plugin: puiSidebarVisibilityToggle */
 function toggleSidebar(newVisibility) {
   return sendEvent(EventNames.SidebarVisibilitySet, (x) => {
     x.value = newVisibility;
@@ -226,7 +226,7 @@ function toggleSidebar(newVisibility) {
 }
 /*E: Plugin: puiSidebarVisibilityToggle */
 
-/*E: Plugin: puiButtonTabTree */
+/*S: Plugin: puiButtonTabTree */
 function setTreeData(data, target, append = false) {
   return sendEvent(EventNames.SetTreeData, (x) => {
     x.data = data;
@@ -236,7 +236,7 @@ function setTreeData(data, target, append = false) {
 }
 /*E: Plugin: puiButtonTabTree */
 
-/*E: Plugin: pChapterIndexFile */
+/*S: Plugin: pChapterIndexFile */
 function getChapterAlternativeHeading(chapterPath) {
   return sendEvent(EventNames.ChapterIndexFileGetData, (x) => {
     x.key = chapterPath;
@@ -249,3 +249,34 @@ function setChapterIndex(data) {
   });
 }
 /*E: Plugin: pChapterIndexFile */
+
+/*S: Plugin: pIndexFile */
+function getIndexFileData(id, key, count = null) {
+  const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
+  var listingCount = count || parseInt(getUserConfigValue(KEY_LS_KWLISTINGCOUNT)) || 50;
+
+  if (count === undefined)
+    listingCount = count;
+
+  return sendEvent(EventNames.IndexFileGetData, (x) => {
+    x.id = id;
+    x.key = key;
+    x.cap = listingCount;
+  });
+}
+
+function setIndexFileData(id, keywords, mapping) {
+  return sendEvent(EventNames.IndexFileSetData, (x) => {
+    x.id = id;
+    x.keywords = keywords;
+    x.mapping = mapping;
+  });
+}
+
+function getIndexFileKeywordData(id, keyword) {
+  return sendEvent(EventNames.IndexFileGetKeywordData, (x) => {
+    x.id = id;
+    x.key = keyword;
+  });
+}
+/*E: Plugin: pIndexFile */

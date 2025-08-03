@@ -3,8 +3,7 @@ pUserConfig
 pChapterIndexFile
 pGets
 pStorage
-pConfigFile:FILE_CONFIG_DEFAULT
-pConfigFile:FILE_CONFIG
+pConfigFile:FILE_CONFIG_DEFAULT;FILE_CONFIG
 pLocalizationSwitcher
 pColorTheme
 pClickConverter
@@ -12,6 +11,8 @@ pui
 puiHeader:header
 puiSidebar:sidebar
 puiButtonTOC
+pIndexFile:keywordList;fulltextList
+puiButtonKeywordIndex:keywordList;fulltextList
 puiButtonChangeLanguage
 puiButtonColorTheme
 puiButtonToggleSide

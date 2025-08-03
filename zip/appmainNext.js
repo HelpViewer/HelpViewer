@@ -1,3 +1,27 @@
+EventBus.sub("StorageAdded", async (d) => {
+  alert(':: StorageAdded fired.');
+  if (d.storageName != STO_HELP)
+    return;
+
+  configFileReload(FILE_CONFIG);
+
+  const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
+  setChapterIndex(docList);
+
+  var KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
+  var KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
+  var IDX_KEYWORDS = 'keywordList';
+  setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
+
+  KEYWORDS = (await storageSearch(STO_HELP, FILENAME_FTS_KEYWORDS));
+  KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
+  IDX_KEYWORDS = 'fulltextList';
+  setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
+
+  getPathData(pagePath, getChapterAlternativeHeading(pagePath));
+});
+
+
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
 const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
@@ -439,8 +463,6 @@ EventBus.sub("LOC_LOADED", (d) => {
   activeLanguage = getActiveLanguage();
   LoadURLParameters();
   _Storage.add(STO_HELP, dataPath).then((x) => {
-    configFileReload(FILE_CONFIG);
-    getPathData(pagePath, getChapterAlternativeHeading(pagePath));
   });
 });
 

@@ -1,0 +1,100 @@
+class puiButtonKeywordIndex extends puiButtonTabTree {
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.eventIdStrict = true;
+
+    this.DEFAULT_KEY_CFG_ID = 'downP-Glossary';
+    this.DEFAULT_KEY_CFG_CAPTION = '📇';
+    this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
+    
+    this.DEFAULT_KEY_CFG_TREEID = aliasName;
+  }
+  
+  static eventDefinitions = [];
+
+  init() {
+    super.init();
+    hideButton(this.button.id, false);
+
+    this.subscribeIFLoaded = EventBus.sub(EventNames.IndexFileLoaded, (x) => {
+      alert(`:: ${x.id} != ${this.aliasName}`);
+      if (x.id != this.aliasName)
+        return;
+
+      hideButton(this.button.id, x.result);
+
+      const target = document.getElementById(this.cfgTreeId);
+      this._requestIndexData(target, this.aliasName);
+    });
+  }
+  
+  deInit() {
+    super.deInit();
+
+    this.subscribeIFLoaded?.();
+  }
+
+  _preShowAction(evt) {
+  }
+
+  _treeClick(e) {
+    e.event.preventDefault();
+
+    const target = e.event.target;
+    if (!target) return;
+
+    var data = target.getAttribute('data-param');
+    if (!data) return;
+
+    const a = target.closest('a');
+    if (!a) return;
+  
+    const path = data.substring(1).split(":");
+    
+    const p = document.createElement('span');
+    a.parentNode.replaceChild(p, a);
+    p.innerHTML = a.innerHTML;
+
+    const reply = getIndexFileKeywordData(path[1], path[0]);
+    const tree = linesToHtmlTree(reply);//this.cfgTreeId/, 'kwidx'
+    p.innerHTML = tree;
+    openSubtree(p);
+  }
+
+  _preStandardInit() {
+    const fieldId = `${this.cfgTreeId}-i`;
+    this.tab?.insertAdjacentHTML('afterbegin', `<input type="text" id="${fieldId}"></input>`);
+    const field = document.getElementById(fieldId);
+    const T = this.constructor;
+    field.addEventListener('keydown', T._handleEnterOnField);
+  }
+
+  static _handleEnterOnField(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    
+      var id = event.target.id.replace('-i', '');
+      const pane = document.getElementById(id);
+      
+      if (!pane)
+        return;
+
+      var phrase = event.target.value;  
+      phrase = phrase.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+      this._requestIndexData(pane, id, phrase);
+    }
+    
+    if (event.key.substring(0, 3) === 'Esc') {
+      event.target.value = "";
+      event.target.blur(); 
+    }
+  }
+
+  _requestIndexData(target, alias, phrase = '', count = null) {
+    const foundKeywords = getIndexFileData(alias, phrase, count);
+    target.innerHTML = linesToHtmlTree(foundKeywords, alias);
+  }
+}
+  
+Plugins.catalogize(puiButtonKeywordIndex);
