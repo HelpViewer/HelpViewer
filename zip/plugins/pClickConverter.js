@@ -18,11 +18,10 @@ class pClickConverter extends IPlugin {
     super(aliasName, data);
   }
 
-  static eventDefinitions = [];
-
   init() {
     const T = this.constructor;
-    T.eventDefinitions.push([T.EVT_CD_CLICK, ClickedEvent, null]); // outside event handlers
+    const TI = this;
+    TI.eventDefinitions.push([T.EVT_CD_CLICK, ClickedEvent, null]); // outside event handlers
 
     document.body.addEventListener('click', this._processClick);
 

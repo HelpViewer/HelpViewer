@@ -25,8 +25,6 @@ class pChapterIndexFile extends IPlugin {
     this.eventIdStrict = true;
   }
 
-  static eventDefinitions = [];
-
   init() {
     const T = this.constructor;
     const TI = this;
@@ -38,12 +36,12 @@ class pChapterIndexFile extends IPlugin {
       TI._getDocumentHeadingTable(data.data);
       data.result = TI.pathHeadingAlias.size;
     }
-    T.eventDefinitions.push([T.EVT_CHF_SET, ChapterIndexFileSetData, h_EVT_CHF_SET]);
+    TI.eventDefinitions.push([T.EVT_CHF_SET, ChapterIndexFileSetData, h_EVT_CHF_SET]);
 
     const h_EVT_CHF_GET = (data) => {
       data.result = [TI.idxPath[data.key], TI.pathHeadingAlias.get(TI.idxPath[data.key]) || TI.idxPath[data.key]];
     }
-    T.eventDefinitions.push([T.EVT_CHF_GET, ChapterIndexFileGetData, h_EVT_CHF_GET]);
+    TI.eventDefinitions.push([T.EVT_CHF_GET, ChapterIndexFileGetData, h_EVT_CHF_GET]);
 
     super.init();
   }

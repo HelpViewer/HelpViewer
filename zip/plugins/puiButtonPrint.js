@@ -7,8 +7,6 @@ class puiButtonPrint extends puiButton {
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_HEADER;
   }
 
-  static eventDefinitions = [];
-
   init() {
     super.init();
   }

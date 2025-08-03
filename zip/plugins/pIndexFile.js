@@ -32,11 +32,10 @@ class pIndexFile extends IPlugin {
     this.eventIdStrict = true;
   }
 
-  static eventDefinitions = [];
-
   init() {
     const T = this.constructor;
-    T.eventDefinitions = [];
+    const TI = this;
+    
     var index;
     const aliasName = this.aliasName;
 
@@ -49,21 +48,21 @@ class pIndexFile extends IPlugin {
         r.result = data.result > 0;
       });
     }
-    T.eventDefinitions.push([T.EVT_IF_SET, IndexFileSetData, h_EVT_IF_SET.bind(this)]);
+    TI.eventDefinitions.push([T.EVT_IF_SET, IndexFileSetData, h_EVT_IF_SET.bind(this)]);
 
     const h_EVT_IF_GET = (data) => {
       //if (data.id != this.aliasName) return;
       data.result = index.getTreeData(data.key, data.cap);
     }
-    T.eventDefinitions.push([T.EVT_IF_GET, IndexFileGetData, h_EVT_IF_GET.bind(this)]);
+    TI.eventDefinitions.push([T.EVT_IF_GET, IndexFileGetData, h_EVT_IF_GET.bind(this)]);
 
     const h_EVT_IF_GETKDW = (data) => {
       //if (data.id != this.aliasName) return;
       data.result = index.searchKeyword(data.key);
     }
-    T.eventDefinitions.push([T.EVT_IF_GETKDW, IndexFileGetKeywordData, h_EVT_IF_GETKDW.bind(this)]);
+    TI.eventDefinitions.push([T.EVT_IF_GETKDW, IndexFileGetKeywordData, h_EVT_IF_GETKDW.bind(this)]);
 
-    T.eventDefinitions.push([T.EVT_IF_LOADED, IEvent, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_IF_LOADED, IEvent, null]); // outside event handlers
     
     super.init();
   }

@@ -1,21 +1,20 @@
 class IPlugin {
-  static eventDefinitions = [];
-
   constructor(aliasName, data) {
     this.aliasName = aliasName || '';
     this.config = data;
     this.unsubscribersToEB = [];
     this.eventIdStrict = false;
+    this.eventDefinitions = [];
   }
 
   init() {
-    this.constructor.eventDefinitions.forEach(([name, cls, fn]) => {
+    this.eventDefinitions.forEach(([name, cls, fn]) => {
       this.createEvent(name, fn, cls);
     });
   }
 
   deInit() {
-    const defs = this.constructor.eventDefinitions;
+    const defs = this.eventDefinitions;
     
     if (Array.isArray(defs)) {
       for (const [eventName] of defs) {

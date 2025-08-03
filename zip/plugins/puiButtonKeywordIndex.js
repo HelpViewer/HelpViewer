@@ -10,8 +10,6 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     this.DEFAULT_KEY_CFG_TREEID = aliasName;
   }
   
-  static eventDefinitions = [];
-
   init() {
     super.init();
     hideButton(this.button.id, false);

@@ -26,36 +26,35 @@ class pLocalizationSwitcher extends IPlugin {
     this.langKeysDyn = undefined;
   }
 
-  static eventDefinitions = [];
-  
   init() {
     const T = this.constructor;
+    const TI = this;
     const h_EVT_LOC_TRANSLATE = (data) => {
       data.result = this._T(data.name);
     };
-    T.eventDefinitions.push([T.EVT_LOC_TRANSLATE, LocTranslate, h_EVT_LOC_TRANSLATE]);
+    TI.eventDefinitions.push([T.EVT_LOC_TRANSLATE, LocTranslate, h_EVT_LOC_TRANSLATE]);
 
     const h_EVT_LOC_GET_ACTIVE_LANGUAGE = (data) => {
       data.result = T.activeLanguage;
     };
-    T.eventDefinitions.push([T.EVT_LOC_GET_ACTIVE_LANGUAGE, IEvent, h_EVT_LOC_GET_ACTIVE_LANGUAGE]);
+    TI.eventDefinitions.push([T.EVT_LOC_GET_ACTIVE_LANGUAGE, IEvent, h_EVT_LOC_GET_ACTIVE_LANGUAGE]);
 
     const h_EVT_LOC_LANGUAGES = (data) => {
       data.result = this.getLanguagesList(data.additional);
     };
-    T.eventDefinitions.push([T.EVT_LOC_LANGUAGES, LocGetLanguages, h_EVT_LOC_LANGUAGES]);
+    TI.eventDefinitions.push([T.EVT_LOC_LANGUAGES, LocGetLanguages, h_EVT_LOC_LANGUAGES]);
 
     const h_EVT_LOC_LOAD = (data) => {
       this.loadLocalization(data.name, data.eventId);
     };
-    T.eventDefinitions.push([T.EVT_LOC_LOAD, LocTranslate, h_EVT_LOC_LOAD]);
+    TI.eventDefinitions.push([T.EVT_LOC_LOAD, LocTranslate, h_EVT_LOC_LOAD]);
 
     const h_EVT_LOC_REFRESH = (data) => {
       this.refreshTitlesForLangStrings(null);
     };
-    T.eventDefinitions.push([T.EVT_LOC_REFRESH, IEvent, h_EVT_LOC_REFRESH]);
+    TI.eventDefinitions.push([T.EVT_LOC_REFRESH, IEvent, h_EVT_LOC_REFRESH]);
 
-    T.eventDefinitions.push([T.EVT_LOC_LOADED, LocTranslate, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_LOC_LOADED, LocTranslate, null]); // outside event handlers
 
     super.init();
   }

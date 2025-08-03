@@ -18,8 +18,6 @@ class puiNavigation extends IPlugin {
       this.eventIdStrict = true;
     }
   
-    static eventDefinitions = [];
-  
     static KEY_CFG_TARGET = 'TARGET';
     static KEY_CFG_TREE_ID = 'TREEID';
     static KEY_CFG_PARAM_ID_NAME = 'IDNAMEGETPAR';
@@ -29,7 +27,7 @@ class puiNavigation extends IPlugin {
     init() {
       const T = this.constructor;
       const TI = this;
-      T.eventDefinitions.push([T.EVT_NAV_MOVE, NavigationMove, null]); // outside event handlers
+      TI.eventDefinitions.push([T.EVT_NAV_MOVE, NavigationMove, null]); // outside event handlers
 
       const baseId = this.aliasName;
       const target = this.config[T.KEY_CFG_TARGET] || 'header';

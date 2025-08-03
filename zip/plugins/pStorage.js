@@ -47,19 +47,18 @@ class pStorage extends IPlugin {
     super(aliasName, data);
   }
 
-  static eventDefinitions = [];
-  
   init() {
     const T = this.constructor;
+    const TI = this;
     const h_EVT_STORAGE_GET = IPlugin.wrapAsyncHandler((data) =>
       _Storage.search(data.storageName, data.fileName, data.format)
     );
-    T.eventDefinitions.push([T.EVT_STORAGE_GET, StorageGet, h_EVT_STORAGE_GET]);
+    TI.eventDefinitions.push([T.EVT_STORAGE_GET, StorageGet, h_EVT_STORAGE_GET]);
 
     const h_EVT_STORAGE_GET_IMAGE = IPlugin.wrapAsyncHandler((data) =>
       _Storage.searchImage(data.storageName, data.fileName)
     );
-    T.eventDefinitions.push([T.EVT_STORAGE_GET_IMAGE, StorageGetImages, h_EVT_STORAGE_GET_IMAGE]);
+    TI.eventDefinitions.push([T.EVT_STORAGE_GET_IMAGE, StorageGetImages, h_EVT_STORAGE_GET_IMAGE]);
 
     const h_EVT_STORAGE_ADD = IPlugin.wrapAsyncHandler((data) => {
       var reply = _Storage.add(data.storageName, data.fileName, data.fileData);
@@ -70,14 +69,14 @@ class pStorage extends IPlugin {
 
       return reply;
     });
-    T.eventDefinitions.push([T.EVT_STORAGE_ADD, StorageAdd, h_EVT_STORAGE_ADD]);
+    TI.eventDefinitions.push([T.EVT_STORAGE_ADD, StorageAdd, h_EVT_STORAGE_ADD]);
 
-    T.eventDefinitions.push([T.EVT_STORAGE_ADDED, StorageAdded, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_STORAGE_ADDED, StorageAdded, null]); // outside event handlers
 
     const h_EVT_STORAGE_GET_SUBDIRS = IPlugin.wrapAsyncHandler((data) =>
       _Storage.getSubdirs(data.storageName, data.fileName)
     );
-    T.eventDefinitions.push([T.EVT_STORAGE_GET_SUBDIRS, StorageGetSubdirs, h_EVT_STORAGE_GET_SUBDIRS]);
+    TI.eventDefinitions.push([T.EVT_STORAGE_GET_SUBDIRS, StorageGetSubdirs, h_EVT_STORAGE_GET_SUBDIRS]);
     super.init();
   }
   

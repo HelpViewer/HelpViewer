@@ -20,17 +20,16 @@ class pColorTheme extends IPlugin {
     super(aliasName, data);
   }
 
-  static eventDefinitions = [];
-
   init() {
     const T = this.constructor;
+    const TI = this;
     const h_EVT_CT_GET = (data) =>
       data.result = T.ColorTheme.getCurrentColorMode();
-    T.eventDefinitions.push([T.EVT_CT_GET, ColorThemeGet, h_EVT_CT_GET]);
+    TI.eventDefinitions.push([T.EVT_CT_GET, ColorThemeGet, h_EVT_CT_GET]);
 
     const h_EVT_CT_SET = (data) =>
       T.ColorTheme.setColorMode(data.name);
-    T.eventDefinitions.push([T.EVT_CT_SET, ColorThemeSet, h_EVT_CT_SET]);
+    TI.eventDefinitions.push([T.EVT_CT_SET, ColorThemeSet, h_EVT_CT_SET]);
 
     super.init();
     T.ColorTheme.init();

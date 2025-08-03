@@ -7,8 +7,6 @@ class puiButtonChangeLanguage extends puiButtonTab {
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
   }
   
-  static eventDefinitions = [];
-  
   static KEY_CFG_TEMPLATE = 'LINKTEMPLATE';
   static LANGLINKS_PREFIX = 'lng';
   

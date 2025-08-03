@@ -7,8 +7,6 @@ class puiButtonToggleSide extends puiButton {
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
   }
 
-  static eventDefinitions = [];
-
   static KEY_CFG_STOREKEY = 'STOREKEY';
 
   init() {

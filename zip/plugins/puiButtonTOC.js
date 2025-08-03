@@ -9,8 +9,6 @@ class puiButtonTOC extends puiButtonTabTree {
     this.DEFAULT_KEY_CFG_TREEID = 'tree';
   }
   
-  static eventDefinitions = [];
-  
   init() {
     super.init();
   }

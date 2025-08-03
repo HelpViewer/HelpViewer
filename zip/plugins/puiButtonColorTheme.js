@@ -7,8 +7,6 @@ class puiButtonColorTheme extends puiButton {
       this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
     }
   
-    static eventDefinitions = [];
-  
     init() {
       super.init();
     }

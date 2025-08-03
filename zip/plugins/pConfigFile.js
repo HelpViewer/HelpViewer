@@ -21,20 +21,19 @@ class pConfigFile extends IPlugin {
     this._loadCFG();
   }
 
-  static eventDefinitions = [];
-
   init() {
     const T = this.constructor;
+    const TI = this;
     const h_EVT_CF_GET = (data) => {
       data.result = this._configGetValue(data.key, data.backup);  
     }
-    T.eventDefinitions.push([T.EVT_CF_GET, ConfigFileGet, h_EVT_CF_GET]);
+    TI.eventDefinitions.push([T.EVT_CF_GET, ConfigFileGet, h_EVT_CF_GET]);
 
     const h_EVT_CF_RELOAD = IPlugin.wrapAsyncHandler((data) => {
       this._loadCFG();
       data.result = this.aliasName;
     });
-    T.eventDefinitions.push([T.EVT_CF_RELOAD, IEvent, h_EVT_CF_RELOAD]);
+    TI.eventDefinitions.push([T.EVT_CF_RELOAD, IEvent, h_EVT_CF_RELOAD]);
 
     super.init();
   }

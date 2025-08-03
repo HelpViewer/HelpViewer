@@ -5,8 +5,6 @@ class puiSidebarVisibilityToggle extends IPlugin {
     this.buttonShow = undefined;
   }
 
-  static eventDefinitions = [];
-
   static KEY_CFG_HIDE = 'HIDE';
   static KEY_CFG_SHOW = 'SHOW';
   static KEY_CFG_STOREKEY = 'STOREKEY';

@@ -5,8 +5,6 @@ class pPrePrintEvent extends IPlugin {
     super(aliasName, data);
   }
 
-  static eventDefinitions = [];
-
   init() {
     window.addEventListener('beforeprint', this._beforeprint);
 

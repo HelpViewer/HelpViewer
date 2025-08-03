@@ -43,10 +43,9 @@ class pui extends IPlugin {
     this.btnHandlers = new Map();
   }
 
-  static eventDefinitions = [];
-
   init() {
     const T = this.constructor;
+    const TI = this;
     const _processClickedEvent = (e) => {
       const foundExactEqual = this.btnHandlers.get(e.elementId);
       const foundRootEqual = this.btnHandlers.get(e.elementIdRoot);
@@ -68,7 +67,7 @@ class pui extends IPlugin {
       this.btnHandlers.set(reply.handlerId, reply.handler);
       reply.result = reply.handlerId;
     }
-    T.eventDefinitions.push([T.EVT_CLICK_HANDLER_REGISTER, ClickHandlerRegister, h_EVT_CLICK_HANDLER_REGISTER]);
+    TI.eventDefinitions.push([T.EVT_CLICK_HANDLER_REGISTER, ClickHandlerRegister, h_EVT_CLICK_HANDLER_REGISTER]);
 
     const h_EVT_BUTTON_CREATE = (reply) => {
       if (!reply.buttonId)
@@ -84,7 +83,7 @@ class pui extends IPlugin {
 
       reply.result = button;
     }
-    T.eventDefinitions.push([T.EVT_BUTTON_CREATE, ButtonCreate, h_EVT_BUTTON_CREATE]);
+    TI.eventDefinitions.push([T.EVT_BUTTON_CREATE, ButtonCreate, h_EVT_BUTTON_CREATE]);
 
     const h_EVT_ELEMENT_SET_VISIBILITY = (reply) => {
       const button = document.getElementById(reply.elementId);
@@ -94,9 +93,9 @@ class pui extends IPlugin {
       reply.element = button;
       reply.result = toggleVisibility(button, reply.value);
     }
-    T.eventDefinitions.push([T.EVT_ELEMENT_SET_VISIBILITY, ElementSetVisibility, h_EVT_ELEMENT_SET_VISIBILITY]);
+    TI.eventDefinitions.push([T.EVT_ELEMENT_SET_VISIBILITY, ElementSetVisibility, h_EVT_ELEMENT_SET_VISIBILITY]);
 
-    T.eventDefinitions.push([T.EVT_BUTTON_SEND, ButtonSend, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_BUTTON_SEND, ButtonSend, null]); // outside event handlers
 
     super.init();
   }
@@ -128,8 +127,6 @@ function registerOnClick(handlerId, handler) {
 }
 
 class puiButton extends IPlugin {
-  static eventDefinitions = [];
-
   static KEY_CFG_ID = 'ID';
   static KEY_CFG_CAPTION = 'CAPTION';
   static KEY_CFG_TARGET = 'TARGET';
@@ -168,8 +165,6 @@ class puiButton extends IPlugin {
 }
 
 class puiButtonTab extends puiButton {
-  static eventDefinitions = [];
-
   constructor(aliasName, data) {
     super(aliasName, data);
     this.tab = undefined;
@@ -212,8 +207,6 @@ class puiButtonTabTree extends puiButtonTab {
   static EVT_SET_TREE_DATA = SetTreeData.name;
   static EVT_TREE_DATA_CHANGED = 'TreeDataChanged';
 
-  static eventDefinitions = [];
-
   static KEY_CFG_TREEID = 'TREEID';
 
   constructor(aliasName, data) {
@@ -247,8 +240,8 @@ class puiButtonTabTree extends puiButtonTab {
         dc.append = data.append;
       });
     };
-    T.eventDefinitions.push([T.EVT_SET_TREE_DATA, SetTreeData, h_EVT_SET_TREE_DATA]);
-    T.eventDefinitions.push([T.EVT_TREE_DATA_CHANGED, SetTreeData, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_SET_TREE_DATA, SetTreeData, h_EVT_SET_TREE_DATA]);
+    TI.eventDefinitions.push([T.EVT_TREE_DATA_CHANGED, SetTreeData, null]); // outside event handlers
 
     super.init();
     TI._preStandardInit();

@@ -51,10 +51,9 @@ class pGets extends IPlugin {
     this.params = {};
   }
 
-  static eventDefinitions = [];
-  
   init() {
     const T = this.constructor;
+    const TI = this;
     const h_EVT_GETS_GET = (data) => {
       const url = new URL(window.location.href);
       const urlParams = new URLSearchParams(url.search);
@@ -69,7 +68,7 @@ class pGets extends IPlugin {
 
       data.result = val;
     };
-    T.eventDefinitions.push([T.EVT_GETS_GET, GetsGet, h_EVT_GETS_GET]);
+    TI.eventDefinitions.push([T.EVT_GETS_GET, GetsGet, h_EVT_GETS_GET]);
 
     const h_EVT_GETS_SET = (data) => {
       if (!data || data.kvlist.size == 0)
@@ -114,7 +113,7 @@ class pGets extends IPlugin {
       history.pushState(null, "", url.toString());
       this.onUriChanged(data.eventId);
     };
-    T.eventDefinitions.push([T.EVT_GETS_SET, GetsSet, h_EVT_GETS_SET]);
+    TI.eventDefinitions.push([T.EVT_GETS_SET, GetsSet, h_EVT_GETS_SET]);
 
     const h_EVT_GETS_SET_HREF = (data) => {
       if (data.href == undefined)
@@ -125,7 +124,7 @@ class pGets extends IPlugin {
       this.onUriChanged(data.eventId);
     };
 
-    T.eventDefinitions.push([T.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
+    TI.eventDefinitions.push([T.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
 
     const h_EVT_GETS_SET_TO_BOOKMARK = (data) => {
       if (data.bookmark == undefined)
@@ -138,9 +137,9 @@ class pGets extends IPlugin {
       this.onUriChanged(data.eventId);
     };
 
-    T.eventDefinitions.push([T.EVT_GETS_SET_TO_BOOKMARK, GetsSetToBookmark, h_EVT_GETS_SET_TO_BOOKMARK]);
+    TI.eventDefinitions.push([T.EVT_GETS_SET_TO_BOOKMARK, GetsSetToBookmark, h_EVT_GETS_SET_TO_BOOKMARK]);
 
-    T.eventDefinitions.push([T.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
 
     window.addEventListener('popstate', this.onUriChanged);
     window.addEventListener('hashchange', this.onUriChanged);
