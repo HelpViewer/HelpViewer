@@ -18,7 +18,7 @@ EventBus.sub("StorageAdded", async (d) => {
   IDX_KEYWORDS = 'fulltextList';
   setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
 
-  getPathData(pagePath, getChapterAlternativeHeading(pagePath));
+  getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
 });
 
 
@@ -97,8 +97,8 @@ window.addEventListener('popstate', () => {
     dataPath = FILENAME_DEFAULT_HELPFILE;
   }
 
-  navPanel.updateNavButtons(idxTreeItem);
-  getPathData(pagePath, getChapterAlternativeHeading(pagePath));
+  getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  //~~~navPanel.updateNavButtons(idxTreeItem);
 });
 
 contentPane.addEventListener('click', function(event) {
@@ -117,7 +117,7 @@ contentPane.addEventListener('click', function(event) {
   setToHref(href);
   
   LoadURLParameters();
-  getPathData(pagePath, getChapterAlternativeHeading(pagePath));
+  getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
 });
 
 var languages = getLanguagesList();
@@ -256,7 +256,7 @@ loadLocalization(activeLanguage).then(() => {
         changeFavicon(customFavicon);
       
       // load chapter document
-      getPathData(pagePath, getChapterAlternativeHeading(pagePath));
+      getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
       
       // override book images in tree structure
       var [bookOpen, bookClosed] = await Promise.all([
