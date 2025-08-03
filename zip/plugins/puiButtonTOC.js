@@ -25,7 +25,6 @@ class puiButtonTOC extends puiButtonTabTree {
 
   _treeClick(e) {
     //TODO : refactor
-    e.event.preventDefault();
     var event = e.event;
     const target = event.target;
     if (!target) return;
@@ -46,6 +45,7 @@ class puiButtonTOC extends puiButtonTabTree {
     var data = target.getAttribute('data-param');
     if (!data) return;
   
+    e.event.preventDefault();
     data = data.split(';');
     var path = data[0];
   
