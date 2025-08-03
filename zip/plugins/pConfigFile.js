@@ -17,6 +17,7 @@ class pConfigFile extends IPlugin {
     super(aliasName, data);
     this.CFG = undefined;
 
+    this.eventIdStrict = true;
     this._loadCFG();
   }
 
@@ -35,7 +36,6 @@ class pConfigFile extends IPlugin {
     });
     T.eventDefinitions.push([T.EVT_CF_RELOAD, IEvent, h_EVT_CF_RELOAD]);
 
-    this.eventIdStrict = true;
     super.init();
   }
 

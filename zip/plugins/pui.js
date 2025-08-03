@@ -227,6 +227,7 @@ class puiButtonTabTree extends puiButtonTab {
   init() {
     const TI = this;
     const T = this.constructor;
+    this.cfgTreeId = this.config[T.KEY_CFG_TREEID] || TI.DEFAULT_KEY_CFG_TREEID;
 
     const h_EVT_SET_TREE_DATA = (data) => {
       if (data.id != this.aliasName)
@@ -250,7 +251,6 @@ class puiButtonTabTree extends puiButtonTab {
     T.eventDefinitions.push([T.EVT_TREE_DATA_CHANGED, SetTreeData, null]); // outside event handlers
 
     super.init();
-    this.cfgTreeId = this.config[T.KEY_CFG_TREEID] || TI.DEFAULT_KEY_CFG_TREEID;
     TI._preStandardInit();
 
     this.tree = uiAddTreeView(TI.cfgTreeId, TI.tab);

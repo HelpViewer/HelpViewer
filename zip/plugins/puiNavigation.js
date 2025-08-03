@@ -15,6 +15,7 @@ class puiNavigation extends IPlugin {
       this.buttonLeft = undefined;
       this.buttonTop = undefined;
       this.buttonRight = undefined;
+      this.eventIdStrict = true;
     }
   
     static eventDefinitions = [];
@@ -96,7 +97,6 @@ class puiNavigation extends IPlugin {
       TI.buttonRight = uiAddButton(idRight, '➡', target, _buttonActionRight);
 
       super.init();
-      this.eventIdStrict = true;
 
       updateNavButtons(getId());
 
