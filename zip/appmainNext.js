@@ -3,6 +3,8 @@ EventBus.sub("StorageAdded", async (d) => {
   if (d.storageName != STO_HELP)
     return;
 
+  notifyUserDataFileLoaded(d.fileName);
+
   configFileReload(FILE_CONFIG);
 
   const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
