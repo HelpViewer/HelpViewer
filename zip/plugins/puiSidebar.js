@@ -89,7 +89,7 @@ class puiSidebar extends IPlugin {
 
     const h_EVT_SIDE_PAGE_SHOW = (reply) => {
       if (!reply.pageId)
-        return;
+        reply.pageId = T._getVisibleButtonsList(toolbar)[0].id;
 
       reply.result = T.showSidebarTab(`sp-${reply.pageId}`);
     }
@@ -146,13 +146,17 @@ class puiSidebar extends IPlugin {
     super.deInit();
   }
 
+  static _getVisibleButtonsList(panel) {
+    return panel?.querySelectorAll(`:scope > :not(.${C_HIDDENC})`);
+  }
+
   static recomputeButtonPanel(button)
   {
     if (!button) return;
     
     const multilineCSS = 'multi-linePanel';
     const panel = button.parentElement;
-    const len = panel.querySelectorAll(`:scope > :not(.${C_HIDDENC})`).length;
+    const len = this._getVisibleButtonsList(panel).length;
   
     if (len <= 9) {
       panel.classList.remove(multilineCSS);
