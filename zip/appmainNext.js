@@ -10,7 +10,7 @@ EventBus.sub("StorageAdded", async (d) => {
   fixImgRelativePathToZipPaths(tree, STO_HELP);
   revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
 
-  configFileReload(FILE_CONFIG);
+  //configFileReload(FILE_CONFIG);
 
   // Load favicon
   const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);

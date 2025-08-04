@@ -43,7 +43,7 @@ class pConfigFile extends IPlugin {
   }
 
   onET_UserDataFileLoaded(evt) {
-    alert('Data loaded hello from pConfigFile:' + this.aliasName);
+    this._loadCFG();
   }
 
   async _loadCFG() {
