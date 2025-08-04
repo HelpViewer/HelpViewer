@@ -8,6 +8,14 @@ class IPlugin {
   }
 
   init() {
+    var proto = this.constructor; //Object.getPrototypeOf(this);
+    //if (proto && Object.prototype.hasOwnProperty.call(proto, 'onUserDataFileLoaded')) {
+    if (typeof this.onUserDataFileLoaded === 'function') {
+      alert('onUserDataFileLoaded registering! ' + proto.name);
+      //this.eventDefinitions.push([EventNames.UserDataFileLoaded, UserDataFileLoaded, this.onUserDataFileLoaded.bind(this)]);
+      this.unsubscribersToEB.push(EventBus.sub(EventNames.UserDataFileLoaded, this.onUserDataFileLoaded.bind(this)));
+    }
+
     this.eventDefinitions.forEach(([name, cls, fn]) => {
       this.createEvent(name, fn, cls);
     });

@@ -42,6 +42,10 @@ class pConfigFile extends IPlugin {
     super.deInit();
   }
 
+  onUserDataFileLoaded(evt) {
+    alert('Data loaded hello from pConfigFile:' + this.aliasName);
+  }
+
   async _loadCFG() {
     const T = this.constructor;
     const cfgStorage = this.config[T.KEY_CFG_STORAGE] || 'STO_DATA';
