@@ -48,19 +48,19 @@ class pIndexFile extends IPlugin {
         r.result = data.result > 0;
       });
     }
-    TI.eventDefinitions.push([T.EVT_IF_SET, IndexFileSetData, h_EVT_IF_SET.bind(this)]);
+    TI.eventDefinitions.push([T.EVT_IF_SET, IndexFileSetData, h_EVT_IF_SET]);
 
     const h_EVT_IF_GET = (data) => {
       //if (data.id != this.aliasName) return;
       data.result = index.getTreeData(data.key, data.cap);
     }
-    TI.eventDefinitions.push([T.EVT_IF_GET, IndexFileGetData, h_EVT_IF_GET.bind(this)]);
+    TI.eventDefinitions.push([T.EVT_IF_GET, IndexFileGetData, h_EVT_IF_GET]);
 
     const h_EVT_IF_GETKDW = (data) => {
       //if (data.id != this.aliasName) return;
       data.result = index.searchKeyword(data.key);
     }
-    TI.eventDefinitions.push([T.EVT_IF_GETKDW, IndexFileGetKeywordData, h_EVT_IF_GETKDW.bind(this)]);
+    TI.eventDefinitions.push([T.EVT_IF_GETKDW, IndexFileGetKeywordData, h_EVT_IF_GETKDW]);
 
     TI.eventDefinitions.push([T.EVT_IF_LOADED, IEvent, null]); // outside event handlers
     
