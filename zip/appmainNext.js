@@ -5,7 +5,62 @@ EventBus.sub("StorageAdded", async (d) => {
 
   notifyUserDataFileLoaded(d.fileName);
 
+  const srcTreeData = await storageSearch(STO_HELP, FILENAME_TREE);
+  setTreeData(srcTreeData, 'tree');
+  fixImgRelativePathToZipPaths(tree, STO_HELP);
+  revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
+
   configFileReload(FILE_CONFIG);
+
+  // Load favicon
+  const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);
+  
+  if (customFavicon)
+    changeFavicon(customFavicon);
+  
+  // load chapter document
+  getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  
+  // override book images in tree structure
+  var [bookOpen, bookClosed] = await Promise.all([
+    getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP),
+    getDataOfPathInZIPImage(FILENAME_BOOKC, STO_HELP),
+  ]);
+
+  var doOverride = null;
+  
+  if (bookOpen && bookClosed) {
+    bookOpen = `url("${bookOpen}")`;
+    bookClosed = `url("${bookClosed}")`;
+    doOverride = 1;
+  } else {
+    bookOpen = configGetValue(CFG_KEY_OverrideBookIconOpened);
+    bookClosed = configGetValue(CFG_KEY_OverrideBookIconClosed);
+    
+    if (bookOpen && bookClosed) {
+      const icon = document.createElement('span');
+      icon.innerHTML = bookOpen;
+      bookOpen = icon.innerHTML;
+      icon.innerHTML = bookClosed;
+      bookClosed = icon.innerHTML;
+      bookOpen = `"${bookOpen}"`;
+      bookClosed = `"${bookClosed}"`;
+      doOverride = 1;
+    }
+  }
+  
+  if (doOverride) {
+    appendCSS('overridePlusMinus',
+`ul.tree details > summary::before {
+content: ${bookClosed};
+}
+
+ul.tree details[open] > summary::before {
+transform: rotate(0deg);
+content: ${bookOpen};
+}` 
+    );
+  }
 
   const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
   setChapterIndex(docList);
@@ -19,10 +74,15 @@ EventBus.sub("StorageAdded", async (d) => {
   KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
   IDX_KEYWORDS = 'fulltextList';
   setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
-
+  
   getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  //loadPageByTreeId(d.newId, d.treeId);
 });
 
+EventBus.sub("UserDataFileLoaded", async (d) => {
+  alert(':: UserDataFileLoaded ::');
+  showSidebarTab();
+});
 
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
