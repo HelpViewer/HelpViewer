@@ -42,7 +42,7 @@ class pConfigFile extends IPlugin {
     super.deInit();
   }
 
-  onETUserDataFileLoaded(evt) {
+  onET_UserDataFileLoaded(evt) {
     alert('Data loaded hello from pConfigFile:' + this.aliasName);
   }
 
