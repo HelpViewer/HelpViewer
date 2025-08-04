@@ -240,7 +240,9 @@ function uiAddTreeView(id, page) {
 
 function showSidebarTab(id) {
   //TODO: Temporary
-  id = id.startsWith('sp-') ? id.substring(3) : id;
+  if (id)
+    id = id.startsWith('sp-') ? id.substring(3) : id;
+  
   return sendEvent(EventNames.SidebarPageShow, (x) => {
     x.pageId = id;
     x.id = UI_PLUGIN_SIDEBAR;
