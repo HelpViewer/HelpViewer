@@ -57,9 +57,12 @@ class IPlugin {
       const strictSwitch = this.eventIdStrict;
       var handlerFilterId = (d) => {
         if (d.id == alias || (!strictSwitch && (!d.id || alias == '')))
+        {
+          log(`[Plugins] Event "${name}" with id "${d.id}" forwarded to plugin ${this.constructor.name} with id: "${alias}".`);
           handler(d);
+        }
         else
-          log(`W [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${alias}".`);
+          log(`W [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin ${this.constructor.name} with id: "${alias}".`);
       };
 
       this._subscribeHandler(name, alias, handlerFilterId);
