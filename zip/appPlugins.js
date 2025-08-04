@@ -8,13 +8,23 @@ class IPlugin {
   }
 
   init() {
-    var proto = this.constructor; //Object.getPrototypeOf(this);
-    //if (proto && Object.prototype.hasOwnProperty.call(proto, 'onUserDataFileLoaded')) {
-    if (typeof this.onUserDataFileLoaded === 'function') {
-      alert('onUserDataFileLoaded registering! ' + proto.name);
-      //this.eventDefinitions.push([EventNames.UserDataFileLoaded, UserDataFileLoaded, this.onUserDataFileLoaded.bind(this)]);
-      this.unsubscribersToEB.push(EventBus.sub(EventNames.UserDataFileLoaded, this.onUserDataFileLoaded.bind(this)));
-    }
+    const prefixEventHandler = /^onET/;
+    var _handleFunctionToSubscription = (instance, name) => {
+      const desc = Object.getOwnPropertyDescriptor(instance, name);
+      if (!desc) return;
+      if (typeof desc.value !== 'function') return;
+      var nameBase = name.replace(prefixEventHandler, '');
+
+      if (nameBase.startsWith('_')) {
+        nameBase = nameBase.slice(1);
+        this._subscribeHandler(nameBase, this.aliasName, desc.value.bind(this));
+      } else {
+        this._prepareFilteredHandler(nameBase, desc.value.bind(this));
+      }
+    };
+
+    var proto = Object.getPrototypeOf(this);
+    Object.getOwnPropertyNames(proto).filter(name => prefixEventHandler.test(name)).forEach(name => _handleFunctionToSubscription(proto, name));
 
     this.eventDefinitions.forEach(([name, cls, fn]) => {
       this.createEvent(name, fn, cls);
@@ -37,6 +47,11 @@ class IPlugin {
   }
 
   createEvent(name, handler, dataClass = IEvent) {
+    this._prepareFilteredHandler(name, handler);
+    addEventDefinition(name, new EventDefinition(dataClass, name));
+  }
+
+  _prepareFilteredHandler(name, handler) {
     if (handler != null) {
       const alias = this.aliasName;
       const strictSwitch = this.eventIdStrict;
@@ -47,11 +62,14 @@ class IPlugin {
           log(`W [Plugins] Event "${name}" with id "${d.id}" was not forwarded to plugin with id: "${alias}".`);
       };
 
-      var unsubscribe = EventBus.sub(name, handlerFilterId);
-      this.unsubscribersToEB.push(unsubscribe);  
+      this._subscribeHandler(name, alias, handlerFilterId);
     }
-    
-    addEventDefinition(name, new EventDefinition(dataClass, name));
+  }
+
+  _subscribeHandler(name, alias, handler) {
+    var unsubscribe = EventBus.sub(name, handler);
+    log(`[Plugins] Subscription for event "${name}" in plugin "${this.constructor.name}" with id: "${alias}" created.`);
+    this.unsubscribersToEB.push(unsubscribe);  
   }
 
   static wrapAsyncHandler(fn) {
