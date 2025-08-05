@@ -22,6 +22,9 @@ class IndexFileGetKeywordData extends IEvent {
 }
 
 class pIndexFile extends IPlugin {
+  static KEY_CFG_FILENAME_KW = 'FILENAMEKW';
+  static KEY_CFG_FILENAME_KWMAP = 'FILENAMEKWMAP';
+
   static EVT_IF_SET = IndexFileSetData.name;
   static EVT_IF_GET = IndexFileGetData.name;
   static EVT_IF_GETKDW = IndexFileGetKeywordData.name;
@@ -30,12 +33,18 @@ class pIndexFile extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
     this.eventIdStrict = true;
+
+    this.DEFAULT_KEY_CFG_FILENAME_KW = 'keywords.lst';
+    this.DEFAULT_KEY_CFG_FILENAME_KWMAP = 'keywords-files.lst';
   }
 
   init() {
     const T = this.constructor;
     const TI = this;
     
+    this.cfgFilenameKW = this.config[T.KEY_CFG_FILENAME_KW] || TI.DEFAULT_KEY_CFG_FILENAME_KW;
+    this.cfgFilenameKWMAP = this.config[T.KEY_CFG_FILENAME_KWMAP] || TI.DEFAULT_KEY_CFG_FILENAME_KWMAP;
+
     var index;
     const aliasName = this.aliasName;
 
@@ -69,6 +78,15 @@ class pIndexFile extends IPlugin {
 
   deInit() {
     super.deInit();
+  }
+
+  onET_UserDataFileLoaded(evt) {
+    Promise.all([
+      storageSearch(STO_HELP, this.cfgFilenameKW),
+      storageSearch(STO_HELP, this.cfgFilenameKWMAP),
+    ]).then(([kw, kwmap]) => {
+      setIndexFileData(this.aliasName, kw, kwmap);
+    });
   }
 }
 

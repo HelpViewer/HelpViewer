@@ -66,15 +66,15 @@ content: ${bookOpen};
   }
 
 
-  var KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
-  var KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
-  var IDX_KEYWORDS = 'keywordList';
-  setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
+  // var KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
+  // var KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
+  // var IDX_KEYWORDS = 'keywordList';
+  // setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
 
-  KEYWORDS = (await storageSearch(STO_HELP, FILENAME_FTS_KEYWORDS));
-  KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
-  IDX_KEYWORDS = 'fulltextList';
-  setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
+  // KEYWORDS = (await storageSearch(STO_HELP, FILENAME_FTS_KEYWORDS));
+  // KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
+  // IDX_KEYWORDS = 'fulltextList';
+  // setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
   
   getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
   //loadPageByTreeId(d.newId, d.treeId);
