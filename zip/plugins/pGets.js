@@ -145,8 +145,10 @@ class pGets extends IPlugin {
     window.addEventListener('hashchange', this.onUriChanged);
 
     super.init();
+  }
 
-    this.subsPluginLoadingFinished = EventBus.sub(EVT_PluginsLoadingFinished, (d) => this.onUriChanged());
+  onET_PluginsLoadingFinished(evt) {
+    this.onUriChanged();
   }
   
   deInit() {
@@ -154,7 +156,6 @@ class pGets extends IPlugin {
 
     window.removeEventListener('popstate', this.onUriChanged);
     window.removeEventListener('hashchange', this.onUriChanged);
-    this.subsPluginLoadingFinished?.();
   }
 
   h_EVT_GETS_LOAD(data) {

@@ -70,6 +70,7 @@ class puiSidebar extends IPlugin {
       containerMain.append(node);
 
     const sidebar = TI.prigetSidebar();
+    this.sidebar = sidebar;
     const toolbar = document.getElementById('toolbar-down');
 
     const h_EVT_SIDE_PAGE_CREATE = (reply) => {
@@ -124,20 +125,11 @@ class puiSidebar extends IPlugin {
     TI.eventDefinitions.push([T.EVT_SIDE_SIDE_TOGGLE, IEvent, h_EVT_SIDE_SIDE_TOGGLE]);
     
     const baseButtonAccept = createButtonAcceptHandler(TI, toolbar);
-    const h_buttonAccept = (reply) =>
+    this.h_buttonAccept = (reply) =>
     {
       baseButtonAccept(reply);
       T.recomputeButtonPanel(reply.button);
     }
-    TI.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, h_buttonAccept);
-
-    TI.subscribedSetVisibility = EventBus.sub(EventNames.ElementSetVisibility, (x) => {
-      T.recomputeButtonPanel(x.element);
-      var visibleTabs = T._getVisibleButtonsList(sidebar);
-      visibleTabs = Array.from(visibleTabs).filter(el => el.classList.contains(T.cssClassSideBarPage));
-      if (!visibleTabs || visibleTabs.length != 1)
-        showSidebarTab();
-    });
 
     window.addEventListener("resize", this.handler_checkSidebarWidth);
     window.addEventListener("load", this.handler_checkSidebarWidth);
@@ -151,9 +143,20 @@ class puiSidebar extends IPlugin {
     window.removeEventListener("resize", this.handler_checkSidebarWidth);
     window.removeEventListener("load", this.handler_checkSidebarWidth);
     this.prigetSidebar()?.remove();
-    this.subscribedButtonAccept?.();
-    this.subscribedSetVisibility?.();
     super.deInit();
+  }
+
+  onETButtonSend(x) {
+    this.h_buttonAccept(x);
+  }
+
+  onET_ElementSetVisibility(x) {
+    const T = this.constructor;
+    T.recomputeButtonPanel(x.element);
+    var visibleTabs = T._getVisibleButtonsList(sidebar);
+    visibleTabs = Array.from(visibleTabs).filter(el => el.classList.contains(T.cssClassSideBarPage));
+    if (!visibleTabs || visibleTabs.length != 1)
+      showSidebarTab();
   }
 
   static _getVisibleButtonsList(panel) {

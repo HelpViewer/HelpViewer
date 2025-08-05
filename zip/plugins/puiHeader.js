@@ -43,7 +43,7 @@ class puiHeader extends IPlugin {
     }
     TI.eventDefinitions.push([T.EVT_HEAD_GET, IEvent, h_EVT_HEAD_GET]);
 
-    this.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, createButtonAcceptHandler(this, toolbar));
+    this.handlerButtonSend = createButtonAcceptHandler(this, toolbar);
 
     super.init();
   }
@@ -51,8 +51,11 @@ class puiHeader extends IPlugin {
   deInit() {
     const header = document.getElementById('header');
     header?.remove();
-    this.subscribedButtonAccept?.();
     super.deInit();
+  }
+  
+  onETButtonSend(x) {
+    this.handlerButtonSend(x);
   }
 }
 

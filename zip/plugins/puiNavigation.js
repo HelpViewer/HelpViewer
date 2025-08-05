@@ -31,16 +31,17 @@ class puiNavigation extends IPlugin {
 
       const baseId = this.aliasName;
       const target = this.config[T.KEY_CFG_TARGET] || 'header';
-      const treeId = this.config[T.KEY_CFG_TREE_ID] || 'tree';
+      this.treeId = this.config[T.KEY_CFG_TREE_ID] || 'tree';
+      const treeId = this.treeId;
       const parIdName = this.config[T.KEY_CFG_PARAM_ID_NAME] || 'id';
 
       const idLeft = `${baseId}-left`;
       const idTop = `${baseId}-top`;
       const idRight = `${baseId}-right`;
 
-      const getId = () => getGets(parIdName, (x) => parseInt(x) || 1);
+      this.getId = () => getGets(parIdName, (x) => parseInt(x) || 1);
 
-      const updateNavButtons = (i) => {
+      this.updateNavButtons = (i) => {
         i = parseInt(i);
         var indexPrev = i - 1;
         var indexNext = i + 1;
@@ -53,10 +54,10 @@ class puiNavigation extends IPlugin {
       }
 
       const _buttonAction = (evt, next, direction) => {
-        const current = getId();
+        const current = this.getId();
         evt.event.preventDefault();
         //setToHrefByValues((d) => d.kvlist.set(parIdName, next));
-        updateNavButtons(next);
+        this.updateNavButtons(next);
         
         if (next == current)
           return;
@@ -73,13 +74,13 @@ class puiNavigation extends IPlugin {
       }
 
       const _buttonActionLeft = (evt) => {
-        const next = getId()-1;
+        const next = this.getId()-1;
         _buttonAction(evt, next, -1);
       }
       TI.buttonLeft = uiAddButton(idLeft, '⬅', target, _buttonActionLeft);
   
       const _buttonActionTop = (evt) => {
-        const current = getId();
+        const current = this.getId();
         const treeItem = document.getElementById(treeId + '|' + current);
         var next = 1;
         
@@ -103,10 +104,7 @@ class puiNavigation extends IPlugin {
 
       super.init();
 
-      updateNavButtons(getId());
-
-      this.subscribedGets = EventBus.sub(EventNames.GetsChanges, (data) => updateNavButtons(getId()));
-      this.subscribedTreeChange = EventBus.sub(EventNames.TreeDataChanged, (data) => updateNavButtons(getId()));
+      this.updateNavButtons(this.getId());
     }
   
     deInit() {
@@ -114,10 +112,17 @@ class puiNavigation extends IPlugin {
       T.buttonLeft?.remove();
       T.buttonTop?.remove();
       T.buttonRight?.remove();
-      T.subscribedGets?.();
-      T.subscribedTreeChange?.();
   
       super.deInit();
+    }
+
+    onET_GetsChanges(x) {
+      this.updateNavButtons(this.getId());
+    }
+
+    onET_TreeDataChanged(x) {
+      if (x.targetTree == this.treeId)
+        this.updateNavButtons(this.getId());
     }
   }
   

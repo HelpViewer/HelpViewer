@@ -13,25 +13,22 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
   init() {
     super.init();
     hideButton(this.button.id, false);
-
-    this.subscribeIFLoaded = EventBus.sub(EventNames.IndexFileLoaded, (x) => {
-      const alias = this.aliasName;
-      
-      if (x.id != alias)
-        return;
-
-      hideButton(this.button.id, x.result);
-
-      const target = document.getElementById(this.cfgTreeId);
-      const T = this.constructor;
-      T._requestIndexData(target, alias);
-    });
   }
   
   deInit() {
     super.deInit();
+  }
 
-    this.subscribeIFLoaded?.();
+  onETIndexFileLoaded(x) {
+    const alias = this.aliasName;
+      
+    if (x.id != alias)
+      return;
+
+    hideButton(this.button.id, x.result);
+
+    const target = document.getElementById(this.cfgTreeId);
+    this.constructor._requestIndexData(target, alias);
   }
 
   _preShowAction(evt) {

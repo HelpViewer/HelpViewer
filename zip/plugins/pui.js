@@ -46,20 +46,6 @@ class pui extends IPlugin {
   init() {
     const T = this.constructor;
     const TI = this;
-    const _processClickedEvent = (e) => {
-      const foundExactEqual = this.btnHandlers.get(e.elementId);
-      const foundRootEqual = this.btnHandlers.get(e.elementIdRoot);
-      const found = foundExactEqual || foundRootEqual;
-
-      if (found) {
-        e.forwarded = foundExactEqual ? e.elementId : foundRootEqual ? e.elementIdRoot : false;
-        log(`Event ${EventNames.ClickedEvent} (${e.eventId}, id: ${e.elementId}) forwarded by id: ${e.forwarded}`);
-        found(e);
-      } else {
-        log(`E Event ${EventNames.ClickedEvent} (${e.eventId}, id: ${e.elementId}) cannot be forwarded by any of ids: ${e.elementId}, ${e.elementIdRoot}`);        
-      }
-    }
-    this.subscribed = EventBus.sub(EventNames.ClickedEvent, _processClickedEvent);
 
     const h_EVT_CLICK_HANDLER_REGISTER = (reply) => {
       if (!reply.handlerId || !reply.handler)
@@ -102,9 +88,22 @@ class pui extends IPlugin {
 
   deInit() {
     this.btnHandlers.clear();
-    this.subscribed?.();
 
     super.deInit();
+  }
+
+  onET_ClickedEvent(e) {
+    const foundExactEqual = this.btnHandlers.get(e.elementId);
+    const foundRootEqual = this.btnHandlers.get(e.elementIdRoot);
+    const found = foundExactEqual || foundRootEqual;
+
+    if (found) {
+      e.forwarded = foundExactEqual ? e.elementId : foundRootEqual ? e.elementIdRoot : false;
+      log(`Event ${EventNames.ClickedEvent} (${e.eventId}, id: ${e.elementId}) forwarded by id: ${e.forwarded}`);
+      found(e);
+    } else {
+      log(`E Event ${EventNames.ClickedEvent} (${e.eventId}, id: ${e.elementId}) cannot be forwarded by any of ids: ${e.elementId}, ${e.elementIdRoot}`);        
+    }
   }
 }
 
