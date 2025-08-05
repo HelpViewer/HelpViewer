@@ -1,4 +1,6 @@
 class puiButtonTOC extends puiButtonTabTree {
+  static KEY_CFG_FILENAME = 'FILENAME';
+
   constructor(aliasName, data) {
     super(aliasName, data);
 
@@ -7,9 +9,13 @@ class puiButtonTOC extends puiButtonTabTree {
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
     
     this.DEFAULT_KEY_CFG_TREEID = 'tree';
+    this.DEFAULT_KEY_CFG_FILENAME = 'tree.lst';
   }
   
   init() {
+    const T = this.constructor;
+    const TI = this;
+    this.cfgFilename = this.config[T.KEY_CFG_FILENAME] || TI.DEFAULT_KEY_CFG_FILENAME;
     super.init();
   }
   
@@ -64,6 +70,13 @@ class puiButtonTOC extends puiButtonTabTree {
     {
       loadPage(event, path, target.innerHTML, idI);
     }
+  }
+
+  onET_UserDataFileLoaded(evt) {
+    storageSearch(STO_HELP, this.cfgFilename).then((srcTreeData) => {
+      setTreeData(srcTreeData, this.cfgTreeId);
+      hideButton(this.button?.id, srcTreeData?.length > 0);
+    });
   }
 }
   

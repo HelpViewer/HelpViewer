@@ -1,14 +1,17 @@
-EventBus.sub("StorageAdded", async (d) => {
-  alert(':: StorageAdded fired.');
+EventBus.sub(EventNames.TreeDataChanged, (d) => {
+  const treeTOCName = 'tree';
+  if (d.treeId != treeTOCName)
+    return;
+  const tree = document.getElementById(treeTOCName);
+  fixImgRelativePathToZipPaths(tree, STO_HELP);
+  revealTreeItem(`${treeTOCName}|${idxTreeItem}`);
+});
+
+EventBus.sub(EventNames.StorageAdded, async (d) => {
   if (d.storageName != STO_HELP)
     return;
 
   notifyUserDataFileLoaded(d.fileName);
-
-  const srcTreeData = await storageSearch(STO_HELP, FILENAME_TREE);
-  setTreeData(srcTreeData, 'tree');
-  fixImgRelativePathToZipPaths(tree, STO_HELP);
-  revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
 
   //configFileReload(FILE_CONFIG);
 
