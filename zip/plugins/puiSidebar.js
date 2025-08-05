@@ -135,7 +135,7 @@ class puiSidebar extends IPlugin {
       T.recomputeButtonPanel(x.element);
       var visibleTabs = T._getVisibleButtonsList(sidebar);
       visibleTabs = Array.from(visibleTabs).filter(el => el.classList.contains(T.cssClassSideBarPage));
-      if (!visibleTabs || visibleTabs.length == 0)
+      if (!visibleTabs || visibleTabs.length != 1)
         showSidebarTab();
     });
 
