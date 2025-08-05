@@ -75,7 +75,9 @@ class puiButtonTOC extends puiButtonTabTree {
   onET_UserDataFileLoaded(evt) {
     storageSearch(STO_HELP, this.cfgFilename).then((srcTreeData) => {
       setTreeData(srcTreeData, this.cfgTreeId);
-      hideButton(this.button?.id, srcTreeData?.length > 0);
+      const newState = srcTreeData?.length > 0;
+      hideButton(this.button?.id, newState);
+      hideButton(this.tab?.id, newState);
     });
   }
 }
