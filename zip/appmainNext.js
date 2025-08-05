@@ -1,53 +1,3 @@
-//document.body.addEventListener('click', (x) => log(x.target.id));
-//Math.random().toString(36).slice(2, 10)
-//log(Math.random().toString(36).slice(2, 10));
-var uiTarg = UI_PLUGIN_HEADER;
-// // uiAddButton('xx-aa', '🛠️', UI_PLUGIN_HEADER, (x) => log('Ahoj hlavička'));
-// // //UI_PLUGIN_SIDEBAR;
-// // uiAddButton('downP-aa', '🤝', uiTarg, 
-// //   // (x) => 
-// //   // {
-// //   //   log('Ahoj sidebar');
-// //   //   //x.stop = true;
-// //   // }
-// //   null
-// // );
-// // var page1 = uiAddSidebarPage('downP-aa');
-// // uiAddTreeView('xtree', page1);
-// // page1.innerHTML += 'lorem ipsum test';
-// // // EventBus.sub("ClickedEvent", (d) => {
-// // //   log('__ ' + d.elementId)
-// // // }
-// // // );
-// // uiAddButton('xx-aa', '🛠️', uiTarg, (x) => log('Ahoj hlavička'));
-
-// // uiAddButton('downP-bb', '🧪', uiTarg, null);
-// // var page2 = uiAddSidebarPage('downP-bb');
-// // uiAddTreeView('xtree2', page2);
-
-//uiAddButton('downP-Plus', '+', UI_PLUGIN_SIDEBAR, (x) => uiAddButton('downP-' + newUID(), '🤝', UI_PLUGIN_SIDEBAR, (x) => hideButton(x.elementId, false)));
-
-// EventBus.sub("ClickedEvent", (d) => {
-//   hideButton(d.elementId);
-//   if (d.elementId.startsWith('downP-')) return;
-//   uiAddButton('downP-' + newUID(4), '🧪', (r) => hideButton(r.elementId), uiTarg);
-// });
-
-
-//log('Pre deact');
-//Plugins.deactivate('puiSidebar', 'sidebar');
-//Plugins.deactivate('puiHeader', 'header');
-showSidebarTab('sp-baaa');
-sendEvent('xNotExistEvent');
-// uiAddButton('downP-testIdea', '💡', UI_PLUGIN_SIDEBAR, H_BUTTON_WITH_TAB);
-// var trb = uiAddButton('downP-TopicTree', '📘', UI_PLUGIN_SIDEBAR, H_BUTTON_WITH_TAB);
-// uiAddTreeView('tree', trb[1]);
-//uiAddButton('downP-' + newUID(4), '🧪', UI_PLUGIN_HEADER, (r) => hideButton(r.elementId));
-log('T test trace severity.');
-log('My log test.');
-log('w my warning with small log test.');
-log('d naznama debug s malým.');
-
 EventBus.sub(EventNames.TreeDataChanged, (d) => {
   const treeTOCName = 'tree';
   if (d.treeId != treeTOCName)
@@ -66,8 +16,6 @@ EventBus.sub(EventNames.StorageAdded, async (d) => {
     return;
 
   notifyUserDataFileLoaded(d.fileName);
-
-  //configFileReload(FILE_CONFIG);
 
   // Load favicon
   const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);
@@ -118,26 +66,12 @@ content: ${bookOpen};
 }` 
     );
   }
-
-  // const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
-  // setChapterIndex(docList);
-
-  // var KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
-  // var KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
-  // var IDX_KEYWORDS = 'keywordList';
-  // setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
-
-  // KEYWORDS = (await storageSearch(STO_HELP, FILENAME_FTS_KEYWORDS));
-  // KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
-  // IDX_KEYWORDS = 'fulltextList';
-  // setIndexFileData(IDX_KEYWORDS, KEYWORDS, KWTOFILES);
   
   getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
   //loadPageByTreeId(d.newId, d.treeId);
 });
 
 EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
-  alert(':: UserDataFileLoaded ::');
   showSidebarTab();
 });
 
@@ -145,9 +79,6 @@ const PAR_NAME_PAGE = 'p'; // chapter page path
 
 const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
 const LK_MSG_NODATA = 'MSG_NODATA';
-
-// const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
-// const listingCount = parseInt(getUserConfigValue(KEY_LS_KWLISTINGCOUNT)) || 50;
 
 const KEY_LS_PRINTICONS = "printIcons";
 const printIcons = parseInt(getUserConfigValue(KEY_LS_PRINTICONS)) ?? 2;
@@ -166,46 +97,9 @@ function LoadURLParameters() {
 
 LoadURLParameters();
 const treeItemHandlerGet = () => idxTreeItem;
-// var navPanel = newNavigation('nav', treeItemHandlerGet, N_P_TREEITEM);
-// window.nav = navPanel;
-//~~~navPanel.updateNavButtons(idxTreeItem);
 
 const BTN_CHANGEVERSION = 'downP-ChangeVersion';
 const BTN_CHANGELANG = 'downP-ChangeLanguage';
-
-const handlers = {
-//  'downP-SwitchColorMode': (event) => { setColorMode() },
-  'downP-Home': (event) => { loadPage(event, 'README.md', 'README.md', 0) },
-//  '-downP-ToggleFS': (event) => { switchFullScreen() },
-  '-downP-Hide': (event) => { toggleSidebar() },
-//  '-downP-ToggleSide': (event) => { toggleSidebarSide() },
-
-  '-showBtn': (event) => { toggleSidebar() },
-  '-printBtn': (event) => { window.print() },
-
-//  'nav-left': (event) => { nav.navPrev(event) },
-//  'nav-top': (event) => { nav.navTop(event); },
-//  'nav-right': (event) => { nav.navNext(event); },
-  [BTN_CHANGEVERSION]: (event) => {
-    const pathVersions = '~' + getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
-    getPathData(pathVersions, pathVersions);
-    showSidebarTab(`sp-downP-ChapterAnchor`);
-   },
-};
-
-const handlerSwitchTab = (id) => showSidebarTab(id);
-
-function handlePnlBtn(event) {
-  const id = event.currentTarget.id;
-  if (handlers[id])
-    handlers[id](event);
-  else
-    handlerSwitchTab(`sp-${id}`);
-}
-
-document.querySelectorAll('.pnl-btn').forEach(btn => {
-  btn.addEventListener('click', handlePnlBtn);
-});
 
 const tree = document.getElementById('tree');
 
@@ -217,7 +111,6 @@ window.addEventListener('popstate', () => {
   }
 
   getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-  //~~~navPanel.updateNavButtons(idxTreeItem);
 });
 
 contentPane.addEventListener('click', function(event) {
@@ -240,19 +133,6 @@ contentPane.addEventListener('click', function(event) {
 });
 
 var languages = getLanguagesList();
-
-const langTab = document.getElementById('langList');
-//const LANGLINKS_PREFIX = 'lng|';
-
-// function handleSetLanguage(event) {
-//   const target = event.target.closest('a.langLink');
-//   if (!target) return;
-
-//   const id = target.id.substring(LANGLINKS_PREFIX.length);
-//   loadLocalization(id);
-// }
-
-//langTab?.addEventListener('click', handleSetLanguage);
 
 var PRJNAME_VAL = null;
 
@@ -291,14 +171,6 @@ loadLocalization(activeLanguage).then(() => {
       alert('FILE_CONFIG_TEST: ' + FILE_CONFIG_TEST);
       
       if (!FILE_CONFIG_TEST) {
-
-        // // // language from local storage probably does not exists, reload with english
-        // // if (activeLanguage !== DEFAULT_LANG) {
-        // //   alert('activeLanguage !== DEFAULT_LANG ... ' + DEFAULT_LANG);
-        // //   loadLocalization(DEFAULT_LANG);
-        // //   setUserConfigValue(KEY_LS_LANG, DEFAULT_LANG);
-        // //   location.reload(true);  
-        // // }
       } else {
         //--!await configFileReload(FILE_CONFIG);
         PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME).trim().split('/');
@@ -312,119 +184,12 @@ loadLocalization(activeLanguage).then(() => {
         setColorMode(getCurrentColorMode());
       }
       
-      //alert(':: Load languages: ');
-      // load languages
-      // // languages.then(async (languages) => {
-      // //   var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
-      // //   langsFromHelp = langsFromHelp.filter(lang => !languages.includes(lang));
-      // //   languages = await getLanguagesList(langsFromHelp);
-      // //   langTab.innerHTML = '';
-      
-      // //   for (var i = 0; i < languages.length; i++) {
-      // //     const parts = languages[i].split("|");
-      // //     const alias = parts[0]?.trim() || "";
-      // //     const name = parts[1]?.trim() || "";
-      // //     langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;
-      // //   }
-      // // });
-
-      //log(':: Load tree: ');
-      // load tree data
-      // // const srcTreeData = await storageSearch(STO_HELP, FILENAME_TREE);
-      // // setTreeData(srcTreeData, 'tree');
-      //tree.innerHTML = linesToHtmlTree(srcTreeData, N_P_TREEITEM);
-      // //fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
-      //~~~navPanel.updateNavButtons(idxTreeItem);
       
-      if (!srcTreeData) {
-        hideButton('downP-TopicTree');
-        showSidebarTab(`sp-${PANEL_NAME_CHAPTERANCHOR}`);
-      }
-          
-      // // Load keywords
-      // const KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
-
-      // if (KEYWORDS) {
-      //   const KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
-      //   const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
-      //   keywordLists.set(KLIST_NAME, klist);
-      //   await klist.readKeywordDatabase();
-      //   var foundKeywords = klist.getTreeData(null, listingCount);
-      //   const pane = document.getElementById(PANE_KEYWORDS_ID);
-        
-      //   if (pane)
-      //     pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_KWDS);
-      // } else {
-      //   hideButton('downP-Glossary');
+      // if (!srcTreeData) {
+      //   hideButton('downP-TopicTree');
+      //   showSidebarTab(`sp-${PANEL_NAME_CHAPTERANCHOR}`);
       // }
-      
-      // // fulltext keywords
-      // const FTSKEYWORDS = (await storageSearch(STO_HELP, FILENAME_FTS_KEYWORDS));
-      
-      // if (FTSKEYWORDS) {
-      //   const KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
-      //   const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
-      //   keywordLists.set(KLIST_FTS_NAME, klist);
-      //   await klist.readKeywordDatabase();
-      //   var foundKeywords = klist.getTreeData(null, listingCount);
-      //   const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
-        
-      //   if (pane)
-      //     pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_FTS);
-      // } else {
-      //   hideButton('downP-Fulltext');
-      // }
-      
-      // Load favicon
-      const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);
-      
-      if (customFavicon)
-        changeFavicon(customFavicon);
-      
-      // load chapter document
-      getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-      
-      // override book images in tree structure
-      var [bookOpen, bookClosed] = await Promise.all([
-        getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP),
-        getDataOfPathInZIPImage(FILENAME_BOOKC, STO_HELP),
-      ]);
-
-      var doOverride = null;
-      
-      if (bookOpen && bookClosed) {
-        bookOpen = `url("${bookOpen}")`;
-        bookClosed = `url("${bookClosed}")`;
-        doOverride = 1;
-      } else {
-        bookOpen = configGetValue(CFG_KEY_OverrideBookIconOpened);
-        bookClosed = configGetValue(CFG_KEY_OverrideBookIconClosed);
-        
-        if (bookOpen && bookClosed) {
-          const icon = document.createElement('span');
-          icon.innerHTML = bookOpen;
-          bookOpen = icon.innerHTML;
-          icon.innerHTML = bookClosed;
-          bookClosed = icon.innerHTML;
-          bookOpen = `"${bookOpen}"`;
-          bookClosed = `"${bookClosed}"`;
-          doOverride = 1;
-        }
-      }
-      
-      if (doOverride) {
-        appendCSS('overridePlusMinus',
-`ul.tree details > summary::before {
-  content: ${bookClosed};
-}
-
-ul.tree details[open] > summary::before {
-  transform: rotate(0deg);
-  content: ${bookOpen};
-}` 
-        );
-      }
 
       // other versions list
       const pathVersions = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
@@ -452,8 +217,6 @@ ul.tree details[open] > summary::before {
   }
 });
 
-
-
 /*S: Topic renderer logic integration */
 function convertRelativePathToViewerURI(val, id = undefined) {
   var pard = dataPathGeneral ? `${PAR_NAME_DOC}=${dataPathGeneral}&` : ``;
@@ -471,37 +234,6 @@ function setSearchParams(url, path, i) {
 /*E: Topic renderer logic integration */
 
 const FTSINPUT = 'fulltextList-i';
-
-function handleEnterOnField(event) {
-  return;
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    var id = event.target.id.replace('-i', '');
-    
-    var phrase = event.target.value;
-
-    if (event.target.id === FTSINPUT) {
-      phrase = phrase.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
-    
-    var foundKeywords = keywordLists.get(id).getTreeData(phrase, listingCount);
-    const pane = document.getElementById(id);
-    
-    if (pane)
-      pane.innerHTML = linesToHtmlTree(foundKeywords, "tr-" + event.target.id);
-  }
-  
-  if (event.key.substring(0, 3) === 'Esc') {
-    event.target.value = "";
-    event.target.blur(); 
-  }
-}
-
-// var input_kw = document.getElementById('keywordList-i');
-// input_kw?.addEventListener('keydown', handleEnterOnField);
-
-// var input_kw = document.getElementById(FTSINPUT);
-// input_kw?.addEventListener('keydown', handleEnterOnField);
 
 function handleClickOnTrees(event) {
   const target = event.target;
@@ -580,7 +312,6 @@ function removeIconsForPrint() {
   document.title = clearIconsFromTextSingleText(document.title);
 }
 
-//window.addEventListener('beforeprint', removeIconsForPrint);
 EventBus.sub('BeforePrint', removeIconsForPrint);
 
 EventBus.sub(EventNames.GetsChanges, (data) => {
@@ -590,12 +321,9 @@ EventBus.sub(EventNames.GetsChanges, (data) => {
 
 var state = getPluginsState();
 log(state);
-//log(state[0]);
-//log(state[1]);
 
-log('PreDea');
+
 Plugins.deactivate('pPluginManagement', '');
-//Plugins.deactivate('pGets', '');
 
 var state = getPluginsState();
 log(state);
@@ -604,10 +332,7 @@ log(state);
 EventBus.sub(EventNames.LOC_LOADED, (d) => {
   activeLanguage = getActiveLanguage();
   LoadURLParameters();
-  alert('dataPath  -- ' + dataPath);
-  alert(':: pre StorageAdd command.');
   storageAdd(dataPath, STO_HELP).then((x) => {
-    alert(':: after storage added - then section');
   });
 });
 
