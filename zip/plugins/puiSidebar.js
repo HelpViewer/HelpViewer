@@ -48,6 +48,7 @@ class puiSidebar extends IPlugin {
   }
 
   static addition = '<div class="sidebar" id="sidebar" role="navigation"><div class="toolbar toolbar-down multi-linePanel" id="toolbar-down"></div></div>';
+  static cssClassSideBarPage = 'sidebar-page';
 
   prigetSidebar() {
     return document.getElementById('sidebar');
@@ -76,7 +77,7 @@ class puiSidebar extends IPlugin {
         return;
       
       const div = document.createElement('div');
-      div.className = 'sidebar-page hidden';
+      div.className = T.cssClassSideBarPage + ' hidden';
       div.id = `sp-${reply.pageId}`;
 
       if (reply.role)
@@ -89,7 +90,10 @@ class puiSidebar extends IPlugin {
 
     const h_EVT_SIDE_PAGE_SHOW = (reply) => {
       if (!reply.pageId)
+      {
         reply.pageId = T._getVisibleButtonsList(toolbar)[0].id;
+        T._getVisibleButtonsList(toolbar)[0]?.click();
+      }
 
       reply.result = T.showSidebarTab(`sp-${reply.pageId}`);
     }
@@ -127,7 +131,13 @@ class puiSidebar extends IPlugin {
     }
     TI.subscribedButtonAccept = EventBus.sub(EventNames.ButtonSend, h_buttonAccept);
 
-    TI.subscribedSetVisibility = EventBus.sub(EventNames.ElementSetVisibility, (x) => T.recomputeButtonPanel(x.element));
+    TI.subscribedSetVisibility = EventBus.sub(EventNames.ElementSetVisibility, (x) => {
+      T.recomputeButtonPanel(x.element);
+      var visibleTabs = T._getVisibleButtonsList(sidebar);
+      visibleTabs = Array.from(visibleTabs).filter(el => el.classList.contains(T.cssClassSideBarPage));
+      if (!visibleTabs || visibleTabs.length == 0)
+        showSidebarTab();
+    });
 
     window.addEventListener("resize", this.handler_checkSidebarWidth);
     window.addEventListener("load", this.handler_checkSidebarWidth);
