@@ -1,6 +1,6 @@
 /*S: Feature: Keyword index handling */
 // User defined word dictionary
-const FILENAME_FILES = 'files.lst';
+//const FILENAME_FILES = 'files.lst';
 const FILENAME_KEYWORDS = 'keywords.lst';
 const FILENAME_KWTOFILES = 'keywords-files.lst';
 

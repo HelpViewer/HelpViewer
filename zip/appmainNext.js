@@ -65,8 +65,6 @@ content: ${bookOpen};
     );
   }
 
-  const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
-  setChapterIndex(docList);
 
   var KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
   var KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));

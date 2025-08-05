@@ -13,21 +13,25 @@ class ChapterIndexFileGetData extends IEvent {
 }
 
 class pChapterIndexFile extends IPlugin {
+  static KEY_CFG_FILENAME = 'FILENAME';
+
   static EVT_CHF_SET = ChapterIndexFileSetData.name;
   static EVT_CHF_GET = ChapterIndexFileGetData.name;
-
-  static xKEY_CFG_FILENAME = 'FILENAME';
 
   constructor(aliasName, data) {
     super(aliasName, data);
     this.pathHeadingAlias = new Map();
     this.idxPath = [];
     this.eventIdStrict = true;
+    this.DEFAULT_KEY_CFG_FILENAME = 'files.lst';
   }
 
   init() {
     const T = this.constructor;
     const TI = this;
+
+    this.cfgFilename = this.config[T.KEY_CFG_FILENAME] || TI.DEFAULT_KEY_CFG_FILENAME;
+
     const h_EVT_CHF_SET = (data) => {
       if (!data || !data.data) {
         data.result = undefined;
@@ -64,6 +68,11 @@ class pChapterIndexFile extends IPlugin {
     super.deInit();
   }
 
+  onET_UserDataFileLoaded(evt) {
+    storageSearch(STO_HELP, this.cfgFilename).then((docList) => {
+      setChapterIndex(docList);
+    });
+  }
 }
 
 Plugins.catalogize(pChapterIndexFile);
