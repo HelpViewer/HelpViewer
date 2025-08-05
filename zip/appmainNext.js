@@ -75,6 +75,14 @@ EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
   showSidebarTab();
 });
 
+var PRJNAME_VAL = null;
+
+EventBus.sub(EventNames.ConfigFileReloadFinished, async (d) => {
+  if (d.id != 'FILE_CONFIG')
+    return;
+  PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+});
+
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
 const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
@@ -134,8 +142,6 @@ contentPane.addEventListener('click', function(event) {
 
 var languages = getLanguagesList();
 
-var PRJNAME_VAL = null;
-
 loadLocalization(activeLanguage).then(() => {
   if (!dataPath || !pagePath) {
     SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
@@ -166,23 +172,6 @@ loadLocalization(activeLanguage).then(() => {
         return;
       }
       
-      // load config file
-      var FILE_CONFIG_TEST = (await storageSearch(STO_HELP, FILENAME_CONFIG));
-      alert('FILE_CONFIG_TEST: ' + FILE_CONFIG_TEST);
-      
-      if (!FILE_CONFIG_TEST) {
-      } else {
-        //--!await configFileReload(FILE_CONFIG);
-        PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME).trim().split('/');
-        
-        var _sidebarVisible = configGetValue(CFG_KEY_OverrideSidebarVisible);
-        alert('_sidebarVisible: ' + _sidebarVisible);
-
-        if (_sidebarVisible)
-          toggleSidebar(_sidebarVisible);
-
-        setColorMode(getCurrentColorMode());
-      }
       
       revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
       
