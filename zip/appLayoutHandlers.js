@@ -1,9 +1,4 @@
 /*S: Feature: Sidebar hide/show (sidebar switching) */
-
-const sidebar = document.getElementById('sidebar');
-const showBtn = document.getElementById('showBtn');
-const container = document.getElementById('container');
-
 function toggleVisibility(target, newVal) {
   if (!target) return;
   const currentlyHidden = target.classList.contains(C_HIDDENC);
