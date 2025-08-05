@@ -1,3 +1,53 @@
+//document.body.addEventListener('click', (x) => log(x.target.id));
+//Math.random().toString(36).slice(2, 10)
+//log(Math.random().toString(36).slice(2, 10));
+var uiTarg = UI_PLUGIN_HEADER;
+// // uiAddButton('xx-aa', '🛠️', UI_PLUGIN_HEADER, (x) => log('Ahoj hlavička'));
+// // //UI_PLUGIN_SIDEBAR;
+// // uiAddButton('downP-aa', '🤝', uiTarg, 
+// //   // (x) => 
+// //   // {
+// //   //   log('Ahoj sidebar');
+// //   //   //x.stop = true;
+// //   // }
+// //   null
+// // );
+// // var page1 = uiAddSidebarPage('downP-aa');
+// // uiAddTreeView('xtree', page1);
+// // page1.innerHTML += 'lorem ipsum test';
+// // // EventBus.sub("ClickedEvent", (d) => {
+// // //   log('__ ' + d.elementId)
+// // // }
+// // // );
+// // uiAddButton('xx-aa', '🛠️', uiTarg, (x) => log('Ahoj hlavička'));
+
+// // uiAddButton('downP-bb', '🧪', uiTarg, null);
+// // var page2 = uiAddSidebarPage('downP-bb');
+// // uiAddTreeView('xtree2', page2);
+
+//uiAddButton('downP-Plus', '+', UI_PLUGIN_SIDEBAR, (x) => uiAddButton('downP-' + newUID(), '🤝', UI_PLUGIN_SIDEBAR, (x) => hideButton(x.elementId, false)));
+
+// EventBus.sub("ClickedEvent", (d) => {
+//   hideButton(d.elementId);
+//   if (d.elementId.startsWith('downP-')) return;
+//   uiAddButton('downP-' + newUID(4), '🧪', (r) => hideButton(r.elementId), uiTarg);
+// });
+
+
+//log('Pre deact');
+//Plugins.deactivate('puiSidebar', 'sidebar');
+//Plugins.deactivate('puiHeader', 'header');
+showSidebarTab('sp-baaa');
+sendEvent('xNotExistEvent');
+// uiAddButton('downP-testIdea', '💡', UI_PLUGIN_SIDEBAR, H_BUTTON_WITH_TAB);
+// var trb = uiAddButton('downP-TopicTree', '📘', UI_PLUGIN_SIDEBAR, H_BUTTON_WITH_TAB);
+// uiAddTreeView('tree', trb[1]);
+//uiAddButton('downP-' + newUID(4), '🧪', UI_PLUGIN_HEADER, (r) => hideButton(r.elementId));
+log('T test trace severity.');
+log('My log test.');
+log('w my warning with small log test.');
+log('d naznama debug s malým.');
+
 EventBus.sub(EventNames.TreeDataChanged, (d) => {
   const treeTOCName = 'tree';
   if (d.treeId != treeTOCName)
@@ -7,7 +57,11 @@ EventBus.sub(EventNames.TreeDataChanged, (d) => {
   revealTreeItem(`${treeTOCName}|${idxTreeItem}`);
 });
 
+//EventBus.sub(EVT_PluginsLoadingFinished, (d) => showSidebarTab());
+
 EventBus.sub(EventNames.StorageAdded, async (d) => {
+  alert(':: StorageAdded fired. ' + pagePath);
+
   if (d.storageName != STO_HELP)
     return;
 
@@ -65,6 +119,8 @@ content: ${bookOpen};
     );
   }
 
+  // const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
+  // setChapterIndex(docList);
 
   // var KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
   // var KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
@@ -90,8 +146,8 @@ const PAR_NAME_PAGE = 'p'; // chapter page path
 const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
 const LK_MSG_NODATA = 'MSG_NODATA';
 
-const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
-const listingCount = parseInt(getUserConfigValue(KEY_LS_KWLISTINGCOUNT)) || 50;
+// const KEY_LS_KWLISTINGCOUNT = "keywordListingCount";
+// const listingCount = parseInt(getUserConfigValue(KEY_LS_KWLISTINGCOUNT)) || 50;
 
 const KEY_LS_PRINTICONS = "printIcons";
 const printIcons = parseInt(getUserConfigValue(KEY_LS_PRINTICONS)) ?? 2;
@@ -110,26 +166,26 @@ function LoadURLParameters() {
 
 LoadURLParameters();
 const treeItemHandlerGet = () => idxTreeItem;
-var navPanel = newNavigation('nav', treeItemHandlerGet, N_P_TREEITEM);
-window.nav = navPanel;
-navPanel.updateNavButtons(idxTreeItem);
+// var navPanel = newNavigation('nav', treeItemHandlerGet, N_P_TREEITEM);
+// window.nav = navPanel;
+//~~~navPanel.updateNavButtons(idxTreeItem);
 
 const BTN_CHANGEVERSION = 'downP-ChangeVersion';
 const BTN_CHANGELANG = 'downP-ChangeLanguage';
 
 const handlers = {
-  'downP-SwitchColorMode': (event) => { setColorMode() },
+//  'downP-SwitchColorMode': (event) => { setColorMode() },
   'downP-Home': (event) => { loadPage(event, 'README.md', 'README.md', 0) },
-  'downP-ToggleFS': (event) => { switchFullScreen() },
-  'downP-Hide': (event) => { toggleSidebar() },
-  'downP-ToggleSide': (event) => { toggleSidebarSide() },
+//  '-downP-ToggleFS': (event) => { switchFullScreen() },
+  '-downP-Hide': (event) => { toggleSidebar() },
+//  '-downP-ToggleSide': (event) => { toggleSidebarSide() },
 
-  'showBtn': (event) => { toggleSidebar() },
-  'printBtn': (event) => { window.print() },
+  '-showBtn': (event) => { toggleSidebar() },
+  '-printBtn': (event) => { window.print() },
 
-  'nav-left': (event) => { nav.navPrev(event) },
-  'nav-top': (event) => { nav.navTop(event); },
-  'nav-right': (event) => { nav.navNext(event); },
+//  'nav-left': (event) => { nav.navPrev(event) },
+//  'nav-top': (event) => { nav.navTop(event); },
+//  'nav-right': (event) => { nav.navNext(event); },
   [BTN_CHANGEVERSION]: (event) => {
     const pathVersions = '~' + getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
     getPathData(pathVersions, pathVersions);
@@ -186,17 +242,17 @@ contentPane.addEventListener('click', function(event) {
 var languages = getLanguagesList();
 
 const langTab = document.getElementById('langList');
-const LANGLINKS_PREFIX = 'lng-';
+//const LANGLINKS_PREFIX = 'lng|';
 
-function handleSetLanguage(event) {
-  const target = event.target.closest('a.langLink');
-  if (!target) return;
+// function handleSetLanguage(event) {
+//   const target = event.target.closest('a.langLink');
+//   if (!target) return;
 
-  const id = target.id.substring(LANGLINKS_PREFIX.length);
-  loadLocalization(id);
-}
+//   const id = target.id.substring(LANGLINKS_PREFIX.length);
+//   loadLocalization(id);
+// }
 
-langTab?.addEventListener('click', handleSetLanguage);
+//langTab?.addEventListener('click', handleSetLanguage);
 
 var PRJNAME_VAL = null;
 
@@ -213,6 +269,7 @@ loadLocalization(activeLanguage).then(() => {
   }
   
   if (dataPath) {
+    alert('dataPath: ' + dataPath);
     (async () => {
       // load zip file
       try {
@@ -231,86 +288,93 @@ loadLocalization(activeLanguage).then(() => {
       
       // load config file
       var FILE_CONFIG_TEST = (await storageSearch(STO_HELP, FILENAME_CONFIG));
+      alert('FILE_CONFIG_TEST: ' + FILE_CONFIG_TEST);
       
       if (!FILE_CONFIG_TEST) {
-        // language from local storage probably does not exists, reload with english
-        if (activeLanguage !== DEFAULT_LANG) {
-          loadLocalization(DEFAULT_LANG);
-          location.reload(true);  
-        }
+
+        // // // language from local storage probably does not exists, reload with english
+        // // if (activeLanguage !== DEFAULT_LANG) {
+        // //   alert('activeLanguage !== DEFAULT_LANG ... ' + DEFAULT_LANG);
+        // //   loadLocalization(DEFAULT_LANG);
+        // //   setUserConfigValue(KEY_LS_LANG, DEFAULT_LANG);
+        // //   location.reload(true);  
+        // // }
       } else {
-        await configFileReload(FILE_CONFIG);
+        //--!await configFileReload(FILE_CONFIG);
         PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME).trim().split('/');
         
-        toggleSidebar(configGetValue(CFG_KEY_OverrideSidebarVisible, sidebarVisible));
+        var _sidebarVisible = configGetValue(CFG_KEY_OverrideSidebarVisible);
+        alert('_sidebarVisible: ' + _sidebarVisible);
+
+        if (_sidebarVisible)
+          toggleSidebar(_sidebarVisible);
 
         setColorMode(getCurrentColorMode());
       }
       
+      //alert(':: Load languages: ');
       // load languages
-      languages.then(async (languages) => {
-        var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
-        langsFromHelp = langsFromHelp.filter(lang => !languages.includes(lang));
-        languages = await getLanguagesList(langsFromHelp);
-        langTab.innerHTML = '';
+      // // languages.then(async (languages) => {
+      // //   var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
+      // //   langsFromHelp = langsFromHelp.filter(lang => !languages.includes(lang));
+      // //   languages = await getLanguagesList(langsFromHelp);
+      // //   langTab.innerHTML = '';
       
-        for (var i = 0; i < languages.length; i++) {
-          const parts = languages[i].split("|");
-          const alias = parts[0]?.trim() || "";
-          const name = parts[1]?.trim() || "";
-          langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;
-        }
-      });
+      // //   for (var i = 0; i < languages.length; i++) {
+      // //     const parts = languages[i].split("|");
+      // //     const alias = parts[0]?.trim() || "";
+      // //     const name = parts[1]?.trim() || "";
+      // //     langTab.innerHTML += `<li><a class='langLink' href="" id="${LANGLINKS_PREFIX}${name}" title="${alias}">${alias}</a></li>`;
+      // //   }
+      // // });
 
+      //log(':: Load tree: ');
       // load tree data
-      const srcTreeData = await storageSearch(STO_HELP, FILENAME_TREE);
-      setTreeData(srcTreeData, 'tree');
+      // // const srcTreeData = await storageSearch(STO_HELP, FILENAME_TREE);
+      // // setTreeData(srcTreeData, 'tree');
       //tree.innerHTML = linesToHtmlTree(srcTreeData, N_P_TREEITEM);
-      fixImgRelativePathToZipPaths(tree, STO_HELP);
+      // //fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
-      navPanel.updateNavButtons(idxTreeItem);
+      //~~~navPanel.updateNavButtons(idxTreeItem);
       
       if (!srcTreeData) {
         hideButton('downP-TopicTree');
         showSidebarTab(`sp-${PANEL_NAME_CHAPTERANCHOR}`);
       }
-      
-      const docList = (await storageSearch(STO_HELP, FILENAME_FILES));
-      setChapterIndex(docList);
-    
-      // Load keywords
-      const KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
+          
+      // // Load keywords
+      // const KEYWORDS = (await storageSearch(STO_HELP, FILENAME_KEYWORDS));
 
-      if (KEYWORDS) {
-        const KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
-        const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
-        keywordLists.set(KLIST_NAME, klist);
-        await klist.readKeywordDatabase();
-        var foundKeywords = klist.getTreeData(null, listingCount);
-        const pane = document.getElementById(PANE_KEYWORDS_ID);
+      // if (KEYWORDS) {
+      //   const KWTOFILES = (await storageSearch(STO_HELP, FILENAME_KWTOFILES));
+      //   const klist = newKeywordDatabase(KLIST_NAME, KEYWORDS, KWTOFILES);
+      //   keywordLists.set(KLIST_NAME, klist);
+      //   await klist.readKeywordDatabase();
+      //   var foundKeywords = klist.getTreeData(null, listingCount);
+      //   const pane = document.getElementById(PANE_KEYWORDS_ID);
         
-        if (pane)
-          pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_KWDS);
-      } else {
-        hideButton('downP-Glossary');
-      }
+      //   if (pane)
+      //     pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_KWDS);
+      // } else {
+      //   hideButton('downP-Glossary');
+      // }
       
-      // fulltext keywords
-      const FTSKEYWORDS = (await storageSearch(STO_HELP, FILENAME_FTS_KEYWORDS));
+      // // fulltext keywords
+      // const FTSKEYWORDS = (await storageSearch(STO_HELP, FILENAME_FTS_KEYWORDS));
       
-      if (FTSKEYWORDS) {
-        const KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
-        const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
-        keywordLists.set(KLIST_FTS_NAME, klist);
-        await klist.readKeywordDatabase();
-        var foundKeywords = klist.getTreeData(null, listingCount);
-        const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
+      // if (FTSKEYWORDS) {
+      //   const KWTOFILES = (await storageSearch(STO_HELP, FILENAME_FTS_KWTOFILES));
+      //   const klist = newKeywordDatabase(KLIST_FTS_NAME, FTSKEYWORDS, KWTOFILES);
+      //   keywordLists.set(KLIST_FTS_NAME, klist);
+      //   await klist.readKeywordDatabase();
+      //   var foundKeywords = klist.getTreeData(null, listingCount);
+      //   const pane = document.getElementById(PANE_FTS_KEYWORDS_ID);
         
-        if (pane)
-          pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_FTS);
-      } else {
-        hideButton('downP-Fulltext');
-      }
+      //   if (pane)
+      //     pane.innerHTML = linesToHtmlTree(foundKeywords, N_P_TREEITEM_FTS);
+      // } else {
+      //   hideButton('downP-Fulltext');
+      // }
       
       // Load favicon
       const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);
@@ -381,7 +445,7 @@ ul.tree details[open] > summary::before {
 
       if (dataPath === FILENAME_ZIP_ON_USER_INPUT) {
         hideButton(BTN_CHANGEVERSION);
-        hideButton(BTN_CHANGELANG);
+        //hideButton(BTN_CHANGELANG);
       }
 
     })();
@@ -409,6 +473,7 @@ function setSearchParams(url, path, i) {
 const FTSINPUT = 'fulltextList-i';
 
 function handleEnterOnField(event) {
+  return;
   if (event.key === 'Enter') {
     event.preventDefault();
     var id = event.target.id.replace('-i', '');
@@ -432,11 +497,11 @@ function handleEnterOnField(event) {
   }
 }
 
-var input_kw = document.getElementById('keywordList-i');
-input_kw.addEventListener('keydown', handleEnterOnField);
+// var input_kw = document.getElementById('keywordList-i');
+// input_kw?.addEventListener('keydown', handleEnterOnField);
 
-var input_kw = document.getElementById(FTSINPUT);
-input_kw.addEventListener('keydown', handleEnterOnField);
+// var input_kw = document.getElementById(FTSINPUT);
+// input_kw?.addEventListener('keydown', handleEnterOnField);
 
 function handleClickOnTrees(event) {
   const target = event.target;
@@ -464,7 +529,7 @@ function handleClickOnTrees(event) {
   if (path.startsWith('@')) {
     path = path.substring(1).split(":");
     event.preventDefault();
-    searchKeywordE(target, path[0], path[1]);
+    //searchKeywordE(target, path[0], path[1]);
     const p = document.createElement('span');
     a.parentNode.replaceChild(p, a);
     p.innerHTML = a.innerHTML;
@@ -487,9 +552,9 @@ function handleClickOnTrees(event) {
     toggleSidebar();
 }
 
-document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
-  tree.addEventListener('click', handleClickOnTrees);
-});
+// document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
+//   tree.addEventListener('click', handleClickOnTrees);
+// });
 
 const DIRECTIVE_PRINT_KEEP_ICONS = '<!-- @print-keep-icons -->';
 
@@ -515,17 +580,34 @@ function removeIconsForPrint() {
   document.title = clearIconsFromTextSingleText(document.title);
 }
 
+//window.addEventListener('beforeprint', removeIconsForPrint);
 EventBus.sub('BeforePrint', removeIconsForPrint);
 
-  alert("unsets: " + data.unset);
-  alert("changes: " + Array.from(data.changes.keys()));
 EventBus.sub(EventNames.GetsChanges, (data) => {
+  log("unsets: " + data.unset);
+  log("changes: " + Array.from(data.changes.keys()));
 });
+
+var state = getPluginsState();
+log(state);
+//log(state[0]);
+//log(state[1]);
+
+log('PreDea');
+Plugins.deactivate('pPluginManagement', '');
+//Plugins.deactivate('pGets', '');
+
+var state = getPluginsState();
+log(state);
+
 
 EventBus.sub(EventNames.LOC_LOADED, (d) => {
   activeLanguage = getActiveLanguage();
   LoadURLParameters();
-  _Storage.add(STO_HELP, dataPath).then((x) => {
+  alert('dataPath  -- ' + dataPath);
+  alert(':: pre StorageAdd command.');
+  storageAdd(dataPath, STO_HELP).then((x) => {
+    alert(':: after storage added - then section');
   });
 });
 
