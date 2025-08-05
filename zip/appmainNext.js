@@ -80,7 +80,7 @@ content: ${bookOpen};
   //loadPageByTreeId(d.newId, d.treeId);
 });
 
-EventBus.sub("UserDataFileLoaded", async (d) => {
+EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
   alert(':: UserDataFileLoaded ::');
   showSidebarTab();
 });
@@ -517,18 +517,18 @@ function removeIconsForPrint() {
 
 EventBus.sub('BeforePrint', removeIconsForPrint);
 
-EventBus.sub("GetsChanges", (data) => {
   alert("unsets: " + data.unset);
   alert("changes: " + Array.from(data.changes.keys()));
+EventBus.sub(EventNames.GetsChanges, (data) => {
 });
 
-EventBus.sub("LOC_LOADED", (d) => {
+EventBus.sub(EventNames.LOC_LOADED, (d) => {
   activeLanguage = getActiveLanguage();
   LoadURLParameters();
   _Storage.add(STO_HELP, dataPath).then((x) => {
   });
 });
 
-EventBus.sub("NavigationMove", (d) => {
+EventBus.sub(EventNames.NavigationMove, (d) => {
   loadPageByTreeId(d.newId, d.treeId);
 });
