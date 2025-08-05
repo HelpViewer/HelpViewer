@@ -104,7 +104,7 @@ var activeLanguage = getActiveLanguage();
 
 function LoadURLParameters() {
   var handler = (x) => x;
-  dataPathGeneral = getGets(PAR_NAME_DOC, handler);
+  dataPathGeneral = getGets(PAR_NAME_DOC, handler) || FILENAME_DEFAULT_HELPFILE;
   dataPath = dataPathGeneral?.replace('__', activeLanguage);
   pagePath = getGets(PAR_NAME_PAGE, handler) || FILENAME_1STTOPIC;
   idxTreeItem = parseInt(getGets(PAR_NAME_ID, handler)) || 0;
