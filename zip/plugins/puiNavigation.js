@@ -97,7 +97,7 @@ class puiNavigation extends IPlugin {
       TI.buttonTop = uiAddButton(idTop, '⬆', target, _buttonActionTop);
 
       const _buttonActionRight = (evt) => {
-        const next = getId()+1;
+        const next = this.getId()+1;
         _buttonAction(evt, next, 1);
       }
       TI.buttonRight = uiAddButton(idRight, '➡', target, _buttonActionRight);
