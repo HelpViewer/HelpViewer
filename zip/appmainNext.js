@@ -143,18 +143,9 @@ contentPane.addEventListener('click', function(event) {
 var languages = getLanguagesList();
 
 loadLocalization(activeLanguage).then(() => {
-  if (!dataPath || !pagePath) {
-    SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
-  }
-  
-  if (!dataPath) {
-    log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);
-    dataPath = FILENAME_DEFAULT_HELPFILE;
-    msgNoData = _T(LK_MSG_NODATA);
-    contentPane.innerHTML = msgNoData;
-  }
-  
-  if (dataPath) {
+  if (!dataPath)
+    log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);  
+  else {
     alert('dataPath: ' + dataPath);
     (async () => {
       // load zip file
@@ -221,8 +212,6 @@ function setSearchParams(url, path, i) {
   });
 }
 /*E: Topic renderer logic integration */
-
-const FTSINPUT = 'fulltextList-i';
 
 function handleClickOnTrees(event) {
   const target = event.target;
@@ -302,21 +291,6 @@ function removeIconsForPrint() {
 }
 
 EventBus.sub('BeforePrint', removeIconsForPrint);
-
-EventBus.sub(EventNames.GetsChanges, (data) => {
-  log("unsets: " + data.unset);
-  log("changes: " + Array.from(data.changes.keys()));
-});
-
-var state = getPluginsState();
-log(state);
-
-
-Plugins.deactivate('pPluginManagement', '');
-
-var state = getPluginsState();
-log(state);
-
 
 EventBus.sub(EventNames.LOC_LOADED, (d) => {
   msgNoData = _T(LK_MSG_NODATA);
