@@ -290,6 +290,18 @@ function removeIconsForPrint() {
   document.title = clearIconsFromTextSingleText(document.title);
 }
 
+function clearIconsFromText(el) {
+  el.childNodes.forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      node.textContent = clearIconsFromTextSingleText(node.textContent);
+    }
+  });
+}
+
+function clearIconsFromTextSingleText(txt) {
+  return txt?.replace(/[^\x00-\x7F\u00A0-\u024F.,;:!?()\[\]{}<>"'@#%&*\-\s]/g, '');
+}
+
 EventBus.sub('BeforePrint', removeIconsForPrint);
 
 EventBus.sub(EventNames.LOC_LOADED, (d) => {
