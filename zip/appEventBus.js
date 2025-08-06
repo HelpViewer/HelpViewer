@@ -26,12 +26,15 @@ const EventBus = {
       return;
     }
 
+    var i = 0;
+
     for (const callback of handlers) {
       try {
         if (data && data.requiresDoneHandler && !data.doneHandler)
           log(`W Data object for ${event} has defined doneHandler property as required.`);
 
         const result = callback(data);
+        log(`Event ${event} (${data.eventId}) state after (${i}.) handler:`, data);
         
         if (data?.stop === true) break;
 
@@ -44,6 +47,8 @@ const EventBus = {
       } catch (err) {
         log(`E Error in event callback for "${event}":`, err);
       }
+
+      i++;
     }
   }
 };
