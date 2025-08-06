@@ -1,4 +1,5 @@
 const DEBUG_MODE = true;
+const LOG_MINIMIZE_OBJECT = true;
 
 function newUID(length = 8) {
   var str = '';
@@ -25,6 +26,19 @@ function log(msg, ...dataI) {
   }
 
   const data = [msg];
+
+  if (LOG_MINIMIZE_OBJECT) {
+    dataI.forEach((x, i) => {
+      if (typeof x === 'object') {
+        //dataI[i] = JSON.parse(JSON.stringify(x)); // unfortunately skips undefined members!
+        const clean = Object.create(null);
+        Object.assign(clean, dataI[i]);
+        clean['__className'] = x.constructor.name;
+        dataI[i] = clean;
+      }
+    });
+  }
+
   if (dataI.length > 0)
     data.push(...dataI);
 
