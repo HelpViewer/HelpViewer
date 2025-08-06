@@ -319,10 +319,17 @@ log(state);
 
 
 EventBus.sub(EventNames.LOC_LOADED, (d) => {
+  msgNoData = _T(LK_MSG_NODATA);
+  contentPane.innerHTML = msgNoData;
+  SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
+
   activeLanguage = getActiveLanguage();
   LoadURLParameters();
-  storageAdd(dataPath, STO_HELP).then((x) => {
-  });
+  try {
+    storageAdd(dataPath, STO_HELP);
+  } catch (error) {
+    return;
+  }
 });
 
 EventBus.sub(EventNames.NavigationMove, (d) => {
