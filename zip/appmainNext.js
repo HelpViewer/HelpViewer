@@ -10,8 +10,6 @@ EventBus.sub(EventNames.TreeDataChanged, (d) => {
 //EventBus.sub(EVT_PluginsLoadingFinished, (d) => showSidebarTab());
 
 EventBus.sub(EventNames.StorageAdded, async (d) => {
-  alert(':: StorageAdded fired. ' + pagePath);
-
   if (d.storageName != STO_HELP)
     return;
 
@@ -146,7 +144,6 @@ loadLocalization(activeLanguage).then(() => {
   if (!dataPath)
     log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);  
   else {
-    alert('dataPath: ' + dataPath);
     (async () => {
       // load zip file
       try {
