@@ -102,7 +102,9 @@ class pLocalizationSwitcher extends IPlugin {
     this.langStrs = {};
   
     const langJS = await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileJS}`);
-    appendJavaScript('langDynStrings', langJS, document.head);
+    const jsKey = 'langDynStrings';
+    document.getElementById(jsKey)?.remove();
+    appendJavaScript(jsKey, langJS, document.head);
 
     const langFlatStrs = (await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileTXT}`)).split("\n");
     
