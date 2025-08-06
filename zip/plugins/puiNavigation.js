@@ -47,10 +47,11 @@ class puiNavigation extends IPlugin {
         var indexNext = i + 1;
         const prevTreeItem = document.getElementById(treeId + '|' + indexPrev);
         const nextTreeItem = document.getElementById(treeId + '|' + indexNext);
+        alert(prevTreeItem + ' . ' + nextTreeItem);
 
         toggleVisibility(TI.buttonLeft, !!prevTreeItem);
         toggleVisibility(TI.buttonRight, !!nextTreeItem);
-        toggleVisibility(TI.buttonTop, !(i <= 1));
+        toggleVisibility(TI.buttonTop, (i > 1) && (prevTreeItem || nextTreeItem));
       }
 
       const _buttonAction = (evt, next, direction) => {
