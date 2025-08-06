@@ -41,7 +41,7 @@ class pStorage extends IPlugin {
   static EVT_STORAGE_ADDED = StorageAdded.name;
   static EVT_STORAGE_GET = StorageGet.name;
   static EVT_STORAGE_GET_IMAGE = StorageGetImages.name;
-  static EVT_STORAGE_GET_SUBDIRS = 'EVT_STORAGE_GET_SUBDIRS';
+  static EVT_STORAGE_GET_SUBDIRS = StorageGetSubdirs.name;
 
   constructor(aliasName, data) {
     super(aliasName, data);

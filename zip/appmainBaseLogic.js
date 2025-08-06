@@ -84,7 +84,7 @@ function storageSearch(key, filePath, format = STOF_TEXT) {
 }
 
 function storageGetSubdirs(key, filePath) {
-  return sendEventWProm('EVT_STORAGE_GET_SUBDIRS', (input) => {
+  return sendEventWProm(EventNames.StorageGetSubdirs, (input) => {
     input.fileName = filePath;
     input.storageName = key;
   });
