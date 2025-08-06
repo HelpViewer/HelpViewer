@@ -71,6 +71,7 @@ class IPlugin {
 
   _subscribeHandler(name, alias, handler) {
     var unsubscribe = EventBus.sub(name, handler);
+    handler.__pluginPath = `(${this.constructor.name}:${alias}):${handler.name}`;
     log(`[Plugins] Subscription for event "${name}" in plugin "${this.constructor.name}" with id: "${alias}" created.`);
     this.unsubscribersToEB.push(unsubscribe);  
   }

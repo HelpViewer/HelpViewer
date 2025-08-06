@@ -34,9 +34,14 @@ const EventBus = {
           log(`W Data object for ${event} has defined doneHandler property as required.`);
 
         const result = callback(data);
-        log(`Event ${event} (${data.eventId}) state after (${i}.) handler:`, data);
+        data.__lastProcessor = callback.__pluginPath;
         
-        if (data?.stop === true) break;
+        if (data?.stop === true) {
+          data.__stopper = callback.__pluginPath;
+          break;
+        }
+
+        log(`Event ${event} (${data.eventId}) state after (${i}.) handler:`, data);
 
         if (result instanceof Promise) {
           result.then(() => {
