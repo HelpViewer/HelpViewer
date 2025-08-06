@@ -35,13 +35,13 @@ const EventBus = {
 
         const result = callback(data);
         data.__lastProcessor = callback.__pluginPath;
+        log(`Event ${event} (${data.eventId}) state after (${i}.) handler:`, data);
         
         if (data?.stop === true) {
           data.__stopper = callback.__pluginPath;
+          log(`Event ${event} (${data.eventId}) processing stopped by handler ${data.__stopper}`, data);
           break;
         }
-
-        log(`Event ${event} (${data.eventId}) state after (${i}.) handler:`, data);
 
         if (result instanceof Promise) {
           result.then(() => {
