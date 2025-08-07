@@ -23,7 +23,7 @@ function loadLocalization(localizationName) {
     d.name = localizationName;
   });
 
-  FILENAME_DEFAULT_HELPFILE = `hlp/Help-${localizationName}.zip`;
+  FILENAME_DEFAULT_HELPFILE = `hlp/Help-__.zip`;
 
   return Promise.resolve();
 }
