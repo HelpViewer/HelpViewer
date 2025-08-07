@@ -35,6 +35,6 @@ function revealTreeItem(id) {
 }
 
 function openSubtree(parent) {
-  parent.querySelectorAll("details").forEach(d => d.open = true);
+  $A('details', parent).forEach(d => d.open = true);
 }
 /*E: Topic tree handling */

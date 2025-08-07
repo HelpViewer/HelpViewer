@@ -3,6 +3,7 @@ const LOG_MINIMIZE_OBJECT = true;
 
 const $ = (name) => document.getElementById(name);
 const $O = (selector, parent = document) => parent?.querySelector(selector);
+const $A = (selector, parent = document) => parent?.querySelectorAll(selector);
 
 function newUID(length = 8) {
   var str = '';

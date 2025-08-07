@@ -101,7 +101,7 @@ function getDataOfPathInZIPImage(path, archive) {
 /*S: Fixing local in archive paths to base64 dump*/
 function fixImgRelativePathToZipPaths(doc, archive, exclude = '')
 {
-  doc.querySelectorAll(`img${exclude}`).forEach((img) => {
+  $A(`img${exclude}`, doc).forEach((img) => {
     const src = img.getAttribute('src');
     if (src && !/^https?:\/\//.test(src)) {
       getDataOfPathInZIPImage(src, archive).then((data) => {

@@ -160,7 +160,7 @@ class puiSidebar extends IPlugin {
   }
 
   static _getVisibleButtonsList(panel) {
-    return panel?.querySelectorAll(`:scope > :not(.${C_HIDDENC})`);
+    return $A(`:scope > :not(.${C_HIDDENC})`, panel);
   }
 
   static recomputeButtonPanel(button)

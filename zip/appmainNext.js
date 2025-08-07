@@ -278,7 +278,7 @@ function removeIconsForPrint() {
   if (decision == 1)
     return;
 
-  document.querySelectorAll('.content *').forEach(el => {
+  $A('.content *').forEach(el => {
     clearIconsFromText(el);
   });
   

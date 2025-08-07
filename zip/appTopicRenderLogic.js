@@ -53,7 +53,7 @@ function transformOutput(htmlTxt) {
   //relative link paths update for ZIP structure
   const checkList = ["href", "src", "data-href"];
 
-  doc.querySelectorAll("*").forEach((el) => {
+  $A('*', doc).forEach((el) => {
     checkList.forEach((attr) => {
       if (el.hasAttribute(attr)) {
         const val = el.getAttribute(attr);
@@ -90,7 +90,7 @@ function transformOutputConnected(doc) {
   setHeader((x) => fixImgRelativePathToZipPaths(x, STO_HELP, ":not(.treepic)"));
 
   //mermaid graphs transformation
-  const codeBlocks = doc.querySelectorAll('code.language-mermaid');
+  const codeBlocks = $A('code.language-mermaid', doc);
   if (codeBlocks.length > 0) {
     loadMermaid().then(() => {
       codeBlocks.forEach(code => {
@@ -105,13 +105,13 @@ function transformOutputConnected(doc) {
   }
   
   //code listings processing
-  doc.querySelectorAll('pre code').forEach((block) => {
+  $A('pre code', doc).forEach((block) => {
     block.classList.add('line-numbers');
     Prism.highlightElement(block);
   });
 
   //script blocks refresh
-  const scripts = doc.querySelectorAll("script");
+  const scripts = $A('script', doc);
   var idx = -1;
 
   scripts.forEach((oldScript) => {
@@ -122,7 +122,7 @@ function transformOutputConnected(doc) {
 
 function transformOutputConnectedMd(doc) {
   // append bookmarks to chapters
-  const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  const headings = $A('h1, h2, h3, h4, h5, h6', doc);
   const counters = [0, 0, 0, 0, 0, 0];
 
   headings.forEach(heading => {
@@ -198,14 +198,14 @@ async function getPathData(path, heading) {
       if (foundKeywords !== "" && kwFound > 1) {
         collector2.innerHTML = linesToHtmlTree(foundKeywords, "tr-ContentPage");
         //alert(collector2.innerHTML);
-        //const firstList = collector2.querySelectorAll('li');
+        //const firstList = $A('li', collector2);
         //collector.appendChild(firstList);
         //collector2.innerHTML = collector.innerHTML;
         //collector.innerHTML = '';
       }
 
       keywordLists.get(dictionary)?.searchKeyword(word, collector);
-      const firstDetails = $O('ul', $O('details', collector))?.querySelectorAll('li');
+      const firstDetails = $A('li', $O('ul', $O('details', collector)));
 
       if (firstDetails) {
         firstDetails.className = 'tree';
@@ -267,7 +267,7 @@ async function getPathData(path, heading) {
   }
   
   // fill bookmarks panel
-  const bookmarksFound = Array.from(contentPane.querySelectorAll('a'));
+  const bookmarksFound = Array.from($A('a', contentPane));
   
   var treeString = '';
   
@@ -298,7 +298,7 @@ async function getPathData(path, heading) {
   
   // additional steps for files read from repository
   if (path.startsWith("~") && path.endsWith(FILENAME_CHANGELOG)) {
-    const headings = document.querySelectorAll('h2');
+    const headings = $A('h2');
 
     SetHeaderText(_T('versionList'));
     
