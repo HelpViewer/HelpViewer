@@ -43,7 +43,7 @@ class puiSidebar extends IPlugin {
     super(aliasName, data);
 
     this.handler_checkSidebarWidth = (evt) => this._checkSidebarWidth();
-    this.contentPane = document.getElementById('content');
+    this.contentPane = $('content');
     this.eventIdStrict = true;
   }
 
@@ -51,7 +51,7 @@ class puiSidebar extends IPlugin {
   static cssClassSideBarPage = 'sidebar-page';
 
   prigetSidebar() {
-    return document.getElementById('sidebar');
+    return $('sidebar');
   }
 
   init() {
@@ -62,7 +62,7 @@ class puiSidebar extends IPlugin {
       y.handler = T._processClickedBottomPanelEvent;
     });
 
-    const containerMain = document.getElementById('container');
+    const containerMain = $('container');
     const tmpDiv = document.createElement('div');
     tmpDiv.innerHTML = T.addition;
     const node = tmpDiv.firstChild;
@@ -71,7 +71,7 @@ class puiSidebar extends IPlugin {
 
     const sidebar = TI.prigetSidebar();
     this.sidebar = sidebar;
-    const toolbar = document.getElementById('toolbar-down');
+    const toolbar = $('toolbar-down');
 
     const h_EVT_SIDE_PAGE_CREATE = (reply) => {
       if (!reply.pageId)
@@ -193,7 +193,7 @@ class puiSidebar extends IPlugin {
 
   /*S: Feature: Sidebar tabs handling */
   static showSidebarTab(id) {
-    const tab = document.getElementById(id);
+    const tab = $(id);
     
     if (tab) {
       Array.from(tab.parentElement.children).forEach(child => {

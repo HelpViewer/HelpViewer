@@ -72,7 +72,7 @@ class pui extends IPlugin {
     TI.eventDefinitions.push([T.EVT_BUTTON_CREATE, ButtonCreate, h_EVT_BUTTON_CREATE]);
 
     const h_EVT_ELEMENT_SET_VISIBILITY = (reply) => {
-      const button = document.getElementById(reply.elementId);
+      const button = $(reply.elementId);
       if (!button) 
         return;
 

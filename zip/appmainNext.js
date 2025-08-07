@@ -2,7 +2,7 @@ EventBus.sub(EventNames.TreeDataChanged, (d) => {
   const treeTOCName = 'tree';
   if (d.treeId != treeTOCName)
     return;
-  const tree = document.getElementById(treeTOCName);
+  const tree = $(treeTOCName);
   fixImgRelativePathToZipPaths(tree, STO_HELP);
   revealTreeItem(`${treeTOCName}|${idxTreeItem}`);
 });
@@ -107,7 +107,7 @@ const treeItemHandlerGet = () => idxTreeItem;
 const BTN_CHANGEVERSION = 'downP-ChangeVersion';
 const BTN_CHANGELANG = 'downP-ChangeLanguage';
 
-const tree = document.getElementById('tree');
+const tree = $('tree');
 
 window.addEventListener('popstate', () => {
   LoadURLParameters();
@@ -178,7 +178,7 @@ loadLocalization(activeLanguage).then(() => {
         txt = null;
       }
       
-      var button = document.getElementById(BTN_CHANGEVERSION);
+      var button = $(BTN_CHANGEVERSION);
       
       if (txt && button) {
         button.classList.remove(C_HIDDENC);
@@ -250,8 +250,8 @@ function handleClickOnTrees(event) {
   }
 
   if (
-    document.getElementById(`sp-${PANEL_NAME_CHAPTERANCHOR}`).classList.contains(C_HIDDENC) &&
-    document.getElementById(`sp-downP-TopicTree`).classList.contains(C_HIDDENC) &&
+    $(`sp-${PANEL_NAME_CHAPTERANCHOR}`).classList.contains(C_HIDDENC) &&
+    $(`sp-downP-TopicTree`).classList.contains(C_HIDDENC) &&
     !a.id.startsWith('kwdf-|')
   ) return;
 

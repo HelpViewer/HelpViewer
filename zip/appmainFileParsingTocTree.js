@@ -25,7 +25,7 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
           clickEvent = '';
           const nameO = `${treename}|${linksEmitted}`;
           getLatestReleaseBundleUri().then(hrefVal => {
-            const targetO = document.getElementById(nameO);
+            const targetO = $(nameO);
             targetO.href = hrefVal;
           });
       } else
@@ -33,7 +33,7 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
           clickEvent = '';
           const nameO = `${treename}|${linksEmitted}`;
           getLatestReleaseBundleUri(FILE_CONFIG, `Help-${activeLanguage}.zip`).then(hrefVal => {
-            const targetO = document.getElementById(nameO);
+            const targetO = $(nameO);
             targetO.href = hrefVal;
           });
       } else 

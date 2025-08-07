@@ -45,8 +45,8 @@ class puiNavigation extends IPlugin {
         i = parseInt(i);
         var indexPrev = i - 1;
         var indexNext = i + 1;
-        const prevTreeItem = document.getElementById(treeId + '|' + indexPrev);
-        const nextTreeItem = document.getElementById(treeId + '|' + indexNext);
+        const prevTreeItem = $(treeId + '|' + indexPrev);
+        const nextTreeItem = $(treeId + '|' + indexNext);
 
         toggleVisibility(TI.buttonLeft, !!prevTreeItem);
         toggleVisibility(TI.buttonRight, !!nextTreeItem);
@@ -81,7 +81,7 @@ class puiNavigation extends IPlugin {
   
       const _buttonActionTop = (evt) => {
         const current = this.getId();
-        const treeItem = document.getElementById(treeId + '|' + current);
+        const treeItem = $(treeId + '|' + current);
         var next = 1;
         
         try {

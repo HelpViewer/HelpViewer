@@ -1,6 +1,10 @@
 const DEBUG_MODE = true;
 const LOG_MINIMIZE_OBJECT = true;
 
+const $ = (name) => {
+  return document.getElementById(name);
+}
+
 function newUID(length = 8) {
   var str = '';
 
@@ -81,7 +85,7 @@ function appendField(target, id, defaultV = '', type = 'text') {
 
 function formCorsHelpFilesUpload(fieldHelpLangTitle = 'Help-(language).zip', fieldHvDataTitle = 'data.zip', formName = 'form', formInName = 'formIn')
 {
-  const formO = document.getElementById(formInName);
+  const formO = $(formInName);
   const fieldHvData = fieldHvDataTitle;
   const fieldHelpLang = fieldHelpLangTitle;
   //const fieldHelpBase = 'Help-.zip';
@@ -96,12 +100,12 @@ function formCorsHelpFilesUpload(fieldHelpLangTitle = 'Help-(language).zip', fie
   button.textContent = "Send";
   formO.appendChild(button);
 
-  const formM = document.getElementById(formName);
+  const formM = $(formName);
   formM.addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const hvData = document.getElementById(fieldHvData);
-    const helpLang = document.getElementById(fieldHelpLang);
+    const hvData = $(fieldHvData);
+    const helpLang = $(fieldHelpLang);
 
     if (!hvData?.files?.length || !helpLang?.files?.length)
       return;
@@ -109,14 +113,14 @@ function formCorsHelpFilesUpload(fieldHelpLangTitle = 'Help-(language).zip', fie
     const fileHvData = hvData.files[0];
     const fileHelpLang = helpLang.files[0];
 
-    // var fileHelpBase = document.getElementById(fieldHelpBase);
+    // var fileHelpBase = $(fieldHelpBase);
 
     // if (fileHelpBase?.files?.length)
     //   fileHelpBase = fileHelpBase[0];
     // else
     //   fileHelpBase = null;
 
-    document.getElementById(id_JSAppRun)?.remove();
+    $(id_JSAppRun)?.remove();
     var st = _Storage.add(STO_HELP, FILENAME_ZIP_ON_USER_INPUT, fileHelpLang).then(obsah => {
       main(fileHvData);
       const url = new URL(window.location.href);
@@ -381,7 +385,7 @@ const ZIPHelpers = (() => {
 })();
 
 function appendCSS(id, content) {
-  //if (document.getElementById(id)) return;
+  //if ($(id)) return;
   const style = document.createElement('style');
   style.textContent = content;
   style.id = id;
@@ -389,7 +393,7 @@ function appendCSS(id, content) {
 }
 
 function appendJavaScript(id, content, parentO) {
-  if (document.getElementById(id)) return;
+  if ($(id)) return;
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.textContent = content;

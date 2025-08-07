@@ -38,5 +38,5 @@ function hideButton(btnid, newVisibility = false) {
 }
 
 function scrollToAnchor(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  $(id)?.scrollIntoView({ behavior: 'smooth' });
 }

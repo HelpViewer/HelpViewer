@@ -13,9 +13,9 @@ const PLG_KEY_HASH = '_hash';
 const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
 const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
 
-const contentPane = document.getElementById('content');
-const bookmarksPane = document.getElementById('subsList');
-const bookmarksPaneButton = document.getElementById(PANEL_NAME_CHAPTERANCHOR);
+const contentPane = $('content');
+const bookmarksPane = $('subsList');
+const bookmarksPaneButton = $(PANEL_NAME_CHAPTERANCHOR);
 
 // interconnect with your logic
 var msgNoData = '';
@@ -78,7 +78,7 @@ function transformOutput(htmlTxt) {
 
 async function loadMermaid() {
   const MERMAID_ID = 'ext-mermaid';
-  if (!document.getElementById(MERMAID_ID)) {
+  if (!$(MERMAID_ID)) {
     const srcMermaid = await storageSearch(STO_DATA, 'mermaid.min.js');
     appendJavaScript(MERMAID_ID, srcMermaid, document.head);
   }

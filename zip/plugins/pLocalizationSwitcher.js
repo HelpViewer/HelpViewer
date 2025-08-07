@@ -103,7 +103,7 @@ class pLocalizationSwitcher extends IPlugin {
   
     const langJS = await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileJS}`);
     const jsKey = 'langDynStrings';
-    document.getElementById(jsKey)?.remove();
+    $(jsKey)?.remove();
     appendJavaScript(jsKey, langJS, document.head);
 
     const langFlatStrs = (await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileTXT}`)).split("\n");
@@ -144,7 +144,7 @@ class pLocalizationSwitcher extends IPlugin {
     
     strings.forEach(key => {
       const val = this.langStrs[key]();
-      var foundO = document.getElementById(key);
+      var foundO = $(key);
       
       if (foundO) {
         foundO.title = val;
@@ -153,7 +153,7 @@ class pLocalizationSwitcher extends IPlugin {
         const splits = key.split('__');
         
         if (splits.length > 1) {
-          foundO = document.getElementById(splits[0]);
+          foundO = $(splits[0]);
           
           if (foundO) {
             if (splits[1] in foundO)

@@ -2,7 +2,7 @@
 var idxTreeItem = 0;
 
 function loadPageByTreeId(id, baseName) {
-  const treeItem = document.getElementById(`${baseName}|${id}`);
+  const treeItem = $(`${baseName}|${id}`);
   if (treeItem) {
     const syntheticClick = prepareFakeClick();
     treeItem.dispatchEvent(syntheticClick);
@@ -22,7 +22,7 @@ function prepareFakeClick() {
 }
 
 function revealTreeItem(id) {
-  const el = document.getElementById(id);
+  const el = $(id);
   if (!el) return;
 
   var parent = el.parentElement;

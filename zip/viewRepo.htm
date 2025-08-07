@@ -21,7 +21,7 @@ function _init() {
   translateThis.forEach(id => {
     var idField = id;
     if (id === valH1) idField = 'mtitle';
-    var el = document.getElementById(idField);
+    var el = $(idField);
     if (el) el.innerHTML = _T(id);
   });
 
@@ -31,7 +31,7 @@ function _init() {
   const fieldLanguages = '_viewRepo-langs';
   const fieldZIP = '_viewRepo-zip';
   
-  const formO = document.getElementById('form');
+  const formO = $('form');
 
   appendField(formO, fieldOrg, '');
   appendField(formO, fieldRepo, '');
@@ -39,11 +39,11 @@ function _init() {
   appendField(formO, fieldLanguages, 'off', 'checkbox');
   appendField(formO, fieldZIP, 'off', 'checkbox');
 
-  const iorg = document.getElementById(fieldOrg);
-  const irepo = document.getElementById(fieldRepo);
-  const ibranch = document.getElementById(fieldBranch);
-  const ilangs = document.getElementById(fieldLanguages);
-  const izip = document.getElementById(fieldZIP);
+  const iorg = $(fieldOrg);
+  const irepo = $(fieldRepo);
+  const ibranch = $(fieldBranch);
+  const ilangs = $(fieldLanguages);
+  const izip = $(fieldZIP);
 
   const onBlur = updateLink;
   const eventName = 'change';
@@ -66,7 +66,7 @@ function _init() {
     const langs = ilangs.checked;
     const zip = izip.checked;
   
-    const span = document.getElementById("previewLink");
+    const span = $("previewLink");
   
     if (org && repo) {
       var url = (zip && zip !== 'off') 

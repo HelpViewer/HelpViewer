@@ -27,7 +27,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
 
     hideButton(this.button.id, x.result);
 
-    const target = document.getElementById(this.cfgTreeId);
+    const target = $(this.cfgTreeId);
     this.constructor._requestIndexData(target, alias);
   }
 
@@ -61,7 +61,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
   _preStandardInit() {
     const fieldId = `${this.cfgTreeId}-i`;
     this.tab?.insertAdjacentHTML('afterbegin', `<input type="text" id="${fieldId}"></input>`);
-    const field = document.getElementById(fieldId);
+    const field = $(fieldId);
     const T = this.constructor;
     field.addEventListener('keydown', T._handleEnterOnField.bind(this));
   }
@@ -71,7 +71,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
       event.preventDefault();
     
       var id = event.target.id.replace('-i', '');
-      const pane = document.getElementById(id);
+      const pane = $(id);
       
       if (!pane)
         return;

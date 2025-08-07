@@ -18,15 +18,15 @@ class puiHeader extends IPlugin {
   init() {
     const T = this.constructor;
     const TI = this;
-    const containerMain = document.getElementById('main');
+    const containerMain = $('main');
     const tmpDiv = document.createElement('div');
     tmpDiv.innerHTML = T.addition;
     const node = tmpDiv.firstChild;
     if (containerMain && node)
       containerMain.prepend(node);
 
-    const mainTitle = document.getElementById('mtitle');
-    const toolbar = document.getElementById('toolbar');
+    const mainTitle = $('mtitle');
+    const toolbar = $('toolbar');
 
     const h_EVT_HEAD_SET = (data) => {
       if (typeof data.payload === 'function') {
@@ -49,7 +49,7 @@ class puiHeader extends IPlugin {
   }
 
   deInit() {
-    const header = document.getElementById('header');
+    const header = $('header');
     header?.remove();
     super.deInit();
   }
