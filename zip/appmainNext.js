@@ -70,6 +70,9 @@ content: ${bookOpen};
 });
 
 EventBus.sub(EventNames.ClickedEventTree, async (d) => {
+  if (d.treeId != 'tree' && d.treeId != 'subsList') 
+    return;
+
   const sidebar = $('sidebar');
   if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
     toggleSidebar();
