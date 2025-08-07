@@ -202,9 +202,17 @@ class SetTreeData extends IEvent {
   }
 }
 
+class ClickedEventTree extends ClickedEvent {
+  constructor() {
+    super();
+    this.treeId = undefined;
+  }
+}
+
 class puiButtonTabTree extends puiButtonTab {
   static EVT_SET_TREE_DATA = SetTreeData.name;
   static EVT_TREE_DATA_CHANGED = 'TreeDataChanged';
+  static EVT_TREE_CLICKED = ClickedEventTree.name;
 
   static KEY_CFG_TREEID = 'TREEID';
 
@@ -243,6 +251,7 @@ class puiButtonTabTree extends puiButtonTab {
     };
     TI.eventDefinitions.push([T.EVT_SET_TREE_DATA, SetTreeData, h_EVT_SET_TREE_DATA]);
     TI.eventDefinitions.push([T.EVT_TREE_DATA_CHANGED, SetTreeData, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_TREE_CLICKED, ClickedEventTree, null]); // outside event handlers
 
     super.init();
     TI._preStandardInit();
@@ -250,7 +259,25 @@ class puiButtonTabTree extends puiButtonTab {
     this.tree = uiAddTreeView(TI.cfgTreeId, TI.tab);
     tree = this.tree;
 
-    registerOnClick(TI.cfgTreeId, (e) => this._treeClick(e));
+    registerOnClick(TI.cfgTreeId, (e) => {
+      const result = this._treeClick(e);
+      sendEvent(T.EVT_TREE_CLICKED, (dc) => {
+        const bkpCreatedAt = dc.createdAt;
+        const bkpEventId = dc.eventId;
+        const bkpParentEventId = dc.parentEventId;
+        const bkpEventName = dc.eventName;
+
+        Object.assign(dc, e);
+
+        dc.createdAt = bkpCreatedAt;
+        dc.eventId = bkpEventId;
+        dc.parentEventId = bkpParentEventId;
+        dc.eventName = bkpEventName;
+
+        dc.result = result;
+        dc.treeId = TI.cfgTreeId;
+      });
+    });
   }
 
   deInit() {

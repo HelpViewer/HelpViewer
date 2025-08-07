@@ -69,6 +69,12 @@ content: ${bookOpen};
   //loadPageByTreeId(d.newId, d.treeId);
 });
 
+EventBus.sub(EventNames.ClickedEventTree, async (d) => {
+  const sidebar = $('sidebar');
+  if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
+    toggleSidebar();
+});
+
 EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
   showSidebarTab();
 });
@@ -255,8 +261,8 @@ function handleClickOnTrees(event) {
     !a.id.startsWith('kwdf-|')
   ) return;
 
-  if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
-    toggleSidebar();
+  // if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
+  //   toggleSidebar();
 }
 
 // document.querySelectorAll('ul.tree:not(#langList)').forEach(tree => {
