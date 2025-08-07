@@ -66,11 +66,12 @@ class pTopicRenderer extends IPlugin {
 
       r.uri = r.uri[0];
       r.uriAnchor = r.uri.split('#');
+      r.uri = r.uriAnchor[0];
 
-      if (r.uriAnchor) {
-        r.uri = r.uriAnchor[0];
+      if (r.uriAnchor && r.uriAnchor.length > 1)
         r.uriAnchor = `#${r.uriAnchor[1]}`;
-      }
+      else 
+        r.uriAnchor = undefined;
 
       // r.content = undefined;
       // r.storage = undefined;  

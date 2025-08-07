@@ -55,22 +55,23 @@ class puiButtonTOC extends puiButtonTabTree {
     data = data.split(';');
     var path = data[0];
   
-    if (path.startsWith('@')) {
-      path = path.substring(1).split(":");
-      //searchKeywordE(target, path[0], path[1]);
-      const p = document.createElement('span');
-      a.parentNode.replaceChild(p, a);
-      p.innerHTML = a.innerHTML;
+    // if (path.startsWith('@')) {
+    //   path = path.substring(1).split(":");
+    //   //searchKeywordE(target, path[0], path[1]);
+    //   const p = document.createElement('span');
+    //   a.parentNode.replaceChild(p, a);
+    //   p.innerHTML = a.innerHTML;
+    // // } else
+    // // if (path.startsWith('#')) {
+    // //   scrollToAnchor(path.substring(1));
     // } else
-    // if (path.startsWith('#')) {
-    //   scrollToAnchor(path.substring(1));
-    } else
-    {
-      showChapterA(event, a);
-      //-loadPage(event, path, target.innerHTML, idI);
-      // getPathData(path, target.innerHTML);
-      // idxTreeItem = idI;
-    }
+    // {
+    //   showChapterA(event, a);
+    //   //-loadPage(event, path, target.innerHTML, idI);
+    //   // getPathData(path, target.innerHTML);
+    //   // idxTreeItem = idI;
+    // }
+    showChapterA(event, a);
   }
 
   onET_UserDataFileLoaded(evt) {
