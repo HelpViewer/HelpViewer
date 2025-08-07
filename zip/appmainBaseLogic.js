@@ -323,8 +323,8 @@ function getIndexFileKeywordData(id, keyword) {
 /*S: Plugin: pTopicRenderer */
 function showChapterA(event, a) {
   return showChapter(event, 
-    a.getAttribute('data-param') || a.innerHTML, 
-    a.href, a);
+    a.innerHTML, 
+    a.getAttribute('data-param') || a.href, a);
 }
 
 function showChapter(event, heading, address, sourceObject) {

@@ -1,16 +1,3 @@
-class ShowChapter extends IEvent {
-  constructor() {
-    super();
-    this.event = undefined;
-    this.heading = undefined;
-    this.address = undefined;
-    this.sourceObject = undefined;
-    this.resolutions = new ShowChapterResolutions();
-    this.containerIdTitle = undefined;
-    this.containerIdContent = undefined;
-  }
-}
-
 class ShowChapterResolutions extends IEvent {
   constructor() {
     super();
@@ -20,6 +7,19 @@ class ShowChapterResolutions extends IEvent {
     this.uriAnchor = undefined;
     this.addData = new Map();
     this.storage = undefined;
+    this.containerIdTitle = undefined;
+    this.containerIdContent = undefined;
+  }
+}
+
+class ShowChapter extends IEvent {
+  constructor() {
+    super();
+    this.event = undefined;
+    this.heading = undefined;
+    this.address = undefined;
+    this.sourceObject = undefined;
+    this.result = undefined;
     this.containerIdTitle = undefined;
     this.containerIdContent = undefined;
   }
@@ -50,7 +50,19 @@ class pTopicRenderer extends IPlugin {
     //if (/^(https?|ftp):\/\//i.test(ed.fileName))
 
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
-      
+      data.result = new ShowChapterResolutions();
+      const r = data.result;
+      r.heading = getChapterAlternativeHeading(data.uri) || data.heading;
+      r.containerIdTitle = data.containerIdTitle || this.cfgIdTitle;
+      r.containerIdContent = data.containerIdContent || this.cfgIdContent;
+
+      // r.content = undefined;
+      // r.uri = undefined;
+      // r.uriAnchor = undefined;
+      // r.addData = new Map();
+      // r.storage = undefined;
+  
+      console.warn('!!!', data);
     };
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, StorageGet, h_EVT_TOPREN_SHOW_CHAPTER]);
 
