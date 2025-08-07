@@ -103,6 +103,7 @@ class pui extends IPlugin {
       found(e);
     } else {
       log(`E Event ${EventNames.ClickedEvent} (${e.eventId}, id: ${e.elementId}) cannot be forwarded by any of ids: ${e.elementId}, ${e.elementIdRoot}`);        
+      _notifyClickedEvent(e, undefined, undefined, ClickedEventNotForwarded.name);
     }
   }
 }
@@ -209,6 +210,13 @@ class ClickedEventTree extends ClickedEvent {
   }
 }
 
+class ClickedEventNotForwarded extends ClickedEvent {
+  constructor() {
+    super();
+    this.treeId = undefined;
+  }
+}
+
 class puiButtonTabTree extends puiButtonTab {
   static EVT_SET_TREE_DATA = SetTreeData.name;
   static EVT_TREE_DATA_CHANGED = 'TreeDataChanged';
@@ -261,22 +269,7 @@ class puiButtonTabTree extends puiButtonTab {
 
     registerOnClick(TI.cfgTreeId, (e) => {
       const result = this._treeClick(e);
-      sendEvent(T.EVT_TREE_CLICKED, (dc) => {
-        const bkpCreatedAt = dc.createdAt;
-        const bkpEventId = dc.eventId;
-        //const bkpParentEventId = dc.parentEventId;
-        const bkpEventName = dc.eventName;
-
-        Object.assign(dc, e);
-
-        dc.createdAt = bkpCreatedAt;
-        dc.eventId = bkpEventId;
-        dc.parentEventId = e.eventId;
-        dc.eventName = bkpEventName;
-
-        dc.result = result;
-        dc.treeId = TI.cfgTreeId;
-      });
+      _notifyClickedEvent(e, result, this.cfgTreeId);
     });
   }
 
@@ -289,4 +282,23 @@ class puiButtonTabTree extends puiButtonTab {
 
   _treeClick(e) {
   }
+}
+
+function _notifyClickedEvent(e, result, cfgTreeId, eventName = ClickedEventTree.name) {
+  return sendEvent(eventName, (dc) => {
+    const bkpCreatedAt = dc.createdAt;
+    const bkpEventId = dc.eventId;
+    //const bkpParentEventId = dc.parentEventId;
+    const bkpEventName = dc.eventName;
+
+    Object.assign(dc, e);
+
+    dc.createdAt = bkpCreatedAt;
+    dc.eventId = bkpEventId;
+    dc.parentEventId = e.eventId;
+    dc.eventName = bkpEventName;
+
+    dc.result = result;
+    dc.treeId = cfgTreeId;
+  });
 }

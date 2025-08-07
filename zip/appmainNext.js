@@ -82,6 +82,10 @@ EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
   showSidebarTab();
 });
 
+EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
+  alert('undeliverable: ' + d.elementId)
+});
+
 var PRJNAME_VAL = null;
 
 EventBus.sub(EventNames.ConfigFileReloadFinished, async (d) => {
