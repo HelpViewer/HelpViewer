@@ -190,7 +190,7 @@ function newKeywordDatabase(id, keywordData, keywordToFilesData) {
       var targetkwPath = targetkwName[0];
       targetkwName = targetkwName[1];
       if (!['http', 'https', 'ftp', ':', '='].some(proto => targetkwPath.startsWith(proto))) {
-        treeData += ` ${targetkwName}|||${targetkwPath}${MARKER_MARKWORD}${id}\n`
+        treeData += ` ${targetkwName}|||${targetkwPath}${MARKER_MARKWORD}KW;${id}\n`
       } else {
         treeData += ` ${targetkwName}|||${targetkwPath}\n`
       }

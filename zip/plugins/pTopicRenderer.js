@@ -19,7 +19,8 @@ class ShowChapter extends IEvent {
     this.heading = undefined;
     this.address = undefined;
     this.sourceObject = undefined;
-    this.result = undefined;
+    this.result = new ShowChapterResolutions();
+    this.result.parentEventId = this.eventId;
     this.containerIdTitle = undefined;
     this.containerIdContent = undefined;
   }
@@ -50,21 +51,21 @@ class pTopicRenderer extends IPlugin {
     //if (/^(https?|ftp):\/\//i.test(ed.fileName))
 
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
-      data.result = new ShowChapterResolutions();
+      //data.result = new ShowChapterResolutions();
       const r = data.result;
-      r.heading = getChapterAlternativeHeading(data.uri) || data.heading;
+      r.heading = getChapterAlternativeHeading(data.uri)[1] || data.heading;
       r.containerIdTitle = data.containerIdTitle || this.cfgIdTitle;
       r.containerIdContent = data.containerIdContent || this.cfgIdContent;
-
+      r.uri = typeof data.uri === 'string' ? data.uri.split(T.MARKER_ADDDATA) : [];
+      const splits = typeof r.uri[1] === 'string' ? r.uri[1].split(MARKER_ADDDATA_SPLITTER) : [];
       // r.content = undefined;
-      // r.uri = undefined;
       // r.uriAnchor = undefined;
       // r.addData = new Map();
       // r.storage = undefined;
   
       console.warn('!!!', data);
     };
-    TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, StorageGet, h_EVT_TOPREN_SHOW_CHAPTER]);
+    TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
 
     
     super.init();
