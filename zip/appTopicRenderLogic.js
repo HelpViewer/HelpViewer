@@ -205,7 +205,7 @@ async function getPathData(path, heading) {
       }
 
       keywordLists.get(dictionary)?.searchKeyword(word, collector);
-      const firstDetails = collector.querySelector('details')?.querySelector('ul').querySelectorAll('li');
+      const firstDetails = $O('ul', $O('details', collector))?.querySelectorAll('li');
 
       if (firstDetails) {
         firstDetails.className = 'tree';
@@ -303,7 +303,7 @@ async function getPathData(path, heading) {
     SetHeaderText(_T('versionList'));
     
     headings.forEach(heading => {
-      const boomark = heading.querySelector('a');
+      const boomark = $O('a', heading);
       const verId = heading.textContent.replace(C_ANCHOR_CONTENT, '');
       
       if (isNaN(Number(verId.substring(0,8)))) 

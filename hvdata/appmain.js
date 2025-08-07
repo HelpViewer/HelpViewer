@@ -1,9 +1,8 @@
 const DEBUG_MODE = true;
 const LOG_MINIMIZE_OBJECT = true;
 
-const $ = (name) => {
-  return document.getElementById(name);
-}
+const $ = (name) => document.getElementById(name);
+const $O = (selector, parent = document) => parent?.querySelector(selector);
 
 function newUID(length = 8) {
   var str = '';

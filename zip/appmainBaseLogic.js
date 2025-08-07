@@ -114,7 +114,7 @@ function fixImgRelativePathToZipPaths(doc, archive, exclude = '')
 /*E: Fixing local in archive paths to base64 dump*/
 
 function changeFavicon(src) {
-  var link = document.querySelector("link[rel~='icon']");
+  var link = $O("link[rel~='icon']");
   
   if (!link) {
     link = document.createElement("link");

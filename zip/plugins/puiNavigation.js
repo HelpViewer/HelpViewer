@@ -85,7 +85,7 @@ class puiNavigation extends IPlugin {
         var next = 1;
         
         try {
-          next = parseInt(treeItem.parentElement.parentElement.parentElement.querySelector('summary > a').id.slice(treeId.length + 1));
+          next = parseInt($O('summary > a', treeItem.parentElement.parentElement.parentElement).id.slice(treeId.length + 1));
         } catch (error) {
         }
 
