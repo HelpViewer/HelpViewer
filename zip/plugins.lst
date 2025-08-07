@@ -11,6 +11,7 @@ pui
 puiHeader:header
 puiSidebar:sidebar
 puiButtonTOC:toc
+puiButtonBmarks:bmarks
 pIndexFile:keywordList;fulltextList
 puiButtonKeywordIndex:keywordList;fulltextList
 puiButtonChangeLanguage
