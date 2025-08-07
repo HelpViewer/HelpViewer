@@ -50,7 +50,7 @@ class puiNavigation extends IPlugin {
 
         toggleVisibility(TI.buttonLeft, !!prevTreeItem);
         toggleVisibility(TI.buttonRight, !!nextTreeItem);
-        toggleVisibility(TI.buttonTop, (i > 1) && (prevTreeItem || nextTreeItem));
+        toggleVisibility(TI.buttonTop, Boolean((i > 1) && (prevTreeItem || nextTreeItem)));
       }
 
       const _buttonAction = (evt, next, direction) => {
