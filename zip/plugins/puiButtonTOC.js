@@ -57,18 +57,18 @@ class puiButtonTOC extends puiButtonTabTree {
   
     if (path.startsWith('@')) {
       path = path.substring(1).split(":");
-      event.preventDefault();
       //searchKeywordE(target, path[0], path[1]);
       const p = document.createElement('span');
       a.parentNode.replaceChild(p, a);
       p.innerHTML = a.innerHTML;
     } else
     if (path.startsWith('#')) {
-      event.preventDefault();
       scrollToAnchor(path.substring(1));
     } else
     {
       loadPage(event, path, target.innerHTML, idI);
+      // getPathData(path, target.innerHTML);
+      // idxTreeItem = idI;
     }
   }
 
