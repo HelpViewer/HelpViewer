@@ -61,9 +61,9 @@ class puiButtonTOC extends puiButtonTabTree {
       const p = document.createElement('span');
       a.parentNode.replaceChild(p, a);
       p.innerHTML = a.innerHTML;
-    } else
-    if (path.startsWith('#')) {
-      scrollToAnchor(path.substring(1));
+    // } else
+    // if (path.startsWith('#')) {
+    //   scrollToAnchor(path.substring(1));
     } else
     {
       showChapterA(event, a);

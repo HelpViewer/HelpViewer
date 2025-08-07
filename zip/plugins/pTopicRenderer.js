@@ -53,17 +53,27 @@ class pTopicRenderer extends IPlugin {
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
       //data.result = new ShowChapterResolutions();
       const r = data.result;
-      r.heading = getChapterAlternativeHeading(data.uri)[1] || data.heading;
+      r.heading = getChapterAlternativeHeading(data.address)[1] || data.heading;
       r.containerIdTitle = data.containerIdTitle || this.cfgIdTitle;
       r.containerIdContent = data.containerIdContent || this.cfgIdContent;
-      r.uri = typeof data.uri === 'string' ? data.uri.split(T.MARKER_ADDDATA) : [];
-      const splits = typeof r.uri[1] === 'string' ? r.uri[1].split(MARKER_ADDDATA_SPLITTER) : [];
+      r.uri = typeof data.address === 'string' ? data.address.split(T.MARKER_ADDDATA) : [];
+      r.uri.push('');
+      
+      const splits = r.uri[1].split(T.MARKER_ADDDATA_SPLITTER);
+
+      for (let i = 0; i < splits.length - 1; i += 2)
+        r.addData.set(splits[i], splits[i + 1]);
+
+      r.uri = r.uri[0];
+      r.uriAnchor = r.uri.split('#');
+
+      if (r.uriAnchor) {
+        r.uri = r.uriAnchor[0];
+        r.uriAnchor = `#${r.uriAnchor[1]}`;
+      }
+
       // r.content = undefined;
-      // r.uriAnchor = undefined;
-      // r.addData = new Map();
-      // r.storage = undefined;
-  
-      console.warn('!!!', data);
+      // r.storage = undefined;  
     };
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
 
