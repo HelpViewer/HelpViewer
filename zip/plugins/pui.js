@@ -238,6 +238,7 @@ class puiButtonTabTree extends puiButtonTab {
         dc.data = data.data;
         dc.targetTree = data.targetTree;
         dc.append = data.append;
+        dc.id = this.aliasName;
       });
     };
     TI.eventDefinitions.push([T.EVT_SET_TREE_DATA, SetTreeData, h_EVT_SET_TREE_DATA]);

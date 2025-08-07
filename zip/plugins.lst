@@ -10,7 +10,7 @@ pClickConverter
 pui
 puiHeader:header
 puiSidebar:sidebar
-puiButtonTOC
+puiButtonTOC:toc
 pIndexFile:keywordList;fulltextList
 puiButtonKeywordIndex:keywordList;fulltextList
 puiButtonChangeLanguage
