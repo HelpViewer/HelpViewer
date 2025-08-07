@@ -264,14 +264,14 @@ class puiButtonTabTree extends puiButtonTab {
       sendEvent(T.EVT_TREE_CLICKED, (dc) => {
         const bkpCreatedAt = dc.createdAt;
         const bkpEventId = dc.eventId;
-        const bkpParentEventId = dc.parentEventId;
+        //const bkpParentEventId = dc.parentEventId;
         const bkpEventName = dc.eventName;
 
         Object.assign(dc, e);
 
         dc.createdAt = bkpCreatedAt;
         dc.eventId = bkpEventId;
-        dc.parentEventId = bkpParentEventId;
+        dc.parentEventId = e.eventId;
         dc.eventName = bkpEventName;
 
         dc.result = result;
