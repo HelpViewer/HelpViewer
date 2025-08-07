@@ -1,5 +1,6 @@
 const DEBUG_MODE = true;
 const LOG_MINIMIZE_OBJECT = true;
+const LOG_MINIMIZE_DATE_ISO = false;
 
 const $ = (name) => document.getElementById(name);
 const $O = (selector, parent = document) => parent?.querySelector(selector);
@@ -39,6 +40,13 @@ function log(msg, ...dataI) {
         Object.assign(clean, dataI[i]);
         clean['__className'] = x.constructor.name;
         dataI[i] = clean;
+        for (const [key, value] of Object.entries(dataI[i])) {
+          if (value instanceof Date) {
+            clean[key] = LOG_MINIMIZE_DATE_ISO ? value.toISOString() : value.toString();
+          } else {
+            clean[key] = value;
+          }
+        }
       }
     });
   }
