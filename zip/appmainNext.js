@@ -22,7 +22,9 @@ EventBus.sub(EventNames.StorageAdded, async (d) => {
     changeFavicon(customFavicon);
   
   // load chapter document
-  getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  alert('getPathData:1');
+  //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
   
   // override book images in tree structure
   var [bookOpen, bookClosed] = await Promise.all([
@@ -65,7 +67,9 @@ content: ${bookOpen};
     );
   }
   
-  getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  alert('getPathData:2');
+  //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
   //loadPageByTreeId(d.newId, d.treeId);
 });
 
@@ -83,7 +87,24 @@ EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
 });
 
 EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
-  alert('undeliverable: ' + d.elementId)
+  log('W undeliverable: ' + d.elementId);
+  
+  if (!d.target)
+    d.stop = true;
+
+  const a = d.target.closest('a');
+  if (!d.target.closest('a, input, summary, button'))
+    d.stop = true;
+
+  log('E stop: ' + d.stop);
+
+  if (d.stop) {
+    d.event.preventDefault();
+    return;
+  }
+
+  if (a)
+    showChapterA(d.event, a);
 });
 
 var PRJNAME_VAL = null;
@@ -129,27 +150,34 @@ window.addEventListener('popstate', () => {
     dataPath = FILENAME_DEFAULT_HELPFILE;
   }
 
-  getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  alert('getPathData:3');
+  //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
 });
 
-contentPane.addEventListener('click', function(event) {
-  const link = event.target.closest('a');
-  if (!link) return;
+// contentPane.addEventListener('click', function(event) {
+//   event.preventDefault();
+// });
 
-  const href = link.getAttribute('href');
+// // contentPane.addEventListener('click', function(event) {
+// //   const link = event.target.closest('a');
+// //   if (!link) return;
 
-  if (
-    href.startsWith('http') || 
-    href.startsWith('//') || 
-    (href.startsWith(`?${PAR_NAME_DOC}=`) && !href.startsWith(`?${PAR_NAME_DOC}=${dataPath}`) )
-  ) return;
+// //   const href = link.getAttribute('href');
 
-  event.preventDefault();
-  setToHref(href);
+// //   if (
+// //     href.startsWith('http') || 
+// //     href.startsWith('//') || 
+// //     (href.startsWith(`?${PAR_NAME_DOC}=`) && !href.startsWith(`?${PAR_NAME_DOC}=${dataPath}`) )
+// //   ) return;
+
+// //   event.preventDefault();
+// //   setToHref(href);
   
-  LoadURLParameters();
-  getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-});
+// //   LoadURLParameters();
+// //   alert('getPathData:4');
+// //   getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+// // });
 
 var languages = getLanguagesList();
 

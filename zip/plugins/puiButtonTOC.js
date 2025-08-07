@@ -66,7 +66,8 @@ class puiButtonTOC extends puiButtonTabTree {
       scrollToAnchor(path.substring(1));
     } else
     {
-      loadPage(event, path, target.innerHTML, idI);
+      showChapterA(event, a);
+      //-loadPage(event, path, target.innerHTML, idI);
       // getPathData(path, target.innerHTML);
       // idxTreeItem = idI;
     }

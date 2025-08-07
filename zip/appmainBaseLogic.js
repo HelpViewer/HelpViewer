@@ -319,3 +319,22 @@ function getIndexFileKeywordData(id, keyword) {
   });
 }
 /*E: Plugin: pIndexFile */
+
+/*S: Plugin: pTopicRenderer */
+function showChapterA(event, a) {
+  return showChapter(event, 
+    a.getAttribute('data-param') || a.innerHTML, 
+    a.href, a);
+}
+
+function showChapter(event, heading, address, sourceObject) {
+  return sendEvent(EventNames.ShowChapter, (x) => {
+    x.event = event;
+    x.heading = heading;
+    x.address = address;
+    x.sourceObject = sourceObject;
+    // x.containerIdTitle = undefined;
+    // x.containerIdContent = undefined;
+  });
+}
+/*E: Plugin: pTopicRenderer */
