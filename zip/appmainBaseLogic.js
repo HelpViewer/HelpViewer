@@ -266,11 +266,12 @@ function toggleSidebar(newVisibility) {
 /*E: Plugin: puiSidebarVisibilityToggle */
 
 /*S: Plugin: puiButtonTabTree */
-function setTreeData(data, target, append = false) {
+function setTreeData(data, target, id = undefined, append = false) {
   return sendEvent(EventNames.SetTreeData, (x) => {
     x.data = data;
     x.targetTree = target;
     x.append = append;
+    x.id = id;
   });
 }
 /*E: Plugin: puiButtonTabTree */
