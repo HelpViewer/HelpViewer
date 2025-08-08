@@ -13,6 +13,8 @@ const FILENAME_FAVICON = 'favicon.png';
 const UI_PLUGIN_SIDEBAR = 'sidebar';
 const UI_PLUGIN_HEADER = 'header';
 
+const MARKER_MARKWORD = '@@';
+
 function nameForAnchor(text, level, levelCounter) {
   return `h-${level}-${levelCounter}`;
   // return text.toLowerCase()

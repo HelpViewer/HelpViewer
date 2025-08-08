@@ -43,6 +43,9 @@ class pChapterIndexFile extends IPlugin {
     TI.eventDefinitions.push([T.EVT_CHF_SET, ChapterIndexFileSetData, h_EVT_CHF_SET]);
 
     const h_EVT_CHF_GET = (data) => {
+      if (isNaN(Number(data.key)))
+        data.key = TI.idxPath.indexOf(data.key);
+      
       data.result = [TI.idxPath[data.key], TI.pathHeadingAlias.get(TI.idxPath[data.key]) || TI.idxPath[data.key]];
     }
     TI.eventDefinitions.push([T.EVT_CHF_GET, ChapterIndexFileGetData, h_EVT_CHF_GET]);
