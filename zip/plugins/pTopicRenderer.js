@@ -29,15 +29,17 @@ class ShowChapter extends IEvent {
     this.result = new ShowChapterResolutions();
     this.result.parentEventId = this.eventId;
     //this.result.parentEvent = this;
-    this.result.preventDefault = () => this.event?.preventDefault();
+    this.result.preventDefault = () => this.event?.preventDefault?.();
     this.containerIdContent = undefined;
   }
 }
 
 class pTopicRenderer extends IPlugin {
   static EVT_TOPREN_SHOW_CHAPTER = ShowChapter.name;
+  static EVT_TOPREN_SHOW_CHAPTER_RES = ShowChapterResolutions.name;
 
   static KEY_CFG_ID_CONTENT = 'IDCONTENT';
+  static KEY_CFG_PHASELIST = 'PHASELIST';
 
   static MARKER_ADDDATA = '@@';
   static MARKER_ADDDATA_SPLITTER = ';';
@@ -46,6 +48,7 @@ class pTopicRenderer extends IPlugin {
     super(aliasName, data);
 
     this.DEFAULT_KEY_CFG_ID_CONTENT = 'content';
+    this.DEFAULT_KEY_CFG_PHASELIST = 'triage;unconnected;connected;%%;decorators';
   }
   
   init() {
@@ -53,6 +56,7 @@ class pTopicRenderer extends IPlugin {
     const TI = this;
     
     this.cfgIdContent = this.config[T.KEY_CFG_ID_CONTENT] || TI.DEFAULT_KEY_CFG_ID_CONTENT;
+    this.cfgPhaseList = this.config[T.KEY_CFG_PHASELIST] || TI.DEFAULT_KEY_CFG_PHASELIST;
 
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
       data.event.preventDefault();
@@ -86,11 +90,14 @@ class pTopicRenderer extends IPlugin {
 
       r.fileMedium = resolveFileMedium(r.uri);
 
+      const subIds =  this.cfgPhaseList.replace('%%', r.type?.substring(0, 3)).split(';');
+
       // r.containerContent = undefined;
       // r.getStorageData = undefined;  
     };
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
-    sendEventObject();
+    TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER_RES, ShowChapterResolutions, null]); // outside event handlers
+
     super.init();
   }
   
