@@ -16,6 +16,7 @@ class ShowChapterResolutions extends IEvent {
     /** @type {() => void} */
     this.preventDefault = undefined;
     //this.parentEvent = undefined;
+    this.stopAllPhases = false;
   }
 }
 
@@ -49,6 +50,7 @@ class pTopicRenderer extends IPlugin {
 
     this.DEFAULT_KEY_CFG_ID_CONTENT = 'content';
     this.DEFAULT_KEY_CFG_PHASELIST = 'triage;unconnected;connected;%%;decorators';
+    this.eventIdStrict = true;
   }
   
   init() {
@@ -59,8 +61,13 @@ class pTopicRenderer extends IPlugin {
     this.cfgPhaseList = this.config[T.KEY_CFG_PHASELIST] || TI.DEFAULT_KEY_CFG_PHASELIST;
 
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
-      data.event.preventDefault();
       const r = data.result;
+
+      if (DEBUG_MODE_RENDERER) {
+        log('W DEBUG_MODE_RENDERER flag is active, all steps will work to all phases event it should be redirected outside the instance!');
+        r.preventDefault();
+      }
+
       r.heading = getChapterAlternativeHeading(data.address)[1] || data.heading;
       const containerIdContent = data.containerIdContent || this.cfgIdContent;
       r.containerContent = $(containerIdContent);
@@ -90,7 +97,13 @@ class pTopicRenderer extends IPlugin {
 
       r.fileMedium = resolveFileMedium(r.uri);
 
-      const subIds =  this.cfgPhaseList.replace('%%', r.type?.substring(0, 3)).split(';');
+      const subIds = this.cfgPhaseList.replace('%%', r.type?.substring(0, 3)).split(';');
+      subIds.forEach((phase) => {
+        log(`Rendering ${r.uri} phase ${phase} ... sending to plugins with id '${this.aliasName}-${phase}'`);
+        sendEventObject(r, `${this.aliasName}-${phase}`);
+        if (!r.stopAllPhases)
+          r.stop = false;
+      });
 
       // r.containerContent = undefined;
       // r.getStorageData = undefined;  
@@ -108,6 +121,21 @@ class pTopicRenderer extends IPlugin {
 }
 
 Plugins.catalogize(pTopicRenderer);
+
+class pTRPhasePlugin extends IPlugin {
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.eventIdStrict = true;
+  }
+
+  init() {
+    super.init();
+  }
+
+  deInit() {
+    super.deInit();
+  }
+}
 
 function SetHeaderText(txt) {
   setHeader(txt);
