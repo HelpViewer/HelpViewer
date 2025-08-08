@@ -29,11 +29,26 @@ const UserDataFileLoadedFileType = {
   NETWORK: 'NETWORK'
 };
 
+function resolveFileMedium(fileName) {
+  if (!fileName)
+    return undefined;
+  
+  if (fileName === FILENAME_ZIP_ON_USER_INPUT) {
+    return UserDataFileLoadedFileType.INPUTFIELD;
+  } else if (/^(https?|ftp):\/\//i.test(fileName)) {
+    return UserDataFileLoadedFileType.NETWORK;
+  } else if (fileName.endsWith('.zip')) {
+    return UserDataFileLoadedFileType.LOCALARC;
+  } else if (fileName.endsWith('/')) {
+    return UserDataFileLoadedFileType.LOCALDIR;
+  }
+}
+
 class UserDataFileLoaded extends IEvent {
   constructor() {
     super();
     this.fileName = undefined;
-    this.fileType = undefined;
+    this.fileMedium = undefined;
   }
 }
 
@@ -46,16 +61,7 @@ class UserDataFileLoaded extends IEvent {
 function notifyUserDataFileLoaded(fileName) {
   sendEvent(EventNames.UserDataFileLoaded, (ed) => {
     ed.fileName = fileName;
-    
-    if (ed.fileName === FILENAME_ZIP_ON_USER_INPUT) {
-      ed.fileType = UserDataFileLoadedFileType.INPUTFIELD;
-    } else if (/^(https?|ftp):\/\//i.test(ed.fileName)) {
-      ed.fileType = UserDataFileLoadedFileType.NETWORK;
-    } else if (ed.fileName.endsWith('.zip')) {
-      ed.fileType = UserDataFileLoadedFileType.LOCALARC;
-    } else if (ed.fileName.endsWith('/')) {
-      ed.fileType = UserDataFileLoadedFileType.LOCALDIR;
-    }
+    ed.fileMedium = resolveFileMedium(fileName);
   });
 }
 

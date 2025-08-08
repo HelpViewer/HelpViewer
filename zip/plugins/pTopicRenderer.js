@@ -4,6 +4,8 @@ class ShowChapterResolutions extends IEvent {
     this.heading = undefined;
     this.content = undefined;
     this.uri = undefined;
+    this.fileType = undefined;
+    this.fileMedium = undefined;
     this.uriAnchor = undefined;
     this.addData = new Map();
     this.storage = undefined;
@@ -73,6 +75,14 @@ class pTopicRenderer extends IPlugin {
       else 
         r.uriAnchor = undefined;
 
+      r.type = r.uri ? r.uri.split('.') : undefined;
+
+      if (r.type && r.type.length > 1)
+        r.type = r.type[1];
+      else
+        r.type = undefined;
+
+      r.fileMedium = resolveFileMedium(r.uri);
       // r.content = undefined;
       // r.storage = undefined;  
     };
