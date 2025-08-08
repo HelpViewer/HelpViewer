@@ -75,43 +75,30 @@ content: ${bookOpen};
 });
 
 function showChapterByTree(idxTreeItem) {
-  const observer = new MutationObserver((mutations, obs) => {
-    if (!idxTreeItem && !pagePath) {
-      obs.disconnect();
-      return;
-    }
+  const tree = $(treeTOCName);
+  var elid = `${treeTOCName}|${idxTreeItem}`;
 
-    const tree = $(treeTOCName);
-    var elid = `${treeTOCName}|${idxTreeItem}`;
+  observeDOMAndDo(() => {
     var el = $(elid);
 
     if (el) {
       treeActions(el, elid);
-      obs.disconnect();
+      return true;
     } else {
       if (tree) {
         el = $O(`[data-param="${pagePath}"]`);
         elid = el.id;
         treeActions(el, elid);
-        obs.disconnect();
+        return true;
       }
     }
 
-    const timeout = 10 * 1000;
-    setTimeout(() => {
-      obs.disconnect();
-    }, timeout);
-
     function treeActions(el, elid) {
       showChapterA(null, el);
-
       fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(elid);
     }
-
-  });
-
-  observer.observe(document.body, { childList: true, subtree: true });
+  }, undefined, 10000);
 }
 
 EventBus.sub(EventNames.ClickedEventTree, async (d) => {

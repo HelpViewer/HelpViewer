@@ -40,3 +40,21 @@ function hideButton(btnid, newVisibility = false) {
 function scrollToAnchor(id) {
   $(id)?.scrollIntoView({ behavior: 'smooth' });
 }
+
+function observeDOMAndDo(handler, parent = document.body, timeout = undefined) {
+  if (!parent)
+    parent = document.body;
+  
+  const observer = new MutationObserver((mutations, obs) => {
+    if (handler())
+      obs.disconnect();
+  });
+
+  observer.observe(parent, { childList: true, subtree: true });
+
+  if (timeout) {
+    setTimeout(() => {
+      observer.disconnect();
+    }, timeout);
+  }
+}
