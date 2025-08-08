@@ -9,8 +9,9 @@ class ShowChapterResolutions extends IEvent {
     this.uriAnchor = undefined;
     this.addData = new Map();
     /** @type {(fileName : string) => string} */
-    this.storage = undefined;
-    this.containerTitle = undefined;
+    this.getStorageData = undefined;
+    /** @type {(txt : string) => void} */
+    this.setTitle = (txt) => SetHeaderText(txt);
     this.containerContent = undefined;
     /** @type {() => void} */
     this.preventDefault = undefined;
@@ -29,7 +30,6 @@ class ShowChapter extends IEvent {
     this.result.parentEventId = this.eventId;
     //this.result.parentEvent = this;
     this.result.preventDefault = () => this.event?.preventDefault();
-    this.containerIdTitle = undefined;
     this.containerIdContent = undefined;
   }
 }
@@ -38,7 +38,6 @@ class pTopicRenderer extends IPlugin {
   static EVT_TOPREN_SHOW_CHAPTER = ShowChapter.name;
 
   static KEY_CFG_ID_CONTENT = 'IDCONTENT';
-  static KEY_CFG_ID_TITLE = 'IDTITLE';
 
   static MARKER_ADDDATA = '@@';
   static MARKER_ADDDATA_SPLITTER = ';';
@@ -47,7 +46,6 @@ class pTopicRenderer extends IPlugin {
     super(aliasName, data);
 
     this.DEFAULT_KEY_CFG_ID_CONTENT = 'content';
-    this.DEFAULT_KEY_CFG_ID_TITLE = 'mtitle';
   }
   
   init() {
@@ -55,15 +53,12 @@ class pTopicRenderer extends IPlugin {
     const TI = this;
     
     this.cfgIdContent = this.config[T.KEY_CFG_ID_CONTENT] || TI.DEFAULT_KEY_CFG_ID_CONTENT;
-    this.cfgIdTitle = this.config[T.KEY_CFG_ID_TITLE] || TI.DEFAULT_KEY_CFG_ID_TITLE;
 
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
       data.event.preventDefault();
       const r = data.result;
       r.heading = getChapterAlternativeHeading(data.address)[1] || data.heading;
-      const containerIdTitle = data.containerIdTitle || this.cfgIdTitle;
       const containerIdContent = data.containerIdContent || this.cfgIdContent;
-      r.containerTitle = $(containerIdTitle);
       r.containerContent = $(containerIdContent);
       r.uri = typeof data.address === 'string' ? data.address.split(T.MARKER_ADDDATA) : [];
       r.uri.push('');
@@ -91,9 +86,8 @@ class pTopicRenderer extends IPlugin {
 
       r.fileMedium = resolveFileMedium(r.uri);
 
-      // r.heading
-      // r.content = undefined;
-      // r.storage = undefined;  
+      // r.containerContent = undefined;
+      // r.getStorageData = undefined;  
     };
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
     sendEventObject();
