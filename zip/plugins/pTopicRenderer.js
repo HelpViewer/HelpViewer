@@ -21,6 +21,7 @@ class ShowChapter extends IEvent {
     this.heading = undefined;
     this.address = undefined;
     this.sourceObject = undefined;
+    this.parentEvent = undefined;
     this.result = new ShowChapterResolutions();
     this.result.parentEventId = this.eventId;
     this.containerIdTitle = undefined;
@@ -50,10 +51,9 @@ class pTopicRenderer extends IPlugin {
     
     this.cfgIdContent = this.config[T.KEY_CFG_ID_CONTENT] || TI.DEFAULT_KEY_CFG_ID_CONTENT;
     this.cfgIdTitle = this.config[T.KEY_CFG_ID_TITLE] || TI.DEFAULT_KEY_CFG_ID_TITLE;
-    //if (/^(https?|ftp):\/\//i.test(ed.fileName))
 
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
-      //data.result = new ShowChapterResolutions();
+      data.event.preventDefault();
       const r = data.result;
       r.heading = getChapterAlternativeHeading(data.address)[1] || data.heading;
       r.containerIdTitle = data.containerIdTitle || this.cfgIdTitle;
@@ -75,7 +75,7 @@ class pTopicRenderer extends IPlugin {
       else 
         r.uriAnchor = undefined;
 
-      r.type = r.uri ? r.uri.split('.') : undefined;
+      r.type = r.uri ? r.uri.split('/').pop().split('.') : undefined;
 
       if (r.type && r.type.length > 1)
         r.type = r.type[1];
@@ -83,6 +83,8 @@ class pTopicRenderer extends IPlugin {
         r.type = undefined;
 
       r.fileMedium = resolveFileMedium(r.uri);
+
+      // r.heading
       // r.content = undefined;
       // r.storage = undefined;  
     };

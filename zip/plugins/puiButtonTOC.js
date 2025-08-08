@@ -30,47 +30,13 @@ class puiButtonTOC extends puiButtonTabTree {
   }
 
   _treeClick(e) {
-    //TODO : refactor
     var event = e.event;
     const target = event.target;
     if (!target) return;
   
     const a = target.closest('a');
     if (!a) return;
-  
-    var targName = target.id.split('|');
-    var idI = targName[1];
-    targName = targName[0];
-    if (targName === N_P_TREEITEM) {
-      idI = parseInt(idI);
-      if (idI) {
-        idxTreeItem = idI;
-      }
-    }
-  
-    var data = target.getAttribute('data-param');
-    if (!data) return;
-  
-    e.event.preventDefault();
-    data = data.split(';');
-    var path = data[0];
-  
-    // if (path.startsWith('@')) {
-    //   path = path.substring(1).split(":");
-    //   //searchKeywordE(target, path[0], path[1]);
-    //   const p = document.createElement('span');
-    //   a.parentNode.replaceChild(p, a);
-    //   p.innerHTML = a.innerHTML;
-    // // } else
-    // // if (path.startsWith('#')) {
-    // //   scrollToAnchor(path.substring(1));
-    // } else
-    // {
-    //   showChapterA(event, a);
-    //   //-loadPage(event, path, target.innerHTML, idI);
-    //   // getPathData(path, target.innerHTML);
-    //   // idxTreeItem = idI;
-    // }
+    
     showChapterA(event, a);
   }
 

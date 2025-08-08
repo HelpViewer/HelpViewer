@@ -339,6 +339,8 @@ function showChapter(event, heading, address, sourceObject) {
     x.heading = heading;
     x.address = address;
     x.sourceObject = sourceObject;
+    // x.parentEvent = parentEvent;
+    // x.parentEventId = parentEvent.eventId || undefined;
     // x.containerIdTitle = undefined;
     // x.containerIdContent = undefined;
   });
