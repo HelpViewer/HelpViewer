@@ -8,9 +8,13 @@ class ShowChapterResolutions extends IEvent {
     this.fileMedium = undefined;
     this.uriAnchor = undefined;
     this.addData = new Map();
+    /** @type {(fileName : string) => string} */
     this.storage = undefined;
-    this.containerIdTitle = undefined;
-    this.containerIdContent = undefined;
+    this.containerTitle = undefined;
+    this.containerContent = undefined;
+    /** @type {() => void} */
+    this.preventDefault = undefined;
+    //this.parentEvent = undefined;
   }
 }
 
@@ -21,9 +25,10 @@ class ShowChapter extends IEvent {
     this.heading = undefined;
     this.address = undefined;
     this.sourceObject = undefined;
-    this.parentEvent = undefined;
     this.result = new ShowChapterResolutions();
     this.result.parentEventId = this.eventId;
+    //this.result.parentEvent = this;
+    this.result.preventDefault = () => this.event?.preventDefault();
     this.containerIdTitle = undefined;
     this.containerIdContent = undefined;
   }
@@ -56,8 +61,10 @@ class pTopicRenderer extends IPlugin {
       data.event.preventDefault();
       const r = data.result;
       r.heading = getChapterAlternativeHeading(data.address)[1] || data.heading;
-      r.containerIdTitle = data.containerIdTitle || this.cfgIdTitle;
-      r.containerIdContent = data.containerIdContent || this.cfgIdContent;
+      const containerIdTitle = data.containerIdTitle || this.cfgIdTitle;
+      const containerIdContent = data.containerIdContent || this.cfgIdContent;
+      r.containerTitle = $(containerIdTitle);
+      r.containerContent = $(containerIdContent);
       r.uri = typeof data.address === 'string' ? data.address.split(T.MARKER_ADDDATA) : [];
       r.uri.push('');
       
@@ -89,8 +96,7 @@ class pTopicRenderer extends IPlugin {
       // r.storage = undefined;  
     };
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
-
-    
+    sendEventObject();
     super.init();
   }
   
@@ -101,3 +107,8 @@ class pTopicRenderer extends IPlugin {
 }
 
 Plugins.catalogize(pTopicRenderer);
+
+function SetHeaderText(txt) {
+  setHeader(txt);
+  document.title = txt.replace(/<[^>]+>/g, '');
+}
