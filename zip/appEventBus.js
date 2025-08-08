@@ -17,9 +17,15 @@ const EventBus = {
   },
 
   snd(data, eventKeyName) {
+    if (!data) return;
     var event = eventKeyName || data.eventName;
     var handlers = this.events.get(event);
     log(`Event ${event} arrived. Data:`, data);
+
+    if (data?.stop === true) {
+      log(`W Event ${event} (${data.eventId}) state is already stopped ... skipping delivery.`);
+      return;
+    }
 
     if (!handlers || handlers.length === 0) {
       log(`W Event ${event} has no listeners.`);
@@ -133,8 +139,15 @@ function sendEvent(eventName, eventDataInit) {
   if (typeof eventDataInit === 'function')
     eventDataInit(eventData);
 
+  return sendEventObject(eventData);
+}
+
+function sendEventObject(eventData, eventId = undefined) {
+  if (eventId)
+    eventData.id = eventId;
+
   EventBus.snd(eventData);
-  return eventData.result;
+  return eventData?.result;
 }
 
 class IEvent {
