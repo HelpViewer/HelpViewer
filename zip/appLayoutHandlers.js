@@ -58,3 +58,8 @@ function observeDOMAndDo(handler, parent = document.body, timeout = undefined) {
     }, timeout);
   }
 }
+
+function setPanelsEmpty() {
+  contentPane.innerHTML = _T('MSG_NODATA');
+  SetHeaderText(_T('HEADING_SELECT_LEFT'));
+}

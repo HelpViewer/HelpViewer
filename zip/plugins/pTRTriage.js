@@ -12,6 +12,7 @@ class pTRTriage extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
+    setPanelsEmpty();
     r.setTitle(r.heading);
 
     if (r.fileMedium === UserDataFileLoadedFileType.NETWORK) {

@@ -1,4 +1,5 @@
 const treeTOCName = 'tree';
+const contentPane = $('content');
 
 EventBus.sub(EventNames.TreeDataChanged, (d) => {
   if (d.treeId != treeTOCName)
@@ -145,9 +146,6 @@ EventBus.sub(EventNames.ConfigFileReloadFinished, async (d) => {
 
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
-const LK_HEADING_SELECT_LEFT = 'HEADING_SELECT_LEFT';
-const LK_MSG_NODATA = 'MSG_NODATA';
-
 const KEY_LS_PRINTICONS = "printIcons";
 const printIcons = parseInt(getUserConfigValue(KEY_LS_PRINTICONS)) ?? 2;
 
@@ -199,12 +197,9 @@ loadLocalization(activeLanguage).then(() => {
           storageAddedNotification(dataPath, STO_HELP);
         configFileReload(FILE_CONFIG);
       } catch {
-        msgNoData = _T(LK_MSG_NODATA);
-        contentPane.innerHTML = msgNoData;
-        SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
+        setPanelsEmpty();
         return;
       }
-      
       
       revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
       
@@ -294,9 +289,7 @@ function clearIconsFromTextSingleText(txt) {
 EventBus.sub('BeforePrint', removeIconsForPrint);
 
 EventBus.sub(EventNames.LOC_LOADED, (d) => {
-  msgNoData = _T(LK_MSG_NODATA);
-  contentPane.innerHTML = msgNoData;
-  SetHeaderText(_T(LK_HEADING_SELECT_LEFT));
+  setPanelsEmpty();
 
   activeLanguage = getActiveLanguage();
   LoadURLParameters();
