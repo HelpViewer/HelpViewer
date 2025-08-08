@@ -9,5 +9,4 @@ appGHIntegration.js
 appFTree.js
 appLayoutHandlers.js
 prism/prism.js
-appTopicRenderLogic.js
 appmainFileParsingTocTree.js

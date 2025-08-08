@@ -10,6 +10,8 @@ class ShowChapterResolutions extends IEvent {
     this.addData = new Map();
     /** @type {(fileName : string) => string} */
     this.getStorageData = undefined;
+    /** @type {(fileName : string) => string} */
+    this.getAppData = undefined;
     /** @type {(txt : string) => void} */
     this.setTitle = (txt) => SetHeaderText(txt);
     this.containerContent = undefined;
@@ -42,8 +44,12 @@ class pTopicRenderer extends IPlugin {
   static KEY_CFG_ID_CONTENT = 'IDCONTENT';
   static KEY_CFG_PHASELIST = 'PHASELIST';
 
-  static MARKER_ADDDATA = '@@';
+  static MARKER_ADDDATA = MARKER_MARKWORD;
   static MARKER_ADDDATA_SPLITTER = ';';
+
+  static STORAGE_DATA = (path) => storageSearch(STO_DATA, path);
+  static STORAGE_HELP = (path) => storageSearch(STO_HELP, path);
+  static STORAGE_NETW = (path) => fetchData(path);
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -68,7 +74,7 @@ class pTopicRenderer extends IPlugin {
         r.preventDefault();
       }
 
-      r.heading = getChapterAlternativeHeading(data.address)[1] || data.heading;
+      r.heading = data.heading || getChapterAlternativeHeading(data.address)[1];
       const containerIdContent = data.containerIdContent || this.cfgIdContent;
       r.containerContent = $(containerIdContent);
       r.uri = typeof data.address === 'string' ? data.address.split(T.MARKER_ADDDATA) : [];
@@ -105,8 +111,9 @@ class pTopicRenderer extends IPlugin {
           r.stop = false;
       });
 
+      r.getStorageData = T.STORAGE_HELP;
+      r.getAppData = T.STORAGE_DATA;
       // r.containerContent = undefined;
-      // r.getStorageData = undefined;  
     };
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER_RES, ShowChapterResolutions, null]); // outside event handlers

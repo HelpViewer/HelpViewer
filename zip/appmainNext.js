@@ -1,10 +1,10 @@
+const treeTOCName = 'tree';
+
 EventBus.sub(EventNames.TreeDataChanged, (d) => {
-  const treeTOCName = 'tree';
   if (d.treeId != treeTOCName)
     return;
-  const tree = $(treeTOCName);
-  fixImgRelativePathToZipPaths(tree, STO_HELP);
-  revealTreeItem(`${treeTOCName}|${idxTreeItem}`);
+
+  showChapterByTree(idxTreeItem);
 });
 
 //EventBus.sub(EVT_PluginsLoadingFinished, (d) => showSidebarTab());
@@ -69,9 +69,50 @@ content: ${bookOpen};
   
   alert('getPathData:2');
   //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-  showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
+  //---showChapter(null, undefined, pagePath, null);
   //loadPageByTreeId(d.newId, d.treeId);
+  showChapterByTree(idxTreeItem);
 });
+
+function showChapterByTree(idxTreeItem) {
+  const observer = new MutationObserver((mutations, obs) => {
+    if (!idxTreeItem && !pagePath) {
+      obs.disconnect();
+      return;
+    }
+
+    const tree = $(treeTOCName);
+    var elid = `${treeTOCName}|${idxTreeItem}`;
+    var el = $(elid);
+
+    if (el) {
+      treeActions(el, elid);
+      obs.disconnect();
+    } else {
+      if (tree) {
+        el = $O(`[data-param="${pagePath}"]`);
+        elid = el.id;
+        treeActions(el, elid);
+        obs.disconnect();
+      }
+    }
+
+    const timeout = 10 * 1000;
+    setTimeout(() => {
+      obs.disconnect();
+    }, timeout);
+
+    function treeActions(el, elid) {
+      showChapterA(null, el);
+
+      fixImgRelativePathToZipPaths(tree, STO_HELP);
+      revealTreeItem(elid);
+    }
+
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+}
 
 EventBus.sub(EventNames.ClickedEventTree, async (d) => {
   if (d.treeId != 'tree' && d.treeId != 'subsList') 
