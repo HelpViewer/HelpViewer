@@ -17,11 +17,10 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     r.fixRelativePathToZipPaths(r.heading, ":not(.treepic)");
     r.setTitle(r.heading);
   
-    if (r.docM) {
+    if (r.docM)
       r.content = r.docM.body.innerHTML;
-      r.docV.innerHTML = r.docM.body.innerHTML;
-    } else
-      r.docV.innerHTML = r.content;
+
+    r.docV.innerHTML = r.content;
     r.fixRelativePathToZipPaths(r.docV);
   }
 }
