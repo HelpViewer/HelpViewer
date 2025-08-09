@@ -13,6 +13,7 @@ class pTRTriage extends pTRPhasePlugin {
 
   onETShowChapterResolutions(r) {
     setPanelsEmpty();
+    r.result = this.doneVal;
 
     if (r.fileMedium === UserDataFileLoadedFileType.NETWORK) {
       log(`Resolution: ${r.eventId};${r.uri} ... is external resource link.`);

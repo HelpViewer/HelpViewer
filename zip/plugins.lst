@@ -25,5 +25,6 @@ puiNavigation:nav
 pTopicRenderer
 pTRTriage:-triage
 pTRKeywordRender:-triage
-pTRLoadData:-triage
+pTRLoadData:-load
 pTRParseMd:-md
+pTREmptyPlugin:-htm

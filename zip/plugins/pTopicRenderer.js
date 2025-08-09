@@ -78,7 +78,7 @@ class pTopicRenderer extends IPlugin {
     super(aliasName, data);
 
     this.DEFAULT_KEY_CFG_ID_CONTENT = 'content';
-    this.DEFAULT_KEY_CFG_PHASELIST = 'triage;%%;unconnected;connected;decorators';
+    this.DEFAULT_KEY_CFG_PHASELIST = 'triage;load;%%;unconnected;connected;decorators';
     this.eventIdStrict = true;
   }
   

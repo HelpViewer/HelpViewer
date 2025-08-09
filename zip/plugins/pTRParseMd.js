@@ -17,7 +17,7 @@ class pTRParseMd extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = Promise.resolve();
+    r.result = this.doneVal;
 
     if (!window.marked) {
       const one = this.cfgFileName;

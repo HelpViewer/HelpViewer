@@ -12,7 +12,7 @@ class pTRLoadData extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = Promise.resolve();
+    r.result = this.doneVal;
     var shouldLoad = true;
 
     r.onTokenDo(r.TOKEN_NOLOADDATA, () => {
