@@ -1,6 +1,8 @@
 const treeTOCName = 'tree';
 const contentPane = $('content');
 
+FILENAME_DEFAULT_HELPFILE = `hlp/Help-__.zip`;
+
 EventBus.sub(EventNames.TreeDataChanged, (d) => {
   if (d.treeId != treeTOCName)
     return;
@@ -23,7 +25,6 @@ EventBus.sub(EventNames.StorageAdded, async (d) => {
     changeFavicon(customFavicon);
   
   // load chapter document
-  alert('getPathData:1');
   //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
   //showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
   
@@ -68,7 +69,6 @@ content: ${bookOpen};
     );
   }
   
-  alert('getPathData:2');
   //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
   //---showChapter(null, undefined, pagePath, null);
   //loadPageByTreeId(d.newId, d.treeId);
@@ -303,7 +303,8 @@ EventBus.sub(EventNames.LOC_LOADED, (d) => {
   setPanelsEmpty();
 
   activeLanguage = getActiveLanguage();
-  //LoadURLParameters();
+  LoadURLParameters();
+  
   try {
     storageAdd(dataPath, STO_HELP);
   } catch (error) {
