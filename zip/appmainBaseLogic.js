@@ -336,7 +336,7 @@ function showChapterA(event, a) {
 }
 
 function showChapter(event, heading, address, sourceObject) {
-  var reply = sendEvent(EventNames.ShowChapter, (x) => {
+  return sendEvent(EventNames.ShowChapter, (x) => {
     x.event = event;
     x.heading = heading;
     x.address = address;
@@ -346,15 +346,5 @@ function showChapter(event, heading, address, sourceObject) {
     // x.containerIdTitle = undefined;
     // x.containerIdContent = undefined;
   });
-
-  if (sourceObject) {
-    setToHref(sourceObject.href);
-  } else {
-    setToHrefByValues((x) => {
-      x.kvlist.set(PAR_NAME_PAGE, address);
-    });  
-  }
-
-  return reply;
 }
 /*E: Plugin: pTopicRenderer */

@@ -37,9 +37,20 @@ class ShowChapter extends IEvent {
   }
 }
 
+class ChapterShown extends IEvent {
+  constructor() {
+    super();
+    this.heading = undefined;
+    this.content = undefined;
+    this.address = undefined;
+    this.sourceObject = undefined;
+  }
+}
+
 class pTopicRenderer extends IPlugin {
   static EVT_TOPREN_SHOW_CHAPTER = ShowChapter.name;
   static EVT_TOPREN_SHOW_CHAPTER_RES = ShowChapterResolutions.name;
+  static EVT_TOPREN_CHAPTER_SHOWN = ChapterShown.name;
 
   static KEY_CFG_ID_CONTENT = 'IDCONTENT';
   static KEY_CFG_PHASELIST = 'PHASELIST';
@@ -122,11 +133,21 @@ class pTopicRenderer extends IPlugin {
       result.then(() => {
         log(`Rendering ${r.uri} finished ... sending to output`);
         r.setTitle(r.heading);
-        r.containerContent.innerHTML = r.content;  
+        r.containerContent.innerHTML = r.content;
+
+        sendEvent(T.EVT_TOPREN_CHAPTER_SHOWN, (n) => {
+          n.heading = r.heading;
+          n.content = r.content;
+          n.address = r.uri;
+          n.parentEventId = r.eventId;
+          n.id = TI.aliasName;
+          n.sourceObject = data.sourceObject;
+        });
       });
     }
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER_RES, ShowChapterResolutions, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_TOPREN_CHAPTER_SHOWN, ChapterShown, null]); // outside event handlers
 
     super.init();
   }

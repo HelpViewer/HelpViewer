@@ -309,3 +309,13 @@ EventBus.sub(EventNames.LOC_LOADED, (d) => {
 EventBus.sub(EventNames.NavigationMove, (d) => {
   loadPageByTreeId(d.newId, d.treeId);
 });
+
+EventBus.sub(EventNames.ChapterShown, (d) => {
+  if (d.sourceObject) {
+    setToHref(d.sourceObject.href);
+  } else {
+    setToHrefByValues((x) => {
+      x.kvlist.set(PAR_NAME_PAGE, d.address);
+    });
+  }  
+});
