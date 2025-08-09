@@ -23,33 +23,19 @@ class pTRKeywordRender extends pTRPhasePlugin {
         const collector = document.createElement('ul');
         collector.className = 'tree';
         
-        var foundKeywords = getIndexFileKeywordData(dictionary, word);
-        const kwFound = foundKeywords.split("\n").length;
-        const collector2 = document.createElement('ul');
-        collector2.className = 'tree';
+        var foundKeywordLinks = getIndexFileKeywordData(dictionary, word);
+        foundKeywordLinks = foundKeywordLinks.substring(foundKeywordLinks.indexOf("\n") + 1);
+
+        var dict = getIndexFileData(dictionary, word, undefined) + '\n';
+        var dictThisIdx = dict.indexOf("\n") + 1;
+
+        if (dict.substring(0, dictThisIdx).startsWith(`${word}|`))
+          dict = dict.substring(dictThisIdx);
+
+        dict = (foundKeywordLinks + dict).trim().split('\n').map(line => line.trim()).join('\n');
+        collector.innerHTML = linesToHtmlTree(dict, "tr-ContentPage");
   
-        if (foundKeywords !== "" && kwFound > 1)
-          collector2.innerHTML = linesToHtmlTree(foundKeywords, "tr-ContentPage");
-  
-        collector.innerHTML = linesToHtmlTree(getIndexFileData(word, dictionary), dictionary);
-        const firstDetails = $A('li', $O('ul', $O('details', collector)));
-  
-        if (firstDetails) {
-          firstDetails.className = 'tree';
-          firstDetails.forEach(li => collector2.appendChild(li));
-        } else {
-          collector.innerHTML = "";
-        }
-  
-        if (collector2.innerHTML) {
-          const collector3 = document.createElement('ul');
-          collector3.className = 'tree';
-          collector3.innerHTML = collector2.innerHTML;
-          collector.innerHTML = "";
-          collector.appendChild(collector3);
-        }
-  
-        r.content = collector.innerHTML ? collector.innerHTML : ' ';
+        r.content = collector.outerHTML ? collector.outerHTML : ' ';
         r.result = Promise.resolve();
       }
     } else {

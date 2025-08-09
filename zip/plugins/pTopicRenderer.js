@@ -71,6 +71,7 @@ class pTopicRenderer extends IPlugin {
 
       r.getStorageData = T.STORAGE_HELP;
       r.getAppData = T.STORAGE_DATA;
+      r.content = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
 
       if (DEBUG_MODE_RENDERER) {
         log('W DEBUG_MODE_RENDERER flag is active, all steps will work to all phases event it should be redirected outside the instance!');

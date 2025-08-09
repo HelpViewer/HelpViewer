@@ -48,12 +48,11 @@ class pTRTriage extends pTRPhasePlugin {
       processIt = true;
     }
 
-    r.preventDefault();
-    //r.setTitle(r.heading);
-
     if (!processIt)
       return this.doneVal;
 
+    r.preventDefault();
+    
     r.result = r.getStorageData(r.uri).then((x) => {
       r.content = x;
     });
