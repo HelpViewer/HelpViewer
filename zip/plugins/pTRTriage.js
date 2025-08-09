@@ -36,6 +36,11 @@ class pTRTriage extends pTRPhasePlugin {
 
     var processIt = false;
 
+    if (uriRelative && uriRelative.startsWith(`?${PAR_NAME_PAGE}=`)) {
+      log(`Resolution: ${r.eventId};${r.uri} ... is this help file page.`);
+      processIt = true;
+    }
+
     if (r.uri?.startsWith(":")) {
       r.getStorageData = r.getAppData;
       log(`Resolution: ${r.eventId};${r.uri} ... main storage set from ${STO_HELP} to ${STO_DATA}.`);

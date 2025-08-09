@@ -18,9 +18,10 @@ class pTRUnconnectedTransformation extends pTRPhasePlugin {
     const checkList = ["href", "src", "data-href"];
 
     $A('*', r.doc).forEach((el) => {
+      var val;
       checkList.forEach((attr) => {
         if (el.hasAttribute(attr)) {
-          const val = el.getAttribute(attr);
+          val = el.getAttribute(attr);
           if (val 
             && el.tagName.toLowerCase() !== "img"
             && !/^https?:\/\//.test(val) 
@@ -34,6 +35,9 @@ class pTRUnconnectedTransformation extends pTRPhasePlugin {
           }
         }
       });
+
+      if (!val?.startsWith('?d'))
+        el.setAttribute('data-param', val);
     });
 
   }

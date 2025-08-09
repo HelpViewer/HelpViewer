@@ -40,6 +40,7 @@ class ShowChapterResolutions extends IEvent {
     this.preventDefault = undefined;
     //this.parentEvent = undefined;
     this.stopAllPhases = false;
+    this.helpFile = undefined;
   }
 }
 
@@ -55,6 +56,7 @@ class ShowChapter extends IEvent {
     //this.result.parentEvent = this;
     this.result.preventDefault = () => this.event?.preventDefault?.();
     this.containerIdContent = undefined;
+    this.helpFile = undefined;
   }
 }
 
@@ -66,6 +68,7 @@ class ChapterShown extends IEvent {
     this.address = undefined;
     this.addressOrig = undefined;
     this.sourceObject = undefined;
+    this.helpFile = undefined;
   }
 }
 
@@ -105,6 +108,7 @@ class pTopicRenderer extends IPlugin {
       r.getStorageData = T.STORAGE_HELP;
       r.getAppData = T.STORAGE_DATA;
       r.content = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
+      r.helpFile = data.helpFile;
 
       if (DEBUG_MODE_RENDERER) {
         log('W DEBUG_MODE_RENDERER flag is active, all steps will work to all phases event it should be redirected outside the instance!');
@@ -167,6 +171,7 @@ class pTopicRenderer extends IPlugin {
           n.parentEventId = r.eventId;
           n.id = TI.aliasName;
           n.sourceObject = data.sourceObject;
+          n.helpFile = r.helpFile;
         });
       });
     }

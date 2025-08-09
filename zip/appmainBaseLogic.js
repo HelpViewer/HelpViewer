@@ -341,6 +341,7 @@ function showChapter(event, heading, address, sourceObject) {
     x.heading = heading;
     x.address = address;
     x.sourceObject = sourceObject;
+    x.helpFile = dataPath;
     // x.parentEvent = parentEvent;
     // x.parentEventId = parentEvent.eventId || undefined;
     // x.containerIdTitle = undefined;

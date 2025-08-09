@@ -1,6 +1,9 @@
 const treeTOCName = 'tree';
 const contentPane = $('content');
 
+var pagePath = '';
+var dataPath = '';
+
 FILENAME_DEFAULT_HELPFILE = `hlp/Help-__.zip`;
 
 EventBus.sub(EventNames.TreeDataChanged, (d) => {
@@ -77,7 +80,7 @@ content: ${bookOpen};
 
 function showChapterByData(idxTreeItem, pagePath, popstate = undefined) {
   contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
-  log('E !!! ' + pagePath);
+  //log('E !!! ' + pagePath);
   //if (pagePath.startsWith('@') || popstate)
     showChapter(null, undefined, pagePath, null);
 
@@ -244,7 +247,8 @@ loadLocalization(activeLanguage).then(() => {
 /*S: Topic renderer logic integration */
 function convertRelativePathToViewerURI(val, id = undefined) {
   var pard = dataPathGeneral ? `${PAR_NAME_DOC}=${dataPathGeneral}&` : ``;
-  return `?${pard}${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(id || idxTreeItem)}`;
+  //${pard}
+  return `?${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(id || idxTreeItem)}`;
 }
 
 function setSearchParams(url, path, i) {
