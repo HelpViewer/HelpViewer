@@ -275,6 +275,10 @@ function removeIconsForPrint() {
   $A('.content *').forEach(el => {
     clearIconsFromText(el);
   });
+
+  const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
+  const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
+  contentPane.innerHTML = contentPane.innerHTML.replace(DIRECTIVE_PRINT_PAGEBREAK, DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
   
   setHeader(clearIconsFromTextSingleText(getHeader()));
 

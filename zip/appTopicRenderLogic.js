@@ -10,9 +10,6 @@ const PANEL_NAME_CHAPTERANCHOR = 'downP-ChapterAnchor';
 const C_ANCHOR_CONTENT = ' #';
 const PLG_KEY_HASH = '_hash';
 
-const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
-const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
-
 const contentPane = $('content');
 const bookmarksPane = $('subsList');
 const bookmarksPaneButton = $(PANEL_NAME_CHAPTERANCHOR);
@@ -255,7 +252,7 @@ async function getPathData(path, heading) {
     }
   }
 
-  content = content.replace(DIRECTIVE_PRINT_PAGEBREAK, DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
+  //content = content.replace(DIRECTIVE_PRINT_PAGEBREAK, DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
   
   contentPane.innerHTML = transformOutput(content);
   
