@@ -88,13 +88,16 @@ function showChapterByTree(idxTreeItem) {
     } else {
       if (tree) {
         el = $O(`[data-param="${pagePath}"]`);
-        elid = el.id;
+        elid = el?.id;
         treeActions(el, elid);
         return true;
       }
     }
 
     function treeActions(el, elid) {
+      if (!el || !elid)
+        return;
+      
       showChapterA(null, el);
       fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(elid);

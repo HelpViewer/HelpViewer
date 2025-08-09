@@ -103,17 +103,20 @@ class pTopicRenderer extends IPlugin {
 
       r.fileMedium = resolveFileMedium(r.uri);
 
+      var result = Promise.resolve();
       const subIds = this.cfgPhaseList.replace('%%', r.type?.substring(0, 3)).split(';');
       subIds.forEach((phase) => {
-        log(`Rendering ${r.uri} phase ${phase} ... sending to plugins with id '${this.aliasName}-${phase}'`);
-        sendEventObject(r, `${this.aliasName}-${phase}`);
-        if (!r.stopAllPhases)
-          r.stop = false;
+        result = result.then(() => {
+          log(`Rendering ${r.uri} phase ${phase} ... sending to plugins with id '${this.aliasName}-${phase}'`);
+          return sendEventObject(r, `${this.aliasName}-${phase}`).then(() => {
+            if (!r.stopAllPhases)
+              r.stop = false;    
+          });
+        });
       });
 
       r.getStorageData = T.STORAGE_HELP;
       r.getAppData = T.STORAGE_DATA;
-      // r.containerContent = undefined;
     };
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER_RES, ShowChapterResolutions, null]); // outside event handlers
@@ -133,6 +136,7 @@ class pTRPhasePlugin extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
     this.eventIdStrict = true;
+    this.doneVal = Promise.resolve();
   }
 
   init() {
