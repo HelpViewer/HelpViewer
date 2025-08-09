@@ -178,7 +178,7 @@ const BTN_CHANGELANG = 'downP-ChangeLanguage';
 const tree = $('tree');
 
 window.addEventListener('popstate', () => {
-  LoadURLParameters();
+  //LoadURLParameters();
 
   if (typeof dataPath !== 'string' || dataPath.trim() === '')
     dataPath = FILENAME_DEFAULT_HELPFILE;
@@ -303,7 +303,7 @@ EventBus.sub(EventNames.LOC_LOADED, (d) => {
   setPanelsEmpty();
 
   activeLanguage = getActiveLanguage();
-  LoadURLParameters();
+  //LoadURLParameters();
   try {
     storageAdd(dataPath, STO_HELP);
   } catch (error) {
@@ -320,7 +320,7 @@ EventBus.sub(EventNames.ChapterShown, (d) => {
     setToHref(d.sourceObject.href);
   } else {
     setToHrefByValues((x) => {
-      x.kvlist.set(PAR_NAME_PAGE, d.address);
+      x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
       x.kvlist.set(PAR_NAME_ID, idxTreeItem);
     });
   }  

@@ -55,6 +55,7 @@ class ChapterShown extends IEvent {
     this.heading = undefined;
     this.content = undefined;
     this.address = undefined;
+    this.addressOrig = undefined;
     this.sourceObject = undefined;
   }
 }
@@ -154,6 +155,7 @@ class pTopicRenderer extends IPlugin {
           n.heading = r.heading;
           n.content = r.content;
           n.address = r.uri;
+          n.addressOrig = data.address;
           n.parentEventId = r.eventId;
           n.id = TI.aliasName;
           n.sourceObject = data.sourceObject;

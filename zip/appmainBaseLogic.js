@@ -336,7 +336,6 @@ function showChapterA(event, a) {
 }
 
 function showChapter(event, heading, address, sourceObject) {
-  pagePath = address;
   return sendEvent(EventNames.ShowChapter, (x) => {
     x.event = event;
     x.heading = heading;
