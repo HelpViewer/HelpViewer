@@ -4,21 +4,10 @@ var idxTreeItem = 0;
 function loadPageByTreeId(id, baseName) {
   const treeItem = $(`${baseName}|${id}`);
   if (treeItem) {
-    const syntheticClick = prepareFakeClick();
-    treeItem.dispatchEvent(syntheticClick);
+    showChapterA(undefined, treeItem);
     idxTreeItem = id;
   }
   revealTreeItem(`${baseName}|${id}`);
-}
-
-function prepareFakeClick() {
-  const syntheticClick = new MouseEvent("click", {
-    bubbles: true,
-    cancelable: true,
-    composed: true,
-    view: window
-  });
-  return syntheticClick;
 }
 
 function revealTreeItem(id) {
