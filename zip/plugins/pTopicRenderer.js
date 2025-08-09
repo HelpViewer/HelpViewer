@@ -140,7 +140,7 @@ class pTopicRenderer extends IPlugin {
       r.type = r.uri ? r.uri.split('/').pop().split('.') : undefined;
 
       if (r.type && r.type.length > 1)
-        r.type = r.type[1];
+        r.type = r.type.pop();
       else
         r.type = undefined;
 
