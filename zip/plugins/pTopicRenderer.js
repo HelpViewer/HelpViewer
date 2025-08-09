@@ -69,6 +69,9 @@ class pTopicRenderer extends IPlugin {
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
       const r = data.result;
 
+      r.getStorageData = T.STORAGE_HELP;
+      r.getAppData = T.STORAGE_DATA;
+
       if (DEBUG_MODE_RENDERER) {
         log('W DEBUG_MODE_RENDERER flag is active, all steps will work to all phases event it should be redirected outside the instance!');
         r.preventDefault();
@@ -115,9 +118,12 @@ class pTopicRenderer extends IPlugin {
         });
       });
 
-      r.getStorageData = T.STORAGE_HELP;
-      r.getAppData = T.STORAGE_DATA;
-    };
+      result.then(() => {
+        log(`Rendering ${r.uri} finished ... sending to output`);
+        r.setTitle(r.heading);
+        r.containerContent.innerHTML = r.content;  
+      });
+    }
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER_RES, ShowChapterResolutions, null]); // outside event handlers
 

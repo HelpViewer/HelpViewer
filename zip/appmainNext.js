@@ -5,7 +5,7 @@ EventBus.sub(EventNames.TreeDataChanged, (d) => {
   if (d.treeId != treeTOCName)
     return;
 
-  showChapterByTree(idxTreeItem);
+  showChapterByData(idxTreeItem, pagePath);
 });
 
 //EventBus.sub(EVT_PluginsLoadingFinished, (d) => showSidebarTab());
@@ -72,10 +72,13 @@ content: ${bookOpen};
   //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
   //---showChapter(null, undefined, pagePath, null);
   //loadPageByTreeId(d.newId, d.treeId);
-  showChapterByTree(idxTreeItem);
+  showChapterByData(idxTreeItem, pagePath);
 });
 
-function showChapterByTree(idxTreeItem) {
+function showChapterByData(idxTreeItem, pagePath) {
+  if (pagePath.startsWith('@'))
+    return showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
+
   const tree = $(treeTOCName);
   var elid = `${treeTOCName}|${idxTreeItem}`;
 

@@ -49,7 +49,7 @@ class pTRTriage extends pTRPhasePlugin {
     }
 
     r.preventDefault();
-    r.setTitle(r.heading);
+    //r.setTitle(r.heading);
 
     if (!processIt)
       return this.doneVal;
@@ -57,6 +57,8 @@ class pTRTriage extends pTRPhasePlugin {
     r.result = r.getStorageData(r.uri).then((x) => {
       r.content = x;
     });
+
+    r.stop = true;
   }
 }
 

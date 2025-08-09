@@ -18,7 +18,7 @@ class pTRKeywordRender extends pTRPhasePlugin {
         r.content = "";
       } else {
         const word = splits[0].substring(1);
-        SetHeaderText(word);
+        r.heading = word;
         const dictionary = splits[1];
         const collector = document.createElement('ul');
         collector.className = 'tree';
