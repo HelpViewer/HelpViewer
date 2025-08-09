@@ -77,6 +77,7 @@ content: ${bookOpen};
 
 function showChapterByData(idxTreeItem, pagePath, popstate = undefined) {
   contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
+  log('E !!! ' + pagePath);
   if (pagePath.startsWith('@') || popstate)
     return showChapter(null, undefined, pagePath, null);
 
@@ -316,6 +317,9 @@ EventBus.sub(EventNames.ChapterShown, (d) => {
   } else {
     setToHrefByValues((x) => {
       x.kvlist.set(PAR_NAME_PAGE, d.address);
+      x.kvlist.set(PAR_NAME_ID, idxTreeItem);
     });
   }  
 });
+
+showChapterByData(idxTreeItem, pagePath);
