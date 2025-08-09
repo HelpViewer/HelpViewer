@@ -27,6 +27,7 @@ class ShowChapterResolutions extends IEvent {
     };
 
     this.doc = undefined;
+    this.docM = undefined;
     /** @type {() => void} */
     this.preventDefault = undefined;
     //this.parentEvent = undefined;
