@@ -36,7 +36,7 @@ class pTRUnconnectedTransformation extends pTRPhasePlugin {
         }
       });
 
-      if (!val?.startsWith('?d'))
+      if (!val?.startsWith('?d') && !el.getAttribute('data-param'))
         el.setAttribute('data-param', val);
     });
 
