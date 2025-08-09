@@ -26,3 +26,4 @@ pTopicRenderer
 pTRTriage:-triage
 pTRKeywordRender:-triage
 pTRLoadData:-triage
+pTRParseMd:-md

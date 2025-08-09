@@ -78,7 +78,7 @@ class pTopicRenderer extends IPlugin {
     super(aliasName, data);
 
     this.DEFAULT_KEY_CFG_ID_CONTENT = 'content';
-    this.DEFAULT_KEY_CFG_PHASELIST = 'triage;unconnected;connected;%%;decorators';
+    this.DEFAULT_KEY_CFG_PHASELIST = 'triage;%%;unconnected;connected;decorators';
     this.eventIdStrict = true;
   }
   
@@ -132,7 +132,7 @@ class pTopicRenderer extends IPlugin {
       r.fileMedium = resolveFileMedium(r.uri);
 
       var result = Promise.resolve();
-      const subIds = this.cfgPhaseList.replace('%%', r.type?.substring(0, 3)).split(';');
+      const subIds = this.cfgPhaseList.replace('%%', r.type?.substring(0, 3).toLowerCase()).split(';');
       log(`Rendering ${r.uri} phases list:`, subIds);
       
       subIds.forEach((phase) => {

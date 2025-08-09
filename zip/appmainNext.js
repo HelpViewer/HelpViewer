@@ -78,7 +78,7 @@ content: ${bookOpen};
 function showChapterByData(idxTreeItem, pagePath, popstate = undefined) {
   contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
   log('E !!! ' + pagePath);
-  if (pagePath.startsWith('@') || popstate)
+  //if (pagePath.startsWith('@') || popstate)
     return showChapter(null, undefined, pagePath, null);
 
   const tree = $(treeTOCName);
