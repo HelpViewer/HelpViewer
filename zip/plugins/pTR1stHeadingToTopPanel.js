@@ -14,7 +14,7 @@ class pTR1stHeadingToTopPanel extends pTRPhasePlugin {
   onETShowChapterResolutions(r) {
     r.result = this.doneVal;
 
-    const firstChild = r.doc.body ? r.doc.body.firstElementChild : r.doc.firstElementChild;
+    const firstChild = this.doc(r).firstElementChild;
     const firstH1 = $O('h1', r.doc);
   
     if (firstH1 && firstChild === firstH1 && r.setTitle(firstH1.innerHTML.trim()) )

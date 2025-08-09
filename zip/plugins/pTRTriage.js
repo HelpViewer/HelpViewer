@@ -25,6 +25,7 @@ class pTRTriage extends pTRPhasePlugin {
     try {
       uriRelative = new URL(r.uri).search;
     } catch (error) {
+      r.preventDefault();
       uriRelative = r.uri;
     }
 

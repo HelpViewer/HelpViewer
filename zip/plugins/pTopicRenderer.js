@@ -199,6 +199,10 @@ class pTRPhasePlugin extends IPlugin {
   deInit() {
     super.deInit();
   }
+
+  doc(r) {
+    return r.doc.body ? r.doc.body : r.doc;
+  }
 }
 
 function SetHeaderText(txt) {

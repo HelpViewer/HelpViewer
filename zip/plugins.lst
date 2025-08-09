@@ -29,5 +29,6 @@ pTRLoadData:-load
 pTRParseMd:-md
 pTREmptyPlugin:-htm
 pTRFlushToMemDOM:-unconnected
+pTRUnconnectedTransformation:-unconnected
 pTR1stHeadingToTopPanel:-unconnected
 pTRFlushToDOM:-connected
