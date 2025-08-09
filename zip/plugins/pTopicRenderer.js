@@ -27,6 +27,7 @@ class ShowChapterResolutions extends IEvent {
     };
 
     this.doc = undefined;
+    this.docV = undefined;
     this.docM = undefined;
     /** @type {() => void} */
     this.preventDefault = undefined;
@@ -105,7 +106,8 @@ class pTopicRenderer extends IPlugin {
 
       r.heading = data.heading || getChapterAlternativeHeading(data.address)[1] || data.address;
       const containerIdContent = data.containerIdContent || this.cfgIdContent;
-      r.doc = $(containerIdContent);
+      r.docV = $(containerIdContent);
+      r.doc = r.docV;
       r.uri = typeof data.address === 'string' ? data.address.split(T.MARKER_ADDDATA) : [];
       r.uri.push('');
       

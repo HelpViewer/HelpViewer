@@ -16,9 +16,9 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     log(`Rendering ${r.uri} data attached to DOM - visible to user now`);
     r.setTitle(r.heading);
     if (r.docM)
-      r.doc.innerHTML = r.docM.body.innerHTML;
+      r.docV.innerHTML = r.docM.body.innerHTML;
     else
-      r.doc.innerHTML = r.content;
+      r.docV.innerHTML = r.content;
   }
 }
 
