@@ -79,7 +79,7 @@ function showChapterByData(idxTreeItem, pagePath, popstate = undefined) {
   contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
   log('E !!! ' + pagePath);
   //if (pagePath.startsWith('@') || popstate)
-    return showChapter(null, undefined, pagePath, null);
+    showChapter(null, undefined, pagePath, null);
 
   const tree = $(treeTOCName);
   var elid = `${treeTOCName}|${idxTreeItem}`;
@@ -103,7 +103,7 @@ function showChapterByData(idxTreeItem, pagePath, popstate = undefined) {
       if (!el || !elid)
         return;
       
-      showChapterA(null, el);
+      //showChapterA(null, el);
       fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(elid);
     }

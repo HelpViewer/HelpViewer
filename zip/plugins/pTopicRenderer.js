@@ -15,6 +15,13 @@ class ShowChapterResolutions extends IEvent {
     /** @type {(txt : string) => void} */
     this.setTitle = (txt) => SetHeaderText(txt);
 
+    this.fixRelativePathToZipPaths = (doc, exclusion) => 
+      {
+        try {
+          fixImgRelativePathToZipPaths(doc, STO_HELP, exclusion);
+        } catch (e) {}
+      };
+
     this.tokens = [];
     this.TOKEN_NOLOADDATA = 'TOKEN_NOLOADDATA';
 
