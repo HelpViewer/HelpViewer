@@ -52,11 +52,6 @@ class pTRTriage extends pTRPhasePlugin {
       return this.doneVal;
 
     r.preventDefault();
-    
-    r.result = r.getStorageData(r.uri).then((x) => {
-      r.content = x;
-    });
-
     r.stop = true;
   }
 }

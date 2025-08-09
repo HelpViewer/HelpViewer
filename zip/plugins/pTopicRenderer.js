@@ -14,6 +14,18 @@ class ShowChapterResolutions extends IEvent {
     this.getAppData = undefined;
     /** @type {(txt : string) => void} */
     this.setTitle = (txt) => SetHeaderText(txt);
+
+    this.tokens = [];
+    this.TOKEN_NOLOADDATA = 'TOKEN_NOLOADDATA';
+
+    this.onTokenDo = (token, handler) => {
+      const r = this;
+      if (r.tokens.includes(token)) {
+        r.tokens = r.tokens.filter(x => x != token);
+        handler?.();
+      }
+    };
+
     this.containerContent = undefined;
     /** @type {() => void} */
     this.preventDefault = undefined;
@@ -89,7 +101,7 @@ class pTopicRenderer extends IPlugin {
         r.preventDefault();
       }
 
-      r.heading = data.heading || getChapterAlternativeHeading(data.address)[1];
+      r.heading = data.heading || getChapterAlternativeHeading(data.address)[1] || data.address;
       const containerIdContent = data.containerIdContent || this.cfgIdContent;
       r.containerContent = $(containerIdContent);
       r.uri = typeof data.address === 'string' ? data.address.split(T.MARKER_ADDDATA) : [];
@@ -101,6 +113,7 @@ class pTopicRenderer extends IPlugin {
         r.addData.set(splits[i], splits[i + 1]);
 
       r.uri = r.uri[0];
+      log(`Rendering of ${r.uri} started`);
       r.uriAnchor = r.uri.split('#');
       r.uri = r.uriAnchor[0];
 
@@ -179,6 +192,8 @@ class pTRPhasePlugin extends IPlugin {
 }
 
 function SetHeaderText(txt) {
+  if (!txt)
+    txt = '';
   const reply = setHeader(txt);
   document.title = txt.replace(/<[^>]+>/g, '');
   return reply;

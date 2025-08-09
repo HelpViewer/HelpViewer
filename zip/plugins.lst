@@ -25,3 +25,4 @@ puiNavigation:nav
 pTopicRenderer
 pTRTriage:-triage
 pTRKeywordRender:-triage
+pTRLoadData:-triage

@@ -13,6 +13,8 @@ class pTRKeywordRender extends pTRPhasePlugin {
 
   onETShowChapterResolutions(r) {
     if (r.uri?.startsWith("@")) {
+      r.tokens.push(r.TOKEN_NOLOADDATA);
+
       const splits = r.uri.split(":");
       if (splits.length <= 1) {
         r.content = "";
@@ -36,13 +38,9 @@ class pTRKeywordRender extends pTRPhasePlugin {
         collector.innerHTML = linesToHtmlTree(dict, "tr-ContentPage");
   
         r.content = collector.outerHTML ? collector.outerHTML : ' ';
-        r.result = Promise.resolve();
       }
-    } else {
-      r.result = r.getStorageData(r.uri).then((x) => {
-        r.content = x;
-      });  
     }
+    r.result = Promise.resolve();
   }
 }
 
