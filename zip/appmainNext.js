@@ -75,9 +75,10 @@ content: ${bookOpen};
   showChapterByData(idxTreeItem, pagePath);
 });
 
-function showChapterByData(idxTreeItem, pagePath) {
-  if (pagePath.startsWith('@'))
-    return showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
+function showChapterByData(idxTreeItem, pagePath, popstate = undefined) {
+  contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
+  if (pagePath.startsWith('@') || popstate)
+    return showChapter(null, undefined, pagePath, null);
 
   const tree = $(treeTOCName);
   var elid = `${treeTOCName}|${idxTreeItem}`;
@@ -178,13 +179,12 @@ const tree = $('tree');
 window.addEventListener('popstate', () => {
   LoadURLParameters();
 
-  if (typeof dataPath !== 'string' || dataPath.trim() === '') {
+  if (typeof dataPath !== 'string' || dataPath.trim() === '')
     dataPath = FILENAME_DEFAULT_HELPFILE;
-  }
 
-  alert('getPathData:3');
   //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-  showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
+  //showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
+  showChapterByData(idxTreeItem, pagePath, true);
 });
 
 var languages = getLanguagesList();

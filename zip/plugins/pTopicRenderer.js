@@ -120,6 +120,8 @@ class pTopicRenderer extends IPlugin {
 
       var result = Promise.resolve();
       const subIds = this.cfgPhaseList.replace('%%', r.type?.substring(0, 3)).split(';');
+      log(`Rendering ${r.uri} phases list:`, subIds);
+      
       subIds.forEach((phase) => {
         result = result.then(() => {
           log(`Rendering ${r.uri} phase ${phase} ... sending to plugins with id '${this.aliasName}-${phase}'`);
@@ -130,7 +132,7 @@ class pTopicRenderer extends IPlugin {
         });
       });
 
-      result.then(() => {
+      result = result.then(() => {
         log(`Rendering ${r.uri} finished ... sending to output`);
         r.setTitle(r.heading);
         r.containerContent.innerHTML = r.content;
@@ -177,6 +179,7 @@ class pTRPhasePlugin extends IPlugin {
 }
 
 function SetHeaderText(txt) {
-  setHeader(txt);
+  const reply = setHeader(txt);
   document.title = txt.replace(/<[^>]+>/g, '');
+  return reply;
 }
