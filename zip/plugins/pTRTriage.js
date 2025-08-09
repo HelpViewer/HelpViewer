@@ -39,6 +39,11 @@ class pTRTriage extends pTRPhasePlugin {
       r.getStorageData = r.getAppData;
       log(`Resolution: ${r.eventId};${r.uri} ... main storage set from ${STO_HELP} to ${STO_DATA}.`);
       r.uri = r.uri.substring(1);
+      if (!/\.(md|htm|html)$/i.test(r.uri)) {
+        log(`Resolution: ${r.eventId};${r.uri} ... insecured address for internal data. Stopping operation.`);
+        processIt = false;
+        r.tokens.push(r.TOKEN_NOLOADDATA);
+      }
       processIt = true;
     }
 

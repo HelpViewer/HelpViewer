@@ -28,3 +28,5 @@ pTRKeywordRender:-triage
 pTRLoadData:-load
 pTRParseMd:-md
 pTREmptyPlugin:-htm
+pTRFlushToDOM:-connected
+pTR1stHeadingToTopPanel:-decorators
