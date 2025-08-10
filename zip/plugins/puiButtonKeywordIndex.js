@@ -53,7 +53,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     p.innerHTML = a.innerHTML;
 
     const reply = getIndexFileKeywordData(path[1], path[0]);
-    const tree = linesToHtmlTree(reply);//this.cfgTreeId/, 'kwidx'
+    const tree = linesToHtmlTree(reply, this.cfgTreeId + 'kwidx');
     p.innerHTML = tree;
     openSubtree(p);
   }
