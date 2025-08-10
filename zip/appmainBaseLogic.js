@@ -349,3 +349,25 @@ function showChapter(event, heading, address, sourceObject) {
   });
 }
 /*E: Plugin: pTopicRenderer */
+
+function processAClick(a, evt) {
+  if (!a)
+    return;
+
+  openSubtree(a?.closest('li'));
+
+  const origHref = a.getAttribute('href');
+
+  if (origHref.startsWith(`?${PAR_NAME_DOC}=`)) {
+    log(`Resolution: ${evt.eventId};${origHref} ... is external help file.`);
+    return;
+  }
+
+  if (resolveFileMedium(origHref) !== UserDataFileLoadedFileType.NETWORK)
+  {
+    log(`Resolution: ${evt.eventId};${origHref} ... is local/relative path in help file.`);
+    evt.event.preventDefault();
+  }
+
+  showChapterA(evt, a);
+}

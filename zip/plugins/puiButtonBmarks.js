@@ -25,20 +25,6 @@ class puiButtonBmarks extends puiButtonTabTree {
 
   _preStandardInit() {
   }
-
-  _treeClick(e) {
-    //TODO : refactor
-    var event = e.event;
-    e.event.preventDefault();
-    const target = event.target;
-    if (!target) return;
-    
-    const a = target.closest('a');
-    if (!a) return;
-    
-    var targName = target.id.split('|');
-    alert(targName);
-  }
 }
 
 Plugins.catalogize(puiButtonBmarks);

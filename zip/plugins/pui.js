@@ -281,6 +281,9 @@ class puiButtonTabTree extends puiButtonTab {
   }
 
   _treeClick(e) {
+    const a = e.event.target?.closest('a');
+    if (a) 
+      processAClick(a, e);
   }
 }
 

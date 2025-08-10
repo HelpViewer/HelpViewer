@@ -146,7 +146,7 @@ EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
   }
 
   if (a)
-    showChapterA(d.event, a);
+    processAClick(a, d);
 });
 
 var PRJNAME_VAL = null;

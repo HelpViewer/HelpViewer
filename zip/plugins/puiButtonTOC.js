@@ -29,17 +29,6 @@ class puiButtonTOC extends puiButtonTabTree {
   _preStandardInit() {
   }
 
-  _treeClick(e) {
-    var event = e.event;
-    const target = event.target;
-    if (!target) return;
-  
-    const a = target.closest('a');
-    if (!a) return;
-    
-    showChapterA(event, a);
-  }
-
   onET_UserDataFileLoaded(evt) {
     storageSearch(STO_HELP, this.cfgFilename).then((srcTreeData) => {
       setTreeData(srcTreeData, this.aliasName);
