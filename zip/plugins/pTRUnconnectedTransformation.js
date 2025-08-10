@@ -32,12 +32,12 @@ class pTRUnconnectedTransformation extends pTRPhasePlugin {
             
             const newVal = convertRelativePathToViewerURI(val);
             el.setAttribute(attr, newVal);
+            
+            if (!val?.startsWith('?d') && !el.getAttribute('data-param'))
+              el.setAttribute('data-param', val);    
           }
         }
       });
-
-      if (!val?.startsWith('?d') && !el.getAttribute('data-param'))
-        el.setAttribute('data-param', val);
     });
 
   }
