@@ -2,12 +2,14 @@
 var idxTreeItem = 0;
 
 function loadPageByTreeId(id, baseName) {
-  const treeItem = $(`${baseName}|${id}`);
+  const key = `${baseName}|${id}`;
+  const treeItem = $(key);
   if (treeItem) {
-    showChapterA(undefined, treeItem);
     idxTreeItem = id;
+    treeItem.click();
+    // showChapterA(undefined, treeItem);
+    revealTreeItem(key);
   }
-  revealTreeItem(`${baseName}|${id}`);
 }
 
 function revealTreeItem(id) {

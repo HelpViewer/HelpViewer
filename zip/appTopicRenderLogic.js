@@ -36,41 +36,7 @@ function SetHeaderText(txt) {
 }
 
 function transformOutput(htmlTxt) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlTxt, "text/html");
-  
-  // Use 1st heading as top panel heading
-  const firstH1 = doc.body.firstElementChild;
-  
-  if (firstH1 && firstH1.tagName.toLowerCase() === 'h1') {
-    SetHeaderText(firstH1.innerHTML.trim());
-    firstH1.remove();
-  }
-  
-  //relative link paths update for ZIP structure
-  const checkList = ["href", "src", "data-href"];
 
-  $A('*', doc).forEach((el) => {
-    checkList.forEach((attr) => {
-      if (el.hasAttribute(attr)) {
-        const val = el.getAttribute(attr);
-        if (val 
-          && el.tagName.toLowerCase() !== "img"
-          && !/^https?:\/\//.test(val) 
-          && !val.startsWith("mailto:") 
-          && !val.startsWith("tel:") 
-          && !val.startsWith("?") 
-          && !val.startsWith("#")) {
-          
-          const newVal = convertRelativePathToViewerURI(val);
-          el.setAttribute(attr, newVal);
-        }
-      }
-    });
-  });
-  
-  //end
-  return doc.documentElement.outerHTML;
 }
 
 async function loadMermaid() {

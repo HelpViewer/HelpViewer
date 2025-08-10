@@ -117,6 +117,8 @@ EventBus.sub(EventNames.ClickedEventTree, async (d) => {
   if (d.treeId != 'tree' && d.treeId != 'subsList') 
     return;
 
+  idxTreeItem = d.elementIdVal;
+
   const sidebar = $('sidebar');
   if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
     toggleSidebar();
@@ -322,7 +324,13 @@ EventBus.sub(EventNames.NavigationMove, (d) => {
 
 EventBus.sub(EventNames.ChapterShown, (d) => {
   if (d.sourceObject) {
-    setToHref(d.sourceObject.href);
+    if (resolveFileMedium(d.sourceObject.getAttribute('href')) == UserDataFileLoadedFileType.NETWORK) {
+      setToHrefByValues((x) => {
+        x.kvlist.set(PAR_NAME_ID, idxTreeItem);
+      });
+    } else {
+      setToHref(d.sourceObject.href);
+    }
   } else {
     setToHrefByValues((x) => {
       x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
