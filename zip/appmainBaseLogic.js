@@ -330,9 +330,10 @@ function getIndexFileKeywordData(id, keyword) {
 
 /*S: Plugin: pTopicRenderer */
 function showChapterA(event, a) {
+  const href = a.getAttribute('href');//a.href
   return showChapter(event, 
     a.innerHTML, 
-    a.getAttribute('data-param') || a.href, a);
+    a.getAttribute('data-param') || href, a);
 }
 
 function showChapter(event, heading, address, sourceObject) {
@@ -354,7 +355,7 @@ function processAClick(a, evt) {
   if (!a)
     return;
 
-  openSubtree(a?.closest('li'));
+  revealTreeItem(a?.id);
 
   const origHref = a.getAttribute('href');
 
