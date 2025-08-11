@@ -174,24 +174,27 @@ class pGets extends IPlugin {
   };
 
   onUriChanged(parentEventId) {
-    const T = this.constructor;
-    const parOld = getObjectCopy(this.params);
-    this.h_EVT_GETS_LOAD(null);
-    const summary = getDifferenceTwoObjects(parOld, this.params);
-
-    sendEvent(T.EVT_GETS_CHANGES, (changes) => {
-      if (parentEventId === 'string')
-        changes.parentEventId = parentEventId;
-
-      for (const key in summary) {
-        if (summary[key].new == undefined) {
-          changes.unset.push(key);
-          continue;
-        }
+    if (this.params) {
+      const T = this.constructor;
+      const parOld = getObjectCopy(this.params);
+      this.h_EVT_GETS_LOAD(null);
+      const summary = getDifferenceTwoObjects(parOld, this.params);
   
-        changes.changes.set(key, summary[key].new);
-      }  
-    });
+      sendEvent(T.EVT_GETS_CHANGES, (changes) => {
+        if (parentEventId === 'string')
+          changes.parentEventId = parentEventId;
+  
+        for (const key in summary) {
+          if (summary[key].new == undefined) {
+            changes.unset.push(key);
+            continue;
+          }
+    
+          changes.changes.set(key, summary[key].new);
+        }  
+      });
+  
+    }
   }
 }
   

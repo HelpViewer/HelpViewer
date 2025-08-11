@@ -31,4 +31,5 @@ pTREmptyPlugin:-htm
 pTRFlushToMemDOM:-unconnected
 pTRUnconnectedTransformation:-unconnected
 pTR1stHeadingToTopPanel:-unconnected
+pTRBookmarkAnalysis:-connected
 pTRFlushToDOM:-connected

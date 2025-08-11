@@ -359,6 +359,19 @@ function processAClick(a, evt) {
 
   const origHref = a.getAttribute('href');
 
+  if (!origHref) {
+    evt?.event?.preventDefault();
+    return;
+  }
+
+  if (origHref.startsWith('#')) {
+    evt?.event?.preventDefault();
+    const bookmark = origHref.substring(1);
+    scrollToAnchor(bookmark);
+    history.pushState(null, '', origHref);
+    return;
+  }
+
   if (origHref.startsWith(`?${PAR_NAME_DOC}=`)) {
     log(`Resolution: ${evt.eventId};${origHref} ... is external help file.`);
     return;
@@ -367,7 +380,7 @@ function processAClick(a, evt) {
   if (resolveFileMedium(origHref) !== UserDataFileLoadedFileType.NETWORK)
   {
     log(`Resolution: ${evt.eventId};${origHref} ... is local/relative path in help file.`);
-    evt.event.preventDefault();
+    evt?.event?.preventDefault();
   }
 
   showChapterA(evt, a);

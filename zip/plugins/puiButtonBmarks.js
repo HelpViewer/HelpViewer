@@ -11,9 +11,8 @@ class puiButtonBmarks extends puiButtonTabTree {
 
   init() {
     super.init();
-    const T = this.constructor;
-    const TI = this;
-    this.cfgTreeId = 'tr-' + newUID(6);
+    this.cfgTreeId = 'bmark';
+    hideButton(this.button.id, false);
   }
 
   deInit() {
@@ -25,6 +24,19 @@ class puiButtonBmarks extends puiButtonTabTree {
 
   _preStandardInit() {
   }
+
+  onET_UserDataFileLoaded(evt) {
+    hideButton(this.button.id, false);
+  }
+
+  onET_BmarksChanged(evt) {
+    const state = evt.data && evt.data.length > 0;
+    hideButton(this.button.id, state);
+    setTreeData(state? evt.data : '', this.aliasName);
+    $A('a', this.tree).forEach((x) => x.href = x.getAttribute('data-param') || '');
+    openSubtree(this.tree);
+  }
+
 }
 
 Plugins.catalogize(puiButtonBmarks);

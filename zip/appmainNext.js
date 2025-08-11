@@ -166,6 +166,8 @@ var dataPathGeneral;
 
 var activeLanguage = getActiveLanguage();
 
+const PLG_KEY_HASH = '_hash';
+
 function LoadURLParameters() {
   var handler = (x) => x;
   dataPathGeneral = getGets(PAR_NAME_DOC, handler) || FILENAME_DEFAULT_HELPFILE;
@@ -173,6 +175,13 @@ function LoadURLParameters() {
   pagePath = getGets(PAR_NAME_PAGE, handler) || FILENAME_1STTOPIC;
   idxTreeItem = parseInt(getGets(PAR_NAME_ID, handler)) || 0;
 }
+
+const evtHashDefined = 'HASHDEFINED';
+addEventDefinition(evtHashDefined, new EventDefinition(IEvent, evtHashDefined));
+
+EventBus.sub(evtHashDefined, async (d) => {
+  scrollToAnchor(d.result);
+});
 
 LoadURLParameters();
 const treeItemHandlerGet = () => idxTreeItem;
@@ -336,7 +345,15 @@ EventBus.sub(EventNames.ChapterShown, (d) => {
       x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
       x.kvlist.set(PAR_NAME_ID, idxTreeItem);
     });
-  }  
+  }
+
+  requestAnimationFrame(() => {
+    const hash = location.hash;
+
+    if (hash)
+      sendEvent(evtHashDefined, (x) => x.result = hash.substring(1));
+  });
+
 });
 
 showChapterByData(idxTreeItem, pagePath);
