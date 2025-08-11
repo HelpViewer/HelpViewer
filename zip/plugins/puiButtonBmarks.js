@@ -35,6 +35,9 @@ class puiButtonBmarks extends puiButtonTabTree {
     setTreeData(state? evt.data : '', this.aliasName);
     $A('a', this.tree).forEach((x) => x.href = x.getAttribute('data-param') || '');
     openSubtree(this.tree);
+
+    if (!this.tab.classList.contains(C_HIDDENC))
+      showSidebarTab();
   }
 
 }
