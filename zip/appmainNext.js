@@ -20,6 +20,93 @@ EventBus.sub(EventNames.StorageAdded, async (d) => {
     return;
 
   notifyUserDataFileLoaded(d.fileName);
+});
+
+function showChapterByData(idxTreeItem, pagePath) {
+  contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
+  //log('E !!! ' + pagePath);
+  //if (pagePath.startsWith('@') || popstate)
+    showChapter(null, undefined, pagePath, null);
+
+  const tree = $(treeTOCName);
+  var elid = `${treeTOCName}|${idxTreeItem}`;
+
+  observeDOMAndDo(() => {
+    var el = $(elid);
+
+    if (el) {
+      treeActions(el, elid);
+      return true;
+    } else {
+      if (tree) {
+        el = $O(`[data-param="${pagePath}"]`);
+        elid = el?.id;
+        treeActions(el, elid);
+        return true;
+      }
+    }
+
+    function treeActions(el, elid) {
+      if (!el || !elid)
+        return;
+      
+      //showChapterA(null, el);
+      fixImgRelativePathToZipPaths(tree, STO_HELP);
+      revealTreeItem(elid);
+    }
+  }, undefined, 10000);
+}
+
+EventBus.sub(EventNames.ClickedEventTree, async (d) => {
+  if (d.treeId != 'tree' && d.treeId != 'subsList') 
+    return;
+
+  idxTreeItem = d.elementIdVal;
+
+  const sidebar = $('sidebar');
+  if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
+    toggleSidebar();
+});
+
+EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
+  configFileReload(FILE_CONFIG);
+  
+  //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
+  //---showChapter(null, undefined, pagePath, null);
+  //loadPageByTreeId(d.newId, d.treeId);
+  showChapterByData(idxTreeItem, pagePath);
+
+  showSidebarTab();
+});
+
+EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
+  log('W undeliverable: ' + d.elementId);
+  
+  if (!d.target)
+    d.stop = true;
+
+  const a = d.target.closest('a');
+  if (!d.target.closest('a, input, summary, button'))
+    d.stop = true;
+
+  log('E stop: ' + d.stop);
+
+  if (d.stop) {
+    d.event.preventDefault();
+    return;
+  }
+
+  if (a)
+    processAClick(a, d);
+});
+
+var PRJNAME_VAL = null;
+
+EventBus.sub(EventNames.ConfigFileReloadFinished, async (d) => {
+  if (d.id != 'FILE_CONFIG')
+    return;
+  PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+
 
   // Load favicon
   const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);
@@ -71,90 +158,7 @@ content: ${bookOpen};
 }` 
     );
   }
-  
-  //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-  //---showChapter(null, undefined, pagePath, null);
-  //loadPageByTreeId(d.newId, d.treeId);
-  showChapterByData(idxTreeItem, pagePath);
-});
 
-function showChapterByData(idxTreeItem, pagePath, popstate = undefined) {
-  contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
-  //log('E !!! ' + pagePath);
-  //if (pagePath.startsWith('@') || popstate)
-    showChapter(null, undefined, pagePath, null);
-
-  const tree = $(treeTOCName);
-  var elid = `${treeTOCName}|${idxTreeItem}`;
-
-  observeDOMAndDo(() => {
-    var el = $(elid);
-
-    if (el) {
-      treeActions(el, elid);
-      return true;
-    } else {
-      if (tree) {
-        el = $O(`[data-param="${pagePath}"]`);
-        elid = el?.id;
-        treeActions(el, elid);
-        return true;
-      }
-    }
-
-    function treeActions(el, elid) {
-      if (!el || !elid)
-        return;
-      
-      //showChapterA(null, el);
-      fixImgRelativePathToZipPaths(tree, STO_HELP);
-      revealTreeItem(elid);
-    }
-  }, undefined, 10000);
-}
-
-EventBus.sub(EventNames.ClickedEventTree, async (d) => {
-  if (d.treeId != 'tree' && d.treeId != 'subsList') 
-    return;
-
-  idxTreeItem = d.elementIdVal;
-
-  const sidebar = $('sidebar');
-  if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
-    toggleSidebar();
-});
-
-EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
-  showSidebarTab();
-});
-
-EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
-  log('W undeliverable: ' + d.elementId);
-  
-  if (!d.target)
-    d.stop = true;
-
-  const a = d.target.closest('a');
-  if (!d.target.closest('a, input, summary, button'))
-    d.stop = true;
-
-  log('E stop: ' + d.stop);
-
-  if (d.stop) {
-    d.event.preventDefault();
-    return;
-  }
-
-  if (a)
-    processAClick(a, d);
-});
-
-var PRJNAME_VAL = null;
-
-EventBus.sub(EventNames.ConfigFileReloadFinished, async (d) => {
-  if (d.id != 'FILE_CONFIG')
-    return;
-  PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
 });
 
 const PAR_NAME_PAGE = 'p'; // chapter page path
@@ -199,7 +203,8 @@ window.addEventListener('popstate', () => {
 
   //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
   //showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
-  showChapterByData(idxTreeItem, pagePath, true);
+  showChapterByData(idxTreeItem, pagePath);
+  //, true
 });
 
 var languages = getLanguagesList();
@@ -211,18 +216,18 @@ loadLocalization(activeLanguage).then(() => {
     (async () => {
       // load zip file
       try {
-        if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
-          //await _Storage.add(STO_HELP, dataPath);
-          await storageAdd(dataPath, STO_HELP);
-        else
-          storageAddedNotification(dataPath, STO_HELP);
-        configFileReload(FILE_CONFIG);
+        // // if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
+        // //   //await _Storage.add(STO_HELP, dataPath);
+        // //   await storageAdd(dataPath, STO_HELP);
+        // // else
+        // //   storageAddedNotification(dataPath, STO_HELP);
+        // // configFileReload(FILE_CONFIG);
       } catch {
         setPanelsEmpty();
         return;
       }
       
-      revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
+      //revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
       
       // if (!srcTreeData) {
       //   hideButton('downP-TopicTree');
@@ -319,11 +324,11 @@ EventBus.sub(EventNames.LOC_LOADED, (d) => {
 
   activeLanguage = getActiveLanguage();
   LoadURLParameters();
-  
-  try {
+
+  if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
     storageAdd(dataPath, STO_HELP);
-  } catch (error) {
-    return;
+  else {
+    storageAddedNotification(dataPath, STO_HELP);
   }
 });
 
@@ -332,6 +337,8 @@ EventBus.sub(EventNames.NavigationMove, (d) => {
 });
 
 EventBus.sub(EventNames.ChapterShown, (d) => {
+  revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
+
   if (d.sourceObject) {
     if (resolveFileMedium(d.sourceObject.getAttribute('href')) == UserDataFileLoadedFileType.NETWORK) {
       setToHrefByValues((x) => {
