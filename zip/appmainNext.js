@@ -136,7 +136,9 @@ EventBus.sub(EventNames.ConfigFileReloadFinished, async (d) => {
   }
   
   if (doOverride) {
-    appendCSS('overridePlusMinus',
+    const cssName = 'overridePlusMinus';
+    $(cssName)?.remove();
+    appendCSS(cssName,
 `ul.tree details > summary::before {
 content: ${bookClosed};
 }
@@ -288,6 +290,7 @@ EventBus.sub(EventNames.ChapterShown, (d) => {
       sendEvent(evtHashDefined, (x) => x.result = hash.substring(1));
   });
 
+  contentPane.focus();
 });
 
 showChapterByData(idxTreeItem, pagePath);
