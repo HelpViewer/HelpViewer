@@ -64,6 +64,14 @@ function setPanelsEmpty() {
   SetHeaderText(_T('HEADING_SELECT_LEFT'));
 }
 
+function SetHeaderText(txt) {
+  if (!txt)
+    txt = '';
+  const reply = setHeader(txt);
+  document.title = txt.replace(/<[^>]+>/g, '');
+  return reply;
+}
+
 function searchOverTextNodesAndDo(parent, action) {
   if (parent.nodeType === Node.TEXT_NODE) {
     action(parent);

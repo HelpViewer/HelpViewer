@@ -209,11 +209,3 @@ class pTRPhasePlugin extends IPlugin {
     return r.doc.body ? r.doc.body : r.doc;
   }
 }
-
-function SetHeaderText(txt) {
-  if (!txt)
-    txt = '';
-  const reply = setHeader(txt);
-  document.title = txt.replace(/<[^>]+>/g, '');
-  return reply;
-}
