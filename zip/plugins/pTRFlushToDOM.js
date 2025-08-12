@@ -22,6 +22,7 @@ class pTRFlushToDOM extends pTRPhasePlugin {
 
     r.docV.innerHTML = r.content;
     r.fixRelativePathToZipPaths(r.docV);
+    r.doc = r.docV;
   }
 }
 
