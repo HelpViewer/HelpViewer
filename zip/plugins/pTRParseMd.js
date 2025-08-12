@@ -13,6 +13,7 @@ class pTRParseMd extends pTRPhasePlugin {
   }
 
   deInit() {
+    $(this.config[this.constructor.KEY_CFG_FILENAME])?.remove();
     super.deInit();
   }
 

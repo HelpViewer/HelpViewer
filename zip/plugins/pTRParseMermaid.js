@@ -13,34 +13,36 @@ class pTRParseMermaid extends pTRPhasePlugin {
   }
 
   deInit() {
+    $(this.config[this.constructor.KEY_CFG_FILENAME])?.remove();
     super.deInit();
   }
 
   onETShowChapterResolutions(r) {
     r.result = this.doneVal;
 
-    const loadMermaid = () => {
+    const loadExtern = () => {
       const one = this.cfgFileName;
       return storageSearch(STO_DATA, one).then((x) =>
         appendJavaScript(one, x, document.head)
       );
     }
 
-    const codeBlocks = $A('code.language-mermaid', r.doc);
-    if (codeBlocks.length > 0) {
-      loadMermaid().then(() => {
-        codeBlocks.forEach(code => {
-          const div = document.createElement('div');
-          div.className = 'mermaid';
-          div.textContent = code.textContent;
-          code.parentElement.replaceWith(div);
+    r.result = r.result.then(() => {
+      const codeBlocks = $A('code.language-mermaid', r.doc);
+      if (codeBlocks.length > 0) {
+        loadExtern().then(() => {
+          codeBlocks.forEach(code => {
+            const div = document.createElement('div');
+            div.className = 'mermaid';
+            div.textContent = code.textContent;
+            code.parentElement.replaceWith(div);
+          });
+          mermaid.initialize({ startOnLoad: false });
+          mermaid.init();
         });
-        mermaid.initialize({ startOnLoad: false });
-        mermaid.init();
-      });
-    }
+      }
+    });
 
-    r.result = r.result.then(() => r.content = marked.parse(r.content));
   }
 }
 
