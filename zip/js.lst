@@ -9,3 +9,4 @@ appFTree.js
 appLayoutHandlers.js
 prism/prism.js
 appmainFileParsingTocTree.js
+appPrePrintActions.js

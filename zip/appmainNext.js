@@ -13,8 +13,6 @@ EventBus.sub(EventNames.TreeDataChanged, (d) => {
   showChapterByData(idxTreeItem, pagePath);
 });
 
-//EventBus.sub(EVT_PluginsLoadingFinished, (d) => showSidebarTab());
-
 EventBus.sub(EventNames.StorageAdded, async (d) => {
   if (d.storageName != STO_HELP)
     return;
@@ -70,12 +68,7 @@ EventBus.sub(EventNames.ClickedEventTree, async (d) => {
 
 EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
   configFileReload(FILE_CONFIG);
-  
-  //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-  //---showChapter(null, undefined, pagePath, null);
-  //loadPageByTreeId(d.newId, d.treeId);
   showChapterByData(idxTreeItem, pagePath);
-
   showSidebarTab();
 });
 
@@ -113,11 +106,7 @@ EventBus.sub(EventNames.ConfigFileReloadFinished, async (d) => {
   
   if (customFavicon)
     changeFavicon(customFavicon);
-  
-  // load chapter document
-  //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-  //showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
-  
+    
   // override book images in tree structure
   var [bookOpen, bookClosed] = await Promise.all([
     getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP),
@@ -158,7 +147,6 @@ content: ${bookOpen};
 }` 
     );
   }
-
 });
 
 const PAR_NAME_PAGE = 'p'; // chapter page path
@@ -214,26 +202,6 @@ loadLocalization(activeLanguage).then(() => {
     log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);  
   else {
     (async () => {
-      // load zip file
-      try {
-        // // if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
-        // //   //await _Storage.add(STO_HELP, dataPath);
-        // //   await storageAdd(dataPath, STO_HELP);
-        // // else
-        // //   storageAddedNotification(dataPath, STO_HELP);
-        // // configFileReload(FILE_CONFIG);
-      } catch {
-        setPanelsEmpty();
-        return;
-      }
-      
-      //revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
-      
-      // if (!srcTreeData) {
-      //   hideButton('downP-TopicTree');
-      //   showSidebarTab(`sp-${PANEL_NAME_CHAPTERANCHOR}`);
-      // }
-
       // other versions list
       const pathVersions = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
       var txt = null;
@@ -255,7 +223,6 @@ loadLocalization(activeLanguage).then(() => {
         hideButton(BTN_CHANGEVERSION);
         //hideButton(BTN_CHANGELANG);
       }
-
     })();
   }
 });
@@ -276,46 +243,6 @@ function setSearchParams(url, path, i) {
   });
 }
 /*E: Topic renderer logic integration */
-
-const DIRECTIVE_PRINT_KEEP_ICONS = '<!-- @print-keep-icons -->';
-
-function removeIconsForPrint() {
-  openSubtree(contentPane);
-
-  var keepIconsConfig = (configGetValue(CFG_KEY_OverridePrintKeepIcons) || 0) == 1 ? 1 : 0;
-  const directivePresent = contentPane.innerHTML.includes(DIRECTIVE_PRINT_KEEP_ICONS) ? 1 : 0;
-  var decision = (keepIconsConfig + directivePresent) % 2;
-
-  if (printIcons == 0 || printIcons == 1)
-    decision = printIcons;
-
-  if (decision == 1)
-    return;
-
-  $A('.content *').forEach(el => {
-    clearIconsFromText(el);
-  });
-
-  const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
-  const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
-  contentPane.innerHTML = contentPane.innerHTML.replace(DIRECTIVE_PRINT_PAGEBREAK, DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
-  
-  setHeader(clearIconsFromTextSingleText(getHeader()));
-
-  document.title = clearIconsFromTextSingleText(document.title);
-}
-
-function clearIconsFromText(el) {
-  el.childNodes.forEach(node => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      node.textContent = clearIconsFromTextSingleText(node.textContent);
-    }
-  });
-}
-
-function clearIconsFromTextSingleText(txt) {
-  return txt?.replace(/[^\x00-\x7F\u00A0-\u024F.,;:!?()\[\]{}<>"'@#%&*\-\s]/g, '');
-}
 
 EventBus.sub('BeforePrint', removeIconsForPrint);
 
