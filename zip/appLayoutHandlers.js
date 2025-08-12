@@ -63,3 +63,16 @@ function setPanelsEmpty() {
   contentPane.innerHTML = _T('MSG_NODATA');
   SetHeaderText(_T('HEADING_SELECT_LEFT'));
 }
+
+function searchOverTextNodesAndDo(parent, action) {
+  if (parent.nodeType === Node.TEXT_NODE) {
+    action(parent);
+  } else if (
+    parent.nodeType === Node.ELEMENT_NODE &&
+    !['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parent.tagName)
+  ) {
+    for (let child of Array.from(parent.childNodes)) {
+      searchOverTextNodesAndDo(child, action);
+    }
+  }
+}

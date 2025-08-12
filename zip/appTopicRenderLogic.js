@@ -35,75 +35,6 @@ function SetHeaderText(txt) {
   document.title = txt.replace(/<[^>]+>/g, '');
 }
 
-function transformOutput(htmlTxt) {
-
-}
-
-async function loadMermaid() {
-  const MERMAID_ID = 'ext-mermaid';
-  if (!$(MERMAID_ID)) {
-    const srcMermaid = await storageSearch(STO_DATA, 'mermaid.min.js');
-    appendJavaScript(MERMAID_ID, srcMermaid, document.head);
-  }
-}
-
-function transformOutputConnected(doc) {
-  //relative img src paths update for ZIP structure
-  fixImgRelativePathToZipPaths(doc, STO_HELP);
-  setHeader((x) => fixImgRelativePathToZipPaths(x, STO_HELP, ":not(.treepic)"));
-
-  //mermaid graphs transformation
-  const codeBlocks = $A('code.language-mermaid', doc);
-  if (codeBlocks.length > 0) {
-    loadMermaid().then(() => {
-      codeBlocks.forEach(code => {
-        const div = document.createElement('div');
-        div.className = 'mermaid';
-        div.textContent = code.textContent;
-        code.parentElement.replaceWith(div);
-      });
-      mermaid.initialize({ startOnLoad: false });
-      mermaid.init();
-    });
-  }
-  
-  //code listings processing
-  $A('pre code', doc).forEach((block) => {
-    block.classList.add('line-numbers');
-    Prism.highlightElement(block);
-  });
-
-  //script blocks refresh
-  const scripts = $A('script', doc);
-  var idx = -1;
-
-  scripts.forEach((oldScript) => {
-    idx++;
-    appendJavaScript(`scr-${idx}`, oldScript.textContent, oldScript.parentElement)
-  });
-}
-
-function transformOutputConnectedMd(doc) {
-  // append bookmarks to chapters
-  const headings = $A('h1, h2, h3, h4, h5, h6', doc);
-  const counters = [0, 0, 0, 0, 0, 0];
-
-  headings.forEach(heading => {
-    const level = parseInt(heading.tagName.substring(1));
-
-    if (!heading.id) {
-      heading.id = nameForAnchor(heading.textContent, level, counters[level-1]++);
-    }
-    
-    const anchor = document.createElement('a');
-    anchor.href = `#${heading.id}`;
-    anchor.className = 'anchor-link';
-    anchor.textContent = C_ANCHOR_CONTENT;
-    
-    heading.appendChild(anchor);
-  });
-}
-
 async function loadPage(event, path, heading, i) {
   event?.preventDefault();
 
@@ -147,50 +78,6 @@ async function getPathData(path, heading) {
     if (splits.length <= 1) {
       content = "";
     } else {
-      const word = splits[0].substring(1);
-      SetHeaderText(word);
-      const dictionary = splits[1];
-      const collector = document.createElement('ul');
-      collector.className = 'tree';
-
-      var foundKeywords = keywordLists.get(dictionary)?.getTreeData(word, 0);
-      const kwFound = foundKeywords.split("\n").length;
-      const collector2 = document.createElement('ul');
-      collector2.className = 'tree';
-
-      if (foundKeywords !== "" && kwFound > 1) {
-        collector2.innerHTML = linesToHtmlTree(foundKeywords, "tr-ContentPage");
-        //alert(collector2.innerHTML);
-        //const firstList = $A('li', collector2);
-        //collector.appendChild(firstList);
-        //collector2.innerHTML = collector.innerHTML;
-        //collector.innerHTML = '';
-      }
-
-      keywordLists.get(dictionary)?.searchKeyword(word, collector);
-      const firstDetails = $A('li', $O('ul', $O('details', collector)));
-
-      if (firstDetails) {
-        firstDetails.className = 'tree';
-        firstDetails.forEach(li => collector2.appendChild(li));
-        //collector.appendChild(firstDetails);
-      } else {
-        collector.innerHTML = "";
-      }
-
-      if (collector2.innerHTML) {
-        const collector3 = document.createElement('ul');
-        collector3.className = 'tree';
-        collector3.innerHTML = collector2.innerHTML;
-        collector.innerHTML = "";
-        collector.appendChild(collector3);
-      }
-
-      if (collector.innerHTML) {
-        content = collector.innerHTML;
-      } else {
-        content = ' ';
-      }
 
     }
   } else 
@@ -229,36 +116,6 @@ async function getPathData(path, heading) {
     transformOutputConnectedMd(contentPane);
   }
   
-  // fill bookmarks panel
-  const bookmarksFound = Array.from($A('a', contentPane));
-  
-  var treeString = '';
-  
-  bookmarksFound.forEach(a => {
-    if (!/^H[1-6]$/.test(a.parentElement.tagName)) return;
-    treeString += ' '.repeat(parseInt(a.parentElement.tagName.slice(1, 2), 10) - 1);
-    treeString += a.parentElement.innerText.slice(0, -C_ANCHOR_CONTENT.length);
-    treeString += '|||';
-    treeString += path + (new URL(a.href).hash);
-    treeString += '\n';
-  });
-  
-  if (treeString.slice(0, 1) === ' ') {
-    treeString = getHeader() + '|||\n' + treeString;
-  }
-  
-  if (bookmarksPane) {
-    bookmarksPane.innerHTML = linesToHtmlTree(treeString, N_P_TREEITEM_BOOKMARK);
-    openSubtree(bookmarksPane);  
-    if (treeString.length == 0) {
-      bookmarksPaneButton.classList.add(C_HIDDENC);
-    } else {
-      bookmarksPaneButton.classList.remove(C_HIDDENC);
-    }
-    //----recomputeButtonPanel(bookmarksPaneButton);
-  }
-  
-  
   // additional steps for files read from repository
   if (path.startsWith("~") && path.endsWith(FILENAME_CHANGELOG)) {
     const headings = $A('h2');
@@ -289,14 +146,6 @@ async function getPathData(path, heading) {
       heading.appendChild(boomark);
     });
   }
-
-  // alternative for empty content panel
-  if (content === '') {
-    contentPane.innerHTML = _T(LK_MSG_PATH_NOT_FOUND_IN_ARCH);
-    if (dataPath === '') {
-      contentPane.innerHTML = msgNoData;
-    }
-  }
   
   contentPane.focus();
   refreshTitlesForLangStrings();
@@ -319,19 +168,6 @@ async function getPathData(path, heading) {
       }
     });
 
-  }
-}
-
-function searchOverTextNodesAndDo(parent, action) {
-  if (parent.nodeType === Node.TEXT_NODE) {
-    action(parent);
-  } else if (
-    parent.nodeType === Node.ELEMENT_NODE &&
-    !['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parent.tagName)
-  ) {
-    for (let child of Array.from(parent.childNodes)) {
-      searchOverTextNodesAndDo(child, action);
-    }
   }
 }
 /*E: Topic renderer logic */
