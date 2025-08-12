@@ -1,4 +1,4 @@
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 const DEBUG_MODE_RENDERER = DEBUG_MODE;
 const LOG_MINIMIZE_OBJECT = true;
 const LOG_MINIMIZE_DATE_ISO = false;
@@ -19,8 +19,10 @@ function newUID(length = 8) {
   return str;
 }
 
+const log = !DEBUG_MODE ? 
+function log() {} : 
 function log(msg, ...dataI) {
-  if (!DEBUG_MODE || !msg) return;
+  if (!msg) return;
 
   var severity = msg[0];
   const hasSeverity = msg[1] == ' ';
