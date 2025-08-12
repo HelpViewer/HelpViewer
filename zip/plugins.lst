@@ -36,3 +36,4 @@ pTRBookmarkAnalysis:-connected
 pTRFlushToDOM:-connected
 pTRParseMermaid:-connected
 pTRParsePrism:-connected
+pTRRefreshJS:-connected
