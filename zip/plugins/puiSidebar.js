@@ -1,4 +1,4 @@
-const C_TOOWIDE = 'too-wide';
+var C_TOOWIDE = 'too-wide';
 
 class SidebarPageCreate extends IEvent {
   constructor() {
