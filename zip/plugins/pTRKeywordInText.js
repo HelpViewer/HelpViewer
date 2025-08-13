@@ -12,11 +12,11 @@ class pTRKeywordInText extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    const keywordToShow = r.addData.get('KW');
-
     const stripDiacritics = function stripDiacritics(str) {
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
+
+    const keywordToShow = stripDiacritics(r.addData.get('KW'));
 
     if (keywordToShow && keywordToShow.length > 0) {
       r.result = r.result.then(() => {
@@ -24,12 +24,15 @@ class pTRKeywordInText extends pTRPhasePlugin {
         const regex = new RegExp(securedKeyword, 'gi');
     
         searchOverTextNodesAndDo(r.doc, (parent) => {
-          const match = stripDiacritics(parent.nodeValue).match(regex);
-          if (match) {
+          const matches = Array.from(stripDiacritics(parent.nodeValue).matchAll(regex));
+
+          for (const m of matches) {
             const span = document.createElement('span');
-            span.innerHTML = parent.nodeValue.replace(regex, (m) =>
-              `<span class='wordFound'>${m}</span>`
-            );
+            const start = m.index;
+            const end = start + m[0].length;
+            const found = parent.nodeValue.substring(start, end);
+            const foundR = new RegExp(found.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+            span.innerHTML = parent.nodeValue.replace(foundR, `<span class='wordFound'>${found}</span>`);
             parent.replaceWith(...span.childNodes);
           }
         });
