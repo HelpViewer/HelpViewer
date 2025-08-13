@@ -41,6 +41,7 @@ class ShowChapterResolutions extends IEvent {
     //this.parentEvent = undefined;
     this.stopAllPhases = false;
     this.helpFile = undefined;
+    this.content = undefined;
   }
 }
 
@@ -147,7 +148,16 @@ class pTopicRenderer extends IPlugin {
       r.fileMedium = resolveFileMedium(r.uri);
 
       var result = Promise.resolve();
-      const subIds = this.cfgPhaseList.replace('%%', r.type?.substring(0, 3).toLowerCase()).split(';');
+      r.result = result;
+      var subIds = this.cfgPhaseList;
+
+      if (data.content) {
+        log(`Forwarded exact data content in length: ${data.content.length} letters, updating phases list ...`);
+        subIds = '%%' + this.cfgPhaseList.split('%%')[1];
+        r.content = data.content;
+      }
+      subIds = subIds.replace('%%', r.type?.substring(0, 3).toLowerCase()).split(';');
+
       log(`Rendering ${r.uri} phases list:`, subIds);
       
       subIds.forEach((phase) => {

@@ -13,7 +13,6 @@ class pTRTriage extends pTRPhasePlugin {
 
   onETShowChapterResolutions(r) {
     setPanelsEmpty();
-    r.result = this.doneVal;
 
     const isNetwork = (r.fileMedium == UserDataFileLoadedFileType.NETWORK);// || resolveFileMedium(r.helpFile) == UserDataFileLoadedFileType.NETWORK;
 

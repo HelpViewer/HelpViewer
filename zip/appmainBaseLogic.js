@@ -336,13 +336,14 @@ function showChapterA(event, a) {
     a.getAttribute('data-param') || href, a);
 }
 
-function showChapter(event, heading, address, sourceObject) {
+function showChapter(event, heading, address, sourceObject, content) {
   return sendEvent(EventNames.ShowChapter, (x) => {
     x.event = event;
     x.heading = heading;
     x.address = address;
     x.sourceObject = sourceObject;
     x.helpFile = dataPath;
+    x.content = content;
     // x.parentEvent = parentEvent;
     // x.parentEventId = parentEvent.eventId || undefined;
     // x.containerIdTitle = undefined;

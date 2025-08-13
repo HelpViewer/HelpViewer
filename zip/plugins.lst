@@ -16,6 +16,7 @@ pIndexFile:keywordList;fulltextList
 puiButtonKeywordIndex:keywordList;fulltextList
 puiButtonHome
 puiButtonChangeLanguage
+puiButtonVersionSearch
 puiButtonColorTheme
 puiButtonToggleSide
 puiButtonFullScreen

@@ -1,4 +1,6 @@
 class puiButtonBmarks extends puiButtonTabTree {
+  static EVT_BMARKS_SHOW = 'ShowBookmarks';
+
   constructor(aliasName, data) {
     super(aliasName, data);
     
@@ -11,8 +13,18 @@ class puiButtonBmarks extends puiButtonTabTree {
 
   init() {
     super.init();
-    this.cfgTreeId = 'bmark';
-    hideButton(this.button.id, false);
+
+    const T = this.constructor;
+    const TI = this;
+
+    TI.cfgTreeId = 'bmark';
+    hideButton(TI.button.id, false);
+
+    const h_EVT_BMARKS_SHOW = (data) => {
+      if (!TI.button?.classList.contains(C_HIDDENC))
+        TI.button?.click();
+    };
+    TI.eventDefinitions.push([T.EVT_BMARKS_SHOW, IEvent, h_EVT_BMARKS_SHOW]);
   }
 
   deInit() {
