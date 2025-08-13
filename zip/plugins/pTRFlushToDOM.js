@@ -12,7 +12,6 @@ class pTRFlushToDOM extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = this.doneVal;
     log(`Rendering ${r.uri} data attached to DOM - visible to user now`);
     r.fixRelativePathToZipPaths(r.heading, ":not(.treepic)");
     r.setTitle(r.heading);

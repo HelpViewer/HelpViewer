@@ -18,8 +18,6 @@ class pTRParseMermaid extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    //r.result = this.doneVal;
-
     const loadExtern = () => {
       const one = this.cfgFileName;
       return storageSearch(STO_DATA, one).then((x) =>

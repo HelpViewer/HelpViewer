@@ -40,7 +40,6 @@ class pTRKeywordRender extends pTRPhasePlugin {
         r.content = collector.outerHTML ? collector.outerHTML : ' ';
       }
     }
-    r.result = this.doneVal;
   }
 }
 

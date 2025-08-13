@@ -12,8 +12,6 @@ class pTRUnconnectedTransformation extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = this.doneVal;
-
     //relative link paths update for ZIP structure
     const checkList = ["href", "src", "data-href"];
 

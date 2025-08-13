@@ -26,8 +26,6 @@ class pTRBookmarkAnalysis extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = this.doneVal;
-
     const C_ANCHOR_CONTENT = ' #';
     // append bookmarks to chapters
     const headings = $A('h1, h2, h3, h4, h5, h6', r.doc);

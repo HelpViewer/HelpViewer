@@ -18,8 +18,6 @@ class pTRParseMd extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = this.doneVal;
-
     if (!window.marked) {
       const one = this.cfgFileName;
       r.result = storageSearch(STO_DATA, one).then((x) =>

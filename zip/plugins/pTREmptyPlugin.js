@@ -12,7 +12,6 @@ class pTREmptyPlugin extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = this.doneVal;
   }
 }
 

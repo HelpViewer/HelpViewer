@@ -12,7 +12,6 @@ class pTRKeywordInText extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    //r.result = this.doneVal;
     const keywordToShow = r.addData.get('KW');
 
     const stripDiacritics = function stripDiacritics(str) {
