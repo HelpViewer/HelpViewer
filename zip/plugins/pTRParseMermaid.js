@@ -18,7 +18,7 @@ class pTRParseMermaid extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = this.doneVal;
+    //r.result = this.doneVal;
 
     const loadExtern = () => {
       const one = this.cfgFileName;

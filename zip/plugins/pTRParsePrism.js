@@ -18,7 +18,7 @@ class pTRParsePrism extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = this.doneVal;
+    //r.result = this.doneVal;
 
     const loadExtern = () => {
       const one = this.cfgFileName;
@@ -28,19 +28,18 @@ class pTRParsePrism extends pTRPhasePlugin {
     }
 
     //code listings processing
-    r.result = r.result.then(() => {
-    });
-
     const codeBlocks = $A('pre code', r.doc);
     if (codeBlocks.length > 0) {
-      loadExtern().then(() => {
-        codeBlocks.forEach((block) => {
-          block.classList.add('line-numbers');
-          Prism.highlightElement(block);
-        });    
+      r.result = r.result.then(() => {
+        return loadExtern().then(() => {
+          codeBlocks.forEach((block) => {
+            block.classList.add('line-numbers');
+            Prism.highlightElement(block);
+          });
+        });
+  
       });
     }
-
   }
 }
 

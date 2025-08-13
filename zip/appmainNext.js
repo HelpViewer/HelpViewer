@@ -291,6 +291,7 @@ EventBus.sub(EventNames.ChapterShown, (d) => {
   });
 
   contentPane.focus();
+  refreshTitlesForLangStrings();
 });
 
 showChapterByData(idxTreeItem, pagePath);
