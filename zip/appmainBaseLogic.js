@@ -384,5 +384,6 @@ function processAClick(a, evt) {
     evt?.event?.preventDefault();
   }
 
-  showChapterA(evt, a);
+  if (/\.(md|htm|html)$/i.test(origHref))
+    showChapterA(evt, a);
 }
