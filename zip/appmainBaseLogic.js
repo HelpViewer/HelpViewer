@@ -384,6 +384,7 @@ function processAClick(a, evt) {
     evt?.event?.preventDefault();
   }
 
-  if (/\.(md|htm|html)$/i.test(origHref))
+  const pageStr = new URLSearchParams(origHref).get(PAR_NAME_PAGE);
+  if (/\.(md|htm|html)$/i.test(pageStr))
     showChapterA(evt, a);
 }
