@@ -232,8 +232,10 @@ loadLocalization(activeLanguage).then(() => {
 /*S: Topic renderer logic integration */
 function convertRelativePathToViewerURI(val, id = undefined) {
   var pard = dataPathGeneral ? `&${PAR_NAME_DOC}=${dataPathGeneral}` : ``;
+  var valParts = val.split('#');
+  var hash = valParts.length < 2 ? '' : `#${valParts[1]}`;
   //${pard}
-  return `?${PAR_NAME_PAGE}=${encodeURIComponent(val)}&${PAR_NAME_ID}=${encodeURIComponent(id || idxTreeItem)}${pard}`;
+  return `?${PAR_NAME_PAGE}=${encodeURIComponent(valParts[0])}&${PAR_NAME_ID}=${encodeURIComponent(id || idxTreeItem)}${pard}${hash}`;
 }
 
 function setSearchParams(url, path, i) {
