@@ -151,6 +151,9 @@ class pTopicRenderer extends IPlugin {
       else
         r.type = undefined;
 
+      if (!r.type)
+        r.type = 'md';
+
       r.fileMedium = resolveFileMedium(r.uri);
 
       var result = Promise.resolve();

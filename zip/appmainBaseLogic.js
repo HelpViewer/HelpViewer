@@ -385,6 +385,6 @@ function processAClick(a, evt) {
   }
 
   const pageStr = new URLSearchParams(origHref).get(PAR_NAME_PAGE);
-  if (/\.(md|htm|html)$/i.test(pageStr))
+  if (/(\.(md|htm|html))?$/i.test(pageStr))
     showChapterA(evt, a);
 }
