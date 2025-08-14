@@ -86,7 +86,6 @@ class pTopicRenderer extends IPlugin {
 
   static STORAGE_DATA = (path) => storageSearch(STO_DATA, path);
   static STORAGE_HELP = (path) => storageSearch(STO_HELP, path);
-  static STORAGE_NETW = (path) => fetchData(path);
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -105,6 +104,13 @@ class pTopicRenderer extends IPlugin {
 
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
       const r = data.result;
+
+      const PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+      
+      r.STORAGE_NETW = (path) => {
+        const pathToRepo = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + path;
+        return fetchData(pathToRepo).then((x) => toText(x));
+      }
 
       r.getStorageData = T.STORAGE_HELP;
       r.getAppData = T.STORAGE_DATA;

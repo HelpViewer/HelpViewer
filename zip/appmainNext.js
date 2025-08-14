@@ -204,15 +204,15 @@ loadLocalization(activeLanguage).then(() => {
     log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);  
   else {
     (async () => {
-      // other versions list
-      const pathVersions = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
-      var txt = null;
-      try {
-        const verList = await fetchData(pathVersions);
-        txt = toText(verList);
-      } catch (error) {
-        txt = null;
-      }
+      // // // other versions list
+      // // const pathVersions = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
+      // // var txt = null;
+      // // try {
+      // //   const verList = await fetchData(pathVersions);
+      // //   txt = toText(verList);
+      // // } catch (error) {
+      // //   txt = null;
+      // // }
       
       var button = $(BTN_CHANGEVERSION);
       
@@ -268,19 +268,21 @@ EventBus.sub(EventNames.NavigationMove, (d) => {
 EventBus.sub(EventNames.ChapterShown, (d) => {
   revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
 
-  if (d.sourceObject) {
-    if (resolveFileMedium(d.sourceObject.getAttribute('href')) == UserDataFileLoadedFileType.NETWORK) {
-      setToHrefByValues((x) => {
-        x.kvlist.set(PAR_NAME_ID, idxTreeItem);
-      });
+  if (d.addressOrig.toLowerCase() != '~changelog.md') {
+    if (d.sourceObject) {
+      if (resolveFileMedium(d.sourceObject.getAttribute('href')) == UserDataFileLoadedFileType.NETWORK) {
+        setToHrefByValues((x) => {
+          x.kvlist.set(PAR_NAME_ID, idxTreeItem);
+        });
+      } else {
+        setToHref(d.sourceObject.href);
+      }
     } else {
-      setToHref(d.sourceObject.href);
+      setToHrefByValues((x) => {
+        x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
+        x.kvlist.set(PAR_NAME_ID, idxTreeItem);
+      });  
     }
-  } else {
-    setToHrefByValues((x) => {
-      x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
-      x.kvlist.set(PAR_NAME_ID, idxTreeItem);
-    });
   }
 
   requestAnimationFrame(() => {

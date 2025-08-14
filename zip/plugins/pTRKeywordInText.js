@@ -13,7 +13,7 @@ class pTRKeywordInText extends pTRPhasePlugin {
 
   onETShowChapterResolutions(r) {
     const stripDiacritics = function stripDiacritics(str) {
-      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      return str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
 
     const keywordToShow = stripDiacritics(r.addData.get('KW'));

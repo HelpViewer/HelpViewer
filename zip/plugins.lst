@@ -34,6 +34,7 @@ pTRFlushToMemDOM:-unconnected
 pTRUnconnectedTransformation:-unconnected
 pTR1stHeadingToTopPanel:-unconnected
 pTRBookmarkAnalysis:-connected
+pTRVersionSearch:-connected
 pTRFlushToDOM:-connected
 pTRParsePrism:-connected
 pTRParseMermaid:-connected

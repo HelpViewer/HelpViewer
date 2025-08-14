@@ -57,7 +57,7 @@ class pTRTriage extends pTRPhasePlugin {
     }
 
     if (r.uri?.startsWith("~")) {
-      r.getStorageData = pTopicRenderer.STORAGE_NETW;
+      r.getStorageData = r.STORAGE_NETW;
       log(`Resolution: ${r.eventId};${r.uri} ... main storage set from ${STO_HELP} to STORAGE_NETWORK.`);
       r.uri = r.uri.substring(1);
       processIt = true;
