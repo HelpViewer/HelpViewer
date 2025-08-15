@@ -38,7 +38,7 @@ class puiButtonAsBook extends puiButton {
             textOfFiles += '\n' + y + '\n';
 
           if (x == homeData) {
-            const metainfo = `\n| ${_T('helpfile')} | ${_T('version')} |\n|---|---|\n| ${configGetValue(CFG_KEY__PRJNAME)} | ${configGetValue(CFG_KEY__VERSION)} |\n`;
+            const metainfo = `\n| ${_T('helpfile')} | ${_T('version')} |\n|---|---|\n| ${configGetValue(CFG_KEY__PRJNAME)} | ${configGetValue(CFG_KEY__VERSION)} |\n| ${configGetValue(CFG_KEY__PRJNAME, '', FILE_CONFIG_DEFAULT)} | ${configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT)} |\n`;
             textOfFiles += metainfo;
             textOfFiles += DIRECTIVE_PRINT_PAGEBREAK;
             textOfFiles += metainfo;
