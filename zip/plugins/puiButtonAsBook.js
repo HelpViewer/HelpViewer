@@ -48,7 +48,7 @@ class puiButtonAsBook extends puiButton {
             if (data && data.length > 0)
               textOfFiles += '\n' + data + '\n' + DIRECTIVE_PRINT_PAGEBREAK + '\n';
           } else {
-            textOfFiles += DIRECTIVE_PRINT_PAGEBREAK;
+            textOfFiles += DIRECTIVE_PRINT_PAGEBREAK + '\n';
           }
 
           return Promise.resolve();  
