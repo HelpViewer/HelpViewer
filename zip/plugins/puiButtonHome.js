@@ -17,10 +17,8 @@ class puiButtonHome extends puiButton {
     const T = this.constructor;
     const TI = this;
     this.cfgHomePage = this.config[T.KEY_CFG_HOME] || TI.DEFAULT_KEY_CFG_HOME;
-    alert(':: ' + this.cfgHomePage);
 
-    const onET_GetHomePageData = null;//(evt) => evt.result = this.cfgHomePage;
-    TI.eventDefinitions.push([T.EVT_HOME_GETDATA, IEvent, onET_GetHomePageData]);
+    TI.eventDefinitions.push([T.EVT_HOME_GETDATA, IEvent, null]);
   }
 
   deInit() {

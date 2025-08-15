@@ -35,16 +35,31 @@ class puiButtonAsBook extends puiButton {
       files.forEach((x) => {
         prom = prom.then(() => (x.startsWith(':') ? storageSearch(STO_DATA, x.substring(1)) : storageSearch(STO_HELP, x)).then((y) => {
           if (y.length > 0)
-            textOfFiles += '\n' + y + DIRECTIVE_PRINT_PAGEBREAK;
+            textOfFiles += '\n' + y + '\n' + DIRECTIVE_PRINT_PAGEBREAK;
+
+          if (x == homeData) {
+            const data = $('tree')?.outerHTML;
+
+            if (data && data.length > 0)
+              textOfFiles += '\n' + data + '\n' + DIRECTIVE_PRINT_PAGEBREAK + '\n';
+          }
 
           return Promise.resolve();  
         }));
       });
-      prom.then(() => {
-        var reply = showChapter(undefined, undefined, '.md', undefined, textOfFiles);
-        //textOfFiles = reply.content;
-        //reply = showChapter(undefined, undefined, '.htm', undefined, textOfFiles);
+      var refs = [];
+      prom = prom.then(() => {
+        textOfFiles = textOfFiles.replace(/^\[[^\]]+\]:\s+.+$/gm, (match) => {
+          refs.push(match);
+          return '';
+        });
       });
+      prom = prom.then(() => {
+        textOfFiles = textOfFiles.slice(0, -(DIRECTIVE_PRINT_PAGEBREAK + '\n').length);
+        textOfFiles += `\n${refs.join('\n')}`;
+        showChapter(undefined, undefined, homeData, undefined, textOfFiles);
+      });
+
     });
 
   }

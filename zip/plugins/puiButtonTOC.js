@@ -40,6 +40,7 @@ class puiButtonTOC extends puiButtonTabTree {
       const newState = srcTreeData?.length > 0;
       hideButton(this.button?.id, newState);
       hideButton(this.tab?.id, newState);
+      hideButton('downP-ShowAsBook', newState);
     });
   }
 
