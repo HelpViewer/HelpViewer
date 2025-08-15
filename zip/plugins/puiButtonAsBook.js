@@ -31,6 +31,7 @@ class puiButtonAsBook extends puiButton {
 
       var textOfFiles = '';
       var prom = Promise.resolve();
+      files = files.filter(f => !/^(ftp|https|\?d=|=)/.test(f));
 
       files.forEach((x) => {
         prom = prom.then(() => (x.startsWith(':') ? storageSearch(STO_DATA, x.substring(1)) : storageSearch(STO_HELP, x)).then((y) => {
