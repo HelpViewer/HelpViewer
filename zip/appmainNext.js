@@ -214,17 +214,17 @@ loadLocalization(activeLanguage).then(() => {
       // //   txt = null;
       // // }
       
-      var button = $(BTN_CHANGEVERSION);
+      // var button = $(BTN_CHANGEVERSION);
       
-      if (txt && button) {
-        button.classList.remove(C_HIDDENC);
-        //----recomputeButtonPanel(button);
-      }
+      // if (txt && button) {
+      //   button.classList.remove(C_HIDDENC);
+      //   //----recomputeButtonPanel(button);
+      // }
 
-      if (dataPath === FILENAME_ZIP_ON_USER_INPUT) {
-        hideButton(BTN_CHANGEVERSION);
-        //hideButton(BTN_CHANGELANG);
-      }
+      // if (dataPath === FILENAME_ZIP_ON_USER_INPUT) {
+      //   hideButton(BTN_CHANGEVERSION);
+      //   //hideButton(BTN_CHANGELANG);
+      // }
     })();
   }
 });

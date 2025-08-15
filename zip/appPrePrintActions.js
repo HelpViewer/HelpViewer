@@ -1,3 +1,5 @@
+const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
+
 function removeIconsForPrint() {
   openSubtree(contentPane);
 
@@ -16,9 +18,8 @@ function removeIconsForPrint() {
     clearIconsFromText(el);
   });
 
-  const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
   const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
-  contentPane.innerHTML = contentPane.innerHTML.replace(DIRECTIVE_PRINT_PAGEBREAK, DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
+  contentPane.innerHTML = contentPane.innerHTML.replace(new RegExp(DIRECTIVE_PRINT_PAGEBREAK, "g"), DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
   
   setHeader(clearIconsFromTextSingleText(getHeader()));
 

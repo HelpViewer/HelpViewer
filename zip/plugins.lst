@@ -18,6 +18,7 @@ puiButtonHome
 puiButtonChangeLanguage
 puiButtonVersionSearch
 puiButtonColorTheme
+puiButtonAsBook
 puiButtonToggleSide
 puiButtonFullScreen
 puiSidebarVisibilityToggle

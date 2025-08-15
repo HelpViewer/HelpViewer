@@ -1,4 +1,6 @@
 class puiButtonTOC extends puiButtonTabTree {
+  static EVT_TOC_GETDATA = 'GetTOCData';
+
   static KEY_CFG_FILENAME = 'FILENAME';
 
   constructor(aliasName, data) {
@@ -16,6 +18,9 @@ class puiButtonTOC extends puiButtonTabTree {
     const T = this.constructor;
     const TI = this;
     this.cfgFilename = this.config[T.KEY_CFG_FILENAME] || TI.DEFAULT_KEY_CFG_FILENAME;
+
+    TI.eventDefinitions.push([T.EVT_TOC_GETDATA, IEvent, null]);
+
     super.init();
   }
   
@@ -30,12 +35,20 @@ class puiButtonTOC extends puiButtonTabTree {
   }
 
   onET_UserDataFileLoaded(evt) {
-    storageSearch(STO_HELP, this.cfgFilename).then((srcTreeData) => {
+    this._getTOCData().then((srcTreeData) => {
       setTreeData(srcTreeData, this.aliasName);
       const newState = srcTreeData?.length > 0;
       hideButton(this.button?.id, newState);
       hideButton(this.tab?.id, newState);
     });
+  }
+
+  _getTOCData() {
+    return storageSearch(STO_HELP, this.cfgFilename);
+  }
+
+  onET_GetTOCData(evt) {
+    evt.result = this._getTOCData();
   }
 }
   
