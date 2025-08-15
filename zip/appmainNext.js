@@ -22,9 +22,8 @@ EventBus.sub(EventNames.StorageAdded, async (d) => {
 
 function showChapterByData(idxTreeItem, pagePath) {
   contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
-  //log('E !!! ' + pagePath);
   //if (pagePath.startsWith('@') || popstate)
-    showChapter(null, undefined, pagePath, null);
+  showChapter(null, undefined, pagePath, null);
 
   const tree = $(treeTOCName);
   var elid = `${treeTOCName}|${idxTreeItem}`;
@@ -81,8 +80,6 @@ EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
   const a = d.target.closest('a');
   if (!d.target.closest('a, input, summary, button'))
     d.stop = true;
-
-  log('E stop: ' + d.stop);
 
   if (d.stop) {
     d.event.preventDefault();
@@ -202,31 +199,6 @@ var languages = getLanguagesList();
 loadLocalization(activeLanguage).then(() => {
   if (!dataPath)
     log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);  
-  else {
-    (async () => {
-      // // // other versions list
-      // // const pathVersions = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + FILENAME_CHANGELOG;
-      // // var txt = null;
-      // // try {
-      // //   const verList = await fetchData(pathVersions);
-      // //   txt = toText(verList);
-      // // } catch (error) {
-      // //   txt = null;
-      // // }
-      
-      // var button = $(BTN_CHANGEVERSION);
-      
-      // if (txt && button) {
-      //   button.classList.remove(C_HIDDENC);
-      //   //----recomputeButtonPanel(button);
-      // }
-
-      // if (dataPath === FILENAME_ZIP_ON_USER_INPUT) {
-      //   hideButton(BTN_CHANGEVERSION);
-      //   //hideButton(BTN_CHANGELANG);
-      // }
-    })();
-  }
 });
 
 /*S: Topic renderer logic integration */
