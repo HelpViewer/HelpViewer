@@ -108,7 +108,7 @@ class pTopicRenderer extends IPlugin {
       const PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
       
       r.STORAGE_NETW = (path) => {
-        const pathToRepo = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + path;
+        const pathToRepo = (r.helpFile || getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1])) + path;
         return fetchData(pathToRepo).then((x) => toText(x));
       }
 
