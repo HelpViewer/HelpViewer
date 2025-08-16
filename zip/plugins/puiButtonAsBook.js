@@ -35,7 +35,7 @@ class puiButtonAsBook extends puiButtonTab {
     });
 
     fPageBreak = $(nPageBreak);
-    fPageBreak.checked = true;
+    //fPageBreak.checked = true;
     this.fPageBreak = fPageBreak;
   }
 
