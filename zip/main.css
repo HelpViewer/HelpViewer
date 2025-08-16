@@ -408,7 +408,7 @@ ul:has(li input[type="checkbox"]) {
 }
 /*E: print support*/
 
-a {
+.content a {
   word-break: break-all;
   overflow-wrap: anywhere;
 }
