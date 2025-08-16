@@ -78,11 +78,14 @@ class puiButtonAsBook extends puiButton {
       textOfFiles = textOfFiles.slice(0, -(DIRECTIVE_PRINT_PAGEBREAK + '\n').length);
       textOfFiles += `\n${refs.join('\n')}`;
       reply = showChapter(undefined, undefined, homeData, undefined, textOfFiles);
+      sendEvent('ShowBookmarks');
       return reply;
     });
   }
 
   onET_ChapterShown(evt) {
+    if (!this.files)
+      return;
     setHeader(evt.heading);
     var links = Array.from($A('a', evt.doc))
       .map(a => a.getAttribute('data-param'))
@@ -94,6 +97,8 @@ class puiButtonAsBook extends puiButton {
       this.files.push(...links);
       var files = [...new Set(this.files)];
       this._prepareDump(this.homeData, files);
+    } else {
+      this.files = undefined;
     }
   }
 

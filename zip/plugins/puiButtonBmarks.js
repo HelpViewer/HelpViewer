@@ -20,11 +20,7 @@ class puiButtonBmarks extends puiButtonTabTree {
     TI.cfgTreeId = 'bmark';
     hideButton(TI.button.id, false);
 
-    const h_EVT_BMARKS_SHOW = (data) => {
-      if (!TI.button?.classList.contains(C_HIDDENC))
-        TI.button?.click();
-    };
-    TI.eventDefinitions.push([T.EVT_BMARKS_SHOW, IEvent, h_EVT_BMARKS_SHOW]);
+    TI.eventDefinitions.push([T.EVT_BMARKS_SHOW, IEvent, null]);
   }
 
   deInit() {
@@ -48,10 +44,13 @@ class puiButtonBmarks extends puiButtonTabTree {
     $A('a', this.tree).forEach((x) => x.href = x.getAttribute('data-param') || '');
     openSubtree(this.tree);
 
-    if (!this.tab.classList.contains(C_HIDDENC))
+    if (!state && !this.tab.classList.contains(C_HIDDENC))
       showSidebarTab();
   }
 
+  onET_ShowBookmarks(data) {
+    showSidebarTab(this.tab.id);
+  };
 }
 
 Plugins.catalogize(puiButtonBmarks);
