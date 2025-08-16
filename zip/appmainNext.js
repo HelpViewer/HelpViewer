@@ -78,7 +78,7 @@ EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
     d.stop = true;
 
   const a = d.target.closest('a');
-  if (!d.target.closest('a, input, summary, button'))
+  if (!d.target.closest('a, input, summary, button', 'label'))
     d.stop = true;
 
   if (d.stop) {

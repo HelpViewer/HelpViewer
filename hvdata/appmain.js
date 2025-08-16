@@ -89,7 +89,7 @@ function _T(id) {
 function appendField(target, id, defaultV = '', type = 'text') {
   target.innerHTML += 
   `<div class="form-row">
-      <label for="${id}">${_T(id)}</label>
+      <label for="${id}" id="${id}-label">${_T(id)}</label>
       <input type="${type}" id="${id}" value="${defaultV}" />
   </div>`;
 }
