@@ -28,4 +28,8 @@ function revealTreeItem(id) {
 function openSubtree(parent) {
   $A('details', parent).forEach(d => d.open = true);
 }
+
+function closeSubtree(parent) {
+  $A('details', parent).forEach(d => d.open = false);
+}
 /*E: Topic tree handling */
