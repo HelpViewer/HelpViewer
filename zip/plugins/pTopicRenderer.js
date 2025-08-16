@@ -173,6 +173,7 @@ class pTopicRenderer extends IPlugin {
         result = result.then(() => {
           log(`Rendering ${r.uri} phase ${phase} ... sending to plugins with id '${this.aliasName}-${phase}'`);
           return sendEventObject(r, `${this.aliasName}-${phase}`).then(() => {
+            log(`Rendering ${r.uri} phase ${phase} ... finished in '${this.aliasName}-${phase}'`);
             if (!r.stopAllPhases)
               r.stop = false;    
           });

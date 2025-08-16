@@ -25,7 +25,7 @@ class pTRParseMd extends pTRPhasePlugin {
       );
     }
 
-    r.result = r.result.then(() => r.content = marked.parse(r.content));
+    r.result = (!r.content || r.content.length == 0) ? r.result : r.result.then(() => r.content = marked.parse(r.content));
   }
 }
 
