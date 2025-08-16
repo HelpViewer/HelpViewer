@@ -407,3 +407,8 @@ ul:has(li input[type="checkbox"]) {
   }
 }
 /*E: print support*/
+
+a {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
