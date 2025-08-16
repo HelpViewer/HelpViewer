@@ -422,3 +422,7 @@ pre[class*="language-"] {
 pre[class*="language-"] > code {
   white-space: pre-wrap;
 }
+
+span .token {
+  background-color: transparent;
+}
