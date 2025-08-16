@@ -1,4 +1,4 @@
-class puiButtonAsBook extends puiButton {
+class puiButtonAsBook extends puiButtonTab {
   constructor(aliasName, data) {
     super(aliasName, data);
 
@@ -15,28 +15,47 @@ class puiButtonAsBook extends puiButton {
     super.deInit();
   }
 
+  _preShowAction(evt) {
+    const nPageBreak = 'PageBreak';
+    var fPageBreak = $(nPageBreak);
+
+    if (fPageBreak)
+      this.tab.innerText = '';
+
+    appendField(this.tab, nPageBreak, '', 'checkbox');
+    fPageBreak = $(nPageBreak);
+    fPageBreak.checked = true;
+    this.fPageBreak = fPageBreak;
+  }
+
   _buttonAction(evt) {
-    const tocData = sendEvent('GetTOCData') || Promise.resolve([]);
-    this.homeData = sendEvent('GetHomePageData') || '';
-    const homeData = this.homeData;
-
-    var files = [];
-    files.push(homeData);
-
-    tocData.then((x) => {
-      rowsToArray(x).forEach(line => {
-        const file = line.slice(line.lastIndexOf("|") + 1);
-        if (file && resolveFileMedium(file) != UserDataFileLoadedFileType.NETWORK && !file.startsWith('='))
-          files.push(file);
+    alert('BAction');
+    if (this.tab.classList.contains(C_HIDDENC)) {
+      super._buttonAction();
+    } else {
+      const tocData = sendEvent('GetTOCData') || Promise.resolve([]);
+      this.homeData = sendEvent('GetHomePageData') || '';
+      const homeData = this.homeData;
+  
+      var files = [];
+      files.push(homeData);
+  
+      tocData.then((x) => {
+        rowsToArray(x).forEach(line => {
+          const file = line.slice(line.lastIndexOf("|") + 1);
+          if (file && resolveFileMedium(file) != UserDataFileLoadedFileType.NETWORK && !file.startsWith('='))
+            files.push(file);
+        });
+        files = [...new Set(files)];
+        files = files.filter(f => !/^(ftp|https|\?d=|=)/.test(f));
+        this.files = files;
+        this._prepareDump(homeData, files)
       });
-      files = [...new Set(files)];
-      files = files.filter(f => !/^(ftp|https|\?d=|=)/.test(f));
-      this.files = files;
-      this._prepareDump(homeData, files)
-    });
+    }
   }
 
   _prepareDump(homeData, files) {
+    const PAGE_BREAK = !!this.fPageBreak.checked ? DIRECTIVE_PRINT_PAGEBREAK : '';
     var textOfFiles = '';
     var prom = Promise.resolve();
 
@@ -48,16 +67,16 @@ class puiButtonAsBook extends puiButton {
           if (x == homeData) {
             const metainfo = `\n| ${_T('helpfile')} | ${_T('version')} |\n|---|---|\n| ${configGetValue(CFG_KEY__PRJNAME)} | ${configGetValue(CFG_KEY__VERSION)} |\n| ${configGetValue(CFG_KEY__PRJNAME, '', FILE_CONFIG_DEFAULT)} | ${configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT)} |\n| ${_T('source')} | ${dataPath} |\n`;
             textOfFiles += metainfo;
-            textOfFiles += DIRECTIVE_PRINT_PAGEBREAK;
+            textOfFiles += PAGE_BREAK;
             textOfFiles += `\n# ${_T('downP-TopicTree')}\n`;
             //textOfFiles += metainfo;
             //textOfFiles += `\n<b>${_T('helpfile')}: ${configGetValue(CFG_KEY__PRJNAME)} <br>${_T('version')}: ${configGetValue(CFG_KEY__VERSION)}</b>`;
             const data = $('tree')?.outerHTML;
 
             if (data && data.length > 0)
-              textOfFiles += '\n' + data + '\n' + DIRECTIVE_PRINT_PAGEBREAK + '\n';
+              textOfFiles += '\n' + data + '\n' + PAGE_BREAK + '\n';
           } else {
-            textOfFiles += DIRECTIVE_PRINT_PAGEBREAK + '\n';
+            textOfFiles += PAGE_BREAK + '\n';
           }
         }
 
@@ -76,7 +95,7 @@ class puiButtonAsBook extends puiButton {
 
     var reply = undefined;
     prom = prom.then(() => {
-      textOfFiles = textOfFiles.slice(0, -(DIRECTIVE_PRINT_PAGEBREAK + '\n').length);
+      textOfFiles = textOfFiles.slice(0, -(PAGE_BREAK + '\n').length);
       textOfFiles += `\n${refs.join('\n')}`;
       reply = showChapter(undefined, undefined, homeData, undefined, textOfFiles);
       sendEvent('ShowBookmarks');
