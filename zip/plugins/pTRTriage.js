@@ -56,7 +56,7 @@ class pTRTriage extends pTRPhasePlugin {
       processIt = true;
     }
 
-    if (resolveFileMedium(r.helpFile) == UserDataFileLoadedFileType.NETWORK) {
+    if (resolveFileMedium(r.helpFile) == UserDataFileLoadedFileType.NETWORK && r.helpFile.endsWith('/')) {
       r.getStorageData = r.STORAGE_NETW;
       log(`Resolution: ${r.eventId};${r.uri} ... help file ${r.helpFile} is network located ... main storage set from ${STO_HELP} to STORAGE_NETWORK.`);
       processIt = true;
