@@ -46,7 +46,7 @@ function showChapterByData(idxTreeItem, pagePath) {
         return;
       
       //showChapterA(null, el);
-      fixImgRelativePathToZipPaths(tree, STO_HELP);
+      //fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(elid);
     }
   }, undefined, 10000);

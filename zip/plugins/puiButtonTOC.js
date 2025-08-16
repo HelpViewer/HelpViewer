@@ -41,6 +41,7 @@ class puiButtonTOC extends puiButtonTabTree {
   onET_UserDataFileLoaded(evt) {
     this._getTOCData().then((srcTreeData) => {
       setTreeData(srcTreeData, this.aliasName);
+      fixImgRelativePathToZipPaths(tree, STO_HELP);
       const newState = srcTreeData?.length > 0;
       hideButton(this.button?.id, newState);
       hideButton(this.tab?.id, newState);
