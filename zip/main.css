@@ -412,3 +412,13 @@ ul:has(li input[type="checkbox"]) {
   word-break: break-all;
   overflow-wrap: anywhere;
 }
+
+pre[class*="language-"] {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+pre[class*="language-"] > code {
+  white-space: pre-wrap;
+}
