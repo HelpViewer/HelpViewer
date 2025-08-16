@@ -151,7 +151,6 @@ content: ${bookOpen};
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
 const KEY_LS_PRINTICONS = "printIcons";
-const printIcons = parseInt(getUserConfigValue(KEY_LS_PRINTICONS)) ?? 2;
 
 var dataPathGeneral;
 

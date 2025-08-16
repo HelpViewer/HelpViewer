@@ -16,20 +16,30 @@ class puiButtonAsBook extends puiButtonTab {
   }
 
   _preShowAction(evt) {
-    const nPageBreak = 'PageBreak';
+    const nPageBreak = 'cbPageBreak';
     var fPageBreak = $(nPageBreak);
 
     if (fPageBreak)
       this.tab.innerText = '';
 
-    appendField(this.tab, nPageBreak, '', 'checkbox');
+    appendField(this.tab, nPageBreak, undefined, 'checkbox');
+
+    const nIcons = 'IconPrint';
+    appendFieldComboBox(this.tab, nIcons);
+    const fIcons = $(nIcons);
+    const items = _T('IconPrintItems')?.split(';');
+    appendComboBoxItems(fIcons, items, getUserConfigValue(KEY_LS_PRINTICONS));
+
+    registerOnClick(nIcons, (evt) => {
+      setUserConfigValue(KEY_LS_PRINTICONS, fIcons?.value);
+    });
+
     fPageBreak = $(nPageBreak);
     fPageBreak.checked = true;
     this.fPageBreak = fPageBreak;
   }
 
   _buttonAction(evt) {
-    alert('BAction');
     if (this.tab.classList.contains(C_HIDDENC)) {
       super._buttonAction();
     } else {
@@ -55,7 +65,7 @@ class puiButtonAsBook extends puiButtonTab {
   }
 
   _prepareDump(homeData, files) {
-    const PAGE_BREAK = !!this.fPageBreak.checked ? DIRECTIVE_PRINT_PAGEBREAK : '';
+    const PAGE_BREAK = this.fPageBreak.checked ? DIRECTIVE_PRINT_PAGEBREAK : '';
     var textOfFiles = '';
     var prom = Promise.resolve();
 
