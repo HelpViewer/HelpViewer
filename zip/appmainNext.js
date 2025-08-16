@@ -20,7 +20,6 @@ EventBus.sub(EventNames.StorageAdded, async (d) => {
 
 function showChapterByData(idxTreeItem, pagePath) {
   contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
-  //if (pagePath.startsWith('@') || popstate)
   showChapter(null, undefined, pagePath, null);
 
   const tree = $(treeTOCName);
@@ -45,8 +44,6 @@ function showChapterByData(idxTreeItem, pagePath) {
       if (!el || !elid)
         return;
       
-      //showChapterA(null, el);
-      //fixImgRelativePathToZipPaths(tree, STO_HELP);
       revealTreeItem(elid);
     }
   }, undefined, 10000);
@@ -180,15 +177,10 @@ const BTN_CHANGELANG = 'downP-ChangeLanguage';
 const tree = $('tree');
 
 window.addEventListener('popstate', () => {
-  //LoadURLParameters();
-
   if (typeof dataPath !== 'string' || dataPath.trim() === '')
     dataPath = FILENAME_DEFAULT_HELPFILE;
 
-  //-getPathData(pagePath, getChapterAlternativeHeading(pagePath)[1]);
-  //showChapter(null, getChapterAlternativeHeading(pagePath)[1], pagePath, null);
   showChapterByData(idxTreeItem, pagePath);
-  //, true
 });
 
 var languages = getLanguagesList();
@@ -203,7 +195,6 @@ function convertRelativePathToViewerURI(val, id = undefined) {
   var pard = dataPathGeneral ? `&${PAR_NAME_DOC}=${dataPathGeneral}` : ``;
   var valParts = val.split('#');
   var hash = valParts.length < 2 ? '' : `#${valParts[1]}`;
-  //${pard}
   return `?${PAR_NAME_PAGE}=${encodeURIComponent(valParts[0])}&${PAR_NAME_ID}=${encodeURIComponent(id || idxTreeItem)}${pard}${hash}`;
 }
 
