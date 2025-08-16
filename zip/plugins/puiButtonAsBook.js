@@ -107,6 +107,8 @@ class puiButtonAsBook extends puiButtonTab {
     prom = prom.then(() => {
       textOfFiles = textOfFiles.slice(0, -(PAGE_BREAK + '\n').length);
       textOfFiles += `\n${refs.join('\n')}`;
+      if (!PAGE_BREAK)
+        textOfFiles = textOfFiles.replace(new RegExp(DIRECTIVE_PRINT_PAGEBREAK, 'g'), '');
       reply = showChapter(undefined, undefined, homeData, undefined, textOfFiles);
       sendEvent('ShowBookmarks');
       return reply;
