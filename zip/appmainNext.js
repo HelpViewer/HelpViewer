@@ -6,11 +6,9 @@ var dataPath = '';
 
 FILENAME_DEFAULT_HELPFILE = `hlp/Help-__.zip`;
 
-EventBus.sub(EventNames.TreeDataChanged, (d) => {
-  if (d.treeId != treeTOCName)
-    return;
-
-  showChapterByData(idxTreeItem, pagePath);
+EventBus.sub(EventNames.IndexFileLoaded, (d) => {
+  if (pagePath.startsWith('@'))
+    showChapterByData(idxTreeItem, pagePath);
 });
 
 EventBus.sub(EventNames.StorageAdded, async (d) => {
@@ -268,5 +266,3 @@ EventBus.sub(EventNames.ChapterShown, (d) => {
   contentPane.focus();
   refreshTitlesForLangStrings();
 });
-
-showChapterByData(idxTreeItem, pagePath);
