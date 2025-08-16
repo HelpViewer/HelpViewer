@@ -288,6 +288,18 @@ class puiButtonTabTree extends puiButtonTab {
     if (a) 
       processAClick(a, e);
   }
+
+  _buttonActionClickOpenCloseAll() {
+    if (this.tab.classList.contains(C_HIDDENC)) {
+      super._buttonAction();
+    } else {
+      if ($O('details:not([open])', this.tree))
+        openSubtree(this.tree);
+      else
+        closeSubtree(this.tree);
+    }
+  }
+  
 }
 
 function _notifyClickedEvent(e, result, cfgTreeId, eventName = ClickedEventTree.name) {

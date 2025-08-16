@@ -33,6 +33,10 @@ class puiButtonBmarks extends puiButtonTabTree {
   _preStandardInit() {
   }
 
+  _buttonAction(evt) {
+    this._buttonActionClickOpenCloseAll();
+  }
+
   onET_UserDataFileLoaded(evt) {
     hideButton(this.button.id, false);
   }

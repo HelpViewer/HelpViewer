@@ -35,14 +35,7 @@ class puiButtonTOC extends puiButtonTabTree {
   }
 
   _buttonAction(evt) {
-    if (this.tab.classList.contains(C_HIDDENC)) {
-      super._buttonAction();
-    } else {
-      if ($O('details:not([open])', this.tree))
-        openSubtree(this.tree);
-      else
-        closeSubtree(this.tree);
-    }
+    this._buttonActionClickOpenCloseAll();
   }
 
   onET_UserDataFileLoaded(evt) {
