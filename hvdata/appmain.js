@@ -87,11 +87,36 @@ function _T(id) {
 }
 
 function appendField(target, id, defaultV = '', type = 'text') {
-  target.innerHTML += 
+  if (defaultV && type == 'checkbox')
+    defaultV = `checked`;
+  else if (defaultV)
+    defaultV = `value="${defaultV}"`;
+  else
+    defaultV = '';
+
+  target.insertAdjacentHTML('beforeend',
   `<div class="form-row">
       <label for="${id}" id="${id}-label">${_T(id)}</label>
-      <input type="${type}" id="${id}" value="${defaultV}" />
-  </div>`;
+      <input type="${type}" id="${id}" ${defaultV} />
+  </div>`);
+}
+
+function appendFieldComboBox(target, id) {
+  target.insertAdjacentHTML('beforeend',
+  `<div class="form-row">
+      <label for="${id}" id="${id}-label">${_T(id)}</label>
+      <select id="${id}" />
+  </div>`);
+}
+
+function appendComboBoxItems(combobox, items, defaultV) {
+  if (!combobox) return;
+  items?.forEach((txt, i) => {
+    let opt = new Option(txt, i);
+    if (defaultV == txt || defaultV == i)
+      opt.selected = true;
+    combobox.add(opt);
+  });
 }
 
 function formCorsHelpFilesUpload(fieldHelpLangTitle = 'Help-(language).zip', fieldHvDataTitle = 'data.zip', formName = 'form', formInName = 'formIn')
