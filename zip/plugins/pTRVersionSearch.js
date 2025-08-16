@@ -32,7 +32,7 @@ class pTRVersionSearch extends pTRPhasePlugin {
 
       heading.textContent = '';
       const uriZIP = getHelpRepoUriReleaseZip(PRJNAME_VAL[0], PRJNAME_VAL[1], verId);
-      const targURI = `?${PAR_NAME_DOC}=${uriZIP}&${PAR_NAME_PAGE}=${getGets(PAR_NAME_PAGE)}`.replace('__', getActiveLanguage());
+      const targURI = `?${PAR_NAME_DOC}=${uriZIP}&${PAR_NAME_PAGE}=${getGets(PAR_NAME_PAGE)}`;
       const link = document.createElement('a');
 
       link.href = targURI;
