@@ -32,13 +32,13 @@ class IPlugin {
   }
 
   deInit() {
-    const defs = this.eventDefinitions;
+    // const defs = this.eventDefinitions;
     
-    if (Array.isArray(defs)) {
-      for (const [eventName] of defs) {
-        removeEventDefinition(eventName);
-      }
-    }
+    // if (Array.isArray(defs)) {
+    //   for (const [eventName] of defs) {
+    //     removeEventDefinition(eventName);
+    //   }
+    // }
 
     for (const one of this.unsubscribersToEB)
       one();
