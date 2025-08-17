@@ -27,6 +27,9 @@ class puiButtonHome extends puiButton {
   }
 
   _buttonAction(evt) {
+    if (!evt.event.isTrusted)
+      return;
+    
     showChapter(null, undefined, this.cfgHomePage, null);
   }
 
