@@ -76,6 +76,9 @@ EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
   if (!d.target.closest('a, input, summary, button', 'label'))
     d.stop = true;
 
+  if (d.target.closest('label'))
+    return;
+
   if (d.stop) {
     d.event.preventDefault();
     return;

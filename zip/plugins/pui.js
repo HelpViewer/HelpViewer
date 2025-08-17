@@ -103,10 +103,7 @@ class pui extends IPlugin {
       found(e);
     } else {
       log(`E Event ${EventNames.ClickedEvent} (${e.eventId}, id: ${e.elementId}) cannot be forwarded by any of ids: ${e.elementId}, ${e.elementIdRoot}`);
-      if (e.target?.nodeName.toLowerCase() === 'label') {
-        log(`W Target element (${e.elementId}) is label, event passed out of internal logic to default one.`);
-      } else
-        _notifyClickedEvent(e, undefined, undefined, ClickedEventNotForwarded.name);
+      _notifyClickedEvent(e, undefined, undefined, ClickedEventNotForwarded.name);
     }
   }
 }
