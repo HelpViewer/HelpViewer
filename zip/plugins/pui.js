@@ -286,10 +286,11 @@ class puiButtonTabTree extends puiButtonTab {
       processAClick(a, e);
   }
 
-  _buttonActionClickOpenCloseAll() {
+  _buttonActionClickOpenCloseAll(isTrusted) {
     if (this.tab.classList.contains(C_HIDDENC)) {
       super._buttonAction();
     } else {
+      if (!isTrusted) return;
       if ($O('details:not([open])', this.tree))
         openSubtree(this.tree);
       else

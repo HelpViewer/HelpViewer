@@ -36,7 +36,7 @@ class puiButtonTOC extends puiButtonTabTree {
   }
 
   _buttonAction(evt) {
-    this._buttonActionClickOpenCloseAll();
+    this._buttonActionClickOpenCloseAll(evt?.event?.isTrusted);
   }
 
   onET_UserDataFileLoaded(evt) {
