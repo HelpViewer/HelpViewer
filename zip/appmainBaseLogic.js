@@ -15,6 +15,13 @@ const UI_PLUGIN_HEADER = 'header';
 
 const MARKER_MARKWORD = '@@';
 
+const ChapterContentType = {
+  CHAPTER_SOURCE: 'CHAPTER_SOURCE',
+  KEYWORD_LIST: 'KEYWORD_LIST',
+  INTERNAL_RESOURCE: 'INTERNAL_RESOURCE',
+  NETWORK_RESOURCE: 'NETWORK_RESOURCE',
+};
+
 function nameForAnchor(text, level, levelCounter) {
   return `h-${level}-${levelCounter}`;
   // return text.toLowerCase()

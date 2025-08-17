@@ -26,7 +26,7 @@ class puiButtonEditRepo extends puiButton {
   }
 
   onET_ChapterShown(evt) {
-    hideButton(this.button.id, evt.found && !/^(=|@|:)/.test(evt.address));
+    hideButton(this.button.id, evt.contentType == ChapterContentType.CHAPTER_SOURCE);
   }
 }
 

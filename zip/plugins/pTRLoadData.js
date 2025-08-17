@@ -19,6 +19,7 @@ class pTRLoadData extends pTRPhasePlugin {
     });
 
     if (shouldLoad) {
+      r.contentType = r.contentType || ChapterContentType.CHAPTER_SOURCE;
       r.result = r.getStorageData(r.uri).then((x) => {
         r.content = x;
       });

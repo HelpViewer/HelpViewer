@@ -4,7 +4,6 @@ class ShowChapterResolutions extends IEvent {
     this.heading = undefined;
     this.content = undefined;
     this.uri = undefined;
-    this.fileType = undefined;
     this.fileMedium = undefined;
     this.uriAnchor = undefined;
     this.addData = new Map();
@@ -43,6 +42,7 @@ class ShowChapterResolutions extends IEvent {
     this.helpFile = undefined;
     this.content = undefined;
     this.found = false;
+    this.contentType = undefined;
   }
 }
 
@@ -72,6 +72,7 @@ class ChapterShown extends IEvent {
     this.sourceObject = undefined;
     this.helpFile = undefined;
     this.found = false;
+    this.contentType = undefined;
   }
 }
 
@@ -195,6 +196,7 @@ class pTopicRenderer extends IPlugin {
           n.sourceObject = data.sourceObject;
           n.helpFile = r.helpFile;
           n.found = r.found;
+          n.contentType = r.contentType;
         });
       });
     }

@@ -13,6 +13,7 @@ class pTRKeywordRender extends pTRPhasePlugin {
 
   onETShowChapterResolutions(r) {
     if (r.uri?.startsWith("@")) {
+      r.contentType = ChapterContentType.KEYWORD_LIST;
       r.tokens.push(r.TOKEN_NOLOADDATA);
 
       const splits = r.uri.split(":");

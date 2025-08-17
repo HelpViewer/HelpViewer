@@ -44,6 +44,7 @@ class pTRTriage extends pTRPhasePlugin {
     }
 
     if (r.uri?.startsWith(":")) {
+      r.contentType = ChapterContentType.INTERNAL_RESOURCE;
       r.getStorageData = r.getAppData;
       log(`Resolution: ${r.eventId};${r.uri} ... main storage set from ${STO_HELP} to ${STO_DATA}.`);
       r.uri = r.uri.substring(1);
@@ -56,12 +57,14 @@ class pTRTriage extends pTRPhasePlugin {
     }
 
     if (resolveFileMedium(r.helpFile) == UserDataFileLoadedFileType.NETWORK && r.helpFile.endsWith('/')) {
+      r.contentType = ChapterContentType.NETWORK_RESOURCE;
       r.getStorageData = r.STORAGE_NETW;
       log(`Resolution: ${r.eventId};${r.uri} ... help file ${r.helpFile} is network located ... main storage set from ${STO_HELP} to STORAGE_NETWORK.`);
       processIt = true;
     }
 
     if (r.uri?.startsWith("~")) {
+      r.contentType = ChapterContentType.NETWORK_RESOURCE;
       r.getStorageData = r.STORAGE_NETW;
       log(`Resolution: ${r.eventId};${r.uri} ... main storage set from ${STO_HELP} to STORAGE_NETWORK.`);
       r.uri = r.uri.substring(1);
