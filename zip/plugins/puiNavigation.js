@@ -56,7 +56,6 @@ class puiNavigation extends IPlugin {
       const _buttonAction = (evt, next, direction) => {
         const current = this.getId();
         evt.event.preventDefault();
-        //setToHrefByValues((d) => d.kvlist.set(parIdName, next));
         this.updateNavButtons(next);
         
         if (next == current)

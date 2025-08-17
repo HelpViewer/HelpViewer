@@ -24,13 +24,6 @@ class GetsSetHref extends IEvent {
   }
 }
 
-class GetsSetToBookmark extends IEvent {
-  constructor() {
-    super();
-    this.bookmark = undefined;
-  }
-}
-
 class GetsChanges extends IEvent {
   constructor() {
     super();
@@ -44,7 +37,6 @@ class pGets extends IPlugin {
   static EVT_GETS_SET = GetsSet.name;
   static EVT_GETS_SET_HREF = GetsSetHref.name;
   static EVT_GETS_CHANGES = GetsChanges.name;
-  static EVT_GETS_SET_TO_BOOKMARK = GetsSetToBookmark.name;
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -125,19 +117,6 @@ class pGets extends IPlugin {
     };
 
     TI.eventDefinitions.push([T.EVT_GETS_SET_HREF, GetsSet, h_EVT_GETS_SET_HREF]);
-
-    const h_EVT_GETS_SET_TO_BOOKMARK = (data) => {
-      if (data.bookmark == undefined)
-        return;
-      
-      this.h_EVT_GETS_LOAD(null);
-      location.hash = data.bookmark;
-      const url = new URL(window.location.href);
-      history.replaceState(null, '', url);
-      this.onUriChanged(data.eventId);
-    };
-
-    TI.eventDefinitions.push([T.EVT_GETS_SET_TO_BOOKMARK, GetsSetToBookmark, h_EVT_GETS_SET_TO_BOOKMARK]);
 
     TI.eventDefinitions.push([T.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
 

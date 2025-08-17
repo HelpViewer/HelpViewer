@@ -150,12 +150,6 @@ function getGets(name, handler = null) {
 function setToHrefByValues(init) {
   sendEvent(EventNames.GetsSet, init);
 }
-
-function setToBookmark(bookmark) {
-  sendEvent(EventNames.GetsSetToBookmark, (d) => {
-    d.bookmark = bookmark;
-  });
-}
 /*E: Plugin: pGets */
 
 /*S: Plugin: pUserConfig */
