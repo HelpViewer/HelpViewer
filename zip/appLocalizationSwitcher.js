@@ -2,9 +2,10 @@
 const DEFAULT_LANG = 'en';
 const KEY_LS_LANG = "language";
 
-function _T(key) {
+function _T(key, strings = {}) {
   return sendEvent(EventNames.LocTranslate, (d) => {
     d.name = key;
+    d.strings = strings;
   });
 }
 
@@ -26,7 +27,9 @@ function loadLocalization(localizationName) {
   return Promise.resolve();
 }
 
-function refreshTitlesForLangStrings() {
-  sendEvent('LOC_REFRESH');
+function refreshTitlesForLangStrings(strings = {}) {
+  sendEvent('LOC_REFRESH', (d) => {
+    d.strings = strings;
+  });
 }
 /*E: Feature: Language switching management */

@@ -2,6 +2,14 @@ class LocTranslate extends IEvent {
   constructor() {
     super();
     this.name = undefined;
+    this.strings = {};
+  }
+}
+
+class LocRefresh extends IEvent {
+  constructor() {
+    super();
+    this.strings = {};
   }
 }
 
@@ -30,7 +38,7 @@ class pLocalizationSwitcher extends IPlugin {
     const T = this.constructor;
     const TI = this;
     const h_EVT_LOC_TRANSLATE = (data) => {
-      data.result = this._T(data.name);
+      data.result = this._T(data.name, data.strings);
     };
     TI.eventDefinitions.push([T.EVT_LOC_TRANSLATE, LocTranslate, h_EVT_LOC_TRANSLATE]);
 
@@ -50,9 +58,9 @@ class pLocalizationSwitcher extends IPlugin {
     TI.eventDefinitions.push([T.EVT_LOC_LOAD, LocTranslate, h_EVT_LOC_LOAD]);
 
     const h_EVT_LOC_REFRESH = (data) => {
-      this.refreshTitlesForLangStrings(null);
+      this.refreshTitlesForLangStrings(null, data.strings);
     };
-    TI.eventDefinitions.push([T.EVT_LOC_REFRESH, IEvent, h_EVT_LOC_REFRESH]);
+    TI.eventDefinitions.push([T.EVT_LOC_REFRESH, LocRefresh, h_EVT_LOC_REFRESH]);
 
     TI.eventDefinitions.push([T.EVT_LOC_LOADED, LocTranslate, null]); // outside event handlers
 
@@ -120,7 +128,7 @@ class pLocalizationSwitcher extends IPlugin {
       const parts = trimmed.split("|", 2);
       const key = parts[0]?.trim() || "";
       const val = parts[1]?.trim() || "";
-      this.langStrs[key] = () => val;
+      this.langStrs[key] = (s) => val;
     }
     
     if (typeof _lstr !== "undefined") {
@@ -138,12 +146,16 @@ class pLocalizationSwitcher extends IPlugin {
     });
   }
   
-  refreshTitlesForLangStrings(strings) {
+  refreshTitlesForLangStrings(strings, spars) {
     strings = strings || this.langKeysDyn;
     if (!strings) return;
+
+    var sparsI = spars
+    if (!sparsI)
+      sparsI = {};
     
     strings.forEach(key => {
-      const val = this.langStrs[key]();
+      const val = this.langStrs[key](sparsI);
       var foundO = $(key);
       
       if (foundO) {
@@ -166,11 +178,11 @@ class pLocalizationSwitcher extends IPlugin {
     });
   }
   
-  _T(key) {
+  _T(key, strings) {
     if (!key) return "";
     
     if (typeof this.langStrs?.[key] === 'function') {
-      const val = this.langStrs[key]() || `_${key}_`;
+      const val = this.langStrs[key](strings) || `_${key}_`;
       return val;
     } else {
       return `_${key}_`;
