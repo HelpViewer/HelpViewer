@@ -22,6 +22,9 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     if (r.content?.length == 0)
       r.content = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
 
+    if (r.fileMedium == UserDataFileLoadedFileType.NETWORK)
+      r.content = '';
+
     r.docV.innerHTML = r.content;
     r.fixRelativePathToZipPaths(r.docV);
     r.doc = r.docV;
