@@ -42,6 +42,7 @@ class ShowChapterResolutions extends IEvent {
     this.stopAllPhases = false;
     this.helpFile = undefined;
     this.content = undefined;
+    this.found = false;
   }
 }
 
@@ -70,6 +71,7 @@ class ChapterShown extends IEvent {
     this.addressOrig = undefined;
     this.sourceObject = undefined;
     this.helpFile = undefined;
+    this.found = false;
   }
 }
 
@@ -192,6 +194,7 @@ class pTopicRenderer extends IPlugin {
           n.id = TI.aliasName;
           n.sourceObject = data.sourceObject;
           n.helpFile = r.helpFile;
+          n.found = r.found;
         });
       });
     }

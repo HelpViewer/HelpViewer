@@ -18,9 +18,13 @@ class pTRFlushToDOM extends pTRPhasePlugin {
   
     if (r.docM)
       r.content = r.docM.body.innerHTML;
+    
+    const notFound = (r.content?.length == 0);
 
-    if (r.content?.length == 0)
+    if (notFound)
       r.content = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
+
+    r.found = !notFound;
 
     if (r.fileMedium == UserDataFileLoadedFileType.NETWORK)
       r.content = '';
