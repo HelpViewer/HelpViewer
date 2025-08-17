@@ -197,15 +197,6 @@ function convertRelativePathToViewerURI(val, id = undefined) {
   var hash = valParts.length < 2 ? '' : `#${valParts[1]}`;
   return `?${PAR_NAME_PAGE}=${encodeURIComponent(valParts[0])}&${PAR_NAME_ID}=${encodeURIComponent(id || idxTreeItem)}${pard}${hash}`;
 }
-
-function setSearchParams(url, path, i) {
-  setToHrefByValues((x) => {
-    x.kvlist.set(PAR_NAME_PAGE, path);
-    i = parseInt(i);
-    if (i)
-      x.kvlist.set(PAR_NAME_ID, i);
-  });
-}
 /*E: Topic renderer logic integration */
 
 EventBus.sub('BeforePrint', removeIconsForPrint);
