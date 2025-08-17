@@ -25,6 +25,7 @@ puiSidebarVisibilityToggle
 pPrePrintEvent
 puiButtonPrint
 puiNavigation:nav
+puiButtonEditRepo
 pTopicRenderer
 pTRTriage:-triage
 pTRKeywordRender:-triage

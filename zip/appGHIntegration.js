@@ -10,19 +10,22 @@ function getDateInYYYYMMDD(date)
 
 function getHelpRepoUri(org, repo, langs = null, branch = 'master')
 {
-  const rawFilesBaseAddr = 'https://raw.githubusercontent.com/|';
-  var prjName = `${org}/${repo}/${branch}/`;
+  var rawFilesBaseAddr = `https://raw.githubusercontent.com/${org}/${repo}/${branch}/`;
 
   if (langs && langs !== 'off')
-    prjName = `${prjName}__/`;
+    rawFilesBaseAddr = `${rawFilesBaseAddr}__/`;
 
-  return rawFilesBaseAddr.replace('|', prjName);
+  return rawFilesBaseAddr;
 }
 
 function getHelpRepoUriReleaseZip(org, repo, branch = 'master')
 {
-  const reply = `https://github.com/${org}/${repo}/releases/download/${branch}/Help-__.zip`;
-  return reply;
+  return `https://github.com/${org}/${repo}/releases/download/${branch}/Help-__.zip`;
+}
+
+function getHelpRepoUriEditFile(org, repo, file, language, branch = 'master')
+{
+  return `https://github.com/${org}/${repo}/edit/${branch}/${language}/${file}`;
 }
 
 async function getReleaseBundleUri(arc, exactVer, fileName)
