@@ -1,4 +1,4 @@
-const DEBUG_MODE = false;
+const DEBUG_MODE = true;
 const DEBUG_MODE_RENDERER = DEBUG_MODE;
 const LOG_MINIMIZE_OBJECT = true;
 const LOG_MINIMIZE_DATE_ISO = false;
@@ -86,8 +86,14 @@ function _T(id) {
   return id;
 }
 
-function appendField(target, id, defaultV = '', type = 'text') {
-  if (defaultV && type == 'checkbox')
+const FormFieldType = {
+  TEXT: 'text',
+  CHECKBOX: 'checkbox',
+  FILE: 'file',
+};
+
+function appendField(target, id, defaultV = '', type = FormFieldType.TEXT) {
+  if (defaultV && type == FormFieldType.CHECKBOX)
     defaultV = `checked`;
   else if (defaultV)
     defaultV = `value="${defaultV}"`;
@@ -125,7 +131,7 @@ function formCorsHelpFilesUpload(fieldHelpLangTitle = 'Help-(language).zip', fie
   const fieldHvData = fieldHvDataTitle;
   const fieldHelpLang = fieldHelpLangTitle;
   //const fieldHelpBase = 'Help-.zip';
-  const typeFile = 'file';
+  const typeFile = FormFieldType.FILE;
 
   appendField(formO, fieldHvData, '', typeFile);
   appendField(formO, fieldHelpLang, '', typeFile);

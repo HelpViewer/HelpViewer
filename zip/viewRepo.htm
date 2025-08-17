@@ -36,8 +36,8 @@ function _init() {
   appendField(formO, fieldOrg, '');
   appendField(formO, fieldRepo, '');
   appendField(formO, fieldBranch, 'master');
-  appendField(formO, fieldLanguages, 'off', 'checkbox');
-  appendField(formO, fieldZIP, 'off', 'checkbox');
+  appendField(formO, fieldLanguages, true, FormFieldType.CHECKBOX);
+  appendField(formO, fieldZIP, '', FormFieldType.CHECKBOX);
 
   const iorg = $(fieldOrg);
   const irepo = $(fieldRepo);

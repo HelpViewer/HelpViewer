@@ -27,7 +27,7 @@ class puiButtonAsBook extends puiButtonTab {
     if (fPageBreak)
       this.tab.innerText = '';
 
-    appendField(this.tab, nPageBreak, undefined, 'checkbox');
+    appendField(this.tab, nPageBreak, undefined, FormFieldType.CHECKBOX);
 
     const nIcons = 'IconPrint';
     appendFieldComboBox(this.tab, nIcons);
