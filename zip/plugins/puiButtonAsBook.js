@@ -61,8 +61,6 @@ class puiButtonAsBook extends puiButtonTab {
           if (file && resolveFileMedium(file) != UserDataFileLoadedFileType.NETWORK && !file.startsWith('='))
             files.push(file);
         });
-        files = [...new Set(files)];
-        files = files.filter(f => !/^(ftp|https|\?d=|=)/.test(f));
         this.files = files;
         this._prepareDump(homeData, files)
       });
@@ -73,6 +71,10 @@ class puiButtonAsBook extends puiButtonTab {
     const PAGE_BREAK = this.fPageBreak.checked ? DIRECTIVE_PRINT_PAGEBREAK : '';
     var textOfFiles = '';
     var prom = Promise.resolve();
+
+    files = files.map(f => f.split("#")[0]);
+    files = [...new Set(files)];
+    files = files.filter(f => !/^(ftp|https|\?d=|=)/.test(f));
 
     files.forEach((x) => {
       prom = prom.then(() => (x.startsWith(':') ? storageSearch(STO_DATA, x.substring(1)) : storageSearch(STO_HELP, x)).then((y) => {
