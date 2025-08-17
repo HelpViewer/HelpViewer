@@ -9,10 +9,15 @@ class puiButtonAsBook extends puiButtonTab {
 
   init() {
     super.init();
+    hideButton(this.button.id, false);
   }
 
   deInit() {
     super.deInit();
+  }
+
+  onET_UserDataFileLoaded(evt) {
+    hideButton(this.button.id, true);
   }
 
   _preShowAction(evt) {

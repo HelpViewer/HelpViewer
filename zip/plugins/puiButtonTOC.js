@@ -22,6 +22,7 @@ class puiButtonTOC extends puiButtonTabTree {
     TI.eventDefinitions.push([T.EVT_TOC_GETDATA, IEvent, null]);
 
     super.init();
+    hideButton(TI.button.id, false);
   }
   
   deInit() {
