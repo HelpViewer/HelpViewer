@@ -42,6 +42,7 @@ class puiButtonAsBook extends puiButtonTab {
     fPageBreak = $(nPageBreak);
     //fPageBreak.checked = true;
     this.fPageBreak = fPageBreak;
+    this.fIcons = fIcons;
   }
 
   _buttonAction(evt) {
@@ -127,6 +128,16 @@ class puiButtonAsBook extends puiButtonTab {
       return;
     setHeader(evt.heading);
     
+    const toc = $O('#tree', evt.doc);
+    const cssName = 'tmp-AsBook';
+    $(cssName)?.remove();
+
+    if (toc && this.fIcons.value != 1) {
+      appendCSS(cssName,
+        `#content ul.tree details > summary::before { content: '>'; }
+        #content ul.tree details[open] > summary::before { transform: rotate(0deg); content: '˅'; }`);
+    }
+
     var links = Array.from($A('a', evt.doc))
       .map(a => a.getAttribute('data-param'))
       .filter(v => v && !/^(ftp|https|\?d=|=|#|@|:)/.test(v));

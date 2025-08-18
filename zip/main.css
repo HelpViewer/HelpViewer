@@ -405,15 +405,6 @@ ul:has(li input[type="checkbox"]) {
     page-break-before: always;
     break-before: page;
   }
-
-  #content ul.tree details > summary::before {
-    content: '>'; 
-  }
-
-  #content ul.tree details[open] > summary::before {
-    transform: rotate(0deg); 
-    content: '˅'; 
-  }
 }
 /*E: print support*/
 
