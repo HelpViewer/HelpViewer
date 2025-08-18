@@ -94,6 +94,17 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         }
       });
 
+      proto.filter(name => plg[name] instanceof HTMLElement).forEach(d => {
+        const pairing = new Map([
+          ['ul', ObjectExplorerObjectDescriptor.UI_TREE],
+          ['div', ObjectExplorerObjectDescriptor.UI_PAGE],
+          ['button', ObjectExplorerObjectDescriptor.UI_BUTTON]
+        ]);
+        var el = plg[d];
+        const typeO = pairing.get(el.tagName.toLowerCase()) || pairing.get('div');
+        const nameBase = el.id;
+        plug.subItems.push(new ObjectExplorerTreeItem(el.id, typeO, [], undefined, nameBase, [el.tagName.toLowerCase()]));
+      });
     });
 
     // making hierarchy of basic objects
@@ -198,11 +209,19 @@ class ObjectExplorerObjectDescriptor {
 
   static PLUGIN  = new ObjectExplorerObjectDescriptor('plg', '🧩');
   static PLUGININSTANCE = new ObjectExplorerObjectDescriptor('inst', '🔹');
+
   static EVENT = new ObjectExplorerObjectDescriptor('evt', '⚡');
   static EVENT_NOHANDLER = new ObjectExplorerObjectDescriptor('evt', '📄⚡');
+
   static HANDLER = new ObjectExplorerObjectDescriptor('hdl', '👂');
+
   static CONFIG = new ObjectExplorerObjectDescriptor('cfg', '⚙️');
   static CONFIG_FROMFILE = new ObjectExplorerObjectDescriptor('cfg', '📄⚙️');
+
+  static UI_BUTTON = new ObjectExplorerObjectDescriptor('btn', '🔘');
+  static UI_PAGE = new ObjectExplorerObjectDescriptor('page', '🎛️');
+  static UI_TREE = new ObjectExplorerObjectDescriptor('tree', '📂');
+
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
 }
 
