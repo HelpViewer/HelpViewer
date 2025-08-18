@@ -244,6 +244,10 @@ ul:has(li input[type="checkbox"]) {
   gap: 0.1rem;
 }
 
+#toolbar {
+  display: unset;
+}
+
 #toolbar button, .toolbar button {
   flex: 1 1 auto;
   max-height: 2rem;
