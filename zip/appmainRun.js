@@ -44,7 +44,7 @@ async function runApp() {
     appendJavaScript(one, srcMarkedJs, document.head);
   }
 
-  await loadPluginList(FILENAME_LIST_JS_PLUGINS, STO_DATA);
+  const loadedList = await loadPluginList(FILENAME_LIST_JS_PLUGINS, STO_DATA);
 
   if (!srcJSOverride)
     srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
@@ -56,9 +56,13 @@ async function runApp() {
 
   if (srcJSOverridePlus)
     appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
+
+  sendEvent(EVT_PluginsLoadingFinished, (x) => x.result = loadedList);
 }
 
-async function loadPluginList(listFileName, storage, basePath = (name) => `plugins/${name}.js`) {
+const loadPluginListBasePath = (name) => `plugins/${name}.js`;
+
+async function loadPluginList(listFileName, storage, basePath = loadPluginListBasePath) {
   if (!basePath) {
     log('E No basePath function specified. This is not correct and it has been wantedly (function provides default). Specify this!')
     return;
@@ -88,6 +92,8 @@ async function loadPluginList(listFileName, storage, basePath = (name) => `plugi
   }
 
   sendEvent(EVT_PluginsLoadingFinished, (x) => x.result = activatedPluginsList);
+
+  return activatedPluginsList;
 }
 
 async function loadPlugin(name, file, source = STO_DATA) {

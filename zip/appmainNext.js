@@ -6,6 +6,15 @@ var dataPath = '';
 
 FILENAME_DEFAULT_HELPFILE = `hlp/Help-__.zip`;
 
+EventBus.sub(EVT_PluginsLoadingFinished, async (d) => {
+  if (DEBUG_MODE) {
+    log('W Application is in DEBUG_MODE, debug tools will be attached. Turn DEBUG_MODE to off in hvdata/appmain.js file for work in production.');
+    const objExplorerName = 'puiButtonObjectExplorer';
+    await loadPlugin(objExplorerName, loadPluginListBasePath(objExplorerName));
+    await activatePlugin(objExplorerName, '');
+  }
+});
+
 EventBus.sub(EventNames.IndexFileLoaded, (d) => {
   if (pagePath.startsWith('@'))
     showChapterByData(idxTreeItem, pagePath);
