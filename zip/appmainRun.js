@@ -106,9 +106,10 @@ async function loadPlugin(name, file, source = STO_DATA) {
 async function activatePlugin(name, alias, source = STO_DATA) {
   const pluginPureName = name.split('/').pop();
   const cfgFile = `plugins-config/${name}_${alias}.cfg`;
-  log(`Plugins: loading configuration for plugin ${pluginPureName} (${name}) from file '${cfgFile} ...'`);
+  log(`Plugins: loading configuration for plugin ${pluginPureName} (${name}) from file '${cfgFile}' ...`);
   const configFileRaw = await _Storage.search(source, cfgFile);
   const configFileStruct = parseConfigFile(configFileRaw || '|');
+  log(`Plugins: loading configuration for plugin ${pluginPureName} (${name}) from file '${cfgFile}' ... results:`, configFileStruct);
   Plugins.activate(pluginPureName, alias, configFileStruct || {});
 }
 
