@@ -78,14 +78,16 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
       var cfgKeysCfgState = [...Object.keys(plg.config).filter(x => !cfgKeysProps.includes(x))].filter(x => x);
       cfgKeysCfgState.forEach(name => {
-        if (!cfgKeysProps.includes(name))
+        if (!cfgKeysProps.includes(name)) {
           plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.CONFIG_FROMFILE, [], undefined, name, [ObjectExplorerTreeItem.F_CONFIG_FROMFILE]));
+          cfgKeysProps.push(name);
+        }
       });
 
       proto = Object.keys(plg);
       prefixCFG = /^DEFAULT_KEY_CFG_/;
       proto.filter(name => prefixCFG.test(name)).forEach(d => {
-        var nameBase = d.replace(prefixCFG, '');
+        var nameBase = d.replace(prefixCFG, '').replace('_', '');
         if (!cfgKeysProps.includes(nameBase)) {
           plug.subItems.push(new ObjectExplorerTreeItem(d, ObjectExplorerObjectDescriptor.CONFIG, [], undefined, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
           cfgKeysProps.push(nameBase);
