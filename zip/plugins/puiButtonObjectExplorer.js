@@ -48,10 +48,24 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
           if (typeof desc.value !== 'function') return;
           var nameBase = name.replace(prefixEventHandler, '');
           xa[2].push([nameBase, ObjectExplorerObjectDescriptor.HANDLER, []]);
-        });  
-      }
-      );
+        });
+      });
 
+      var cfgKeys = [...Object.keys(plugin.config)];
+
+      var proto = plugin.constructor;
+      const prefixCFG = /^KEY_CFG_/;
+      Object.getOwnPropertyNames(proto).filter(name => prefixCFG.test(name)).forEach(name => {
+        browseMember(proto, name, (desc) => {
+          var nameBase = desc.value;
+          cfgKeys.push(nameBase);
+        });
+      });
+
+      cfgKeys = [...new Set([...cfgKeys])];
+      cfgKeys = cfgKeys.filter(x => x);
+      var instance = xa[2].filter(x => x[0] == plugin);
+      cfgKeys.forEach((x) => xa[2].push([x, ObjectExplorerObjectDescriptor.CONFIG, []]));
     });
 
     // this.treeData.push(...plugins[1].map(x => [x, ObjectExplorerObjectDescriptor.PLUGININSTANCE]));
@@ -83,7 +97,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   _buttonAction(evt) {
     this._buttonActionClickOpenCloseAll(evt?.event?.isTrusted);
   }
-  
+
   onET_ChapterShown(evt) {
   }
 
@@ -104,4 +118,6 @@ class ObjectExplorerObjectDescriptor {
   static EVENT = new ObjectExplorerObjectDescriptor('evt', '⚡');
   static EVENT_NOHANDLER = new ObjectExplorerObjectDescriptor('evt', '📄⚡');
   static HANDLER = new ObjectExplorerObjectDescriptor('hdl', '👂');
+  static CONFIG = new ObjectExplorerObjectDescriptor('cfg', '⚙️');
+  static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
 }
