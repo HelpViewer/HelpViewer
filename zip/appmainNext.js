@@ -50,11 +50,14 @@ function showChapterByData(idxTreeItem, pagePath) {
 }
 
 EventBus.sub(EventNames.ClickedEventTree, async (d) => {
-  if (d.treeId != 'tree' && d.treeId != 'subsList') 
+  if (d.treeId != 'tree' && d.treeId != 'bmark') 
     return;
 
   idxTreeItem = d.elementIdVal;
+  sendEvent(evtHideIfTooWide);
+});
 
+EventBus.sub(evtHideIfTooWide, async (d) => {
   const sidebar = $('sidebar');
   if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
     toggleSidebar();
@@ -67,8 +70,6 @@ EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
 });
 
 EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
-  log('W undeliverable: ' + d.elementId);
-  
   if (!d.target)
     d.stop = true;
 
@@ -237,7 +238,7 @@ EventBus.sub(EventNames.ChapterShown, (d) => {
       setToHrefByValues((x) => {
         x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
         x.kvlist.set(PAR_NAME_ID, idxTreeItem);
-      });  
+      });
     }
   }
 

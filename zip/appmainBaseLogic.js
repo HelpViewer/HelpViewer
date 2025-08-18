@@ -353,6 +353,8 @@ function showChapter(event, heading, address, sourceObject, content) {
 }
 /*E: Plugin: pTopicRenderer */
 
+const evtHideIfTooWide = 'HIDEIFTOOWIDE';
+
 function processAClick(a, evt) {
   if (!a)
     return;
@@ -371,6 +373,7 @@ function processAClick(a, evt) {
     const bookmark = origHref.substring(1);
     scrollToAnchor(bookmark);
     history.pushState(null, '', origHref);
+    sendEvent(evtHideIfTooWide);
     return;
   }
 
