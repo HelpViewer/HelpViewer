@@ -18,9 +18,9 @@ function getHelpRepoUri(org, repo, langs = null, branch = 'master')
   return rawFilesBaseAddr;
 }
 
-function getHelpRepoUriReleaseZip(org, repo, branch = 'master')
+function getHelpRepoUriReleaseZip(org, repo, branch = 'master', fileName = 'Help-__.zip')
 {
-  return `https://github.com/${org}/${repo}/releases/download/${branch}/Help-__.zip`;
+  return `https://github.com/${org}/${repo}/releases/download/${branch}/${fileName}`;
 }
 
 function getHelpRepoUriEditFile(org, repo, file, language, branch = 'master')
@@ -39,7 +39,8 @@ async function getReleaseBundleUri(arc, exactVer, fileName)
   const ver = exactVer || myVer;
   const prjName = configGetValue(CFG_KEY__PRJNAME, '', arc).trim();
   var uriP = releasesBaseAddr.replace('|', prjName);
-  const fallbackURI = `https://github.com/${prjName}/releases/download/${myVer}/${fileName}`
+  const prjNameParts = prjName.split('/');
+  const fallbackURI = getHelpRepoUriReleaseZip(prjNameParts[0], prjNameParts[1], myVer, fileName);
   uriP += ver === latestVerName ? latestVerName : `tags/${ver}`;
   
   var response;
