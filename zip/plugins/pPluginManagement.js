@@ -12,6 +12,7 @@ class pPluginManagement extends IPlugin {
       data.result = [];
       data.result.push(Array.from(Plugins.pluginsClasses.keys()));
       data.result.push(Array.from(Plugins.plugins.keys()));
+      data.result.push(Array.from(Plugins.plugins));
     }
     TI.eventDefinitions.push([T.EVT_PD_GET, IEvent, h_EVT_UC_GET]);
 

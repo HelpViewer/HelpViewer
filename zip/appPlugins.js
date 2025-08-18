@@ -10,17 +10,17 @@ class IPlugin {
   init() {
     const prefixEventHandler = /^onET/;
     var _handleFunctionToSubscription = (instance, name) => {
-      const desc = Object.getOwnPropertyDescriptor(instance, name);
-      if (!desc) return;
-      if (typeof desc.value !== 'function') return;
-      var nameBase = name.replace(prefixEventHandler, '');
-
-      if (nameBase.startsWith('_')) {
-        nameBase = nameBase.slice(1);
-        this._subscribeHandler(nameBase, this.aliasName, desc.value.bind(this));
-      } else {
-        this._prepareFilteredHandler(nameBase, desc.value.bind(this));
-      }
+      browseMember(instance, name, (desc) => {
+        if (typeof desc.value !== 'function') return;
+        var nameBase = name.replace(prefixEventHandler, '');
+  
+        if (nameBase.startsWith('_')) {
+          nameBase = nameBase.slice(1);
+          this._subscribeHandler(nameBase, this.aliasName, desc.value.bind(this));
+        } else {
+          this._prepareFilteredHandler(nameBase, desc.value.bind(this));
+        }
+      });
     };
 
     var proto = Object.getPrototypeOf(this);
@@ -89,6 +89,12 @@ class IPlugin {
     };
   }
 }
+
+function browseMember(instance, name, handler) {
+  const desc = Object.getOwnPropertyDescriptor(instance, name);
+  if (!desc) return;
+  handler(desc);
+};
 
 const Plugins = {
   plugins: new Map(),
