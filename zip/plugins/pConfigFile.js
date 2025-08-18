@@ -16,6 +16,11 @@ class pConfigFile extends IPlugin {
 
   constructor(aliasName, data) {
     super(aliasName, data);
+
+    const T = this.constructor;
+    this.cfgStorage = this.config[T.KEY_CFG_STORAGE] || 'STO_DATA';
+    this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || '_config.txt';
+
     this.CFG = undefined;
 
     this.eventIdStrict = true;
@@ -25,9 +30,6 @@ class pConfigFile extends IPlugin {
   init() {
     const T = this.constructor;
     const TI = this;
-
-    this.cfgStorage = this.config[T.KEY_CFG_STORAGE] || 'STO_DATA';
-    this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || '_config.txt';
 
     const h_EVT_CF_GET = (data) => {
       data.result = this._configGetValue(data.key, data.backup);  
@@ -55,8 +57,14 @@ class pConfigFile extends IPlugin {
 
   async _loadCFG() {
     const T = this.constructor;
-    const found = await storageSearch(this.cfgStorage, this.cfgFileName);
-    this.CFG = parseConfigFile(found);
+    const thisCfg = '.';
+
+    if (this.cfgStorage == thisCfg && this.cfgFileName == thisCfg) {
+      this.CFG = this.config;
+    } else {
+      const found = await storageSearch(this.cfgStorage, this.cfgFileName);
+      this.CFG = parseConfigFile(found);
+    }
 
     sendEvent(T.EVT_CF_RELOAD_FINISHED, (x) => {
       x.id = this.aliasName;
