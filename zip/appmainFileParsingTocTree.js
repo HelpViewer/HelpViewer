@@ -9,7 +9,7 @@ const N_P_TREEITEM_BOOKMARK = 'bmark-';
 
 function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
   if (!linesP) return '';
-  const lines = linesP.split("\n");
+  const lines = linesP.trim().split("\n");
   var linksEmitted = 0;
 
   function makeLink(name, note, path, image) {
