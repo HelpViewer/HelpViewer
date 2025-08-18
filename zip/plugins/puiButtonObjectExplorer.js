@@ -117,56 +117,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     // prepare top level data
     this.treeData.push(...pluginGroups, ...pluginNodes);
 
-    log('E !!!', pluginGroups);
-    log('E !!!', pluginNodes);
-    log('E !!!', plugins[2]);
-    log('E !!!', pluginInstanceNodes);
-    log('W  rrr ', this.treeData);
-
-    // // this.treeData.forEach(xa => {
-    // //   log('E !!! xa name: ' + xa[0]);
-    // //   xa[2].push(...plugins[1].filter(x => x.startsWith(xa[0] + ':')).map(x => [x, ObjectExplorerObjectDescriptor.PLUGININSTANCE, []]));
-    // //   log('E !!! xa2 name: ' + xa[2][xa[2].length - 1][0]);
-
-    // //   const plugin = plugins[2].filter(x => x[0] == xa[2][xa[2].length - 1][0])?.[0]?.[1];
-    // //   if (!plugin) log('E !!! plugin not found',  xa[2][xa[2].length - 1][0]);
-    // //   log('W !!! plugin ', plugin);
-    // //   plugin.eventDefinitions.forEach(evt => {
-    // //     log('W EVT1: ', evt);
-    // //     xa[2].push([evt[0], evt[2] ? ObjectExplorerObjectDescriptor.EVENT : ObjectExplorerObjectDescriptor.EVENT_NOHANDLER, []]);
-    // //   });
-
-    // //   var proto = Object.getPrototypeOf(plugin);
-    // //   const prefixEventHandler = /^onET/;
-    // //   Object.getOwnPropertyNames(proto).filter(name => prefixEventHandler.test(name)).forEach(name => {
-    // //     browseMember(proto, name, (desc) => {
-    // //       if (typeof desc.value !== 'function') return;
-    // //       var nameBase = name.replace(prefixEventHandler, '');
-    // //       xa[2].push([nameBase, ObjectExplorerObjectDescriptor.HANDLER, []]);
-    // //     });
-    // //   });
-
-    // //   var cfgKeys = [...Object.keys(plugin.config)];
-
-    // //   var proto = plugin.constructor;
-    // //   const prefixCFG = /^KEY_CFG_/;
-    // //   Object.getOwnPropertyNames(proto).filter(name => prefixCFG.test(name)).forEach(name => {
-    // //     browseMember(proto, name, (desc) => {
-    // //       var nameBase = desc.value;
-    // //       cfgKeys.push(nameBase);
-    // //     });
-    // //   });
-
-    // //   cfgKeys = [...new Set([...cfgKeys])];
-    // //   cfgKeys = cfgKeys.filter(x => x);
-    // //   var instance = xa[2].filter(x => x[0] == plugin);
-    // //   cfgKeys.forEach((x) => xa[2].push([x, ObjectExplorerObjectDescriptor.CONFIG, []]));
-    // // });
-
-    // this.treeData.push(...plugins[1].map(x => [x, ObjectExplorerObjectDescriptor.PLUGININSTANCE]));
-    // for
-    // this.treeData.push(...plugins[2].map(x => [x[1].eventDefinitions[0]., ObjectExplorerObjectDescriptor.EVENT]));
-
     // passing data to tree
     const treeDataFlat = this._prepareFlatTreeInput(this.treeData);
     setTreeData(treeDataFlat, this.aliasName);
