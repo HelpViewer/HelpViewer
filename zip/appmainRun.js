@@ -44,8 +44,29 @@ async function runApp() {
     appendJavaScript(one, srcMarkedJs, document.head);
   }
 
-  listData = await _Storage.search(STO_DATA, FILENAME_LIST_JS_PLUGINS);
+  await loadPluginList(FILENAME_LIST_JS_PLUGINS, STO_DATA);
+
+  if (!srcJSOverride)
+    srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
+  
+  appendJavaScript(FILENAME_JSBACKEND, srcJSOverride, document.head);
+
+  if (srcMainCSSPlus)
+    appendCSS('mainCSSPlus', srcMainCSSPlus);
+
+  if (srcJSOverridePlus)
+    appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
+}
+
+async function loadPluginList(listFileName, storage, basePath = (name) => `plugins/${name}.js`) {
+  if (!basePath) {
+    log('E No basePath function specified. This is not correct and it has been wantedly (function provides default). Specify this!')
+    return;
+  }
+  
+  var listData = await _Storage.search(storage, listFileName);
   const sequencePlugins = rowsToArray(listData.trim());
+  const activatedPluginsList = [];
 
   for (const one of sequencePlugins) {
     const names = one.split(':');
@@ -58,25 +79,15 @@ async function runApp() {
     if (aliases.length == 0)
       aliases.push('');
 
-    await loadPlugin(name, `plugins/${name}.js`, STO_DATA);
+    await loadPlugin(name, basePath(name), storage);
 
     for (const oneAlias of aliases) {
       await activatePlugin(name, oneAlias);
+      activatedPluginsList.push([name, oneAlias]);
     }
   }
 
-  sendEvent(EVT_PluginsLoadingFinished);
-
-  if (!srcJSOverride)
-    srcJSOverride = await _Storage.search(STO_DATA, FILENAME_JSBACKEND);
-  
-  appendJavaScript(FILENAME_JSBACKEND, srcJSOverride, document.head);
-
-  if (srcMainCSSPlus)
-    appendCSS('mainCSSPlus', srcMainCSSPlus);
-
-  if (srcJSOverridePlus)
-    appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
+  sendEvent(EVT_PluginsLoadingFinished, (x) => x.result = activatedPluginsList);
 }
 
 async function loadPlugin(name, file, source = STO_DATA) {
