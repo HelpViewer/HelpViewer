@@ -21,6 +21,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     const T = this.constructor;
     const TI = this;
     this.cfgGroupsList = (this.config[T.KEY_CFG_GROUPSLIST] || TI.DEFAULT_KEY_CFG_GROUPSLIST)?.split(';');
+    this._TOverview = this._TOverview || _T('overview');
   }
 
   deInit() {
@@ -39,6 +40,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     const pluginGroups = this.cfgGroupsList.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`]?.split(';')]));
     var pluginNodes = plugins[0].map(x => new ObjectExplorerTreeItem(x, ObjectExplorerObjectDescriptor.PLUGIN, [], ));
     var pluginInstanceNodes = plugins[2].map(x => new ObjectExplorerTreeItem(x[0], ObjectExplorerObjectDescriptor.PLUGININSTANCE, [], x[1]));
+    this.pluginNodes = pluginNodes;
 
     // plugin instances data reading
     pluginInstanceNodes.forEach(plug => {
@@ -119,7 +121,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     });
 
     //:_/__/README.md
-    var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('overview'));
+    var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, this._TOverview);
 
     // prepare top level data
     this.treeData.push(firstPage, ...pluginGroups, ...pluginNodes);
@@ -143,6 +145,24 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     });
 
     return replystr;
+  }
+
+  _browseTreeForItem(pathSplits, objectData, base = '') {
+    if (!pathSplits || pathSplits.length == 0) 
+      return;
+
+    const newSplits = pathSplits.slice(1);
+    const currentToSearch = `${base}${pathSplits[0]}`;
+
+    const found = objectData.filter(x => x.id == currentToSearch);
+
+    if (found.length == 0)
+      return;
+
+    if (newSplits.length == 0)
+      return found[0];
+
+    return this._browseTreeForItem(newSplits, found[0].subItems, `${currentToSearch}:`);
   }
 
   _buttonAction(evt) {
@@ -224,8 +244,17 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
     
       default:
+        r.result = r.result.then(() => {
+          if (r.content)
+            r.content = `## ${this._TOverview}\n${r.content}`;
+          else
+            r.content = '';
+        });
         break;
     }
+
+    log('E treedata: ', this.pluginNodes );
+    const found = this._browseTreeForItem(objNamePreprocessed.split('_'), this.pluginNodes);
     
     const typeLink = this.objTypesMap.get(typeInRequest);
     if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
@@ -234,10 +263,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       r.heading = `${typeLink.image} ${objNameLocal}`;
     r.result = r.result.then(() => r.content = r.content.replace('<!-- %AUTODESC% -->', desc));
   }
-
-  onET_ChapterShown(evt) {
-  }
-
 }
 
 Plugins.catalogize(puiButtonObjectExplorer);
