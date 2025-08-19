@@ -157,15 +157,20 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       return gr.abbr;
     });
 
-    const objTypes = this.objTypes;
-    log('E oriuri: ', r.uri);
-    const uriParts = (r.uri?.replace('.md', '').split(':') || []);
-    log('E rr', uriParts);
-    const objName = uriParts[1].replace(/\.[^/.]+$/, "");
-    const typeInRequest = uriParts[0];
+    var objName = '';
+    var typeInRequest;
 
-    if (!r.uri.startsWith('i/') && !objTypes.includes(typeInRequest))
+    try {
+      const objTypes = this.objTypes;
+      const uriParts = r.uri?.replace('.md', '').split(':') || ['',''];
+      objName = uriParts[1].replace(/\.[^/.]+$/, "");
+      typeInRequest = uriParts[0];
+  
+      if (!r.uri.startsWith('i/') && !objTypes.includes(typeInRequest))
+        return;
+    } catch {
       return;
+    }
 
     const basePath = `i/${getActiveLanguage()}/`;
 
