@@ -163,9 +163,14 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     try {
       const objTypes = this.objTypes;
       const uriParts = r.uri?.replace('.md', '').split(':') || ['',''];
-      uriParts.push('');
+      if (uriParts.length == 1)
+        uriParts.push('');
+
       objName = uriParts[1].replace(/\.[^/.]+$/, "");
       typeInRequest = uriParts[0];
+
+      if (uriParts.length > 2)
+        objName = uriParts.slice(1).join('_');
   
       if (!r.uri.startsWith('i/') && !objTypes.includes(typeInRequest))
         return;
@@ -197,8 +202,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       return;
     }
     
-    const altPath = `${basePath}${typeInRequest}_${objName.replace(new RegExp(':', 'g'), '_')}.md`;
-    log(`E ObjectExplorer: requested path: ${altPath}`);
+    const generalType = ObjectExplorerObjectDescriptor._BIGCLASS.get(typeInRequest) || typeInRequest;
+    const altPath = `${basePath}${generalType}_${objName.replace(new RegExp(':', 'g'), '_')}.md`;
+    log(`ObjectExplorer: requested path: ${altPath}`);
     r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
     var desc = '';
 
