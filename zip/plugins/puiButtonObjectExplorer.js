@@ -109,7 +109,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         var el = plg[d];
         const typeO = pairing.get(el.tagName.toLowerCase()) || pairing.get('div');
         const nameBase = el.id;
-        plug.subItems.push(new ObjectExplorerTreeItem(baseN + el.id, typeO, [], el, nameBase, [el.tagName.toLowerCase()]));
+        plug.subItems.push(new ObjectExplorerTreeItem(baseN + el.id, typeO, [], el, nameBase, [el.tagName.toLowerCase(), el.innerText]));
       });
     });
 
@@ -237,6 +237,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     log('E ysp ' + objNameLocalSplits);
     
     r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
+    const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
     var desc = '';
 
     switch (typeInRequest) {
@@ -244,7 +245,13 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         desc = _T(`${objName}-D`);
         r.result = r.result.then(() => r.content = r.content || desc);
         break;
-    
+
+        case ObjectExplorerObjectDescriptor.UI_BUTTON.abbr:
+          const f = found;
+          r.result = r.result.then(() => r.content = r.content || f.plus[1] || '&nbsp;');
+          break;
+  
+        //r.plus[1]
       default:
         r.result = r.result.then(() => {
           if (r.content)
@@ -271,7 +278,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     var orderedByTypeA = [...orderedByType].filter(([k, v]) => v.length > 0);
 
     orderedByTypeA = orderedByTypeA.map(([k, v]) => {
-      const items = v.map((r) => `- ${r.descriptor.image} ${r.title}`);
+      const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} ${r.title}`);
       return `## ${_T(k)}\n${items.join('\n')}`;
       }
     );
