@@ -35,7 +35,7 @@ function log(msg, ...dataI) {
 
   const data = [msg];
 
-  if (LOG_MINIMIZE_OBJECT) {
+  if (LOG_MINIMIZE_OBJECT && severity != 'E') {
     dataI.forEach((x, i) => {
       if (typeof x === 'object') {
         //dataI[i] = JSON.parse(JSON.stringify(x)); // unfortunately skips undefined members!
