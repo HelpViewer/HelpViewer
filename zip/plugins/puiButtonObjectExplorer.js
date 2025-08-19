@@ -203,8 +203,17 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     }
     
     const generalType = ObjectExplorerObjectDescriptor._BIGCLASS.get(typeInRequest) || typeInRequest;
-    const altPath = `${basePath}${generalType}_${objName.replace(new RegExp(':', 'g'), '_')}.md`;
+    const objNamePreprocessed = objName.replace(new RegExp(':', 'g'), '_');
+    const objNameLocalSplits = objNamePreprocessed.split('_');
+    var objNameLocal = '';
+    var i = 0;
+    do {
+      objNameLocal = `${objNameLocalSplits.pop()}${(i > 0)? ':' : ''}${objNameLocal}`;
+      i++;
+    } while (objNameLocal.length == 0);
+    const altPath = `${basePath}${generalType}_${objNamePreprocessed}.md`;
     log(`ObjectExplorer: requested path: ${altPath}`);
+    log('E y ' + objNameLocal);
     r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
     var desc = '';
 
@@ -222,7 +231,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
       r.heading = `${this.config[objName]} ${_T(objName)}`;
     else
-      r.heading = `${typeLink.image} ${_T()}`;
+      r.heading = `${typeLink.image} ${objNameLocal}`;
     r.result = r.result.then(() => r.content = r.content.replace('<!-- %AUTODESC% -->', desc));
   }
 
