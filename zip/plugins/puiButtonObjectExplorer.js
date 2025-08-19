@@ -89,7 +89,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       proto.filter(name => prefixCFG.test(name)).forEach(d => {
         var nameBase = d.replace(prefixCFG, '').replace('_', '');
         if (!cfgKeysProps.includes(nameBase)) {
-          plug.subItems.push(new ObjectExplorerTreeItem(d, ObjectExplorerObjectDescriptor.CONFIG, [], undefined, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
+          plug.subItems.push(new ObjectExplorerTreeItem(nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], undefined, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
           cfgKeysProps.push(nameBase);
         }
       });
