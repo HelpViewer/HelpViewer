@@ -163,6 +163,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     try {
       const objTypes = this.objTypes;
       const uriParts = r.uri?.replace('.md', '').split(':') || ['',''];
+      uriParts.push('');
       objName = uriParts[1].replace(/\.[^/.]+$/, "");
       typeInRequest = uriParts[0];
   
