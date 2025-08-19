@@ -23,6 +23,7 @@ class ShowChapterResolutions extends IEvent {
 
     this.tokens = [];
     this.TOKEN_NOLOADDATA = 'TOKEN_NOLOADDATA';
+    this.TOKEN_NONOTFOUNDMSG = 'TOKEN_NONOTFOUNDMSG';
 
     this.onTokenDo = (token, handler) => {
       const r = this;

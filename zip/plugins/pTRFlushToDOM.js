@@ -21,8 +21,10 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     
     const notFound = (r.content?.length == 0);
 
-    if (notFound)
-      r.content = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
+    if (notFound) {
+      if (!r.tokens.includes(r.TOKEN_NONOTFOUNDMSG))
+        r.content = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
+    }
 
     r.found = !notFound;
 
