@@ -190,7 +190,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       typeInRequest = uriParts[0];
 
       if (uriParts.length > 2)
-        objName = uriParts.slice(1).join('_');
+        objName = uriParts.slice(1).join(':');
   
       if (!r.uri.startsWith('i/') && !objTypes.includes(typeInRequest))
         return;
@@ -224,7 +224,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     
     const generalType = ObjectExplorerObjectDescriptor._BIGCLASS.get(typeInRequest) || typeInRequest;
     const objNamePreprocessed = objName.replace(new RegExp(':', 'g'), '_');
-    const objNameLocalSplits = objNamePreprocessed.split('_');
+    const objNameLocalSplits = objName.split(':');
     var objNameLocal = '';
     var i = 0;
     do {
