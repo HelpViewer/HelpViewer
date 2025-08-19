@@ -12,6 +12,7 @@ EventBus.sub(EVT_PluginsLoadingFinished, async (d) => {
     const objExplorerName = 'puiButtonObjectExplorer';
     await loadPlugin(objExplorerName, loadPluginListBasePath(objExplorerName));
     await activatePlugin(objExplorerName, '');
+    loadLocalization(getActiveLanguage());
   }
 });
 
