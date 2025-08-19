@@ -74,7 +74,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         browseMember(proto, name, (desc) => {
           var nameBase = getNameBase(desc);
           if (!cfgKeysProps.includes(nameBase)) {
-            plug.subItems.push(new ObjectExplorerTreeItem(baseN + nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], desc, nameBase));
+            plug.subItems.push(new ObjectExplorerTreeItem(baseN + nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], plg, nameBase));
             cfgKeysProps.push(nameBase);
           }
         });
@@ -85,7 +85,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       var cfgKeysCfgState = [...Object.keys(plg.config).filter(x => !cfgKeysProps.includes(x))].filter(x => x);
       cfgKeysCfgState.forEach(name => {
         if (!cfgKeysProps.includes(name)) {
-          plug.subItems.push(new ObjectExplorerTreeItem(baseN + name, ObjectExplorerObjectDescriptor.CONFIG_FROMFILE, [], plg.config, name, [ObjectExplorerTreeItem.F_CONFIG_FROMFILE]));
+          plug.subItems.push(new ObjectExplorerTreeItem(baseN + name, ObjectExplorerObjectDescriptor.CONFIG_FROMFILE, [], plg, name, [ObjectExplorerTreeItem.F_CONFIG_FROMFILE]));
           cfgKeysProps.push(name);
         }
       });
@@ -145,6 +145,13 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     });
 
     return replystr;
+  }
+
+  _getConfigKeyValues(keyBaseName, instance) {
+    const nameDefault = `DEFAULT_KEY_CFG_${keyBaseName}`;
+    const defVal = instance[nameDefault];
+    const valCurrent = instance.config[keyBaseName];
+    return [valCurrent || defVal, defVal];
   }
 
   _browseTreeForItem(pathSplits, objectData, base = '') {
@@ -233,8 +240,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     } while (objNameLocal.length == 0);
     const altPath = `${basePath}${generalType}_${objNamePreprocessed}.md`;
     log(`E ObjectExplorer: requested path: ${altPath}`);
-    log('E y ' + objNameLocal);
-    log('E ysp ' + objNameLocalSplits);
     
     r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
     const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
@@ -247,11 +252,20 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
 
         case ObjectExplorerObjectDescriptor.UI_BUTTON.abbr:
-          const f = found;
-          r.result = r.result.then(() => r.content = r.content || f.plus[1] || '&nbsp;');
+          desc = found.plus[1];
+          r.result = r.result.then(() => r.content = r.content || desc);
           break;
   
-        //r.plus[1]
+        case ObjectExplorerObjectDescriptor.CONFIG.abbr:
+        case ObjectExplorerObjectDescriptor.CONFIG_FROMFILE.abbr:
+          const vals = this._getConfigKeyValues(found.title, found.interconnectedObject);
+          vals[0] = vals[0] ?? '';
+          vals[1] = vals[1] ?? '';
+          const valMd = vals[0] == vals[1] ? vals[0] : `**${vals[0]}**`;
+          desc = `**${_T('value')}:**\n\n${valMd}\n\n**${_T('default')}:**\n\n${vals[1]}\n\n`;
+          r.result = r.result.then(() => r.content = r.content || desc);
+          break;
+
       default:
         r.result = r.result.then(() => {
           if (r.content)
@@ -262,27 +276,34 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
     }
 
-    log('E treedata: ', this.pluginNodes );
     // if (found)
     //   log('E xx found:', found);
     // else
     //   log('E xx NOT found:', found);
-    const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
 
     var orderedByType = new Map();
     ObjectExplorerObjectDescriptor._BIGCLASS_R.forEach(
       (x, v) => orderedByType.set(v, found.subItems.filter(
         si => x.includes(si.descriptor.abbr)
       )) );
-    log('E ooo1', found);
     var orderedByTypeA = [...orderedByType].filter(([k, v]) => v.length > 0);
 
     orderedByTypeA = orderedByTypeA.map(([k, v]) => {
+      if (k == ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT) {
+        const items = v.map((r) => {
+          const vals = this._getConfigKeyValues(r.title, r.interconnectedObject);
+          vals[0] = vals[0] ?? '';
+          vals[1] = vals[1] ?? '';
+          const equality = (vals[0] == vals[1]);
+          vals[0] = equality ? vals[0] : `**${vals[0]}**`;
+          const title = equality ? r.title : `**${r.title}**`;
+          return `| ${title} | ${vals[0]} | ${vals[1]} |`;
+        });
+        return `## ${ObjectExplorerObjectDescriptor.CONFIG.image} ${_T(k)}\n| ${_T('name')} | ${_T('value')} | ${_T('default')} |\n| --- | --- | --- |\n${items.join('\n')}`;
+      }
       const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} ${r.title}`);
       return `## ${_T(k)}\n${items.join('\n')}`;
-      }
-    );
-    log('E ooo', orderedByTypeA);
+    });
 
     r.result = r.result.then(() => {
       r.content += `\n${orderedByTypeA.join('\n')}`;
@@ -327,9 +348,11 @@ class ObjectExplorerObjectDescriptor {
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
   static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
 
+  static _BIGCLASS_CFGOPT = 'cfgopt';
+
   static _BIGCLASS = new Map([
-    ['cfg', 'cfgopt'],
-    ['cfgE', 'cfgopt'],
+    ['cfg', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
+    ['cfgE', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
     ['evt', 'event'],
     ['evtD', 'event'],
     ['btn', 'uiobject'],
