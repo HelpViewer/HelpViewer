@@ -256,11 +256,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     }
 
     log('E treedata: ', this.pluginNodes );
-    const found = this._browseTreeForItem(objNamePreprocessed.split('_'), this.pluginNodes);
     // if (found)
     //   log('E xx found:', found);
     // else
     //   log('E xx NOT found:', found);
+    const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
 
     var orderedByType = new Map();
     ObjectExplorerObjectDescriptor._BIGCLASS_R.forEach(
