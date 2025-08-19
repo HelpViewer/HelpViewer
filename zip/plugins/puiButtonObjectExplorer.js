@@ -255,7 +255,26 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     log('E treedata: ', this.pluginNodes );
     const found = this._browseTreeForItem(objNamePreprocessed.split('_'), this.pluginNodes);
-    
+    // if (found)
+    //   log('E xx found:', found);
+    // else
+    //   log('E xx NOT found:', found);
+
+    var orderedByType = new Map();
+    ObjectExplorerObjectDescriptor._BIGCLASS_R.forEach(
+      (x, v) => orderedByType.set(v, found.subItems.filter(
+        si => x.includes(si.descriptor.abbr)
+      )) );
+    log('E ooo1', found);
+    const orderedByTypeA = [...orderedByType].filter(([k, v]) => v.length > 0);
+    log('E ooo', orderedByTypeA);
+
+    orderedByTypeA.forEach(([k, v]) => r.result = r.result.then(() => {
+      const items = v.map((r) => `- ${r.descriptor.image} ${r.title}`);
+      r.content += `## ${_T(k)}\n${items.join('\n')}`;
+      })
+    );
+
     const typeLink = this.objTypesMap.get(typeInRequest);
     if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
       r.heading = `${this.config[objName]} ${_T(objName)}`;
@@ -303,7 +322,11 @@ class ObjectExplorerObjectDescriptor {
     ['btn', 'uiobject'],
     ['page', 'uiobject'],
     ['tree', 'uiobject'],
+    ['hdl', 'hdl'],
+    ['inst', 'inst'],
   ]);
+
+  static _BIGCLASS_R = reverseMap(this._BIGCLASS);
 }
 
 class ObjectExplorerTreeItem {
@@ -320,4 +343,15 @@ class ObjectExplorerTreeItem {
     this.plus = plus || [];
     this.interconnectedObject = interconnectedObject;
   }
+}
+
+function reverseMap(source) {
+  const reply = new Map();
+
+  for (const [key, value] of source) {
+    if (!reply.has(value)) reply.set(value, []);
+    reply.get(value).push(key);
+  }
+
+  return reply;
 }
