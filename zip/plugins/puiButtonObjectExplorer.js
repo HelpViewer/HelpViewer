@@ -14,12 +14,13 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   }
 
   init() {
+    this.eventIdStrict = false;
     super.init();
     hideButton(this.button.id, false);
 
     const T = this.constructor;
     const TI = this;
-    this.cfgGroupsList = (this.config[T.KEY_CFG_GROUPSLIST] || TI.DEFAULT_KEY_CFG_GROUPSLIST).split(';');
+    this.cfgGroupsList = (this.config[T.KEY_CFG_GROUPSLIST] || TI.DEFAULT_KEY_CFG_GROUPSLIST)?.split(';');
   }
 
   deInit() {
@@ -35,7 +36,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     // preparation of flat lists
     this.treeData = [];
-    const pluginGroups = this.cfgGroupsList.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`].split(';')]));
+    const pluginGroups = this.cfgGroupsList.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`]?.split(';')]));
     var pluginNodes = plugins[0].map(x => new ObjectExplorerTreeItem(x, ObjectExplorerObjectDescriptor.PLUGIN, [], ));
     var pluginInstanceNodes = plugins[2].map(x => new ObjectExplorerTreeItem(x[0], ObjectExplorerObjectDescriptor.PLUGININSTANCE, [], x[1]));
 
@@ -114,8 +115,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       pluginNodes = pluginNodes.filter(x => !p.subItems.includes(x));
     });
 
+    //:_/__/README.md
+    var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('overview'));
+
     // prepare top level data
-    this.treeData.push(...pluginGroups, ...pluginNodes);
+    this.treeData.push(firstPage, ...pluginGroups, ...pluginNodes);
 
     // passing data to tree
     const treeDataFlat = this._prepareFlatTreeInput(this.treeData);
@@ -129,7 +133,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     objectData.forEach(x => {
       if (x.descriptor.printTree) {
         replystr += spaces;
-        replystr += `${x.descriptor.image} ${x.title}|||:_${x.descriptor.abbr}:${x.id}\n`;
+        replystr += `${x.descriptor.image} ${x.title}|||:_${x.descriptor.abbr ? x.descriptor.abbr + ':' : ''}${x.id}.md\n`;
         const newLevel = level + 1;
         replystr += this._prepareFlatTreeInput(x.subItems, newLevel);  
       }
@@ -171,6 +175,8 @@ class ObjectExplorerObjectDescriptor {
   static UI_BUTTON = new ObjectExplorerObjectDescriptor('btn', '🔘');
   static UI_PAGE = new ObjectExplorerObjectDescriptor('page', '🎛️');
   static UI_TREE = new ObjectExplorerObjectDescriptor('tree', '📂');
+
+  static DOCUMENT = new ObjectExplorerObjectDescriptor('', '📄');
 
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
 }
