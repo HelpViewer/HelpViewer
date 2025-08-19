@@ -321,10 +321,10 @@ class ObjectExplorerObjectDescriptor {
   static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
 
   static _BIGCLASS = new Map([
-    ['evt', 'event'],
-    ['evtD', 'event'],
     ['cfg', 'cfgopt'],
     ['cfgE', 'cfgopt'],
+    ['evt', 'event'],
+    ['evtD', 'event'],
     ['btn', 'uiobject'],
     ['page', 'uiobject'],
     ['tree', 'uiobject'],
