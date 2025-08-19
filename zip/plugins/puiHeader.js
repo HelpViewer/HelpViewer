@@ -24,6 +24,7 @@ class puiHeader extends IPlugin {
     const node = tmpDiv.firstChild;
     if (containerMain && node)
       containerMain.prepend(node);
+    this.header = node;
 
     const mainTitle = $('mtitle');
     const toolbar = $('toolbar');
