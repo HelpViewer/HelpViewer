@@ -53,8 +53,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         browseMember(proto, name, (desc) => {
           if (typeof desc.value !== 'function') return;
           var nameBase = name.replace(prefixEventHandler, '');
-          // if (nameBase.startsWith('_'))
-          //   nameBase = nameBase.substring(1);
           plug.subItems.push(new ObjectExplorerTreeItem(baseN + name, ObjectExplorerObjectDescriptor.HANDLER, [], desc, nameBase));
         });
       });
@@ -239,7 +237,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       i++;
     } while (objNameLocal.length == 0);
     const altPath = `${basePath}${generalType}_${objNamePreprocessed}.md`;
-    log(`E ObjectExplorer: requested path: ${altPath}`);
+    log(`ObjectExplorer: requested path: ${altPath}`);
     
     r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
     const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
@@ -274,11 +272,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         });
         break;
     }
-
-    // if (found)
-    //   log('E xx found:', found);
-    // else
-    //   log('E xx NOT found:', found);
 
     var orderedByType = new Map();
     ObjectExplorerObjectDescriptor._BIGCLASS_R.forEach(
