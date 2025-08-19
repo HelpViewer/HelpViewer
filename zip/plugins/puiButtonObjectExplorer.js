@@ -44,22 +44,23 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     pluginInstanceNodes.forEach(plug => {
       const plg = plug.interconnectedObject;
       var proto = Object.getPrototypeOf(plg);
+      const baseN = `${plug.id}:`;
 
       const prefixEventHandler = /^onET/;
       Object.getOwnPropertyNames(proto).filter(name => prefixEventHandler.test(name)).forEach(name => {
         browseMember(proto, name, (desc) => {
           if (typeof desc.value !== 'function') return;
           var nameBase = name.replace(prefixEventHandler, '');
-          if (nameBase.startsWith('_'))
-            nameBase = nameBase.substring(1);
-          plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.HANDLER, [], desc, nameBase));
+          // if (nameBase.startsWith('_'))
+          //   nameBase = nameBase.substring(1);
+          plug.subItems.push(new ObjectExplorerTreeItem(baseN + name, ObjectExplorerObjectDescriptor.HANDLER, [], desc, nameBase));
         });
       });
 
       plg.eventDefinitions.forEach(evt => {
-        plug.subItems.push(new ObjectExplorerTreeItem(evt[0], 
+        plug.subItems.push(new ObjectExplorerTreeItem(baseN + evt[0], 
           evt[2] ? ObjectExplorerObjectDescriptor.EVENT : ObjectExplorerObjectDescriptor.EVENT_NOHANDLER, 
-          [], evt, undefined, 
+          [], evt, evt[0], 
           [evt[2] ? ObjectExplorerTreeItem.F_EVENT_WHANDLER : ObjectExplorerTreeItem.F_EVENT_NOHANDLER]
         ));
       });
@@ -71,7 +72,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         browseMember(proto, name, (desc) => {
           var nameBase = getNameBase(desc);
           if (!cfgKeysProps.includes(nameBase)) {
-            plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.CONFIG, [], desc, nameBase));
+            plug.subItems.push(new ObjectExplorerTreeItem(baseN + nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], desc, nameBase));
             cfgKeysProps.push(nameBase);
           }
         });
@@ -82,7 +83,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       var cfgKeysCfgState = [...Object.keys(plg.config).filter(x => !cfgKeysProps.includes(x))].filter(x => x);
       cfgKeysCfgState.forEach(name => {
         if (!cfgKeysProps.includes(name)) {
-          plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.CONFIG_FROMFILE, [], plg.config, name, [ObjectExplorerTreeItem.F_CONFIG_FROMFILE]));
+          plug.subItems.push(new ObjectExplorerTreeItem(baseN + name, ObjectExplorerObjectDescriptor.CONFIG_FROMFILE, [], plg.config, name, [ObjectExplorerTreeItem.F_CONFIG_FROMFILE]));
           cfgKeysProps.push(name);
         }
       });
@@ -92,7 +93,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       proto.filter(name => prefixCFG.test(name)).forEach(d => {
         var nameBase = d.replace(prefixCFG, '').replace('_', '');
         if (!cfgKeysProps.includes(nameBase)) {
-          plug.subItems.push(new ObjectExplorerTreeItem(nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], plg, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
+          plug.subItems.push(new ObjectExplorerTreeItem(baseN + nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], plg, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
           cfgKeysProps.push(nameBase);
         }
       });
@@ -106,7 +107,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         var el = plg[d];
         const typeO = pairing.get(el.tagName.toLowerCase()) || pairing.get('div');
         const nameBase = el.id;
-        plug.subItems.push(new ObjectExplorerTreeItem(el.id, typeO, [], el, nameBase, [el.tagName.toLowerCase()]));
+        plug.subItems.push(new ObjectExplorerTreeItem(baseN + el.id, typeO, [], el, nameBase, [el.tagName.toLowerCase()]));
       });
     });
 
@@ -157,9 +158,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       return gr.abbr;
     });
 
-    const uriParts = (r.uri?.split(':') || []);
-    uriParts.push('');
-    uriParts.push('');
+    log('E oriuri: ', r.uri);
+    const uriParts = (r.uri?.replace('.md', '').split(':') || []);
+    log('E rr', uriParts);
     const objName = uriParts[1].replace(/\.[^/.]+$/, "");
     const typeInRequest = uriParts[0];
 
@@ -207,7 +208,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
       r.heading = `${this.config[objName]} ${_T(objName)}`;
     else
-      r.heading = `${typeLink.image} ${_T(typeInRequest)}`;
+      r.heading = `${typeLink.image} ${_T()}`;
     r.result = r.result.then(() => r.content = r.content.replace('<!-- %AUTODESC% -->', desc));
   }
 
@@ -245,6 +246,16 @@ class ObjectExplorerObjectDescriptor {
 
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
   static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
+
+  static _BIGCLASS = new Map([
+    ['evt', 'event'],
+    ['evtD', 'event'],
+    ['cfg', 'cfgopt'],
+    ['cfgE', 'cfgopt'],
+    ['btn', 'uiobject'],
+    ['page', 'uiobject'],
+    ['tree', 'uiobject'],
+  ]);
 }
 
 class ObjectExplorerTreeItem {
