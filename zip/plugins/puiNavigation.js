@@ -29,11 +29,15 @@ class puiNavigation extends IPlugin {
       const TI = this;
       TI.eventDefinitions.push([T.EVT_NAV_MOVE, NavigationMove, null]); // outside event handlers
 
+      this.DEFAULT_KEY_CFG_TARGET = 'header';
+      this.DEFAULT_KEY_CFG_TREEID = 'tree';
+      this.DEFAULT_KEY_CFG_IDNAMEGETPAR = 'id';
+  
       const baseId = this.aliasName;
-      const target = this.config[T.KEY_CFG_TARGET] || 'header';
-      this.treeId = this.config[T.KEY_CFG_TREE_ID] || 'tree';
+      const target = this.config[T.KEY_CFG_TARGET] || this.DEFAULT_KEY_CFG_TARGET;
+      this.treeId = this.config[T.KEY_CFG_TREE_ID] || this.DEFAULT_KEY_CFG_TREEID;
       const treeId = this.treeId;
-      const parIdName = this.config[T.KEY_CFG_PARAM_ID_NAME] || 'id';
+      const parIdName = this.config[T.KEY_CFG_PARAM_ID_NAME] || this.DEFAULT_KEY_CFG_IDNAMEGETPAR;
 
       const idLeft = `${baseId}-left`;
       const idTop = `${baseId}-top`;

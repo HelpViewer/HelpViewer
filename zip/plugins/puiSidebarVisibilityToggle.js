@@ -15,9 +15,14 @@ class puiSidebarVisibilityToggle extends IPlugin {
   init() {
     const T = this.constructor;
     const TI = this;
-    TI.KEY_LS_SIDEBARVISIBLE = this.config[T.KEY_CFG_STOREKEY] || 'sidebarVisible';
-    const captionHide = this.config[T.KEY_CFG_HIDE] || '❌︎';
-    const captionShow = this.config[T.KEY_CFG_SHOW] || '☰';
+
+    this.DEFAULT_KEY_CFG_STOREKEY = 'sidebarVisible';
+    this.DEFAULT_KEY_CFG_HIDE = '❌︎';
+    this.DEFAULT_KEY_CFG_SHOW = '☰';
+
+    TI.KEY_LS_SIDEBARVISIBLE = this.config[T.KEY_CFG_STOREKEY] || this.DEFAULT_KEY_CFG_STOREKEY;
+    const captionHide = this.config[T.KEY_CFG_HIDE] || this.DEFAULT_KEY_CFG_HIDE;
+    const captionShow = this.config[T.KEY_CFG_SHOW] || this.DEFAULT_KEY_CFG_SHOW;
     TI.sidebarVisible = getUserConfigValue(TI.KEY_LS_SIDEBARVISIBLE) || 1;
     
     const _sidebarToggle = (evt) => {

@@ -17,9 +17,11 @@ class pConfigFile extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
 
+    this.DEFAULT_KEY_CFG_STORAGE = 'STO_DATA';
+    this.DEFAULT_KEY_CFG_FILENAME = '_config.txt';
     const T = this.constructor;
-    this.cfgStorage = this.config[T.KEY_CFG_STORAGE] || 'STO_DATA';
-    this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || '_config.txt';
+    this.cfgStorage = this.config[T.KEY_CFG_STORAGE] || this.DEFAULT_KEY_CFG_STORAGE;
+    this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
 
     this.CFG = undefined;
 

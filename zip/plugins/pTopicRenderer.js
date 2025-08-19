@@ -81,7 +81,7 @@ class pTopicRenderer extends IPlugin {
   static EVT_TOPREN_SHOW_CHAPTER_RES = ShowChapterResolutions.name;
   static EVT_TOPREN_CHAPTER_SHOWN = ChapterShown.name;
 
-  static KEY_CFG_ID_CONTENT = 'IDCONTENT';
+  static KEY_CFG_IDCONTENT = 'IDCONTENT';
   static KEY_CFG_PHASELIST = 'PHASELIST';
 
   static MARKER_ADDDATA = MARKER_MARKWORD;
@@ -93,7 +93,7 @@ class pTopicRenderer extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
 
-    this.DEFAULT_KEY_CFG_ID_CONTENT = 'content';
+    this.DEFAULT_KEY_CFG_IDCONTENT = 'content';
     this.DEFAULT_KEY_CFG_PHASELIST = 'triage;load;%%;unconnected;connected;decorators';
     this.eventIdStrict = true;
   }
@@ -102,7 +102,7 @@ class pTopicRenderer extends IPlugin {
     const T = this.constructor;
     const TI = this;
     
-    this.cfgIdContent = this.config[T.KEY_CFG_ID_CONTENT] || TI.DEFAULT_KEY_CFG_ID_CONTENT;
+    this.cfgIdContent = this.config[T.KEY_CFG_IDCONTENT] || TI.DEFAULT_KEY_CFG_IDCONTENT;
     this.cfgPhaseList = this.config[T.KEY_CFG_PHASELIST] || TI.DEFAULT_KEY_CFG_PHASELIST;
 
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
