@@ -20,7 +20,8 @@ class puiButtonBmarks extends puiButtonTabTree {
     TI.cfgTreeId = 'bmark';
     hideButton(TI.button.id, false);
 
-    TI.eventDefinitions.push([T.EVT_BMARKS_SHOW, IEvent, null]);
+    const onET_ShowBookmarks = (data) => showSidebarTab(this.tab.id);
+    TI.eventDefinitions.push([T.EVT_BMARKS_SHOW, IEvent, onET_ShowBookmarks]);
   }
 
   deInit() {
@@ -52,9 +53,6 @@ class puiButtonBmarks extends puiButtonTabTree {
       showSidebarTab();
   }
 
-  onET_ShowBookmarks(data) {
-    showSidebarTab(this.tab.id);
-  };
 }
 
 Plugins.catalogize(puiButtonBmarks);
