@@ -193,7 +193,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   
         const grpExport = () => {
           const arr = this.cfgGroupsList.map(grp => {
-            return `| ${_T(this.config[grp])} ${_T(grp)} | ${_T(grp + '-D')} |`;
+            return `| ${this.config[grp]} ${_T(grp)} | ${_T(grp + '-D')} |`;
           });
           return arr.join('\n');
         }
