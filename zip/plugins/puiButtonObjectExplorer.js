@@ -50,14 +50,16 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         browseMember(proto, name, (desc) => {
           if (typeof desc.value !== 'function') return;
           var nameBase = name.replace(prefixEventHandler, '');
-          plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.HANDLER, [], undefined, nameBase));
+          if (nameBase.startsWith('_'))
+            nameBase = nameBase.substring(1);
+          plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.HANDLER, [], desc, nameBase));
         });
       });
 
       plg.eventDefinitions.forEach(evt => {
         plug.subItems.push(new ObjectExplorerTreeItem(evt[0], 
           evt[2] ? ObjectExplorerObjectDescriptor.EVENT : ObjectExplorerObjectDescriptor.EVENT_NOHANDLER, 
-          [], undefined, undefined, 
+          [], evt, undefined, 
           [evt[2] ? ObjectExplorerTreeItem.F_EVENT_WHANDLER : ObjectExplorerTreeItem.F_EVENT_NOHANDLER]
         ));
       });
@@ -69,7 +71,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         browseMember(proto, name, (desc) => {
           var nameBase = getNameBase(desc);
           if (!cfgKeysProps.includes(nameBase)) {
-            plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.CONFIG, [], undefined, nameBase));
+            plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.CONFIG, [], desc, nameBase));
             cfgKeysProps.push(nameBase);
           }
         });
@@ -80,7 +82,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       var cfgKeysCfgState = [...Object.keys(plg.config).filter(x => !cfgKeysProps.includes(x))].filter(x => x);
       cfgKeysCfgState.forEach(name => {
         if (!cfgKeysProps.includes(name)) {
-          plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.CONFIG_FROMFILE, [], undefined, name, [ObjectExplorerTreeItem.F_CONFIG_FROMFILE]));
+          plug.subItems.push(new ObjectExplorerTreeItem(name, ObjectExplorerObjectDescriptor.CONFIG_FROMFILE, [], plg.config, name, [ObjectExplorerTreeItem.F_CONFIG_FROMFILE]));
           cfgKeysProps.push(name);
         }
       });
@@ -90,7 +92,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       proto.filter(name => prefixCFG.test(name)).forEach(d => {
         var nameBase = d.replace(prefixCFG, '').replace('_', '');
         if (!cfgKeysProps.includes(nameBase)) {
-          plug.subItems.push(new ObjectExplorerTreeItem(nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], undefined, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
+          plug.subItems.push(new ObjectExplorerTreeItem(nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], plg, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
           cfgKeysProps.push(nameBase);
         }
       });
@@ -104,7 +106,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         var el = plg[d];
         const typeO = pairing.get(el.tagName.toLowerCase()) || pairing.get('div');
         const nameBase = el.id;
-        plug.subItems.push(new ObjectExplorerTreeItem(el.id, typeO, [], undefined, nameBase, [el.tagName.toLowerCase()]));
+        plug.subItems.push(new ObjectExplorerTreeItem(el.id, typeO, [], el, nameBase, [el.tagName.toLowerCase()]));
       });
     });
 
@@ -147,24 +149,66 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   }
 
   onETShowChapterResolutions(r) {
-    r.result = r.result.then(() => {
-      const objClassExport = () => {
-        const arr = Object.keys(ObjectExplorerObjectDescriptor).map(grp => {
-          const gr = ObjectExplorerObjectDescriptor[grp];
-          return `| ${gr.image} | ${_T(gr.t)} |`;
-        });
-        return arr.join('\n');
-      }
-      r.content = r.content.replace('<!-- %OBJCLASS% -->', objClassExport());
-
-      const grpExport = () => {
-        const arr = this.cfgGroupsList.map(grp => {
-          return `| ${_T(this.config[grp])} ${_T(grp)} | ${_T(grp + '-D')} |`;
-        });
-        return arr.join('\n');
-      }
-      r.content = r.content.replace('<!-- %GROUPS% -->', grpExport());
+    const basePath = `i/${getActiveLanguage()}/`;
+    const objTypesMap = new Map();
+    const objTypes = Object.keys(ObjectExplorerObjectDescriptor).map(grp => {
+      const gr = ObjectExplorerObjectDescriptor[grp];
+      objTypesMap.set(gr.abbr, gr);
+      return gr.abbr;
     });
+
+    const uriParts = (r.uri?.split(':') || []);
+    uriParts.push('');
+    uriParts.push('');
+    const objName = uriParts[1].replace(/\.[^/.]+$/, "");
+    const typeInRequest = uriParts[0];
+
+    if (!r.uri.startsWith('i/') && !objTypes.includes(typeInRequest))
+      return;
+
+    if (r.uri.toLowerCase().endsWith('readme.md')) {
+      r.result = r.result.then(() => {
+        const objClassExport = () => {
+          const arr = Object.keys(ObjectExplorerObjectDescriptor).map(grp => {
+            const gr = ObjectExplorerObjectDescriptor[grp];
+            return `| ${gr.image} | ${_T(gr.t)} |`;
+          });
+          return arr.join('\n');
+        }
+        r.content = r.content.replace('<!-- %OBJCLASS% -->', objClassExport());
+  
+        const grpExport = () => {
+          const arr = this.cfgGroupsList.map(grp => {
+            return `| ${_T(this.config[grp])} ${_T(grp)} | ${_T(grp + '-D')} |`;
+          });
+          return arr.join('\n');
+        }
+        r.content = r.content.replace('<!-- %GROUPS% -->', grpExport());
+      });
+      return;
+    }
+    
+    const altPath = `${basePath}${typeInRequest}_${objName.replace(new RegExp(':', 'g'), '_')}.md`;
+    log(`E ObjectExplorer: requested path: ${altPath}`);
+    r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
+    var desc = '';
+
+    switch (typeInRequest) {
+      case ObjectExplorerObjectDescriptor.GROUP.abbr:
+        desc = _T(`${objName}-D`);
+        r.result = r.result.then(() => r.content = r.content || desc);
+        break;
+    
+      default:
+        break;
+    }
+    
+    const typeLink = objTypesMap.get(typeInRequest);
+    if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
+      r.heading = `${this.config[objName]} ${_T(objName)}`;
+    else
+      r.heading = `${typeLink.image} ${_T(typeInRequest)}`;
+    r.result = r.result.then(() => r.content = r.content.replace('<!-- %AUTODESC% -->', desc));
   }
 
   onET_ChapterShown(evt) {
@@ -200,6 +244,7 @@ class ObjectExplorerObjectDescriptor {
   static DOCUMENT = new ObjectExplorerObjectDescriptor('', '📄');
 
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
+  static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
 }
 
 class ObjectExplorerTreeItem {
