@@ -151,7 +151,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
   onETShowChapterResolutions(r) {
     this.objTypesMap = this.objTypesMap || new Map();
-    this.objTypes = this.objTypes || Object.keys(ObjectExplorerObjectDescriptor).map(grp => {
+    this.objTypes = this.objTypes || Object.keys(ObjectExplorerObjectDescriptor).filter(x => !x.startsWith('_')).map(grp => {
       const gr = ObjectExplorerObjectDescriptor[grp];
       this.objTypesMap.set(gr.abbr, gr);
       return gr.abbr;
@@ -178,7 +178,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     if (r.uri.toLowerCase().endsWith('readme.md')) {
       r.result = r.result.then(() => {
         const objClassExport = () => {
-          const arr = Object.keys(ObjectExplorerObjectDescriptor).map(grp => {
+          const arr = Object.keys(ObjectExplorerObjectDescriptor).filter(x => !x.startsWith('_')).map(grp => {
             const gr = ObjectExplorerObjectDescriptor[grp];
             return `| ${gr.image} | ${_T(gr.t)} |`;
           });
