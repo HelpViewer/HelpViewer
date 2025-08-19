@@ -146,6 +146,27 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     this._buttonActionClickOpenCloseAll(evt?.event?.isTrusted);
   }
 
+  onETShowChapterResolutions(r) {
+    r.result = r.result.then(() => {
+      const objClassExport = () => {
+        const arr = Object.keys(ObjectExplorerObjectDescriptor).map(grp => {
+          const gr = ObjectExplorerObjectDescriptor[grp];
+          return `| ${gr.image} | ${_T(gr.t)} |`;
+        });
+        return arr.join('\n');
+      }
+      r.content = r.content.replace('<!-- %OBJCLASS% -->', objClassExport());
+
+      const grpExport = () => {
+        const arr = this.cfgGroupsList.map(grp => {
+          return `| ${_T(this.config[grp])} ${_T(grp)} | ${_T(grp + '-D')} |`;
+        });
+        return arr.join('\n');
+      }
+      r.content = r.content.replace('<!-- %GROUPS% -->', grpExport());
+    });
+  }
+
   onET_ChapterShown(evt) {
   }
 
@@ -157,7 +178,7 @@ class ObjectExplorerObjectDescriptor {
   constructor(abbr, image, printTree = true) {
     this.abbr = abbr;
     this.image = image;
-    this.t = _T('oeod_' + this.abbr);
+    this.t = 'oeod_' + this.abbr;
     this.printTree = printTree;
   }
 
@@ -165,12 +186,12 @@ class ObjectExplorerObjectDescriptor {
   static PLUGININSTANCE = new ObjectExplorerObjectDescriptor('inst', '🔹');
 
   static EVENT = new ObjectExplorerObjectDescriptor('evt', '⚡');
-  static EVENT_NOHANDLER = new ObjectExplorerObjectDescriptor('evt', '📄⚡');
+  static EVENT_NOHANDLER = new ObjectExplorerObjectDescriptor('evtD', '📄⚡');
 
   static HANDLER = new ObjectExplorerObjectDescriptor('hdl', '👂');
 
   static CONFIG = new ObjectExplorerObjectDescriptor('cfg', '⚙️');
-  static CONFIG_FROMFILE = new ObjectExplorerObjectDescriptor('cfg', '📄⚙️');
+  static CONFIG_FROMFILE = new ObjectExplorerObjectDescriptor('cfgE', '📄⚙️');
 
   static UI_BUTTON = new ObjectExplorerObjectDescriptor('btn', '🔘');
   static UI_PAGE = new ObjectExplorerObjectDescriptor('page', '🎛️');
