@@ -150,14 +150,14 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   }
 
   onETShowChapterResolutions(r) {
-    const basePath = `i/${getActiveLanguage()}/`;
-    const objTypesMap = new Map();
-    const objTypes = Object.keys(ObjectExplorerObjectDescriptor).map(grp => {
+    this.objTypesMap = this.objTypesMap || new Map();
+    this.objTypes = this.objTypes || Object.keys(ObjectExplorerObjectDescriptor).map(grp => {
       const gr = ObjectExplorerObjectDescriptor[grp];
-      objTypesMap.set(gr.abbr, gr);
+      this.objTypesMap.set(gr.abbr, gr);
       return gr.abbr;
     });
 
+    const objTypes = this.objTypes;
     log('E oriuri: ', r.uri);
     const uriParts = (r.uri?.replace('.md', '').split(':') || []);
     log('E rr', uriParts);
@@ -166,6 +166,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     if (!r.uri.startsWith('i/') && !objTypes.includes(typeInRequest))
       return;
+
+    const basePath = `i/${getActiveLanguage()}/`;
 
     if (r.uri.toLowerCase().endsWith('readme.md')) {
       r.result = r.result.then(() => {
@@ -204,7 +206,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
     }
     
-    const typeLink = objTypesMap.get(typeInRequest);
+    const typeLink = this.objTypesMap.get(typeInRequest);
     if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
       r.heading = `${this.config[objName]} ${_T(objName)}`;
     else
