@@ -244,6 +244,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
     const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
     var desc = '';
+    r.found = found.subItems.length > 0;
 
     switch (typeInRequest) {
       case ObjectExplorerObjectDescriptor.GROUP.abbr:
@@ -314,7 +315,15 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       r.heading = `${this.config[objName]} ${_T(objName)}`;
     else
       r.heading = `${typeLink.image} ${objNameLocal}`;
+
     r.result = r.result.then(() => r.content = r.content.replace('<!-- %AUTODESC% -->', desc));
+    r.result = r.result.then(() => {
+      if (!r.found) {
+        r.content = '&nbsp;';
+        r.found = true;
+      }
+    });
+      
   }
 }
 
