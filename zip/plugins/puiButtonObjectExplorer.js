@@ -232,8 +232,10 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       i++;
     } while (objNameLocal.length == 0);
     const altPath = `${basePath}${generalType}_${objNamePreprocessed}.md`;
-    log(`ObjectExplorer: requested path: ${altPath}`);
+    log(`E ObjectExplorer: requested path: ${altPath}`);
     log('E y ' + objNameLocal);
+    log('E ysp ' + objNameLocalSplits);
+    
     r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
     var desc = '';
 
@@ -266,14 +268,18 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         si => x.includes(si.descriptor.abbr)
       )) );
     log('E ooo1', found);
-    const orderedByTypeA = [...orderedByType].filter(([k, v]) => v.length > 0);
+    var orderedByTypeA = [...orderedByType].filter(([k, v]) => v.length > 0);
+
+    orderedByTypeA = orderedByTypeA.map(([k, v]) => {
+      const items = v.map((r) => `- ${r.descriptor.image} ${r.title}`);
+      return `## ${_T(k)}\n${items.join('\n')}`;
+      }
+    );
     log('E ooo', orderedByTypeA);
 
-    orderedByTypeA.forEach(([k, v]) => r.result = r.result.then(() => {
-      const items = v.map((r) => `- ${r.descriptor.image} ${r.title}`);
-      r.content += `## ${_T(k)}\n${items.join('\n')}`;
-      })
-    );
+    r.result = r.result.then(() => {
+      r.content += `\n${orderedByTypeA.join('\n')}`;
+    });
 
     const typeLink = this.objTypesMap.get(typeInRequest);
     if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
@@ -323,7 +329,7 @@ class ObjectExplorerObjectDescriptor {
     ['page', 'uiobject'],
     ['tree', 'uiobject'],
     ['hdl', 'hdl'],
-    ['inst', 'inst'],
+    ['inst', 'oeod_inst'],
   ]);
 
   static _BIGCLASS_R = reverseMap(this._BIGCLASS);
