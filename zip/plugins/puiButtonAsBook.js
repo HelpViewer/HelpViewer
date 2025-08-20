@@ -120,7 +120,7 @@ class puiButtonAsBook extends puiButtonTab {
       reply = showChapter(undefined, undefined, homeData, undefined, textOfFiles);
       sendEvent('ShowBookmarks');
       return reply;
-    });
+    }).then(() => sendEvent(evtHideIfTooWide));
   }
 
   onET_ChapterShown(evt) {
