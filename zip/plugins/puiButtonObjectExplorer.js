@@ -153,7 +153,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   }
 
   _browseTreeForItem(pathSplits, objectData, base = '') {
-    if (!pathSplits || pathSplits.length == 0) 
+    if (!pathSplits || pathSplits.length == 0 || !objectData) 
       return;
 
     const newSplits = pathSplits.slice(1);
