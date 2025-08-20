@@ -91,8 +91,13 @@ class puiSidebar extends IPlugin {
     const h_EVT_SIDE_PAGE_SHOW = (reply) => {
       if (!reply.pageId)
       {
-        reply.pageId = T._getVisibleButtonsList(toolbar)[0].id;
-        T._getVisibleButtonsList(toolbar)[0]?.click();
+        const found = T._getVisibleButtonsList(toolbar)[0];
+        
+        if (!found)
+          return;
+
+        reply.pageId = found.id;
+        found.click();
       }
 
       reply.result = T.showSidebarTab(`sp-${reply.pageId}`);
