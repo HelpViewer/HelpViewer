@@ -106,7 +106,6 @@ class pAppmainNext extends IPlugin {
   }
 
   init() {
-    super.init();
     const TI = this;
 
     //HASHDEFINED
@@ -114,6 +113,7 @@ class pAppmainNext extends IPlugin {
       scrollToAnchor(d.result);
     };
     TI.eventDefinitions.push([evtHashDefined, IEvent, h_EVT_HASHDEFINED]);
+    super.init();
   }
 
   deInit() {
