@@ -6,6 +6,8 @@ var dataPath = '';
 
 FILENAME_DEFAULT_HELPFILE = `hlp/Help-__.zip`;
 
+var PRJNAME_VAL = null;
+
 EventBus.sub(EVT_PluginsLoadingFinished, async (d) => {
   if (DEBUG_MODE) {
     log('W Application is in DEBUG_MODE, debug tools will be attached. Turn DEBUG_MODE to off in hvdata/appmain.js file for work in production.');
@@ -14,18 +16,6 @@ EventBus.sub(EVT_PluginsLoadingFinished, async (d) => {
     await activatePlugin(objExplorerName, '-load');
     loadLocalization(getActiveLanguage());
   }
-});
-
-EventBus.sub(EventNames.IndexFileLoaded, (d) => {
-  if (pagePath.startsWith('@'))
-    showChapterByData(idxTreeItem, pagePath);
-});
-
-EventBus.sub(EventNames.StorageAdded, async (d) => {
-  if (d.storageName != STO_HELP)
-    return;
-
-  notifyUserDataFileLoaded(d.fileName);
 });
 
 function showChapterByData(idxTreeItem, pagePath) {
@@ -59,104 +49,6 @@ function showChapterByData(idxTreeItem, pagePath) {
   }, undefined, 10000);
 }
 
-EventBus.sub(EventNames.ClickedEventTree, async (d) => {
-  if (d.treeId != 'tree' && d.treeId != 'bmark') 
-    return;
-
-  idxTreeItem = d.elementIdVal;
-  sendEvent(evtHideIfTooWide);
-});
-
-EventBus.sub(evtHideIfTooWide, async (d) => {
-  const sidebar = $('sidebar');
-  if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
-    toggleSidebar();
-});
-
-EventBus.sub(EventNames.UserDataFileLoaded, async (d) => {
-  configFileReload(FILE_CONFIG);
-  showChapterByData(idxTreeItem, pagePath);
-  showSidebarTab();
-});
-
-EventBus.sub(EventNames.ClickedEventNotForwarded, async (d) => {
-  if (!d.target)
-    d.stop = true;
-
-  const a = d.target.closest('a');
-  if (!d.target.closest('a, input, summary, button'))
-    d.stop = true;
-
-  if (d.target.closest('label'))
-    return;
-
-  if (d.stop) {
-    d.event.preventDefault();
-    return;
-  }
-
-  if (a)
-    processAClick(a, d);
-});
-
-var PRJNAME_VAL = null;
-
-EventBus.sub(EventNames.ConfigFileReloadFinished, async (d) => {
-  if (d.id != 'FILE_CONFIG')
-    return;
-  PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
-
-
-  // Load favicon
-  const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);
-  
-  if (customFavicon)
-    changeFavicon(customFavicon);
-    
-  // override book images in tree structure
-  var [bookOpen, bookClosed] = await Promise.all([
-    getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP),
-    getDataOfPathInZIPImage(FILENAME_BOOKC, STO_HELP),
-  ]);
-
-  var doOverride = null;
-  
-  if (bookOpen && bookClosed) {
-    bookOpen = `url("${bookOpen}")`;
-    bookClosed = `url("${bookClosed}")`;
-    doOverride = 1;
-  } else {
-    bookOpen = configGetValue(CFG_KEY_OverrideBookIconOpened);
-    bookClosed = configGetValue(CFG_KEY_OverrideBookIconClosed);
-    
-    if (bookOpen && bookClosed) {
-      const icon = document.createElement('span');
-      icon.innerHTML = bookOpen;
-      bookOpen = icon.innerHTML;
-      icon.innerHTML = bookClosed;
-      bookClosed = icon.innerHTML;
-      bookOpen = `"${bookOpen}"`;
-      bookClosed = `"${bookClosed}"`;
-      doOverride = 1;
-    }
-  }
-  
-  if (doOverride) {
-    const cssName = 'overridePlusMinus';
-    $(cssName)?.remove();
-    appendCSS(cssName,
-`ul.tree details > summary::before {
-content: ${bookClosed};
-}
-
-ul.tree details[open] > summary::before {
-transform: rotate(0deg);
-content: ${bookOpen};
-}` 
-    );
-  }
-});
-
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
 const KEY_LS_PRINTICONS = "printIcons";
@@ -176,11 +68,6 @@ function LoadURLParameters() {
 }
 
 const evtHashDefined = 'HASHDEFINED';
-addEventDefinition(evtHashDefined, new EventDefinition(IEvent, evtHashDefined));
-
-EventBus.sub(evtHashDefined, async (d) => {
-  scrollToAnchor(d.result);
-});
 
 LoadURLParameters();
 const treeItemHandlerGet = () => idxTreeItem;
@@ -201,7 +88,7 @@ var languages = getLanguagesList();
 
 loadLocalization(activeLanguage).then(() => {
   if (!dataPath)
-    log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);  
+    log(`Data file has not been specified. Use ?${PAR_NAME_DOC}= and its path in URI. Used default file name.`);
 });
 
 /*S: Topic renderer logic integration */
@@ -213,52 +100,195 @@ function convertRelativePathToViewerURI(val, id = undefined) {
 }
 /*E: Topic renderer logic integration */
 
-EventBus.sub('BeforePrint', removeIconsForPrint);
-
-EventBus.sub(EventNames.LOC_LOADED, (d) => {
-  setPanelsEmpty();
-
-  activeLanguage = getActiveLanguage();
-  LoadURLParameters();
-
-  if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
-    storageAdd(dataPath, STO_HELP);
-  else {
-    storageAddedNotification(dataPath, STO_HELP);
+class pAppmainNext extends IPlugin {
+  constructor(aliasName, data) {
+    super(aliasName, data);
   }
-});
 
-EventBus.sub(EventNames.NavigationMove, (d) => {
-  loadPageByTreeId(d.newId, d.treeId);
-});
+  init() {
+    super.init();
+    const TI = this;
 
-EventBus.sub(EventNames.ChapterShown, (d) => {
-  revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
+    //HASHDEFINED
+    const h_EVT_HASHDEFINED = (d) => {
+      scrollToAnchor(d.result);
+    };
+    TI.eventDefinitions.push([evtHashDefined, IEvent, h_EVT_HASHDEFINED]);
+  }
 
-  if (d.addressOrig.toLowerCase() != '~changelog.md') {
-    if (d.sourceObject) {
-      if (resolveFileMedium(d.sourceObject.getAttribute('href')) == UserDataFileLoadedFileType.NETWORK) {
-        setToHrefByValues((x) => {
-          x.kvlist.set(PAR_NAME_ID, idxTreeItem);
-        });
+  deInit() {
+    super.deInit();
+  }
+
+  onETIndexFileLoaded(d) {
+    if (pagePath.startsWith('@'))
+      showChapterByData(idxTreeItem, pagePath);
+  }
+
+  onETStorageAdded(d) {
+    if (d.storageName != STO_HELP)
+      return;
+  
+    notifyUserDataFileLoaded(d.fileName);
+  }
+
+  onETClickedEventTree(d) {
+    if (d.treeId != 'tree' && d.treeId != 'bmark') 
+      return;
+  
+    idxTreeItem = d.elementIdVal;
+    sendEvent(evtHideIfTooWide);
+  }
+
+  //evtHideIfTooWide
+  onETHIDEIFTOOWIDE(d) {
+    const sidebar = $('sidebar');
+    if (sidebar.classList.contains(C_TOOWIDE) && !sidebar.classList.contains(C_HIDDENC))
+      toggleSidebar();
+  }
+
+  onETUserDataFileLoaded(d) {
+    configFileReload(FILE_CONFIG);
+    showChapterByData(idxTreeItem, pagePath);
+    showSidebarTab();
+  }
+
+  onETClickedEventNotForwarded(d) {
+    if (!d.target)
+      d.stop = true;
+  
+    const a = d.target.closest('a');
+    if (!d.target.closest('a, input, summary, button'))
+      d.stop = true;
+  
+    if (d.target.closest('label'))
+      return;
+  
+    if (d.stop) {
+      d.event.preventDefault();
+      return;
+    }
+  
+    if (a)
+      processAClick(a, d);
+  }
+
+  onETConfigFileReloadFinished(d) {
+    (async () => {
+      if (d.id != 'FILE_CONFIG')
+        return;
+      
+      PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+    
+      // Load favicon
+      const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);
+      
+      if (customFavicon)
+        changeFavicon(customFavicon);
+        
+      // override book images in tree structure
+      var [bookOpen, bookClosed] = await Promise.all([
+        getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP),
+        getDataOfPathInZIPImage(FILENAME_BOOKC, STO_HELP),
+      ]);
+    
+      var doOverride = null;
+      
+      if (bookOpen && bookClosed) {
+        bookOpen = `url("${bookOpen}")`;
+        bookClosed = `url("${bookClosed}")`;
+        doOverride = 1;
       } else {
-        setToHref(d.sourceObject.href);
+        bookOpen = configGetValue(CFG_KEY_OverrideBookIconOpened);
+        bookClosed = configGetValue(CFG_KEY_OverrideBookIconClosed);
+        
+        if (bookOpen && bookClosed) {
+          const icon = document.createElement('span');
+          icon.innerHTML = bookOpen;
+          bookOpen = icon.innerHTML;
+          icon.innerHTML = bookClosed;
+          bookClosed = icon.innerHTML;
+          bookOpen = `"${bookOpen}"`;
+          bookClosed = `"${bookClosed}"`;
+          doOverride = 1;
+        }
       }
-    } else {
-      setToHrefByValues((x) => {
-        x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
-        x.kvlist.set(PAR_NAME_ID, idxTreeItem);
-      });
+      
+      if (doOverride) {
+        const cssName = 'overridePlusMinus';
+        $(cssName)?.remove();
+        appendCSS(cssName,
+    `ul.tree details > summary::before {
+    content: ${bookClosed};
+    }
+    
+    ul.tree details[open] > summary::before {
+    transform: rotate(0deg);
+    content: ${bookOpen};
+    }` 
+        );
+      }
+      
+    })();
+
+  }
+
+  onETBeforePrint(d) {
+    removeIconsForPrint();
+  }
+
+  //EventNames.LOC_LOADED
+  onETLOC_LOADED(d) {
+    setPanelsEmpty();
+
+    activeLanguage = getActiveLanguage();
+    LoadURLParameters();
+  
+    if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
+      storageAdd(dataPath, STO_HELP);
+    else {
+      storageAddedNotification(dataPath, STO_HELP);
     }
   }
 
-  requestAnimationFrame(() => {
-    const hash = location.hash;
+  onETNavigationMove(d) {
+    loadPageByTreeId(d.newId, d.treeId);
+  }
 
-    if (hash)
-      sendEvent(evtHashDefined, (x) => x.result = hash.substring(1));
-  });
+  onETChapterShown(d) {
+    revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
 
-  contentPane.focus();
-  refreshTitlesForLangStrings();
-});
+    if (d.addressOrig.toLowerCase() != '~changelog.md') {
+      if (d.sourceObject) {
+        if (resolveFileMedium(d.sourceObject.getAttribute('href')) == UserDataFileLoadedFileType.NETWORK) {
+          setToHrefByValues((x) => {
+            x.kvlist.set(PAR_NAME_ID, idxTreeItem);
+          });
+        } else {
+          setToHref(d.sourceObject.href);
+        }
+      } else {
+        setToHrefByValues((x) => {
+          x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
+          x.kvlist.set(PAR_NAME_ID, idxTreeItem);
+        });
+      }
+    }
+  
+    requestAnimationFrame(() => {
+      const hash = location.hash;
+  
+      if (hash)
+        sendEvent(evtHashDefined, (x) => x.result = hash.substring(1));
+    });
+  
+    contentPane.focus();
+    refreshTitlesForLangStrings();
+  }
+
+}
+
+Plugins.catalogize(pAppmainNext);
+const plgName = 'pAppmainNext';
+const plgAlias = '';
+activatePlugin(plgName, plgAlias);
