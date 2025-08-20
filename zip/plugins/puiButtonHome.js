@@ -19,8 +19,7 @@ class puiButtonHome extends puiButton {
     this.cfgHomePage = this.config[T.KEY_CFG_HOME] || TI.DEFAULT_KEY_CFG_HOME;
     hideButton(TI.button.id, false);
 
-    const onET_GetHomePageData = (evt) => evt.result = this.cfgHomePage;
-    TI.eventDefinitions.push([T.EVT_HOME_GETDATA, IEvent, onET_GetHomePageData]);
+    TI.eventDefinitions.push([T.EVT_HOME_GETDATA, IEvent, null]);
   }
 
   deInit() {
@@ -36,6 +35,10 @@ class puiButtonHome extends puiButton {
 
   onET_UserDataFileLoaded(evt) {
     hideButton(this.button.id, true);
+  }
+
+  onET_GetHomePageData(evt) {
+    evt.result = this.cfgHomePage;
   }
 }
 
