@@ -8,16 +8,6 @@ FILENAME_DEFAULT_HELPFILE = `hlp/Help-__.zip`;
 
 var PRJNAME_VAL = null;
 
-EventBus.sub(EVT_PluginsLoadingFinished, async (d) => {
-  if (DEBUG_MODE) {
-    log('W Application is in DEBUG_MODE, debug tools will be attached. Turn DEBUG_MODE to off in hvdata/appmain.js file for work in production.');
-    const objExplorerName = 'puiButtonObjectExplorer';
-    await loadPlugin(objExplorerName, loadPluginListBasePath(objExplorerName));
-    await activatePlugin(objExplorerName, '-load');
-    loadLocalization(getActiveLanguage());
-  }
-});
-
 function showChapterByData(idxTreeItem, pagePath) {
   contentPane.innerHTML = _T('MSG_PATH_NOT_FOUND_IN_ARCH');
   showChapter(null, undefined, pagePath, null);
@@ -113,11 +103,22 @@ class pAppmainNext extends IPlugin {
       scrollToAnchor(d.result);
     };
     TI.eventDefinitions.push([evtHashDefined, IEvent, h_EVT_HASHDEFINED]);
+
     super.init();
   }
 
   deInit() {
     super.deInit();
+  }
+
+  async onETPluginsLoadingFinished(d) {
+    if (DEBUG_MODE) {
+      log('W Application is in DEBUG_MODE, debug tools will be attached. Turn DEBUG_MODE to off in hvdata/appmain.js file for work in production.');
+      const objExplorerName = 'puiButtonObjectExplorer';
+      await loadPlugin(objExplorerName, loadPluginListBasePath(objExplorerName));
+      await activatePlugin(objExplorerName, '-load');
+      loadLocalization(getActiveLanguage());
+    }
   }
 
   onETIndexFileLoaded(d) {
@@ -291,4 +292,4 @@ class pAppmainNext extends IPlugin {
 Plugins.catalogize(pAppmainNext);
 const plgName = 'pAppmainNext';
 const plgAlias = '';
-activatePlugin(plgName, plgAlias);
+activatePlugin(plgName, plgAlias).then(() => sendEvent(EVT_PluginsLoadingFinished));
