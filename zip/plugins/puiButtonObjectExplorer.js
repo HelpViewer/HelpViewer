@@ -239,7 +239,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     const altPath = `${basePath}${generalType}_${objNamePreprocessed}.md`;
     log(`ObjectExplorer: requested path: ${altPath}`);
     
-    r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v));
+    this.C_AUTODESC = '<!-- %AUTODESC% -->';
+    r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v ? `## ${this._TOverview}\n${v}\n` : ''));
+    r.result = r.result.then(() => r.content += (!r.content.includes(this.C_AUTODESC)) ? `${this.C_AUTODESC}\n` : '');
     const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
     var desc = '';
     r.tokens.push(r.TOKEN_NONOTFOUNDMSG);
@@ -247,65 +249,65 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     switch (typeInRequest) {
       case ObjectExplorerObjectDescriptor.GROUP.abbr:
         desc = _T(`${objName}-D`);
-        r.result = r.result.then(() => r.content = r.content || desc);
         break;
 
-        case ObjectExplorerObjectDescriptor.UI_BUTTON.abbr:
-          desc = found.plus[1];
-          r.result = r.result.then(() => r.content = r.content || desc);
-          break;
-  
-        case ObjectExplorerObjectDescriptor.CONFIG.abbr:
-        case ObjectExplorerObjectDescriptor.CONFIG_FROMFILE.abbr:
-          const vals = this._getConfigKeyValues(found.title, found.interconnectedObject);
-          vals[0] = vals[0] ?? '';
-          vals[1] = vals[1] ?? '';
-          const valMd = vals[0] == vals[1] ? vals[0] : `**${vals[0]}**`;
-          desc = `**${_T('value')}:**\n\n${valMd}\n\n**${_T('default')}:**\n\n${vals[1]}\n\n`;
-          r.result = r.result.then(() => r.content = r.content || desc);
-          break;
+      case ObjectExplorerObjectDescriptor.UI_BUTTON.abbr:
+        desc = found.plus[1];
+        break;
+
+      case ObjectExplorerObjectDescriptor.CONFIG.abbr:
+      case ObjectExplorerObjectDescriptor.CONFIG_FROMFILE.abbr:
+        const vals = this._getConfigKeyValues(found.title, found.interconnectedObject);
+        vals[0] = vals[0] ?? '';
+        vals[1] = vals[1] ?? '';
+        const valMd = vals[0] == vals[1] ? vals[0] : `**${vals[0]}**`;
+        desc = `**${_T('value')}:**\n\n${valMd}\n\n**${_T('default')}:**\n\n${vals[1]}\n\n`;
+        break;
+
+      case ObjectExplorerObjectDescriptor.EVENT.abbr:
+      case ObjectExplorerObjectDescriptor.EVENT_NOHANDLER.abbr:
+      case ObjectExplorerObjectDescriptor.HANDLER.abbr:
+        break;
 
       default:
-        r.result = r.result.then(() => {
-          if (r.content)
-            r.content = `## ${this._TOverview}\n${r.content}`;
-        });
         break;
     }
 
-    var orderedByType = new Map();
-    ObjectExplorerObjectDescriptor._BIGCLASS_R.forEach(
-      (x, v) => orderedByType.set(v, found.subItems.filter(
-        si => x.includes(si.descriptor.abbr)
-      )) );
-    var orderedByTypeA = [...orderedByType].filter(([k, v]) => v.length > 0);
-
-    orderedByTypeA = orderedByTypeA.map(([k, v]) => {
-      if (k == ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT) {
-        const items = v.map((r) => {
-          const vals = this._getConfigKeyValues(r.title, r.interconnectedObject);
-          vals[0] = vals[0] ?? '';
-          vals[1] = vals[1] ?? '';
-          const equality = (vals[0] == vals[1]);
-          vals[0] = equality ? vals[0] : `**${vals[0]}**`;
-          const title = equality ? r.title : `**${r.title}**`;
-          return `| ${title} | ${vals[0]} | ${vals[1]} |`;
-        });
-        return `## ${ObjectExplorerObjectDescriptor.CONFIG.image} ${_T(k)}\n| ${_T('name')} | ${_T('value')} | ${_T('default')} |\n| --- | --- | --- |\n${items.join('\n')}`;
-      }
-
-      if (k == ObjectExplorerObjectDescriptor._BIGCLASS_HDL) {
-        const items = v.map((r) => `- ${r.descriptor.image} ${r.title} (${_T(r.title.startsWith('_') ? 'openToIdAll' : 'openToId')})`);
+    if (found) {
+      var orderedByType = new Map();
+      ObjectExplorerObjectDescriptor._BIGCLASS_R.forEach(
+        (x, v) => orderedByType.set(v, found.subItems.filter(
+          si => x.includes(si.descriptor.abbr)
+        )) );
+      var orderedByTypeA = [...orderedByType].filter(([k, v]) => v.length > 0);
+  
+      orderedByTypeA = orderedByTypeA.map(([k, v]) => {
+        if (k == ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT) {
+          const items = v.map((r) => {
+            const vals = this._getConfigKeyValues(r.title, r.interconnectedObject);
+            vals[0] = vals[0] ?? '';
+            vals[1] = vals[1] ?? '';
+            const equality = (vals[0] == vals[1]);
+            vals[0] = equality ? vals[0] : `**${vals[0]}**`;
+            const title = equality ? r.title : `**${r.title}**`;
+            return `| ${title} | ${vals[0]} | ${vals[1]} |`;
+          });
+          return `## ${ObjectExplorerObjectDescriptor.CONFIG.image} ${_T(k)}\n| ${_T('name')} | ${_T('value')} | ${_T('default')} |\n| --- | --- | --- |\n${items.join('\n')}`;
+        }
+  
+        if (k == ObjectExplorerObjectDescriptor._BIGCLASS_HDL) {
+          const items = v.map((r) => `- ${r.descriptor.image} ${r.title} (${_T(r.title.startsWith('_') ? 'openToIdAll' : 'openToId')})`);
+          return `## ${_T(k)}\n${items.join('\n')}`;
+        }
+        
+        const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} ${r.title}`);
         return `## ${_T(k)}\n${items.join('\n')}`;
-      }
-      
-      const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} ${r.title}`);
-      return `## ${_T(k)}\n${items.join('\n')}`;
-    });
-
-    r.result = r.result.then(() => {
-      r.content += `\n${orderedByTypeA.join('\n')}`;
-    });
+      });
+  
+      r.result = r.result.then(() => {
+        r.content += `\n${orderedByTypeA.join('\n')}`;
+      });
+    }
 
     const typeLink = this.objTypesMap.get(typeInRequest);
     if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
@@ -313,7 +315,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     else
       r.heading = `${typeLink.image} ${objNameLocal}`;
 
-    r.result = r.result.then(() => r.content = r.content.replace('<!-- %AUTODESC% -->', desc));
+    r.result = r.result.then(() => r.content = r.content.replace(this.C_AUTODESC, desc));
   }
 }
 
@@ -355,10 +357,10 @@ class ObjectExplorerObjectDescriptor {
     ['cfgE', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
     ['evt', 'event'],
     ['evtD', 'event'],
+    ['hdl', ObjectExplorerObjectDescriptor._BIGCLASS_HDL],
     ['btn', 'uiobject'],
     ['page', 'uiobject'],
     ['tree', 'uiobject'],
-    ['hdl', ObjectExplorerObjectDescriptor._BIGCLASS_HDL],
     ['inst', 'oeod_inst'],
   ]);
 
