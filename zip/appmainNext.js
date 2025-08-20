@@ -134,7 +134,7 @@ class pAppmainNext extends IPlugin {
   }
 
   onETClickedEventTree(d) {
-    if (d.treeId != 'tree' && d.treeId != 'bmark') 
+    if (d.treeId != 'tree' && d.treeId != 'bmark' && d.treeId != 'objectList') 
       return;
   
     idxTreeItem = d.elementIdVal;
