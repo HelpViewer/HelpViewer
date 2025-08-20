@@ -267,6 +267,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       case ObjectExplorerObjectDescriptor.EVENT.abbr:
       case ObjectExplorerObjectDescriptor.EVENT_NOHANDLER.abbr:
       case ObjectExplorerObjectDescriptor.HANDLER.abbr:
+        const reply = this._getNamesForEventClassHandler(found.interconnectedObject);
         break;
 
       default:
@@ -316,6 +317,26 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       r.heading = `${typeLink.image} ${objNameLocal}`;
 
     r.result = r.result.then(() => r.content = r.content.replace(this.C_AUTODESC, desc));
+  }
+
+  _getNamesForEventClassHandler(found) {
+    if (!found)
+      return undefined;
+    
+    var eventName = found?.[0];
+    var cls = found?.[1];
+    var handlerName = found?.value?.name;
+    
+    if (handlerName && !eventName) {
+      eventName = handlerName.replace('onET', '');
+      if (eventName.startsWith('_'))
+        eventName = eventName.substring(1);
+    }
+
+    if (!cls)
+      cls = getEventInput(eventName)?.constructor;
+
+    return [eventName, cls, handlerName];
   }
 }
 
