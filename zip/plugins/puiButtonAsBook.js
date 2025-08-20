@@ -57,7 +57,12 @@ class puiButtonAsBook extends puiButtonTab {
       files.push(homeData);
   
       tocData.then((x) => {
-        rowsToArray(x).forEach(line => {
+        const result = rowsToArray(x);
+
+        if (result)
+          files.push(...result);
+
+        files.forEach(line => {
           const file = line.slice(line.lastIndexOf("|") + 1);
           if (file && resolveFileMedium(file) != UserDataFileLoadedFileType.NETWORK && !file.startsWith('='))
             files.push(file);
@@ -86,13 +91,16 @@ class puiButtonAsBook extends puiButtonTab {
             const metainfo = `\n| ${_T('helpfile')} | ${_T('version')} |\n|---|---|\n| ${configGetValue(CFG_KEY__PRJNAME)} | ${configGetValue(CFG_KEY__VERSION)} |\n| ${configGetValue(CFG_KEY__PRJNAME, '', FILE_CONFIG_DEFAULT)} | ${configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT)} |\n| ${_T('source')} | ${dataPath} |\n`;
             textOfFiles += metainfo;
             textOfFiles += PAGE_BREAK;
-            textOfFiles += `\n# ${_T('downP-TopicTree')}\n`;
             //textOfFiles += metainfo;
             //textOfFiles += `\n<b>${_T('helpfile')}: ${configGetValue(CFG_KEY__PRJNAME)} <br>${_T('version')}: ${configGetValue(CFG_KEY__VERSION)}</b>`;
-            const data = $('tree')?.outerHTML;
+            const tree = $('tree');
+            const data = tree?.outerHTML;
+            log('E data :', data);
 
-            if (data && data.length > 0)
+            if (data && data.length > 0 && tree?.childNodes.length > 0) {
+              textOfFiles += `\n# ${_T('downP-TopicTree')}\n`;
               textOfFiles += '\n' + data + '\n' + PAGE_BREAK + '\n';
+            }
           } else {
             textOfFiles += PAGE_BREAK + '\n';
           }
