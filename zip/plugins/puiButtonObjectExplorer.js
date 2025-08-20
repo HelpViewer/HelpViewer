@@ -293,6 +293,12 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         });
         return `## ${ObjectExplorerObjectDescriptor.CONFIG.image} ${_T(k)}\n| ${_T('name')} | ${_T('value')} | ${_T('default')} |\n| --- | --- | --- |\n${items.join('\n')}`;
       }
+
+      if (k == ObjectExplorerObjectDescriptor._BIGCLASS_HDL) {
+        const items = v.map((r) => `- ${r.descriptor.image} ${r.title} (${_T(r.title.startsWith('_') ? 'openToIdAll' : 'openToId')})`);
+        return `## ${_T(k)}\n${items.join('\n')}`;
+      }
+      
       const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} ${r.title}`);
       return `## ${_T(k)}\n${items.join('\n')}`;
     });
@@ -342,6 +348,7 @@ class ObjectExplorerObjectDescriptor {
   static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
 
   static _BIGCLASS_CFGOPT = 'cfgopt';
+  static _BIGCLASS_HDL = 'hdl';
 
   static _BIGCLASS = new Map([
     ['cfg', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
@@ -351,7 +358,7 @@ class ObjectExplorerObjectDescriptor {
     ['btn', 'uiobject'],
     ['page', 'uiobject'],
     ['tree', 'uiobject'],
-    ['hdl', 'hdl'],
+    ['hdl', ObjectExplorerObjectDescriptor._BIGCLASS_HDL],
     ['inst', 'oeod_inst'],
   ]);
 
