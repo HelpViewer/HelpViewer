@@ -13,12 +13,11 @@ class pTRBookmarkAnalysis extends pTRPhasePlugin {
   }
 
   init() {
-    super.init();
-
     const T = this.constructor;
     const TI = this;
 
     TI.eventDefinitions.push([T.EVT_BMARKA_BMARKS_CHANGED, BmarksChanged, null]); // outside event handlers
+    super.init();
   }
 
   deInit() {

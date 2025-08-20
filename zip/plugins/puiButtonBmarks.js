@@ -8,20 +8,18 @@ class puiButtonBmarks extends puiButtonTabTree {
     this.DEFAULT_KEY_CFG_CAPTION = '🔖';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
     
-    this.DEFAULT_KEY_CFG_TREEID = 'subsList';
+    this.DEFAULT_KEY_CFG_TREEID = 'bmark';
   }
 
   init() {
-    super.init();
-
     const T = this.constructor;
     const TI = this;
 
-    TI.cfgTreeId = 'bmark';
-    hideButton(TI.button.id, false);
-
     const onET_ShowBookmarks = (data) => showSidebarTab(this.tab.id);
     TI.eventDefinitions.push([T.EVT_BMARKS_SHOW, IEvent, onET_ShowBookmarks]);
+    super.init();
+
+    hideButton(TI.button.id, false);
   }
 
   deInit() {
