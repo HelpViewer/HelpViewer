@@ -1,5 +1,26 @@
 # Changelog
 
+## 20250820
+
+### User
+- 📚 Show all chapters as book (you can quickly browse whole document file if TOC exists)
+- 🌐 Language switching is less restricted than before (at least changing UI language is allowed even if you have opened helpfile of certain language)
+- 🕘 Version switching is less restricted than before (you can see the history)
+- ✏️ Edit in repository (you can go to edit mode of documentation live repository) (currently works only for GitHub public repositories)
+- 📖🔖 Double click on these tabs you can quickly open/close whole tree
+- lowered amount of situations requiring complete page reload
+- fix of bookmark position in URI to be correct with standard
+- Top panel will wrap its buttons part when browsing on mobile device and it is sutable
+
+### Technology
+- 🧩 plugin system introduced
+- ⚡ event system introduced
+- complete code base refactor to operate in plugins and events (partial)
+- **DEBUG_MODE** directive introduced
+- 🧩 For DEBUG_MODE there is automatically activated ObjectExplorer to browse current state of plugins, instances, events, handlers, configuration and other objects on application load (partial functionality, not documented)
+- External libraries - Prism, Marked, Mermaid are now loading only on demand now and are isolated better by plugin system
+- Application logging refactored and unified
+
 ## 20250711
 - **Anchor naming logic changed : Instead of slugs anchor naming is now done by level and counter pair**
 - Force page break CSS class in print mode and directive introduced
