@@ -6,3 +6,7 @@
 	path = zip/prism
 	url = https://github.com/HelpViewer/prism
 	branch = main
+[submodule "zip/i"]
+	path = zip/i
+	url = https://github.com/HelpViewer/helpInternalRef
+	branch = main
