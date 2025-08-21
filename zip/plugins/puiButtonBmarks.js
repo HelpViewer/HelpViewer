@@ -9,6 +9,7 @@ class puiButtonBmarks extends puiButtonTabTree {
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
     
     this.DEFAULT_KEY_CFG_TREEID = 'bmark';
+    this.eventIdStrict = false;
   }
 
   init() {
