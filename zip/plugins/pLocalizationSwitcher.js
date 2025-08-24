@@ -1,4 +1,4 @@
-class LocLoaded extends IEvent {
+class LocLoad extends IEvent {
   constructor() {
     super();
     this.name = '';
@@ -62,14 +62,14 @@ class pLocalizationSwitcher extends IPlugin {
     const h_EVT_LOC_LOAD = (data) => {
       this.loadLocalization(data.name, data.eventId);
     };
-    TI.eventDefinitions.push([T.EVT_LOC_LOAD, LocTranslate, h_EVT_LOC_LOAD]);
+    TI.eventDefinitions.push([T.EVT_LOC_LOAD, LocLoad, h_EVT_LOC_LOAD]);
 
     const h_EVT_LOC_REFRESH = (data) => {
       this.refreshTitlesForLangStrings(null, data.strings);
     };
     TI.eventDefinitions.push([T.EVT_LOC_REFRESH, LocRefresh, h_EVT_LOC_REFRESH]);
 
-    TI.eventDefinitions.push([T.EVT_LOC_LOADED, LocLoaded, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_LOC_LOADED, LocLoad, null]); // outside event handlers
 
     super.init();
   }
