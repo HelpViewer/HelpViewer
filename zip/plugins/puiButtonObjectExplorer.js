@@ -256,6 +256,12 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         desc = found.plus[1];
         break;
 
+      case ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr:
+        const sign = found.interconnectedObject.eventIdStrict ? '🔻' : '🟢';
+        const t = found.interconnectedObject.eventIdStrict ? _T('eventIdStrict1') : _T('eventIdStrict0');
+        desc = `- ${sign} ${t}`;
+        break;
+      
       case ObjectExplorerObjectDescriptor.CONFIG.abbr:
       case ObjectExplorerObjectDescriptor.CONFIG_FROMFILE.abbr:
         const vals = this._getConfigKeyValues(found.title, found.interconnectedObject);
