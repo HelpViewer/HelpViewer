@@ -21,7 +21,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     const T = this.constructor;
     const TI = this;
     this.cfgGroupsList = (this.config[T.KEY_CFG_GROUPSLIST] || TI.DEFAULT_KEY_CFG_GROUPSLIST)?.split(';');
-    this._TOverview = this._TOverview || _T('overview');
   }
 
   deInit() {
@@ -119,7 +118,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     });
 
     //:_/__/README.md
-    var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, this._TOverview);
+    var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('overview'));
 
     // prepare top level data
     this.treeData.push(firstPage, ...pluginGroups, ...pluginNodes);
@@ -237,14 +236,16 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       i++;
     } while (objNameLocal.length == 0);
     const altPath = `${basePath}${generalType}_${objNamePreprocessed}.md`;
-    log(`ObjectExplorer: requested path: ${altPath}`);
+    log(`W ObjectExplorer: requested path: ${altPath}`);
     
     this.C_AUTODESC = '<!-- %AUTODESC% -->';
-    r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v ? `## ${this._TOverview}\n${v}\n` : ''));
+    r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v ? `## ${_T('overview')}\n${v}\n` : ''));
     r.result = r.result.then(() => r.content += (!r.content.includes(this.C_AUTODESC)) ? `${this.C_AUTODESC}\n` : '');
     const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
     var desc = '';
     r.tokens.push(r.TOKEN_NONOTFOUNDMSG);
+
+    var delayedFunction = undefined;
 
     switch (typeInRequest) {
       case ObjectExplorerObjectDescriptor.GROUP.abbr:
@@ -270,15 +271,31 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         const reply = this._getNamesForEventClassHandler(found.interconnectedObject);
         if (reply && reply.length >= 3) {
           const [evtName, evtClassI, evtHandler] = reply;
-          desc += `## ${ObjectExplorerObjectDescriptor.EVENT.image} ${evtName} (${evtClassI.constructor.name})\n| ${_T('name')} | ${_T('default')} | ${_T('datatype')} |\n| --- | --- | --- |\n`;
+          delayedFunction = async () => {
+            var desc = '';
+            desc += `## ${ObjectExplorerObjectDescriptor.EVENT.image} ${evtName} (${evtClassI.constructor.name})\n| ${_T('name')} | ${_T('default')} | ${_T('datatype')} |\n| --- | --- | --- |\n`;
 
-          const props = Object.getOwnPropertyNames(evtClassI);
-          const propRows = props.map((name, i) => `| ${name} | ${typeof evtClassI[name] === "function" ? '[FUNCTION]' : evtClassI[name]} | ${typeof(evtClassI[name])} |`).join('\n');
-          //const propRows = props.map((name, i) => `| [${name}](#h-4-${i}) | ${typeof evtClassI[name] === "function" ? '[FUNCTION]' : evtClassI[name]} | ${typeof(evtClassI[name])} |`).join('\n');
-          //const propHeadings = props.map((name) => `#### ${name}`).join('\n');
-          desc += propRows;
-          // desc += `\n### ${_T('meaning')}\n`;
-          // desc += propHeadings;
+            const props = Object.getOwnPropertyNames(evtClassI);
+            const propRows = props.map((name, i) => `| [${name}](#h-4-${i}) | ${typeof evtClassI[name] === "function" ? '[FUNCTION]' : evtClassI[name]} | ${typeof(evtClassI[name])} |`).join('\n');
+            
+            desc += propRows;
+            desc += `\n### ${_T('meaning')}\n`;
+
+            const rv = await Promise.all(props.map(async (name) => 
+            {
+              const propNameToClass = `i/${getActiveLanguage()}/p_${evtName}_${name}.md`;
+              const propNameGeneral = `i/${getActiveLanguage()}/p__${name}.md`;
+              log(`W ObjectExplorer: requested path: ${propNameToClass}, backup: ${propNameGeneral}`);
+              return [
+                `#### ${name} (${typeof(evtClassI[name])})`, 
+                await r.getStorageData(propNameToClass), 
+                await r.getStorageData(propNameGeneral)];
+            }));
+
+            rv.forEach(([h, dC, dG]) => desc += `${h}\n${dC || dG}\n`);
+            
+            return desc;
+          }
         }
         break;
 
@@ -327,6 +344,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       r.heading = `${this.config[objName]} ${_T(objName)}`;
     else
       r.heading = `${typeLink.image} ${objNameLocal}`;
+
+    if (delayedFunction)
+      r.result = r.result.then(() => delayedFunction().then(x => r.content += x));
 
     r.result = r.result.then(() => r.content = r.content.replace(this.C_AUTODESC, desc));
   }
