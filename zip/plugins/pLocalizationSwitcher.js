@@ -1,3 +1,10 @@
+class LocLoaded extends IEvent {
+  constructor() {
+    super();
+    this.name = '';
+  }
+}
+
 class LocTranslate extends IEvent {
   constructor() {
     super();
@@ -62,7 +69,7 @@ class pLocalizationSwitcher extends IPlugin {
     };
     TI.eventDefinitions.push([T.EVT_LOC_REFRESH, LocRefresh, h_EVT_LOC_REFRESH]);
 
-    TI.eventDefinitions.push([T.EVT_LOC_LOADED, LocTranslate, null]); // outside event handlers
+    TI.eventDefinitions.push([T.EVT_LOC_LOADED, LocLoaded, null]); // outside event handlers
 
     super.init();
   }
