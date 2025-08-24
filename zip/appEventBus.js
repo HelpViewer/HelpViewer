@@ -156,7 +156,7 @@ class IEvent {
   constructor() {
     this.createdAt = new Date();
     this.eventId = newUID();
-    this.parentEventId = undefined;
+    this.parentEventId = '';
     this.eventName = this.constructor.eventName || this.constructor.name || 'UnnamedEvent';
     this.id = '';
     this.result = undefined;
