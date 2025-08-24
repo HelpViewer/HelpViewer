@@ -1,7 +1,7 @@
 class LocTranslate extends IEvent {
   constructor() {
     super();
-    this.name = undefined;
+    this.name = '';
     this.strings = {};
   }
 }
