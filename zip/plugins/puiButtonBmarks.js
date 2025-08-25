@@ -38,6 +38,7 @@ class puiButtonBmarks extends puiButtonTabTree {
   }
 
   onET_UserDataFileLoaded(evt) {
+    showSidebarTab();
     hideButton(this.button.id, false);
   }
 
