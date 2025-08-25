@@ -72,6 +72,7 @@ window.addEventListener('popstate', () => {
   if (typeof dataPath !== 'string' || dataPath.trim() === '')
     dataPath = FILENAME_DEFAULT_HELPFILE;
 
+  LoadURLParameters();
   showChapterByData(idxTreeItem, pagePath);
 });
 
@@ -270,10 +271,10 @@ class pAppmainNext extends IPlugin {
           setToHref(d.sourceObject.href);
         }
       } else {
-        setToHrefByValues((x) => {
-          x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
-          x.kvlist.set(PAR_NAME_ID, idxTreeItem);
-        });
+        // setToHrefByValues((x) => {
+        //   x.kvlist.set(PAR_NAME_PAGE, d.addressOrig);
+        //   x.kvlist.set(PAR_NAME_ID, idxTreeItem);
+        // });
       }
     }
   
