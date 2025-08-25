@@ -162,7 +162,7 @@ class pLocalizationSwitcher extends IPlugin {
       sparsI = {};
     
     strings.forEach(key => {
-      const val = this.langStrs[key](sparsI);
+      const val = this.langStrs[key]?.(sparsI);
       var foundO = $(key);
       
       if (foundO) {

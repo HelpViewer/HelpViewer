@@ -1,4 +1,5 @@
-const DEBUG_MODE = false;
+"use strict";
+const DEBUG_MODE = true;
 const DEBUG_MODE_RENDERER = DEBUG_MODE;
 const LOG_MINIMIZE_OBJECT = true;
 const LOG_MINIMIZE_DATE_ISO = false;

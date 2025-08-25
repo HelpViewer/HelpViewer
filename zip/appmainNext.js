@@ -1,3 +1,4 @@
+"use strict";
 const treeTOCName = 'tree';
 const contentPane = $('content');
 
