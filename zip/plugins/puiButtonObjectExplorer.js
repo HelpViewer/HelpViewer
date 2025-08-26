@@ -272,7 +272,23 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       case ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr:
         const sign = found.interconnectedObject.eventIdStrict ? '🔺' : '🟢';//🔻
         const t = found.interconnectedObject.eventIdStrict ? _T('eventIdStrict1') : _T('eventIdStrict0');
-        desc = `- ${sign} ${t}\n## ⭕ ${_T('resources')}\n- ${_T('oeod_plg')}: ${Math.round(found?.interconnectedObject?.constructor?._fileLength / 1024 * 100) / 100} kB`;
+        const valKiBs = (size) => Math.round(size / 1024 * 100) / 100;
+        desc = `- ${sign} ${t}\n## ⭕ ${_T('resources')}\n- ${_T('oeod_plg')}: ${valKiBs(found?.interconnectedObject?.constructor?._fileLength)} kB`;
+
+        var proto = found?.interconnectedObject;
+        const resourcesList = [];
+        Object.getOwnPropertyNames(proto).filter(name => name.startsWith('RES_')).forEach(name => {
+          browseMember(proto, name, (desc) => {
+            log('E x', desc);
+            const v = desc.value;
+            if ((!v.aliasName || !v._fileLength)) return;
+            log('E passed', desc);
+            resourcesList.push(`\n- ${v.aliasName}: ${valKiBs(v._fileLength)} kB`);
+          });
+        });
+
+        desc += resourcesList.join('');
+
         break;
       
       case ObjectExplorerObjectDescriptor.CONFIG.abbr:
