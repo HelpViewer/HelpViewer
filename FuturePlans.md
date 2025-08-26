@@ -8,7 +8,6 @@
 - Splash screen for helpfile
 - In commit 1119768 there has been done try with scratch image, but failed so alpine was used. Retry it.
 - Nice URLs (?id=5&d=...&p=... vs /hello.md/3)
-- Event bus instead of interconnections
 - RSS generator
 - sitemap.xml
 - Editor for creating help files
@@ -20,4 +19,3 @@
 - Dead links checker
 - Idea: Explore possibilities of creating fulltext search on the fly without CI pre-built fulltext index
 - Discussion (e.g.: Disqus or other service) plugin
-- Plugin architecture/system
