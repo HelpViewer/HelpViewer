@@ -121,7 +121,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     prodLines = [...new Set(prodLines)];
     prodLines = prodLines.map((r) => new ObjectExplorerTreeItem(r, ObjectExplorerObjectDescriptor.GROUPPROC, [], undefined, r));
     prodLines.forEach(e => e.subItems = pluginInstanceNodes.filter(x => x.title.endsWith(':' + e.id)) );
-    prodLines = new ObjectExplorerTreeItem(ObjectExplorerObjectDescriptor.GROUPPROC.abbr, ObjectExplorerObjectDescriptor.GROUPPROC, prodLines, undefined, _T(ObjectExplorerObjectDescriptor.GROUPPROC.t));
+    prodLines = new ObjectExplorerTreeItem(ObjectExplorerObjectDescriptor.GROUPPROC.t, ObjectExplorerObjectDescriptor.GROUPPROC, prodLines, undefined, _T(ObjectExplorerObjectDescriptor.GROUPPROC.t));
+    this.config[ObjectExplorerObjectDescriptor.GROUPPROC.t] = ObjectExplorerObjectDescriptor.GROUPPROC.image;
+
+    this.treeDataFull = [];
+    this.treeDataFull.push(firstPage, ...pluginGroups, ...pluginNodes, prodLines);
 
     //:_/__/README.md
     var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('overview'));
@@ -255,6 +259,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     switch (typeInRequest) {
       case ObjectExplorerObjectDescriptor.GROUP.abbr:
+      case ObjectExplorerObjectDescriptor.GROUPPROC.abbr:
         desc = _T(`${objName}-D`);
         break;
 
@@ -352,7 +357,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     }
 
     const typeLink = this.objTypesMap.get(typeInRequest);
-    if (typeLink == ObjectExplorerObjectDescriptor.GROUP)
+    if (typeLink == ObjectExplorerObjectDescriptor.GROUP || typeLink == ObjectExplorerObjectDescriptor.GROUPPROC)
       r.heading = `${this.config[objName]} ${_T(objName)}`;
     else
       r.heading = `${typeLink.image} ${objNameLocal}`;
