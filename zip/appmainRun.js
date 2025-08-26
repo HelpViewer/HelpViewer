@@ -101,6 +101,11 @@ async function loadPlugin(name, file, source = STO_DATA) {
   log(`Plugins: loading from file '${file}' under internal alias ${appendingAlias} ...'`);
   const srcMarkedJs = await _Storage.search(source, file);
   appendJavaScript(`plugins-${appendingAlias}.js`, srcMarkedJs, document.head);
+  const pluginPureName = name.split('/').pop();
+
+  const foundP = Plugins.pluginsClasses.get(pluginPureName);
+  if (foundP)
+    foundP._fileLength = new TextEncoder().encode(srcMarkedJs).length;
 }
 
 async function activatePlugin(name, alias, source = STO_DATA) {

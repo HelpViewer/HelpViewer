@@ -272,7 +272,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       case ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr:
         const sign = found.interconnectedObject.eventIdStrict ? '🔺' : '🟢';//🔻
         const t = found.interconnectedObject.eventIdStrict ? _T('eventIdStrict1') : _T('eventIdStrict0');
-        desc = `- ${sign} ${t}`;
+        desc = `- ${sign} ${t}\n## ⭕ ${_T('resources')}\n- ${_T('oeod_plg')}: ${Math.round(found?.interconnectedObject?.constructor?._fileLength / 1024 * 100) / 100} kB`;
         break;
       
       case ObjectExplorerObjectDescriptor.CONFIG.abbr:
