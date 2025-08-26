@@ -450,16 +450,18 @@ class ObjectExplorerObjectDescriptor {
   
   static _BIGCLASS_CFGOPT = 'cfgopt';
   static _BIGCLASS_HDL = 'hdl';
+  static _BIGCLASS_UIO = 'uiobject';
+  static _BIGCLASS_EVT = 'event';
 
   static _BIGCLASS = new Map([
     ['cfg', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
     ['cfgE', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
-    ['evt', 'event'],
-    ['evtD', 'event'],
+    ['evt', ObjectExplorerObjectDescriptor._BIGCLASS_EVT],
+    ['evtD', ObjectExplorerObjectDescriptor._BIGCLASS_EVT],
     ['hdl', ObjectExplorerObjectDescriptor._BIGCLASS_HDL],
-    ['btn', 'uiobject'],
-    ['page', 'uiobject'],
-    ['tree', 'uiobject'],
+    ['btn', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
+    ['page', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
+    ['tree', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['inst', 'oeod_inst'],
   ]);
 
