@@ -29,9 +29,11 @@ async function runApp() {
   var listData = await _Storage.search(STO_DATA, FILENAME_LIST_CSS);
   const sequenceCSS = rowsToArray(listData.trim());
 
-  for (const one of sequenceCSS) {
-    const srcCSS = await _Storage.search(STO_DATA, one);
-    appendCSS(one, srcCSS);
+  if (sequenceCSS) {
+    for (const one of sequenceCSS) {
+      const srcCSS = await _Storage.search(STO_DATA, one);
+      appendCSS(one, srcCSS);
+    }  
   }
 
   initLayout(STO_DATA);

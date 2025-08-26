@@ -11,20 +11,17 @@ class pTRParseMd extends pTRPhasePlugin {
     const T = this.constructor;
     this.DEFAULT_KEY_CFG_FILENAME = 'marked.min.js';
     this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
+    this.RES_MARKED = new Resource('MARKED', undefined, STO_DATA, this.cfgFileName);
   }
 
   deInit() {
-    $(this.config[this.constructor.KEY_CFG_FILENAME])?.remove();
+    this.RES_MARKED?.deInit();
     super.deInit();
   }
 
   onETShowChapterResolutions(r) {
-    if (!window.marked) {
-      const one = this.cfgFileName;
-      r.result = storageSearch(STO_DATA, one).then((x) =>
-        appendJavaScript(one, x, document.head)
-      );
-    }
+    if (!window.marked)
+      r.result = this.RES_MARKED?.init(r.result);
 
     r.result = (!r.content || r.content.length == 0) ? r.result : r.result.then(() => r.content = marked.parse(r.content));
   }

@@ -11,25 +11,23 @@ class pTRParseMermaid extends pTRPhasePlugin {
     const T = this.constructor;
     this.DEFAULT_KEY_CFG_FILENAME = 'mermaid.min.js';
     this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
+    this.RES_MERMAID = new Resource('MERMAID', undefined, STO_DATA, this.cfgFileName);
   }
 
   deInit() {
-    $(this.config[this.constructor.KEY_CFG_FILENAME])?.remove();
+    this.RES_MERMAID?.deInit();
     super.deInit();
   }
 
   onETShowChapterResolutions(r) {
     const loadExtern = () => {
-      const one = this.cfgFileName;
-      return storageSearch(STO_DATA, one).then((x) =>
-        appendJavaScript(one, x, document.head)
-      );
+      return this.RES_MERMAID?.init(Promise.resolve());
     }
 
     r.result = r.result.then(() => {
       const codeBlocks = $A('code.language-mermaid', r.doc);
       if (codeBlocks.length > 0) {
-        loadExtern().then(() => {
+        return loadExtern().then(() => {
           codeBlocks.forEach(code => {
             const div = document.createElement('div');
             div.className = 'mermaid';
