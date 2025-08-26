@@ -295,3 +295,4 @@ Plugins.catalogize(pAppmainNext);
 const plgName = 'pAppmainNext';
 const plgAlias = '';
 activatePlugin(plgName, plgAlias).then(() => sendEvent(EVT_PluginsLoadingFinished));
+pAppmainNext._fileLength = new TextEncoder().encode(pAppmainNext.toString()).length;
