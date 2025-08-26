@@ -371,11 +371,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   
         if (k == ObjectExplorerObjectDescriptor._BIGCLASS_HDL) {
           const items = v.map((r) => `- ${r.descriptor.image} ${r.title} (${_T(r.title.startsWith('_') ? 'openToIdAll' : 'openToId')})`);
-          return `## ${_T(k)}\n${items.join('\n')}`;
+          return `## ${ObjectExplorerObjectDescriptor.HANDLER.image} ${_T(k)}\n${items.join('\n')}`;
         }
         
         const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} ${r.title}`);
-        return `## ${_T(k)}\n${items.join('\n')}`;
+        return `## ${ObjectExplorerObjectDescriptor[`_i_${k}`]} ${_T(k)}\n${items.join('\n')}`;
       });
   
       r.result = r.result.then(() => {
@@ -452,6 +452,12 @@ class ObjectExplorerObjectDescriptor {
   static _BIGCLASS_HDL = 'hdl';
   static _BIGCLASS_UIO = 'uiobject';
   static _BIGCLASS_EVT = 'event';
+
+  static _i_cfgopt = '⚙️';
+  static _i_hdl = '👂';
+  static _i_uiobject = '🔘';
+  static _i_event = '⚡';
+  static _i_oeod_inst = '🔹';
 
   static _BIGCLASS = new Map([
     ['cfg', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
