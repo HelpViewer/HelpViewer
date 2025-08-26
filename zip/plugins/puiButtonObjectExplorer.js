@@ -108,6 +108,12 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         const nameBase = el.id;
         plug.subItems.push(new ObjectExplorerTreeItem(baseN + el.id, typeO, [], el, nameBase, [el.tagName.toLowerCase(), el.innerText]));
       });
+
+      proto.filter(name => name.startsWith('RES_')).forEach(name => {
+        const v = plg[name];
+        if ((!v.aliasName || !v._fileLength)) return;
+        plug.subItems.push(new ObjectExplorerTreeItem(baseN + v.aliasName, ObjectExplorerObjectDescriptor.RESOURCE, [], v, v.aliasName, [v._fileLength]));
+      });
     });
 
     // making hierarchy of basic objects
@@ -256,6 +262,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     r.tokens.push(r.TOKEN_NONOTFOUNDMSG);
 
     var delayedFunction = undefined;
+    const valKiBs = (size) => Math.round(size / 1024 * 100) / 100;
 
     switch (typeInRequest) {
       case ObjectExplorerObjectDescriptor.GROUP.abbr:
@@ -269,20 +276,22 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         desc = found.plus[1];
         break;
 
+      case ObjectExplorerObjectDescriptor.RESOURCE.abbr:
+        const fileList = found.interconnectedObject.fileList.map((x) => `- ${x}`).join('\n');
+        desc += `## ${_T('resources')}\n${fileList}\n---\n**${_T('size')}:** ${valKiBs(found.plus[0])} kB`;
+        break;
+
       case ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr:
         const sign = found.interconnectedObject.eventIdStrict ? '🔺' : '🟢';//🔻
         const t = found.interconnectedObject.eventIdStrict ? _T('eventIdStrict1') : _T('eventIdStrict0');
-        const valKiBs = (size) => Math.round(size / 1024 * 100) / 100;
-        desc = `- ${sign} ${t}\n## ⭕ ${_T('resources')}\n- ${_T('oeod_plg')}: ${valKiBs(found?.interconnectedObject?.constructor?._fileLength)} kB`;
+        desc = `- ${sign} ${t}\n## 📦 ${_T('resources')}\n- ${_T('oeod_plg')}: ${valKiBs(found?.interconnectedObject?.constructor?._fileLength)} kB`;
 
         var proto = found?.interconnectedObject;
         const resourcesList = [];
         Object.getOwnPropertyNames(proto).filter(name => name.startsWith('RES_')).forEach(name => {
           browseMember(proto, name, (desc) => {
-            log('E x', desc);
             const v = desc.value;
             if ((!v.aliasName || !v._fileLength)) return;
-            log('E passed', desc);
             resourcesList.push(`\n- ${v.aliasName}: ${valKiBs(v._fileLength)} kB`);
           });
         });
@@ -437,6 +446,8 @@ class ObjectExplorerObjectDescriptor {
   static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
   static GROUPPROC = new ObjectExplorerObjectDescriptor('grpproc', '⇄');
 
+  static RESOURCE = new ObjectExplorerObjectDescriptor('res', '📦');
+  
   static _BIGCLASS_CFGOPT = 'cfgopt';
   static _BIGCLASS_HDL = 'hdl';
 
