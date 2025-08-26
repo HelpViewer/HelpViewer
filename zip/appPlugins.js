@@ -90,6 +90,39 @@ class IPlugin {
   }
 }
 
+class Resource extends IPlugin {
+  constructor(aliasName, data, source = STO_DATA, fileList = '') {
+    super(aliasName, data);
+    this.fileList = fileList.split(';');
+    this.source = source;
+    this._fileLength = 0;
+
+    Promise.all(
+      this.fileList.map(async f => {
+        const content = await _Storage.search(source, f);
+        return new TextEncoder().encode(content).length;
+      })
+    ).then(lengths => this._fileLength = lengths.reduce((sum, len) => sum + len, 0));
+  }
+
+  init(resultI) {
+    const promises = this.fileList
+    .filter(one => !$(one))
+    .map(one => 
+      storageSearch(this.source, one).then(x => {
+        if (one.endsWith('.js')) appendJavaScript(one, x, document.head);
+        if (one.endsWith('.css')) appendCSS(one, x);
+      })
+    );
+  
+    return Promise.all(promises);
+  }
+
+  deInit() {
+    this.fileList.forEach(one => $(one)?.remove());
+  }
+}
+
 function browseMember(instance, name, handler) {
   const desc = Object.getOwnPropertyDescriptor(instance, name);
   if (!desc) return;
