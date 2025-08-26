@@ -261,6 +261,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       case ObjectExplorerObjectDescriptor.GROUP.abbr:
       case ObjectExplorerObjectDescriptor.GROUPPROC.abbr:
         desc = _T(`${objName}-D`);
+        if (desc.startsWith('_'))
+          desc = '';
         break;
 
       case ObjectExplorerObjectDescriptor.UI_BUTTON.abbr:
@@ -357,7 +359,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     }
 
     const typeLink = this.objTypesMap.get(typeInRequest);
-    if (typeLink == ObjectExplorerObjectDescriptor.GROUP || typeLink == ObjectExplorerObjectDescriptor.GROUPPROC)
+    if (typeLink == ObjectExplorerObjectDescriptor.GROUP || (typeLink == ObjectExplorerObjectDescriptor.GROUPPROC && objNameLocal == 'oeod_grpproc'))
       r.heading = `${this.config[objName]} ${_T(objName)}`;
     else
       r.heading = `${typeLink.image} ${objNameLocal}`;
