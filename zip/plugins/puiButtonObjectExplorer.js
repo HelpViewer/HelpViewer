@@ -117,11 +117,17 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       pluginNodes = pluginNodes.filter(x => !p.subItems.includes(x));
     });
 
+    var prodLines = pluginInstanceNodes.map((x) => x.title.split(':')[1]).filter((x) => x);
+    prodLines = [...new Set(prodLines)];
+    prodLines = prodLines.map((r) => new ObjectExplorerTreeItem(r, ObjectExplorerObjectDescriptor.GROUPPROC, [], undefined, r));
+    prodLines.forEach(e => e.subItems = pluginInstanceNodes.filter(x => x.title.endsWith(':' + e.id)) );
+    prodLines = new ObjectExplorerTreeItem(ObjectExplorerObjectDescriptor.GROUPPROC.abbr, ObjectExplorerObjectDescriptor.GROUPPROC, prodLines, undefined, _T(ObjectExplorerObjectDescriptor.GROUPPROC.t));
+
     //:_/__/README.md
     var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('overview'));
 
     // prepare top level data
-    this.treeData.push(firstPage, ...pluginGroups, ...pluginNodes);
+    this.treeData.push(firstPage, ...pluginGroups, ...pluginNodes, prodLines);
 
     // passing data to tree
     const treeDataFlat = this._prepareFlatTreeInput(this.treeData);
@@ -406,6 +412,7 @@ class ObjectExplorerObjectDescriptor {
 
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
   static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
+  static GROUPPROC = new ObjectExplorerObjectDescriptor('grpproc', '⇄');
 
   static _BIGCLASS_CFGOPT = 'cfgopt';
   static _BIGCLASS_HDL = 'hdl';
