@@ -1,15 +1,15 @@
 class IndexFileSetData extends IEvent {
   constructor() {
     super();
-    this.mapping = undefined;
-    this.keywords = undefined;
+    this.mapping = '';
+    this.keywords = '';
   }
 }
 
 class IndexFileGetData extends IEvent {
   constructor() {
     super();
-    this.key = undefined;
+    this.key = '';
     this.cap = 100;
   }
 }
@@ -17,7 +17,7 @@ class IndexFileGetData extends IEvent {
 class IndexFileGetKeywordData extends IEvent {
   constructor() {
     super();
-    this.key = undefined;
+    this.key = '';
   }
 }
 
