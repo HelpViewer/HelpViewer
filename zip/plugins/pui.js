@@ -1,8 +1,8 @@
 class ButtonCreate extends IEvent {
   constructor() {
     super();
-    this.buttonId = undefined;
-    this.caption = undefined;
+    this.buttonId = '';
+    this.caption = '';
     this.handler = undefined;
   }
 }
