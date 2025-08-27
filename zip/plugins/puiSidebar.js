@@ -19,7 +19,7 @@ class TreeViewCreate extends IEvent {
 class SidebarPageShow extends IEvent {
   constructor() {
     super();
-    this.pageId = undefined;
+    this.pageId = '';
   }
 }
 
