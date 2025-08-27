@@ -1,12 +1,12 @@
 class NavigationMove extends IEvent {
   constructor() {
     super();
-    this.treeId = null;
+    this.treeId = '';
     this.previousId = 0;
     this.newId = 0;
-    this.newIdTreeItem = undefined;
-    this.direction = undefined;
-    this.paramIdName = undefined;
+    this.newIdTreeItem = '';
+    this.direction = 0;
+    this.paramIdName = '';
   }
 }
 class puiNavigation extends IPlugin {
