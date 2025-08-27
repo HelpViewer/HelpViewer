@@ -198,7 +198,7 @@ class SetTreeData extends IEvent {
   constructor() {
     super();
     this.data = undefined;
-    this.targetTree = undefined;
+    this.targetTree = '';
     this.append = false;
   }
 }
