@@ -1,11 +1,11 @@
 class ShowChapterResolutions extends IEvent {
   constructor() {
     super();
-    this.heading = undefined;
-    this.content = undefined;
-    this.uri = undefined;
+    this.heading = '';
+    this.content = '';
+    this.uri = '';
     this.fileMedium = undefined;
-    this.uriAnchor = undefined;
+    this.uriAnchor = '';
     this.addData = new Map();
     /** @type {(fileName : string) => string} */
     this.getStorageData = undefined;
@@ -40,8 +40,7 @@ class ShowChapterResolutions extends IEvent {
     this.preventDefault = undefined;
     //this.parentEvent = undefined;
     this.stopAllPhases = false;
-    this.helpFile = undefined;
-    this.content = undefined;
+    this.helpFile = '';
     this.found = false;
     this.contentType = undefined;
   }
@@ -51,27 +50,27 @@ class ShowChapter extends IEvent {
   constructor() {
     super();
     this.event = undefined;
-    this.heading = undefined;
-    this.address = undefined;
+    this.heading = '';
+    this.address = '';
     this.sourceObject = undefined;
     this.result = new ShowChapterResolutions();
     this.result.parentEventId = this.eventId;
     //this.result.parentEvent = this;
     this.result.preventDefault = () => this.event?.preventDefault?.();
     this.containerIdContent = undefined;
-    this.helpFile = undefined;
+    this.helpFile = '';
   }
 }
 
 class ChapterShown extends IEvent {
   constructor() {
     super();
-    this.heading = undefined;
-    this.content = undefined;
-    this.address = undefined;
-    this.addressOrig = undefined;
+    this.heading = '';
+    this.content = '';
+    this.address = '';
+    this.addressOrig = '';
     this.sourceObject = undefined;
-    this.helpFile = undefined;
+    this.helpFile = '';
     this.found = false;
     this.contentType = undefined;
   }
