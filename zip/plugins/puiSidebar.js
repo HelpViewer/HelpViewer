@@ -3,8 +3,8 @@ var C_TOOWIDE = 'too-wide';
 class SidebarPageCreate extends IEvent {
   constructor() {
     super();
-    this.pageId = undefined;
-    this.role = undefined;
+    this.pageId = '';
+    this.role = '';
   }
 }
 
@@ -12,7 +12,7 @@ class TreeViewCreate extends IEvent {
   constructor() {
     super();
     this.page = undefined;
-    this.treeViewId = undefined;
+    this.treeViewId = '';
   }
 }
 

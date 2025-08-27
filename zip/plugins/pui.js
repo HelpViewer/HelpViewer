@@ -26,8 +26,8 @@ class ButtonSend extends IEvent {
 class ElementSetVisibility extends IEvent {
   constructor() {
     super();
-    this.value = undefined;
-    this.elementId = undefined;
+    this.value = false;
+    this.elementId = '';
     this.element = undefined;
   }
 }
