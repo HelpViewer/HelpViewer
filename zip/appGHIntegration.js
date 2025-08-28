@@ -87,5 +87,5 @@ async function insertDownloadLink(hereT, titleMask) {
   
   const parentO = $(hereT);
   if (parentO)
-    parentO.innerHTML = `<a href="${path}" alt="${fname}" title= "${path}">${linkTitle}</a>`;
+    parentO.innerHTML = `<a href="${path}" title="${path}">${linkTitle}</a>`;
 }
