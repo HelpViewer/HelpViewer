@@ -68,8 +68,11 @@ jobs:
           
           echo "::group::Processing zip subdirectory"
           rm -rf ./zip/prism/README.md ./zip/prism/.git
+          rm -rf ./zip/i/README.md ./zip/i/.git ./zip/i/CHANGELOG.md ./zip/i/.github
+          
           shopt -s nullglob
           find ./zip/lang -maxdepth 1 -type f -exec rm -f {} +
+          find ./zip/lang -mindepth 1 -maxdepth 1 -type d -printf "%f\n" > ./zip/lang/__dir.lst
           cp -rf ./zip/* ./hvdata/data
           shopt -u nullglob
           echo "::endgroup::"
@@ -89,6 +92,10 @@ jobs:
           zip -r -9 ../data.zip .
           cd ..
           rm -rf data/
+          echo "::endgroup::"
+
+          echo "::group::Set DEBUG_MODE to false"
+          sed -i '2s/^const DEBUG_MODE.*/const DEBUG_MODE = false;/' ./appmain.js
           echo "::endgroup::"
 
           echo "::group::Packaging deploy bundle"
@@ -119,6 +126,7 @@ jobs:
           newR="const CACHE_FILES = [ ${joined} ];"
           echo "Newly planned cache list: ${newR}"
           sed -i "2s|.*|$newR|" ./sw.js
+          sed -i "1s/^const CACHE_NAME = 'helpviewer-cache-.*';/const CACHE_NAME = 'helpviewer-cache-$(date +%Y%m%d)';/" ./sw.js
           echo "::endgroup::"
 
           echo "::group::sw.js new bundling"
