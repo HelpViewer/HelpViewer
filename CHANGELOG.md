@@ -1,5 +1,21 @@
 # Changelog
 
+## 20250828
+
+### User
+- ➕📚 Show all chapters as book : added TOC and table with information about documentation source, version, datetime of export
+- ➕📚 Show all chapters as book : extended work even for helps without 📖 TOC
+- ➕🕘 Version search : there is now opened 🔖 bookmarks list panel
+
+### 🐞 Bugfix
+- History back button again works correctly (not only one step back)
+
+### Technology
+- Improved EN documentation of event classes members
+- puiButtonObjectExplorer : icons in subchapters, plugins and resource bundles file sizes are measured and shown in explorer (resource bundles handling refactored to work more fluently for future), shows mode of comparing id on event and plugin
+- introduced new submodule **i** with reference documentation of event parameters
+- Updated pipeline flow for : __dir.lst created in language directory, zip/i subdir subrepo cleanup, sw.js - cache name changed with every published version, ensured DEBUG_MODE = false
+
 ## 20250820
 
 ### User
