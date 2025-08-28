@@ -87,6 +87,8 @@ jobs:
           echo "_prjname|HelpViewer/HelpViewer" >> ./hvdata/data/_config.txt
           echo "::endgroup::"
 
+          rm -rf ./jsconfig.json
+
           echo "::group::Packaging"
           cd hvdata/data
           zip -r -9 ../data.zip .
