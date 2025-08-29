@@ -9,6 +9,14 @@ class NavigationMove extends IEvent {
     this.paramIdName = '';
   }
 }
+
+class DoNavigationMove extends IEvent {
+  constructor() {
+    super();
+    this.direction = 0;
+  }
+}
+
 class puiNavigation extends IPlugin {
     constructor(aliasName, data) {
       super(aliasName, data);
@@ -23,10 +31,12 @@ class puiNavigation extends IPlugin {
     static KEY_CFG_PARAM_ID_NAME = 'IDNAMEGETPAR';
   
     static EVT_NAV_MOVE = NavigationMove.name;
+    static EVT_NAV_DOMOVE = DoNavigationMove.name;
 
     init() {
       const T = this.constructor;
       const TI = this;
+
       TI.eventDefinitions.push([T.EVT_NAV_MOVE, NavigationMove, null]); // outside event handlers
 
       this.DEFAULT_KEY_CFG_TARGET = 'header';
@@ -104,6 +114,27 @@ class puiNavigation extends IPlugin {
         _buttonAction(evt, next, 1);
       }
       TI.buttonRight = uiAddButton(idRight, '➡', target, _buttonActionRight);
+
+      const h_EVT_NAV_DOMOVE = (evt) => {
+        switch (evt.direction) {
+          case -1:
+            _buttonActionLeft(evt);
+            break;
+            
+          case 0:
+            _buttonActionTop(evt);
+            break;
+
+          case 1:
+            _buttonActionRight(evt);
+            break;
+
+          default:
+            break;
+        }
+      };
+
+      TI.eventDefinitions.push([T.EVT_NAV_DOMOVE, DoNavigationMove, h_EVT_NAV_DOMOVE]);
 
       super.init();
 
