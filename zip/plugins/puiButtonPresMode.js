@@ -16,6 +16,7 @@ class puiButtonPresMode extends puiButton {
       if (document.fullscreenElement) {
       } else {
         $(this.presModeCSSAddName)?.remove();
+        toggleSidebar(true);
       }
     });
   }
@@ -28,7 +29,6 @@ class puiButtonPresMode extends puiButton {
     const presModeCSSAdd = `.${C_HIDDENCPRESMODE} { display: none; }`;
     if (document.fullscreenElement) {
       document.exitFullscreen();
-      toggleSidebar(true);
     } else {
       document.documentElement.requestFullscreen();
       toggleSidebar(false);
