@@ -119,6 +119,14 @@ class puiSidebar extends IPlugin {
 
     const h_EVT_SIDE_VISIBILITY_SET = (reply) => {
       reply.result = toggleVisibility(sidebar, reply.value);
+
+      if (reply.result) {
+        sidebar.style.display = 'flex';
+        requestAnimationFrame(() => sidebar.style.opacity = '1');
+      } else {
+        sidebar.style.opacity = '0';
+        setTimeout(() => sidebar.style.display = 'none', 500);
+      }
     }
     TI.eventDefinitions.push([T.EVT_SIDE_VISIBILITY_SET, SidebarVisibilitySet, h_EVT_SIDE_VISIBILITY_SET]);
 
