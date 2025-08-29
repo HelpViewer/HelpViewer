@@ -41,12 +41,13 @@ h1 {
   border-left: 1px solid var(--c-border);
   position: relative;
   opacity: 1;
-  transition: opacity 1.5s ease-in-out;
+  transition: width 1.5s ease, opacity 1.5s ease;
   display: flex;
   flex-direction: column;
 }
 
 .sidebar.hidden {
+  width: 0;
   opacity: 0;
 }
 
