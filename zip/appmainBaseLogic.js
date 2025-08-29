@@ -1,4 +1,5 @@
 const C_HIDDENC = 'hidden';
+const C_HIDDENCPRESMODE = 'hiddenPresmode';
 const FILENAME_1STTOPIC = 'README.md';
 const FILENAME_CONFIG = '_config.txt';
 

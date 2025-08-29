@@ -13,6 +13,7 @@ class puiButtonEditRepo extends puiButton {
     const T = this.constructor;
     const TI = this;
     hideButton(TI.button.id, false);
+    TI.button.classList.add(C_HIDDENCPRESMODE);
   }
 
   deInit() {

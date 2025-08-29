@@ -21,6 +21,7 @@ puiButtonColorTheme
 puiButtonAsBook
 puiButtonToggleSide
 puiButtonFullScreen
+puiButtonPresMode
 puiSidebarVisibilityToggle
 pPrePrintEvent
 puiButtonPrint
