@@ -40,9 +40,15 @@ h1 {
   overflow-y: auto;
   border-left: 1px solid var(--c-border);
   position: relative;
-  transition: transform 0.3s ease;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
   display: flex;
   flex-direction: column;
+}
+
+.sidebar.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .main {
