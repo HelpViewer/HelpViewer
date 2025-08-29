@@ -41,7 +41,7 @@ h1 {
   border-left: 1px solid var(--c-border);
   position: relative;
   opacity: 1;
-  transition: width 1.5s ease, opacity 1.5s ease;
+  transition: width 1.0s ease, opacity 1.0s ease;
   display: flex;
   flex-direction: column;
 }
