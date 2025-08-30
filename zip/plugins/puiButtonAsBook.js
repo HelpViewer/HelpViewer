@@ -130,7 +130,7 @@ class puiButtonAsBook extends puiButtonTab {
     }).then(() => sendEvent(evtHideIfTooWide));
   }
 
-  onET_ChapterShown(evt) {
+  onETChapterShown(evt) {
     if (!this.files)
       return;
     setHeader(evt.heading);

@@ -257,6 +257,9 @@ class pAppmainNext extends IPlugin {
   }
 
   onETChapterShown(d) {
+    if (d.id) 
+      return;
+    
     revealTreeItem(`${N_P_TREEITEM}|${idxTreeItem}`);
 
     if (d.addressOrig.toLowerCase() != '~changelog.md') {

@@ -34,6 +34,12 @@ function nameForAnchor(text, level, levelCounter) {
   //   .replace(/-+/g, '-');
 }
 
+function stripTags(htmlString) {
+  var div = document.createElement("div");
+  div.innerHTML = htmlString;
+  return div.innerText;
+}
+
 const UserDataFileLoadedFileType = {
   LOCALDIR: 'LOCALDIR',
   LOCALARC: 'LOCALARC',

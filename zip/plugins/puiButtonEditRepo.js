@@ -26,7 +26,7 @@ class puiButtonEditRepo extends puiButton {
     window.location.href = fileLink;
   }
 
-  onET_ChapterShown(evt) {
+  onETChapterShown(evt) {
     hideButton(this.button.id, evt.contentType == ChapterContentType.CHAPTER_SOURCE);
   }
 }
