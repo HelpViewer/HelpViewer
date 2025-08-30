@@ -63,9 +63,6 @@ const evtHashDefined = 'HASHDEFINED';
 LoadURLParameters();
 const treeItemHandlerGet = () => idxTreeItem;
 
-const BTN_CHANGEVERSION = 'downP-ChangeVersion';
-const BTN_CHANGELANG = 'downP-ChangeLanguage';
-
 const tree = $('tree');
 
 window.addEventListener('popstate', () => {
@@ -245,6 +242,7 @@ class pAppmainNext extends IPlugin {
     setPanelsEmpty();
 
     activeLanguage = getActiveLanguage();
+    document.documentElement.lang = activeLanguage;
     LoadURLParameters();
   
     if (dataPath !== FILENAME_ZIP_ON_USER_INPUT)
