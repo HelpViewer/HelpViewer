@@ -50,7 +50,7 @@ class puiButtonAsBook extends puiButtonTab {
       super._buttonAction();
     } else {
       const tocData = sendEvent('GetTOCData') || Promise.resolve([]);
-      this.homeData = sendEvent('GetHomePageData') || '';
+      this.homeData = getHomePageData() || '';
       const homeData = this.homeData;
   
       var files = [];

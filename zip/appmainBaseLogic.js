@@ -356,6 +356,12 @@ function showChapter(event, heading, address, sourceObject, content) {
 }
 /*E: Plugin: pTopicRenderer */
 
+/*S: Plugin: puiButtonHome */
+function getHomePageData() {
+  return sendEvent('GetHomePageData');
+}
+/*E: Plugin: puiButtonHome */
+
 const evtHideIfTooWide = 'HIDEIFTOOWIDE';
 
 function processAClick(a, evt) {
