@@ -84,6 +84,9 @@ h1 {
   padding: 1em;
   font-size: 1em;
   background-color: var(--c-contentPaneColor);
+  word-break: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .tree {
@@ -422,7 +425,3 @@ ul:has(li input[type="checkbox"]) {
 }
 /*E: print support*/
 
-.content a {
-  word-break: break-all;
-  overflow-wrap: anywhere;
-}
