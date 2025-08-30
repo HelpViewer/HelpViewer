@@ -85,11 +85,15 @@ async function loadPluginList(listFileName, storage, basePath = loadPluginListBa
     if (aliases.length == 0)
       aliases.push('');
 
-    await loadPlugin(name, basePath(name), storage);
+    try {
+      await loadPlugin(name, basePath(name), storage);
 
-    for (const oneAlias of aliases) {
-      await activatePlugin(name, oneAlias);
-      activatedPluginsList.push([name, oneAlias]);
+      for (const oneAlias of aliases) {
+        await activatePlugin(name, oneAlias);
+        activatedPluginsList.push([name, oneAlias]);
+      }
+    } catch (error) {
+      log('E Error during loading plugin: ', name, aliases);
     }
   }
 
