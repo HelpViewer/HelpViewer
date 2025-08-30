@@ -123,7 +123,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       pluginNodes = pluginNodes.filter(x => !p.subItems.includes(x));
     });
 
-    var prodLines = pluginInstanceNodes.map((x) => x.title.split(':')[1]).filter((x) => x);
+    var prodLines = pluginInstanceNodes.map((x) => x.title.split(':')[1]);//.filter((x) => x);
     prodLines = [...new Set(prodLines)];
     prodLines = prodLines.map((r) => new ObjectExplorerTreeItem(r, ObjectExplorerObjectDescriptor.GROUPPROC, [], undefined, r));
     prodLines.forEach(e => e.subItems = pluginInstanceNodes.filter(x => x.title.endsWith(':' + e.id)) );
