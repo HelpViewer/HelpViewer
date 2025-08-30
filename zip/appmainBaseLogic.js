@@ -34,9 +34,13 @@ function nameForAnchor(text, level, levelCounter) {
   //   .replace(/-+/g, '-');
 }
 
-function stripTags(htmlString) {
+function stripTags(htmlString, cleanJS = true) {
   var div = document.createElement("div");
   div.innerHTML = htmlString;
+  
+  if (cleanJS)
+    div.innerHTML = div.innerHTML.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
+
   return div.innerText;
 }
 
