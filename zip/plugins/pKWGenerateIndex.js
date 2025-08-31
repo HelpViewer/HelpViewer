@@ -44,18 +44,6 @@ class pKWGenerateIndex extends IPlugin {
         const flArray = rowsToArray(fileList.trim())
           .filter((x) => !(/^(http|=)/.test(x)))
           .map(r => r = r.split('|'));
-        /*
-.filter((x, idx) => {
-          if (/^(http|=)/.test(x[0]))
-            flArray.splice(idx, 1);
-        })
-        */
-        log('E aaa', flArray);
-
-        // for (const key of Object.keys(flArray)) {
-        //   if (/^(http|=)/.test(key))
-        //     delete flArray[key];
-        // }
 
         this.flArray = flArray;
         log('E x a', flArray);
@@ -63,7 +51,7 @@ class pKWGenerateIndex extends IPlugin {
         if (Object.keys(flArray).length == 0) 
           return Promise.resolve();
 
-        const filesIndexed = Object.entries(flArray).map(([file, title]) => Promise.resolve(showChapter(undefined, undefined, file, undefined, undefined, this.aliasName)));
+        const filesIndexed = flArray.map(([file, title]) => Promise.resolve(showChapter(undefined, undefined, file, undefined, undefined, this.aliasName)));
         return Promise.all(filesIndexed).then((fileIndexes) => {
           return fileIndexes;
         });
@@ -90,7 +78,7 @@ class pKWGenerateIndex extends IPlugin {
           } else {
             this.lastCount = this.countProcessed;
           }
-        }, 5000);
+        }, 3000);
       }).then((result) => {
         // indexes per file
         log('E rtz uzavírá se', this.indexes);
@@ -103,7 +91,9 @@ class pKWGenerateIndex extends IPlugin {
         }
 
         // all index records in flat, min word length filtered out
+        log('E rtz uzavírá se flat array pre', flatArray);
         flatArray = flatArray.filter((x) => x && x[0] && x[0].length >= this.cfgMinWordLength);
+        log('E rtz uzavírá se flat array post', flatArray);
 
         const grouped = {};
 
@@ -113,14 +103,25 @@ class pKWGenerateIndex extends IPlugin {
             grouped[key] = [];
 
           grouped[key].push([value, file]);
+          log('E RRRRRRRRRR', grouped[key]);
         });
 
-        const keywords = Object.keys(grouped);
+        const keywords = Object.keys(grouped).sort();
+        log('E kwds', grouped);
+        alert('::1');
+
+        keywords.forEach(x => {
+          log('E grouped dump', x, grouped[x]);
+        });
+        alert('::2');
 
         keywords.forEach((x) => grouped[x].sort((a, b) => b[0] - a[0]));
         log('E rtz uzavírá se (2)', grouped);
+        alert('::3');
 
-        keywords.forEach((key) => grouped[key] = grouped[key].map(([count, filename]) => [this.flArray.indexOf(filename)]));
+        this.flArrayFiles = this.flArray.map((x) => x[0]);
+
+        keywords.forEach((key) => grouped[key] = grouped[key].map(([count, filename]) => this.flArrayFiles.indexOf(filename)));
 
         log('E rtz uzavírá se (3)', grouped);
       });
