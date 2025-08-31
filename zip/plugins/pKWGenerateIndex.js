@@ -41,7 +41,7 @@ class pKWGenerateIndex extends IPlugin {
 
     this.asyncStack = this.asyncStack.then((fileList) => {
       if (fileList) {
-        const flArray = rowsToArray(fileList).forEach(r => r = r.split('|'));
+        const flArray = parseConfigFile(fileList);
 
         for (const key of Object.keys(flArray)) {
           if (/^(http|=)/.test(key))
