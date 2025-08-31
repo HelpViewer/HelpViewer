@@ -17,5 +17,4 @@
 - United help system (grouping of single help files (united tree and dictionaries) - currently only links outside helpfile are allowed)
 - Associated topics groups (something like links/keywords/topics, see also )
 - Dead links checker
-- Idea: Explore possibilities of creating fulltext search on the fly without CI pre-built fulltext index
 - Discussion (e.g.: Disqus or other service) plugin
