@@ -43,3 +43,10 @@ pTRParsePrism:-connected
 pTRParseMermaid:-connected
 pTRRefreshJS:-connected
 pTRKeywordInText:-connected
+pKWGenerateIndex:fulltextList
+pTopicRenderer:fulltextList
+pTRTriage:fulltextList-triage
+pTRLoadData:fulltextList-load
+pTREmptyPlugin:fulltextList-md
+pKWHTMLToText:fulltextList-htm
+pKWIndexDoc:fulltextList-unconnected

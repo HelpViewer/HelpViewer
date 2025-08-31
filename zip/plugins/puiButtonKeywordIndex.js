@@ -77,7 +77,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
         return;
 
       var phrase = event.target.value;  
-      phrase = phrase.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      phrase = textCleanupPhrase(phrase);
       
       const T = this.constructor;
       T._requestIndexData(pane, id, phrase);

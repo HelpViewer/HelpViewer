@@ -29,6 +29,7 @@ class pIndexFile extends IPlugin {
   static EVT_IF_GET = IndexFileGetData.name;
   static EVT_IF_GETKDW = IndexFileGetKeywordData.name;
   static EVT_IF_LOADED = 'IndexFileLoaded';
+  static EVT_IF_NOTEXISTS = 'IndexFileNotExists';
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -52,10 +53,20 @@ class pIndexFile extends IPlugin {
       index = newKeywordDatabase(aliasName, data.keywords.toLowerCase(), data.mapping);
       data.result = index.readKeywordDatabase();
 
+      const loadedCount = data.result > 0;
+
       sendEvent(T.EVT_IF_LOADED, (r) => {
         r.id = aliasName;
-        r.result = data.result > 0;
+        r.result = loadedCount;
       });
+
+      if (!loadedCount) {
+        sendEvent(T.EVT_IF_NOTEXISTS, (r) => {
+          r.id = aliasName;
+          r.result = data.result;
+        });  
+      }
+      
     }
     TI.eventDefinitions.push([T.EVT_IF_SET, IndexFileSetData, h_EVT_IF_SET]);
 
@@ -72,6 +83,8 @@ class pIndexFile extends IPlugin {
     TI.eventDefinitions.push([T.EVT_IF_GETKDW, IndexFileGetKeywordData, h_EVT_IF_GETKDW]);
 
     TI.eventDefinitions.push([T.EVT_IF_LOADED, IEvent, null]); // outside event handlers
+
+    TI.eventDefinitions.push([T.EVT_IF_NOTEXISTS, IEvent, null]); // outside event handlers
     
     super.init();
   }

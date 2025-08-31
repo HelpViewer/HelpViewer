@@ -19,7 +19,7 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     if (r.docM)
       r.content = r.docM.body.innerHTML;
     
-    const notFound = (r.content?.length == 0);
+    const notFound = (r.content?.length == 0 && r.content?.size == 0);
 
     if (notFound) {
       if (!r.tokens.includes(r.TOKEN_NONOTFOUNDMSG))

@@ -34,6 +34,11 @@ function nameForAnchor(text, level, levelCounter) {
   //   .replace(/-+/g, '-');
 }
 
+function textCleanupPhrase(p) {
+  if (!p) return '';
+  return p.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 function stripTags(htmlString, cleanJS = true) {
   var div = document.createElement("div");
   div.innerHTML = htmlString;
