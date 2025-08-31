@@ -92,28 +92,34 @@ class pKWGenerateIndex extends IPlugin {
         flatArray = flatArray.filter((x) => x && x[0] && x[0].length >= this.cfgMinWordLength);
 
         const grouped = {};
+        const flArrayFiles = this.flArray.map((x) => x[0]);
 
-        // grouping per word
-        flatArray.forEach(([key, value, file]) => {
-          if (!grouped[key]) 
-            grouped[key] = [];
-
-          grouped[key].push([value, file]);
-        });
+        for (const [file, innerMap] of this.indexes) {
+          for (const [key, value] of innerMap) {
+            if (!key || key.length < this.cfgMinWordLength) 
+              continue;
+            
+            // grouping per word
+            if (!grouped[key])
+              grouped[key] = [];
+            
+            // file path to file list index
+            grouped[key].push([value, flArrayFiles.indexOf(file)]);
+          }
+        }
 
         const keywords = Object.keys(grouped).sort();
 
-        // sorting by count of word in chapter (descending)
-        keywords.forEach((x) => grouped[x].sort((a, b) => b[0] - a[0]));
-
-        this.flArrayFiles = this.flArray.map((x) => x[0]);
-
-        // file path to file list index
-        keywords.forEach((key) => grouped[key] = grouped[key].map(([count, filename]) => this.flArrayFiles.indexOf(filename)).join(';'));
-
         // keywords to files mapping
-        const keywordsToFiles = keywords.map((x) => grouped[x]);
-        log(`Statistics: words: ${keywords.length}, mapped files: ${this.flArrayFiles.length}.`);
+        const keywordsToFiles = keywords.map(key => {
+          // sorting by count of word in chapter (descending)
+          grouped[key].sort((a, b) => b[0] - a[0]);
+
+          // file ids to list string
+          return grouped[key].map(([count, fileIndex]) => fileIndex).join(';');
+        });
+
+        log(`Statistics: words: ${keywords.length}, mapped files: ${flArrayFiles.length}.`);
 
         if (keywords.length > 0 && keywordsToFiles.length > 0)
           setIndexFileData(this.aliasName, keywords.join('\n'), keywordsToFiles.join('\n'));
