@@ -42,7 +42,7 @@ class pKWGenerateIndex extends IPlugin {
     this.asyncStack = this.asyncStack.then((fileList) => {
       if (fileList) {
         const flArray = rowsToArray(fileList.trim())
-          .filter((x) => !(/^(http|=)/.test(x)))
+          //.filter((x) => !(/^(http|=)/.test(x)))
           .map(r => r = r.split('|'));
 
         this.flArray = flArray;
@@ -112,10 +112,11 @@ class pKWGenerateIndex extends IPlugin {
         keywords.forEach((key) => grouped[key] = grouped[key].map(([count, filename]) => this.flArrayFiles.indexOf(filename)).join(';'));
 
         // keywords to files mapping
-        const keywordsToFiles = keywords.map((x) => grouped[x]).join('\n');
+        const keywordsToFiles = keywords.map((x) => grouped[x]);
+        log(`Statistics: words: ${keywords.length}, mapped files: ${this.flArrayFiles.length}.`);
 
         if (keywords.length > 0 && keywordsToFiles.length > 0)
-          setIndexFileData(this.aliasName, keywords.join('\n'), keywordsToFiles);
+          setIndexFileData(this.aliasName, keywords.join('\n'), keywordsToFiles.join('\n'));
       });
     });
     
