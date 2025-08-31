@@ -43,7 +43,11 @@ class pKWGenerateIndex extends IPlugin {
       if (fileList) {
         const flArray = rowsToArray(fileList.trim())
           .filter((x) => !(/^(http|=)/.test(x)))
-          .map(r => r = r.split('|'));
+          .map(r => {
+            r = r.split('|');
+            r[0] = r[0].split('#')[0];
+            return r;
+          });
 
         this.flArray = flArray;
 
@@ -80,7 +84,6 @@ class pKWGenerateIndex extends IPlugin {
         }, 3000);
       }).then((result) => {
         // indexes per file
-        log('E rtz uzavírá se', this.indexes);
         var flatArray = [];
 
         for (const [file, innerMap] of this.indexes) {
@@ -90,9 +93,7 @@ class pKWGenerateIndex extends IPlugin {
         }
 
         // all index records in flat, min word length filtered out
-        log('E rtz uzavírá se flat array pre', flatArray);
         flatArray = flatArray.filter((x) => x && x[0] && x[0].length >= this.cfgMinWordLength);
-        log('E rtz uzavírá se flat array post', flatArray);
 
         const grouped = {};
 
@@ -105,21 +106,17 @@ class pKWGenerateIndex extends IPlugin {
         });
 
         const keywords = Object.keys(grouped).sort();
-        log('E kwds', grouped);
 
         // sorting by count of word in chapter (descending)
         keywords.forEach((x) => grouped[x].sort((a, b) => b[0] - a[0]));
-        log('E rtz uzavírá se (2)', grouped);
 
         this.flArrayFiles = this.flArray.map((x) => x[0]);
 
         // file path to file list index
         keywords.forEach((key) => grouped[key] = grouped[key].map(([count, filename]) => this.flArrayFiles.indexOf(filename)).join(';'));
 
+        // keywords to files mapping
         const keywordsToFiles = keywords.map((x) => grouped[x]).join('\n');
-
-        log('E rtz uzavírá se (3)', grouped);
-        log('E rtz uzavírá se (3)', keywordsToFiles);
 
         if (keywords.length > 0 && keywordsToFiles.length > 0)
           setIndexFileData(this.aliasName, keywords.join('\n'), keywordsToFiles);
