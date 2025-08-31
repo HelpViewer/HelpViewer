@@ -43,11 +43,7 @@ class pKWGenerateIndex extends IPlugin {
       if (fileList) {
         const flArray = rowsToArray(fileList.trim())
           .filter((x) => !(/^(http|=)/.test(x)))
-          .map(r => {
-            r = r.split('|');
-            r[0] = r[0].split('#')[0];
-            return r;
-          });
+          .map(r => r = r.split('|'));
 
         this.flArray = flArray;
 
