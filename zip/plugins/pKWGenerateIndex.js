@@ -46,7 +46,6 @@ class pKWGenerateIndex extends IPlugin {
           .map(r => r = r.split('|'));
 
         this.flArray = flArray;
-        log('E x a', flArray);
 
         if (Object.keys(flArray).length == 0) 
           return Promise.resolve();
@@ -103,34 +102,33 @@ class pKWGenerateIndex extends IPlugin {
             grouped[key] = [];
 
           grouped[key].push([value, file]);
-          log('E RRRRRRRRRR', grouped[key]);
         });
 
         const keywords = Object.keys(grouped).sort();
         log('E kwds', grouped);
-        alert('::1');
 
-        keywords.forEach(x => {
-          log('E grouped dump', x, grouped[x]);
-        });
-        alert('::2');
-
+        // sorting by count of word in chapter (descending)
         keywords.forEach((x) => grouped[x].sort((a, b) => b[0] - a[0]));
         log('E rtz uzavírá se (2)', grouped);
-        alert('::3');
 
         this.flArrayFiles = this.flArray.map((x) => x[0]);
 
-        keywords.forEach((key) => grouped[key] = grouped[key].map(([count, filename]) => this.flArrayFiles.indexOf(filename)));
+        // file path to file list index
+        keywords.forEach((key) => grouped[key] = grouped[key].map(([count, filename]) => this.flArrayFiles.indexOf(filename)).join(';'));
+
+        const keywordsToFiles = keywords.map((x) => grouped[x]).join('\n');
 
         log('E rtz uzavírá se (3)', grouped);
+        log('E rtz uzavírá se (3)', keywordsToFiles);
+
+        if (keywords.length > 0 && keywordsToFiles.length > 0)
+          setIndexFileData(this.aliasName, keywords.join('\n'), keywordsToFiles);
       });
     });
     
   }
 
   onETChapterShown(r) {
-    log('E CSWN:', r);
     this.indexes.set(r.address, new Map(r.content));
     this.countProcessed++;
   }
