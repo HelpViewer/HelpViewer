@@ -41,12 +41,21 @@ class pKWGenerateIndex extends IPlugin {
 
     this.asyncStack = this.asyncStack.then((fileList) => {
       if (fileList) {
-        const flArray = parseConfigFile(fileList);
+        const flArray = rowsToArray(fileList.trim())
+          .filter((x) => !(/^(http|=)/.test(x)))
+          .map(r => r = r.split('|'));
+        /*
+.filter((x, idx) => {
+          if (/^(http|=)/.test(x[0]))
+            flArray.splice(idx, 1);
+        })
+        */
+        log('E aaa', flArray);
 
-        for (const key of Object.keys(flArray)) {
-          if (/^(http|=)/.test(key))
-            delete flArray[key];
-        }
+        // for (const key of Object.keys(flArray)) {
+        //   if (/^(http|=)/.test(key))
+        //     delete flArray[key];
+        // }
 
         this.flArray = flArray;
         log('E x a', flArray);
