@@ -96,10 +96,14 @@ class pKWGenerateIndex extends IPlugin {
             this.fileListM.set(x[0], x[1]);
         });
         
-        if (firstSize != fileListM.size)
+        if (firstSize != fileListM.size) {
           this._processFileList(fileListM);
+          return false;
+        }
       })
       .then((result) => {
+        if (result === false)
+          return;
         // indexes per file
         var flatArray = [];
 
