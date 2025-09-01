@@ -470,5 +470,5 @@ function getHelpListingFiles(handlerOverData, readme1st = true) {
       files = filesParsed;
 
   })
-  .then(() => handlerOverData?.(files));
+  .then(() => handlerOverData?.(files, homeData));
 }
