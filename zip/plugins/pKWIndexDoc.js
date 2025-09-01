@@ -13,18 +13,19 @@ class pKWIndexDoc extends pTRPhasePlugin {
 
   onETShowChapterResolutions(r) {
     r.result = r.result.then((x) => {
-      r.content = r.content?.trim() || '';
-      r.content = textCleanupPhrase(r.content).replace(/[^a-z0-9\s]/g, " ");
-      r.content = r.content.split(/\s+/);
+      var content = r.content[0];
+      content = content?.trim() || '';
+      content = textCleanupPhrase(content).replace(/[^a-z0-9\s]/g, " ");
+      content = content.split(/\s+/);
   
       var counts = new Map();
   
-      r.content.forEach(w => {
+      content.forEach(w => {
         if (!w) return;
         counts.set(w, (counts.get(w) || 0) + 1);
       })
   
-      r.content = counts;
+      r.content[0] = counts;
       r.found = true;
     });
 

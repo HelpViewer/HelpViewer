@@ -47,6 +47,11 @@ pKWGenerateIndex:fulltextList
 pTopicRenderer:fulltextList
 pTRTriage:fulltextList-triage
 pTRLoadData:fulltextList-load
-pTREmptyPlugin:fulltextList-md
-pKWHTMLToText:fulltextList-htm
-pKWIndexDoc:fulltextList-unconnected
+pTRParseMd:fulltextList-md
+pTREmptyPlugin:fulltextList-htm
+pTRFlushToMemDOM:fulltextList-unconnected
+pTRUnconnectedTransformation:fulltextList-unconnected
+pTREmptyPlugin:fulltextList-md-fin
+pKWHTMLToText:fulltextList-htm-fin
+pKWGetChapterLinks:fulltextList-unconnected2
+pKWIndexDoc:fulltextList-unconnected2
