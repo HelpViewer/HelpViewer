@@ -434,7 +434,7 @@ function getHelpListingFiles(handlerOverData, readme1st = true) {
 
   Promise.all([tocData, chapters]).then(([x, chapt]) => {
     const tmpDiv = document.createElement('div');
-    const tree = linesToHtmlTree(x.trim(), 'TTMP', tmpDiv);
+    const tree = linesToHtmlTree(x.trim(), 'TTMP');
     tmpDiv.innerHTML = tree;
 
     var treeConversion = [];
