@@ -314,6 +314,10 @@ function setChapterIndex(data) {
     x.data = data;
   });
 }
+
+function getChapterIndexData() {
+  return sendEvent('ChapterIndexFileGetDataAll');
+}
 /*E: Plugin: pChapterIndexFile */
 
 /*S: Plugin: pIndexFile */
@@ -419,4 +423,37 @@ function processAClick(a, evt) {
   const pageStr = new URLSearchParams(origHref).get(PAR_NAME_PAGE);
   if (/(\.(md|htm|html))?$/i.test(pageStr))
     showChapterA(evt, a);
+}
+
+function getHelpListingFiles(handlerOverData) {
+  const tocData = sendEvent('GetTOCData') || Promise.resolve('');
+  const homeData = getHomePageData() || '';
+  const chapters = getChapterIndexData() || Promise.resolve('');
+
+  var files = [];
+
+  Promise.all([tocData, chapters]).then(([x, chapt]) => {
+    const tmpDiv = document.createElement('div');
+    const tree = linesToHtmlTree(x, 'TTMP');
+    tmpDiv.innerHTML = tree;
+
+    var treeConversion = [...rowsToArray(chapt)];
+    for (const o of $A('a', tmpDiv)) {
+      treeConversion.push(`${o.href}|${o.innerText}`);
+    }
+
+    treeConversion = treeConversion.filter((o) => !(/^(ftp|http|=)/.test(o.href)));
+    files.push(...treeConversion);
+  }).then(() => files.push(`${homeData}|${homeData}`))
+  .then(() => {
+    var filesParsed = new Map();
+    files.forEach((x) => {
+      const pair = x.split('|');
+
+      if (!filesParsed.has(pair[0]))
+        filesParsed.set(pair[0], pair[1]);
+    });
+    files = [...filesParsed];
+  })
+  .then(() => handlerOverData?.(files));
 }

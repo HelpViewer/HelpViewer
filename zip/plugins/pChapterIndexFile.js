@@ -17,6 +17,7 @@ class pChapterIndexFile extends IPlugin {
 
   static EVT_CHF_SET = ChapterIndexFileSetData.name;
   static EVT_CHF_GET = ChapterIndexFileGetData.name;
+  static EVT_CHF_GETALL = 'ChapterIndexFileGetDataAll';
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -50,6 +51,8 @@ class pChapterIndexFile extends IPlugin {
     }
     TI.eventDefinitions.push([T.EVT_CHF_GET, ChapterIndexFileGetData, h_EVT_CHF_GET]);
 
+    TI.eventDefinitions.push([T.EVT_CHF_GETALL, IEvent, null]);
+
     super.init();
   }
 
@@ -72,9 +75,17 @@ class pChapterIndexFile extends IPlugin {
   }
 
   onET_UserDataFileLoaded(evt) {
-    storageSearch(STO_HELP, this.cfgFilename).then((docList) => {
+    this._getIndexData().then((docList) => {
       setChapterIndex(docList);
     });
+  }
+
+  onET_ChapterIndexFileGetDataAll(evt) {
+    evt.result = this._getIndexData();
+  }
+
+  _getIndexData() {
+    return storageSearch(STO_HELP, this.cfgFilename);
   }
 }
 
