@@ -434,10 +434,11 @@ function getHelpListingFiles(handlerOverData, readme1st = true) {
 
   Promise.all([tocData, chapters]).then(([x, chapt]) => {
     const tmpDiv = document.createElement('div');
-    const tree = linesToHtmlTree(x, 'TTMP');
+    const tree = linesToHtmlTree(x.trim(), 'TTMP', tmpDiv);
     tmpDiv.innerHTML = tree;
 
-    var treeConversion = [...(rowsToArray(chapt) || [])];
+    var treeConversion = [];
+
     for (const o of $A('a', tmpDiv)) {
       const href = o.getAttribute('href');
       const pageStr = new URLSearchParams(href).get(PAR_NAME_PAGE) || href;
@@ -445,6 +446,7 @@ function getHelpListingFiles(handlerOverData, readme1st = true) {
     }
 
     treeConversion = treeConversion.filter((o) => o && !(/^(ftp|http|\?d=|=)/.test(o)));
+    treeConversion = [...(rowsToArray(chapt) || []), ...treeConversion];
     files.push(...treeConversion);
   })
   .then(() => {
