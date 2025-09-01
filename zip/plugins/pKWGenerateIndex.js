@@ -46,7 +46,6 @@ class pKWGenerateIndex extends IPlugin {
   }
 
   onETChapterShown(r) {
-    log('E OOOO', r.address, r.content);
     this.indexes.set(r.address, new Map(r.content[0]));
     this.countProcessed++;
     this.chapterLinks.push(...r.content[1])
@@ -73,22 +72,6 @@ class pKWGenerateIndex extends IPlugin {
     this.lastCount = 0;
 
     this.asyncStack = this.asyncStack.then((x) => {
-      const firstSize = fileListM.size;
-      log('E O1:', this.fileListM);
-      this.chapterLinks.forEach((x) => {
-        if (!this.fileListM.has(x))
-          this.fileListM.set(x[0], x[1]);
-      });
-
-      log('E O2:', this.fileListM);
-      if (firstSize != fileListM.size)
-      {
-        this._processFileList(fileListM);
-        return Promise.resolve("STOP");
-      }
-    });
-
-    this.asyncStack = this.asyncStack.then((x) => {
       var intervalId = null;
 
       const watchdog = new Promise((resolve, reject) => {
@@ -103,7 +86,20 @@ class pKWGenerateIndex extends IPlugin {
             this.lastCount = this.countProcessed;
           }
         }, 1000);
-      }).then((result) => {
+      })
+      .then((x) => {
+        const firstSize = fileListM.size;
+        const cl = this.chapterLinks;
+        this.chapterLinks = [];
+        cl.forEach((x) => {
+          if (!this.fileListM.has(x))
+            this.fileListM.set(x[0], x[1]);
+        });
+        
+        if (firstSize != fileListM.size)
+          return this._processFileList(fileListM);
+      })
+      .then((result) => {
         // indexes per file
         var flatArray = [];
 
