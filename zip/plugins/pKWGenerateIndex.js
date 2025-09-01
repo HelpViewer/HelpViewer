@@ -37,10 +37,11 @@ class pKWGenerateIndex extends IPlugin {
 
     this.asyncStack = Promise.resolve();
     this.fileListM = undefined;
+    this.chapterLinks = [];
 
     getHelpListingFiles((fileListM, readme) => {
       this.fileListM = fileListM;
-      this._processFileList(fileListM);
+      this._processFileList(fileListM, true);
     });
   }
 
@@ -48,9 +49,10 @@ class pKWGenerateIndex extends IPlugin {
     log('E OOOO', r.address, r.content);
     this.indexes.set(r.address, new Map(r.content[0]));
     this.countProcessed++;
+    this.chapterLinks.push(...r.content[1])
   }
 
-  _processFileList(fileListM) {
+  _processFileList(fileListM, firstRun = false) {
     if (!fileListM || fileListM.size == 0)
       return;
 
@@ -69,6 +71,22 @@ class pKWGenerateIndex extends IPlugin {
     this.indexes = new Map();
     this.countProcessed = 0;
     this.lastCount = 0;
+
+    this.asyncStack = this.asyncStack.then((x) => {
+      const firstSize = fileListM.size;
+      log('E O1:', this.fileListM);
+      this.chapterLinks.forEach((x) => {
+        if (!this.fileListM.has(x))
+          this.fileListM.set(x[0], x[1]);
+      });
+
+      log('E O2:', this.fileListM);
+      if (firstSize != fileListM.size)
+      {
+        this._processFileList(fileListM);
+        return Promise.resolve("STOP");
+      }
+    });
 
     this.asyncStack = this.asyncStack.then((x) => {
       var intervalId = null;

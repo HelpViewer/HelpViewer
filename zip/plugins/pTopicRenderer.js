@@ -165,8 +165,7 @@ class pTopicRenderer extends IPlugin {
 
       if (data.content) {
         log(`Forwarded exact data content in length: ${data.content.length} letters, updating phases list ...`);
-        // TODO : rethink if correction needed. %% can be multiple now
-        subIds = '%%' + this.cfgPhaseList.split('%%')[1];
+        subIds = '%%' + this.cfgPhaseList.split('%%', 2)[1];
         r.content = data.content;
       }
       subIds = subIds.replace(new RegExp('%%', 'g'), r.type?.substring(0, 3).toLowerCase()).split(';');
