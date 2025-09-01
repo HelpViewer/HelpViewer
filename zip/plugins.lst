@@ -28,6 +28,7 @@ puiButtonPrint
 puiNavigation:nav
 puiButtonEditRepo
 pTopicRenderer
+pTRClearPanels:-triage
 pTRTriage:-triage
 pTRKeywordRender:-triage
 pTRLoadData:-load

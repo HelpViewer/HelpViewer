@@ -97,7 +97,7 @@ class pKWGenerateIndex extends IPlugin {
         });
         
         if (firstSize != fileListM.size)
-          return this._processFileList(fileListM);
+          this._processFileList(fileListM);
       })
       .then((result) => {
         // indexes per file
