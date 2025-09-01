@@ -26,7 +26,8 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
           const nameO = `${treename}|${linksEmitted}`;
           getLatestReleaseBundleUri().then(hrefVal => {
             const targetO = $(nameO);
-            targetO.href = hrefVal;
+            if (targetO)
+              targetO.href = hrefVal;
           });
       } else
       if (path === '=latestHelp') {
@@ -34,7 +35,8 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
           const nameO = `${treename}|${linksEmitted}`;
           getLatestReleaseBundleUri(FILE_CONFIG, `Help-${activeLanguage}.zip`).then(hrefVal => {
             const targetO = $(nameO);
-            targetO.href = hrefVal;
+            if (targetO)
+              targetO.href = hrefVal;
           });
       } else 
       if (path.startsWith('http') || path.startsWith('?')) {
