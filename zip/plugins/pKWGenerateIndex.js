@@ -42,6 +42,7 @@ class pKWGenerateIndex extends IPlugin {
         return;
 
       const flArray = [...fileListM];
+      setChapterIndex(flArray.map((x) => `${x[0]}|${x[1]}`).join('\n'));
       this.countRequired = 0;
 
       this.asyncStack = this.asyncStack.then(() => {
