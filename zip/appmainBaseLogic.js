@@ -425,7 +425,7 @@ function processAClick(a, evt) {
     showChapterA(evt, a);
 }
 
-function getHelpListingFiles(handlerOverData) {
+function getHelpListingFiles(handlerOverData, readme1st = true) {
   const tocData = sendEvent('GetTOCData') || Promise.resolve('');
   const homeData = getHomePageData() || '';
   const chapters = getChapterIndexData() || Promise.resolve('');
@@ -456,7 +456,19 @@ function getHelpListingFiles(handlerOverData) {
         filesParsed.set(pair[0], pair[1]);
     });
 
-    files = [...(filesParsed.has(homeData) ? filesParsed : [[homeData, homeData], ...filesParsed])];
+    var homeDataPair = [homeData, homeData];
+
+    if (filesParsed.has(homeData))
+      homeDataPair = [homeData, filesParsed.get(homeData)];
+    else 
+      filesParsed.set(homeData, homeData);
+
+    if (readme1st) {
+      filesParsed.delete(homeData);
+      files = [homeDataPair, ...filesParsed];
+    } else
+      files = [...filesParsed];
+
   })
   .then(() => handlerOverData?.(files));
 }
