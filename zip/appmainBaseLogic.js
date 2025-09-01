@@ -437,23 +437,26 @@ function getHelpListingFiles(handlerOverData) {
     const tree = linesToHtmlTree(x, 'TTMP');
     tmpDiv.innerHTML = tree;
 
-    var treeConversion = [...rowsToArray(chapt)];
+    var treeConversion = [...(rowsToArray(chapt) || [])];
     for (const o of $A('a', tmpDiv)) {
-      treeConversion.push(`${o.href}|${o.innerText}`);
+      const href = o.getAttribute('href');
+      const pageStr = new URLSearchParams(href).get(PAR_NAME_PAGE) || href;
+      treeConversion.push(`${pageStr}|${o.innerText}`);
     }
 
-    treeConversion = treeConversion.filter((o) => !(/^(ftp|http|=)/.test(o.href)));
+    treeConversion = treeConversion.filter((o) => o && !(/^(ftp|http|\?d=|=)/.test(o)));
     files.push(...treeConversion);
-  }).then(() => files.push(`${homeData}|${homeData}`))
+  })
   .then(() => {
     var filesParsed = new Map();
     files.forEach((x) => {
       const pair = x.split('|');
 
-      if (!filesParsed.has(pair[0]))
+      if (pair[0] && !filesParsed.has(pair[0]))
         filesParsed.set(pair[0], pair[1]);
     });
-    files = [...filesParsed];
+
+    files = [...(filesParsed.has(homeData) ? filesParsed : [[homeData, homeData], ...filesParsed])];
   })
   .then(() => handlerOverData?.(files));
 }
