@@ -36,94 +36,89 @@ class pKWGenerateIndex extends IPlugin {
       return;
 
     this.asyncStack = Promise.resolve();
-    this.asyncStack = this.asyncStack.then(() => storageSearch(STO_HELP, this.cfgFilenameFiles));
-    this.flArray = [];
 
-    this.asyncStack = this.asyncStack.then((fileList) => {
-      if (fileList) {
-        const flArray = rowsToArray(fileList.trim())
-          //.filter((x) => !(/^(http|=)/.test(x)))
-          .map(r => r = r.split('|'));
+    getHelpListingFiles((fileListM, readme) => {
+      if (!fileListM || fileListM.size == 0)
+        return;
 
-        this.flArray = flArray;
+      const flArray = [...fileListM];
+      this.countRequired = 0;
 
-        if (Object.keys(flArray).length == 0) 
-          return Promise.resolve();
-
+      this.asyncStack = this.asyncStack.then(() => {
         const filesIndexed = flArray.map(([file, title]) => Promise.resolve(showChapter(undefined, undefined, file, undefined, undefined, this.aliasName)));
         return Promise.all(filesIndexed).then((fileIndexes) => {
+          this.countRequired = fileIndexes.length;
           return fileIndexes;
         });
-
-      }
-    });
-
-    this.indexes = new Map();
-    this.countProcessed = 0;
-    this.countRequired = 0;
-    this.lastCount = 0;
-    this.asyncStack = this.asyncStack.then((fileIndexes) => this.countRequired = fileIndexes.length);
-
-    this.asyncStack = this.asyncStack.then((x) => {
-      var intervalId = null;
-
-      const watchdog = new Promise((resolve, reject) => {
-        intervalId = setInterval(() => {
-          if (this.countProcessed === this.countRequired) {
-            clearInterval(intervalId);
-            resolve(true);
-          } else if (this.countProcessed === this.lastCount) {
-            resolve(false);
-          } else {
-            this.lastCount = this.countProcessed;
-          }
-        }, 3000);
-      }).then((result) => {
-        // indexes per file
-        var flatArray = [];
-
-        for (const [file, innerMap] of this.indexes) {
-          for (const [key, value] of innerMap) {
-            flatArray.push([key, value, file]);
-          }
-        }
-
-        // all index records in flat, min word length filtered out
-        flatArray = flatArray.filter((x) => x && x[0] && x[0].length >= this.cfgMinWordLength);
-
-        const grouped = {};
-        const flArrayFiles = this.flArray.map((x) => x[0]);
-
-        for (const [file, innerMap] of this.indexes) {
-          for (const [key, value] of innerMap) {
-            if (!key || key.length < this.cfgMinWordLength) 
-              continue;
-            
-            // grouping per word
-            if (!grouped[key])
-              grouped[key] = [];
-            
-            // file path to file list index
-            grouped[key].push([value, flArrayFiles.indexOf(file)]);
-          }
-        }
-
-        const keywords = Object.keys(grouped).sort();
-
-        // keywords to files mapping
-        const keywordsToFiles = keywords.map(key => {
-          // sorting by count of word in chapter (descending)
-          grouped[key].sort((a, b) => b[0] - a[0]);
-
-          // file ids to list string
-          return grouped[key].map(([count, fileIndex]) => fileIndex).join(';');
-        });
-
-        log(`Statistics: words: ${keywords.length}, mapped files: ${flArrayFiles.length}.`);
-
-        if (keywords.length > 0 && keywordsToFiles.length > 0)
-          setIndexFileData(this.aliasName, keywords.join('\n'), keywordsToFiles.join('\n'));
       });
+  
+      this.indexes = new Map();
+      this.countProcessed = 0;
+      this.lastCount = 0;
+  
+      this.asyncStack = this.asyncStack.then((x) => {
+        var intervalId = null;
+  
+        const watchdog = new Promise((resolve, reject) => {
+          intervalId = setInterval(() => {
+            if (this.countProcessed === this.countRequired) {
+              clearInterval(intervalId);
+              resolve(true);
+            } else if (this.countProcessed === this.lastCount) {
+              clearInterval(intervalId);
+              resolve(false);
+            } else {
+              this.lastCount = this.countProcessed;
+            }
+          }, 1000);
+        }).then((result) => {
+          // indexes per file
+          var flatArray = [];
+  
+          for (const [file, innerMap] of this.indexes) {
+            for (const [key, value] of innerMap) {
+              flatArray.push([key, value, file]);
+            }
+          }
+  
+          // all index records in flat, min word length filtered out
+          flatArray = flatArray.filter((x) => x && x[0] && x[0].length >= this.cfgMinWordLength);
+  
+          const grouped = {};
+          const flArrayFiles = flArray.map((x) => x[0]);
+  
+          for (const [file, innerMap] of this.indexes) {
+            for (const [key, value] of innerMap) {
+              if (!key || key.length < this.cfgMinWordLength) 
+                continue;
+              
+              // grouping per word
+              if (!grouped[key])
+                grouped[key] = [];
+              
+              // file path to file list index
+              grouped[key].push([value, flArrayFiles.indexOf(file)]);
+            }
+          }
+  
+          const keywords = Object.keys(grouped).sort();
+  
+          // keywords to files mapping
+          const keywordsToFiles = keywords.map(key => {
+            // sorting by count of word in chapter (descending)
+            grouped[key].sort((a, b) => b[0] - a[0]);
+  
+            // file ids to list string
+            return grouped[key].map(([count, fileIndex]) => fileIndex).join(';');
+          });
+  
+          log(`Statistics: words: ${keywords.length}, mapped files: ${flArrayFiles.length}.`);
+  
+          if (keywords.length > 0 && keywordsToFiles.length > 0)
+            setIndexFileData(this.aliasName, keywords.join('\n'), keywordsToFiles.join('\n'));
+        });
+      });
+
     });
     
   }
