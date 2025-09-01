@@ -465,9 +465,9 @@ function getHelpListingFiles(handlerOverData, readme1st = true) {
 
     if (readme1st) {
       filesParsed.delete(homeData);
-      files = [homeDataPair, ...filesParsed];
+      files = new Map([homeDataPair, ...filesParsed]);
     } else
-      files = [...filesParsed];
+      files = filesParsed;
 
   })
   .then(() => handlerOverData?.(files));
