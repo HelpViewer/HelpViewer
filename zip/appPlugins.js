@@ -56,7 +56,7 @@ class IPlugin {
       const alias = this.aliasName;
       const strictSwitch = this.eventIdStrict;
       var handlerFilterId = (d) => {
-        if (d.id == alias || (!strictSwitch && (!d.id || alias == '')))
+        if (isEventHandlerOpened(alias, strictSwitch, d.id))
         {
           log(`[Plugins] Event "${name}" with id "${d.id}" forwarded to plugin ${this.constructor.name} with id: "${alias}".`);
           handler(d);
@@ -88,6 +88,10 @@ class IPlugin {
       }
     };
   }
+}
+
+function isEventHandlerOpened(alias, strictSwitch, eventId) {
+  return eventId == alias || (!strictSwitch && (!eventId || alias == ''));
 }
 
 class Resource extends IPlugin {
