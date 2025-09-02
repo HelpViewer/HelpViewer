@@ -160,23 +160,24 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     return replystr;
   }
 
-  _collectEventComPath(objectData, collectedData, eventName, pluginName, instanceName, level = 0) {
+  _collectEventComPath(objectData, collectedData, eventName, pluginName, instanceName, strictSwitch = false, level = 0) {
     objectData.forEach(x => {
+      //isEventHandlerOpened(alias, strictSwitch, d.id)
       const newLevel = level + 1;
       if (level === 0 || level === 1) {
         if (x.descriptor == ObjectExplorerObjectDescriptor.PLUGIN)
-          this._collectEventComPath(x.subItems, collectedData, eventName, x.id, undefined, newLevel);
+          this._collectEventComPath(x.subItems, collectedData, eventName, x.id, undefined, false, newLevel);
         if (x.descriptor == ObjectExplorerObjectDescriptor.PLUGININSTANCE)
-          this._collectEventComPath(x.subItems, collectedData, eventName, pluginName, x.id.substring(pluginName.length + 1), newLevel);
+          this._collectEventComPath(x.subItems, collectedData, eventName, pluginName, x.id.substring(pluginName.length + 1), x.interconnectedObject.eventIdStrict, newLevel);
       } else {
         var id = x.id.split(':').pop();
         if (id == eventName || x.id.endsWith(`:onET${eventName}`) || x.id.endsWith(`:onET_${eventName}`)) {
           if (x.descriptor == ObjectExplorerObjectDescriptor.EVENT_NOHANDLER)
-            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_DEFINITION));
+            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_DEFINITION, strictSwitch));
           if (x.descriptor == ObjectExplorerObjectDescriptor.EVENT)
-            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_ACCEPT));
+            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_ACCEPT, strictSwitch));
           if (x.descriptor == ObjectExplorerObjectDescriptor.HANDLER)
-            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_ACCEPT));  
+            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_ACCEPT, strictSwitch));
         }
       }
 
@@ -539,13 +540,15 @@ class EventCommunicationPathInfo {
   //static DIR_TWOWAY = '⇄'; //2;
   static DIR_DEFINITION = '📄'; //3;
 
-  constructor(pluginName, instanceName, handlerName, direction) {
+  constructor(pluginName, instanceName, handlerName, direction, strictSwitch) {
     this.pluginName = pluginName;
     this.instanceName = instanceName;
     this.handlerName = handlerName;
     this.direction = direction;
 
-    this.openedAll = handlerName.startsWith('onET_');
+    //this.openedAll = handlerName.startsWith('onET_');
+    //this.openedAll = isEventHandlerOpened(instanceName, strictSwitch, '') || handlerName.startsWith('onET_');
+    this.openedAll = handlerName.startsWith('onET_') || !instanceName || (this.direction == EventCommunicationPathInfo.DIR_DEFINITION);
   }
 }
 
