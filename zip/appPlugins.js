@@ -66,6 +66,7 @@ class IPlugin {
       };
 
       this._subscribeHandler(name, alias, handlerFilterId);
+      handlerFilterId.__pluginPath = `${this.constructor.name}:${alias}:${handler.name};${handlerFilterId.name}`;
     }
   }
 
