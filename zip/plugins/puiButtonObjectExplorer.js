@@ -548,7 +548,7 @@ class EventCommunicationPathInfo {
 
     //this.openedAll = handlerName.startsWith('onET_');
     //this.openedAll = isEventHandlerOpened(instanceName, strictSwitch, '') || handlerName.startsWith('onET_');
-    this.openedAll = handlerName.startsWith('onET_') || !instanceName || (this.direction == EventCommunicationPathInfo.DIR_DEFINITION);
+    this.openedAll = handlerName.startsWith('onET_') || !instanceName;
   }
 }
 
