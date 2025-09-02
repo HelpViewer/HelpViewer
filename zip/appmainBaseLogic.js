@@ -474,3 +474,14 @@ function getHelpListingFiles(handlerOverData, readme1st = true) {
   })
   .then(() => handlerOverData?.(files, homeData));
 }
+
+function groupBy(data, keyGetter) {
+  const grouped = data.reduce((acc, e) => {
+    const key = keyGetter(e);
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(e);
+    return acc;
+  }, {});
+
+  return grouped;
+}

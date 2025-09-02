@@ -160,6 +160,29 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     return replystr;
   }
 
+  _collectEventComPath(objectData, collectedData, eventName, pluginName, instanceName, level = 0) {
+    objectData.forEach(x => {
+      const newLevel = level + 1;
+      if (level === 0 || level === 1) {
+        if (x.descriptor == ObjectExplorerObjectDescriptor.PLUGIN)
+          this._collectEventComPath(x.subItems, collectedData, eventName, x.id, undefined, newLevel);
+        if (x.descriptor == ObjectExplorerObjectDescriptor.PLUGININSTANCE)
+          this._collectEventComPath(x.subItems, collectedData, eventName, pluginName, x.id.substring(pluginName.length + 1), newLevel);
+      } else {
+        var id = x.id.split(':').pop();
+        if (id == eventName || x.id.endsWith(`:onET${eventName}`) || x.id.endsWith(`:onET_${eventName}`)) {
+          if (x.descriptor == ObjectExplorerObjectDescriptor.EVENT_NOHANDLER)
+            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_DEFINITION));
+          if (x.descriptor == ObjectExplorerObjectDescriptor.EVENT)
+            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_ACCEPT));
+          if (x.descriptor == ObjectExplorerObjectDescriptor.HANDLER)
+            collectedData.push(new EventCommunicationPathInfo(pluginName, instanceName, id, EventCommunicationPathInfo.DIR_ACCEPT));  
+        }
+      }
+
+    });
+  }
+
   _getConfigKeyValues(keyBaseName, instance) {
     const nameDefault = `DEFAULT_KEY_CFG_${keyBaseName}`;
     const defVal = instance[nameDefault];
@@ -338,6 +361,26 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
             rv.forEach(([h, dC, dG]) => desc += `${h}\n${dC || dG}\n`);
             
+            desc += `\n## ⇄ ${_T('commPath')}\n`;
+            desc += `\n**${_T('direction')}**\n`;
+            desc += `- ${EventCommunicationPathInfo.DIR_TRANSMIT} ${_T('transmitter')} (DIR_TRANSMIT)\n`;
+            desc += `- ${EventCommunicationPathInfo.DIR_ACCEPT} ${_T('hdl')} (DIR_ACCEPT)\n`;
+            desc += `- ${EventCommunicationPathInfo.DIR_DEFINITION} ${_T('oeod_evtD')} (DIR_DEFINITION)\n`;
+            desc += `\n**${_T('filter')}**\n`;
+            desc += `- 🟢 ${_T('openToIdAll')}\n`;
+            desc += `- 🔺 ${_T('openToId')}\n`;
+
+            var collectedData = [];
+            this._collectEventComPath(this.pluginNodes, collectedData, evtName);
+            const grouped = groupBy(collectedData, (e) => e.instanceName);
+
+            for (const path in grouped) {
+              desc += `\n### ⇄ ${path}\n| ${_T('oeod_plg')} | ${_T('oeod_inst')} | ${_T('oeod_hdl')} | ${_T('direction')} | ${_T('filter')} |\n| --- | --- | --- | :---: | :---: |\n`;
+              grouped[path].forEach(i => 
+                desc += `| ${i.pluginName} | ${i.instanceName} | ${i.handlerName} | ${i.direction} | ${i.openedAll ? '🟢' : '🔺'} |\n`
+              );
+            }
+
             return desc;
           }
         }
@@ -487,6 +530,22 @@ class ObjectExplorerTreeItem {
     this.title = title || this.id;
     this.plus = plus || [];
     this.interconnectedObject = interconnectedObject;
+  }
+}
+
+class EventCommunicationPathInfo {
+  static DIR_TRANSMIT = '🛰️'; //0;
+  static DIR_ACCEPT = '📨'; //1;
+  //static DIR_TWOWAY = '⇄'; //2;
+  static DIR_DEFINITION = '📄'; //3;
+
+  constructor(pluginName, instanceName, handlerName, direction) {
+    this.pluginName = pluginName;
+    this.instanceName = instanceName;
+    this.handlerName = handlerName;
+    this.direction = direction;
+
+    this.openedAll = handlerName.startsWith('onET_');
   }
 }
 
