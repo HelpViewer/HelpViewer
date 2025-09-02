@@ -3,6 +3,7 @@ class pKWGenerateIndex extends IPlugin {
   static KEY_CFG_FILENAMEKWMAP = 'FILENAMEKWMAP';
   static KEY_CFG_FILENAMELISTFILES = 'FILENAMELISTFILES';
   static KEY_CFG_MINWORDLENGTH = 'MINWORDLENGTH';
+  static KEY_CFG_ADDITIONALINDEXFILES = 'ADDITIONALINDEXFILES';
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -12,6 +13,7 @@ class pKWGenerateIndex extends IPlugin {
     this.DEFAULT_KEY_CFG_FILENAMEKWMAP = 'fts-keywords-files.lst';
     this.DEFAULT_KEY_CFG_FILENAMELISTFILES = 'files.lst';
     this.DEFAULT_KEY_CFG_MINWORDLENGTH = 3;
+    this.DEFAULT_KEY_CFG_ADDITIONALINDEXFILES = '_sidebar.md;_navbar.md';
   }
 
   init() {
@@ -22,6 +24,7 @@ class pKWGenerateIndex extends IPlugin {
     this.cfgFilenameKWMAP = this.config[T.KEY_CFG_FILENAMEKWMAP] || TI.DEFAULT_KEY_CFG_FILENAMEKWMAP;
     this.cfgFilenameFiles = this.config[T.KEY_CFG_FILENAMELISTFILES] || TI.DEFAULT_KEY_CFG_FILENAMELISTFILES;
     this.cfgMinWordLength = parseInt(this.config[T.KEY_CFG_MINWORDLENGTH]) || TI.DEFAULT_KEY_CFG_MINWORDLENGTH;
+    this.cfgAdditionalIndexFiles = this.config[T.KEY_CFG_ADDITIONALINDEXFILES] || TI.DEFAULT_KEY_CFG_ADDITIONALINDEXFILES;
 
     super.init();
     this.asyncStack = undefined;
@@ -40,6 +43,10 @@ class pKWGenerateIndex extends IPlugin {
     this.chapterLinks = [];
 
     getHelpListingFiles((fileListM, readme) => {
+      this.cfgAdditionalIndexFiles.split(';').forEach(f => {
+        if (!fileListM.has(f))
+          fileListM.set(f, f);
+      });
       this.fileListM = fileListM;
       this._processFileList(fileListM, true);
     });
