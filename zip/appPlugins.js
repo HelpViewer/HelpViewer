@@ -5,6 +5,7 @@ class IPlugin {
     this.unsubscribersToEB = [];
     this.eventIdStrict = false;
     this.eventDefinitions = [];
+    this.eventCallsMap = new Map();
   }
 
   init() {
@@ -88,6 +89,14 @@ class IPlugin {
         });
       }
     };
+  }
+
+  catalogizeEventCall(fn, eventName, eventId = '') {
+    const key = eventName;
+    if (!this.eventCallsMap.has(key))
+      this.eventCallsMap.set(key, new Set());
+    const val = `${fn.name}:${eventId}`;
+    this.eventCallsMap.get(key).add(val);
   }
 }
 

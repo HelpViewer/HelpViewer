@@ -18,6 +18,8 @@ const UI_PLUGIN_HEADER = 'header';
 
 const MARKER_MARKWORD = '@@';
 
+const EventIdDynamic = '[D]';
+
 const ChapterContentType = {
   CHAPTER_SOURCE: 'CHAPTER_SOURCE',
   KEYWORD_LIST: 'KEYWORD_LIST',
