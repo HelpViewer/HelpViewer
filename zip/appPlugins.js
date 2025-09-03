@@ -97,7 +97,7 @@ class IPlugin {
     const key = eventName;
     if (!this.eventCallsMap.has(key))
       this.eventCallsMap.set(key, new Set());
-    const val = `${fn.__name || fn.name}:${eventId}`;
+    const val = `${fn.__name || fn.name || fn}:${eventId}`;
     this.eventCallsMap.get(key).add(val);
   }
 }
