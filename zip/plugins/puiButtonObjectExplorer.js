@@ -119,7 +119,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       plg.eventCallsMap.keys().forEach(evt => {
         plug.subItems.push(new ObjectExplorerTreeItem(baseN + evt, 
           ObjectExplorerObjectDescriptor.TRANSMIT, 
-          [], getEventInput(evt), evt
+          [], [evt], evt
         ));
       });
     });
