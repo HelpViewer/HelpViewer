@@ -167,8 +167,14 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       if (level === 0 || level === 1) {
         if (x.descriptor == ObjectExplorerObjectDescriptor.PLUGIN)
           this._collectEventComPath(x.subItems, collectedData, eventName, x.id, undefined, false, newLevel);
-        if (x.descriptor == ObjectExplorerObjectDescriptor.PLUGININSTANCE)
-          this._collectEventComPath(x.subItems, collectedData, eventName, pluginName, x.id.substring(pluginName.length + 1), x.interconnectedObject.eventIdStrict, newLevel);
+        if (x.descriptor == ObjectExplorerObjectDescriptor.PLUGININSTANCE) {
+          const nextInstName = x.id.substring(pluginName.length + 1);
+          this._collectEventComPath(x.subItems, collectedData, eventName, pluginName, nextInstName, x.interconnectedObject.eventIdStrict, newLevel);
+          x.interconnectedObject.eventCallsMap.get(eventName)?.forEach(regi => {
+            const [handler, ide] = regi.split(':');
+            collectedData.push(new EventCommunicationPathInfo(pluginName, nextInstName, handler, EventCommunicationPathInfo.DIR_TRANSMIT, strictSwitch));
+          });
+        }
       } else {
         var id = x.id.split(':').pop();
         if (id == eventName || x.id.endsWith(`:onET${eventName}`) || x.id.endsWith(`:onET_${eventName}`)) {
