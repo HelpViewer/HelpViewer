@@ -527,11 +527,11 @@ class ObjectExplorerObjectDescriptor {
     ['evt', ObjectExplorerObjectDescriptor._BIGCLASS_EVT],
     ['evtD', ObjectExplorerObjectDescriptor._BIGCLASS_EVT],
     ['hdl', ObjectExplorerObjectDescriptor._BIGCLASS_HDL],
+    ['tra', 'transmitter'],
     ['btn', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['page', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['tree', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['inst', 'oeod_inst'],
-    ['tra', 'transmitter'],
   ]);
 
   static _BIGCLASS_R = reverseMap(this._BIGCLASS);
