@@ -53,6 +53,10 @@ class pChapterIndexFile extends IPlugin {
 
     TI.eventDefinitions.push([T.EVT_CHF_GETALL, IEvent, null]);
 
+    TI.catalogizeEventCall(TI.onET_ChapterIndexFileGetDataAll, EventNames.StorageGet);
+    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.StorageGet);
+    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.ChapterIndexFileSetData);
+
     super.init();
   }
 

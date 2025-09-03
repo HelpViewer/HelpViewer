@@ -12,8 +12,9 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
   
   init() {
     super.init();
-    hideButton(this.button.id, false);
-    this.catalogizeEventCall(this._treeClick, EventNames.IndexFileGetKeywordData, EventIdDynamic);
+    const TI = this;
+    hideButton(TI.button.id, false);
+    TI.catalogizeEventCall(TI._treeClick, EventNames.IndexFileGetKeywordData, EventIdDynamic);
   }
   
   deInit() {
