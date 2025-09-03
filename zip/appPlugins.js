@@ -79,7 +79,7 @@ class IPlugin {
   }
 
   static wrapAsyncHandler(fn) {
-    return function(data) {
+    var reply = function(data) {
       const reply = fn(data);
       data.result = reply;
       if (reply && typeof reply.then === "function") {
@@ -89,13 +89,15 @@ class IPlugin {
         });
       }
     };
+    reply.__name = fn.name;
+    return reply;
   }
 
   catalogizeEventCall(fn, eventName, eventId = '') {
     const key = eventName;
     if (!this.eventCallsMap.has(key))
       this.eventCallsMap.set(key, new Set());
-    const val = `${fn.name}:${eventId}`;
+    const val = `${fn.__name || fn.name}:${eventId}`;
     this.eventCallsMap.get(key).add(val);
   }
 }
