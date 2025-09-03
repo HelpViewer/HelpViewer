@@ -114,6 +114,14 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         if ((!v.aliasName || !v._fileLength)) return;
         plug.subItems.push(new ObjectExplorerTreeItem(baseN + v.aliasName, ObjectExplorerObjectDescriptor.RESOURCE, [], v, v.aliasName, [v._fileLength]));
       });
+
+      // sending events
+      plg.eventCallsMap.keys().forEach(evt => {
+        plug.subItems.push(new ObjectExplorerTreeItem(baseN + evt, 
+          ObjectExplorerObjectDescriptor.TRANSMIT, 
+          [], undefined, evt
+        ));
+      });
     });
 
     // making hierarchy of basic objects
@@ -483,6 +491,7 @@ class ObjectExplorerObjectDescriptor {
   static EVENT_NOHANDLER = new ObjectExplorerObjectDescriptor('evtD', '📄⚡');
 
   static HANDLER = new ObjectExplorerObjectDescriptor('hdl', '👂');
+  static TRANSMIT = new ObjectExplorerObjectDescriptor('tra', '🛰️');
 
   static CONFIG = new ObjectExplorerObjectDescriptor('cfg', '⚙️');
   static CONFIG_FROMFILE = new ObjectExplorerObjectDescriptor('cfgE', '📄⚙️');
@@ -506,6 +515,7 @@ class ObjectExplorerObjectDescriptor {
 
   static _i_cfgopt = '⚙️';
   static _i_hdl = '👂';
+  static _i_transmitter = '🛰️';
   static _i_uiobject = '🔘';
   static _i_event = '⚡';
   static _i_oeod_inst = '🔹';
@@ -520,6 +530,7 @@ class ObjectExplorerObjectDescriptor {
     ['page', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['tree', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['inst', 'oeod_inst'],
+    ['tra', 'transmitter'],
   ]);
 
   static _BIGCLASS_R = reverseMap(this._BIGCLASS);
