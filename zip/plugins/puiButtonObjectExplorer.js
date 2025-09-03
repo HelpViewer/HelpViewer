@@ -352,7 +352,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       case ObjectExplorerObjectDescriptor.EVENT_NOHANDLER.abbr:
       case ObjectExplorerObjectDescriptor.HANDLER.abbr:
       case ObjectExplorerObjectDescriptor.TRANSMIT.abbr:
-        const reply = this._getNamesForEventClassHandler(found.interconnectedObject);
+        const reply = this._getNamesForEventClassHandler(found?.interconnectedObject);
         if (reply && reply.length >= 3) {
           const [evtName, evtClassI, evtHandler] = reply;
           delayedFunction = async () => {
