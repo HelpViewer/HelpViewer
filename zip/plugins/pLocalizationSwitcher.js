@@ -103,7 +103,7 @@ class pLocalizationSwitcher extends IPlugin {
       langNames.push(`${alias}|${val}`);
     };
 
-    langNames = [...new Set(langNames)];
+    langNames = [...new Set(langNames)].filter((x) => x && x != '|');
 
     return langNames;
   }
