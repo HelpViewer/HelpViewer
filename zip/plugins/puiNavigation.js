@@ -86,6 +86,8 @@ class puiNavigation extends IPlugin {
         });
       }
 
+      TI.catalogizeEventCall(_buttonAction, T.EVT_NAV_MOVE, this.aliasName);
+
       const _buttonActionLeft = (evt) => {
         const next = this.getId()-1;
         _buttonAction(evt, next, -1);

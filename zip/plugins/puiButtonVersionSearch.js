@@ -9,8 +9,20 @@ class puiButtonVersionSearch extends puiButton {
   }
 
   init() {
+    const T = this.constructor;
+    const TI = this;
+
     super.init();
     hideButton(this.button.id, false);
+
+    TI.catalogizeEventCall(TI.init, EventNames.ElementSetVisibility);
+
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.ShowChapter);
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.ElementSetVisibility);
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.ShowBookmarks);
+    
+    TI.catalogizeEventCall(TI.onET_ConfigFileReloadFinished, EventNames.ConfigFileGet);
+    TI.catalogizeEventCall(TI.onET_ConfigFileReloadFinished, EventNames.ElementSetVisibility);
   }
 
   deInit() {

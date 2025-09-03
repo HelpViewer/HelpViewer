@@ -11,6 +11,8 @@ class puiButtonToggleSide extends puiButton {
 
   init() {
     const T = this.constructor;
+    const TI = this;
+
     this.KEY_LS_SIDEBARSIDE = this.config[T.KEY_CFG_STOREKEY] || 'sidebarSide';
     this.state = getUserConfigValue(this.KEY_LS_SIDEBARSIDE) || 0;
     
@@ -18,6 +20,11 @@ class puiButtonToggleSide extends puiButton {
       this.toggleSidebarSideHandler();
 
     super.init();
+
+    TI.catalogizeEventCall(TI.init, EventNames.UserConfigGet);
+
+    TI.catalogizeEventCall(TI.toggleSidebarSideHandler, EventNames.EVT_SIDE_SIDE_TOGGLE);
+    TI.catalogizeEventCall(TI.init, EventNames.UserConfigSet);
   }
 
   deInit() {
