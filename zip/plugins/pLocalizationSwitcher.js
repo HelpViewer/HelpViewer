@@ -59,17 +59,27 @@ class pLocalizationSwitcher extends IPlugin {
     };
     TI.eventDefinitions.push([T.EVT_LOC_LANGUAGES, LocGetLanguages, h_EVT_LOC_LANGUAGES]);
 
+    TI.catalogizeEventCall(h_EVT_LOC_LANGUAGES, EventNames.StorageGetSubdirs);
+    TI.catalogizeEventCall(h_EVT_LOC_LANGUAGES, EventNames.StorageGet);
+
     const h_EVT_LOC_LOAD = (data) => {
       this.loadLocalization(data.name, data.eventId);
     };
     TI.eventDefinitions.push([T.EVT_LOC_LOAD, LocLoad, h_EVT_LOC_LOAD]);
 
+    TI.catalogizeEventCall(h_EVT_LOC_LOAD, EventNames.StorageGet);
+    TI.catalogizeEventCall(h_EVT_LOC_LOAD, T.EVT_LOC_LOAD);
+    TI.catalogizeEventCall(h_EVT_LOC_LOAD, EventNames.UserConfigSet);
+    TI.catalogizeEventCall(h_EVT_LOC_LOAD, T.EVT_LOC_LOADED);
+    
     const h_EVT_LOC_REFRESH = (data) => {
       this.refreshTitlesForLangStrings(null, data.strings);
     };
     TI.eventDefinitions.push([T.EVT_LOC_REFRESH, LocRefresh, h_EVT_LOC_REFRESH]);
 
     TI.eventDefinitions.push([T.EVT_LOC_LOADED, LocLoad, null]); // outside event handlers
+
+    TI.catalogizeEventCall(TI.init, EventNames.UserConfigGet);
 
     super.init();
   }

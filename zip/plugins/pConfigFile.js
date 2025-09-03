@@ -38,7 +38,7 @@ class pConfigFile extends IPlugin {
     }
     TI.eventDefinitions.push([T.EVT_CF_GET, ConfigFileGet, h_EVT_CF_GET]);
 
-    const h_EVT_CF_RELOAD = IPlugin.wrapAsyncHandler(function h_EVT_CF_RELOAD(data) {
+    const h_EVT_CF_RELOAD = IPlugin.wrapAsyncHandler((data) => {
       this._loadCFG();
       data.result = this.aliasName;
     });
@@ -48,8 +48,9 @@ class pConfigFile extends IPlugin {
 
     TI.catalogizeEventCall(h_EVT_CF_GET, T.EVT_CF_GET, FILE_CONFIG_DEFAULT);
 
-    TI.catalogizeEventCall(h_EVT_CF_RELOAD, EventNames.StorageGet);
-    TI.catalogizeEventCall(h_EVT_CF_RELOAD, T.EVT_CF_RELOAD_FINISHED);
+    const n_h_EVT_CF_RELOAD = 'h_EVT_CF_RELOAD';
+    TI.catalogizeEventCall(n_h_EVT_CF_RELOAD, EventNames.StorageGet);
+    TI.catalogizeEventCall(n_h_EVT_CF_RELOAD, T.EVT_CF_RELOAD_FINISHED);
 
     TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.StorageGet);
     TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, T.EVT_CF_RELOAD_FINISHED);
