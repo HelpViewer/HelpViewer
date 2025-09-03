@@ -201,6 +201,13 @@ class pTopicRenderer extends IPlugin {
       });
     }
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER, ShowChapter, h_EVT_TOPREN_SHOW_CHAPTER]);
+
+    const n_h_EVT_TOPREN_SHOW_CHAPTER = 'h_EVT_TOPREN_SHOW_CHAPTER';
+    TI.catalogizeEventCall(n_h_EVT_TOPREN_SHOW_CHAPTER, EventNames.ConfigFileGet);
+    TI.catalogizeEventCall(n_h_EVT_TOPREN_SHOW_CHAPTER, EventNames.ChapterIndexFileGetData);
+    TI.catalogizeEventCall(n_h_EVT_TOPREN_SHOW_CHAPTER, T.EVT_TOPREN_SHOW_CHAPTER_RES);
+    TI.catalogizeEventCall(n_h_EVT_TOPREN_SHOW_CHAPTER, T.EVT_TOPREN_CHAPTER_SHOWN);
+
     TI.eventDefinitions.push([T.EVT_TOPREN_SHOW_CHAPTER_RES, ShowChapterResolutions, null]); // outside event handlers
     TI.eventDefinitions.push([T.EVT_TOPREN_CHAPTER_SHOWN, ChapterShown, null]); // outside event handlers
 

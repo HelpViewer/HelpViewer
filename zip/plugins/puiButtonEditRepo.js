@@ -8,10 +8,19 @@ class puiButtonEditRepo extends puiButton {
   }
 
   init() {
-    super.init();
-
     const T = this.constructor;
     const TI = this;
+
+    TI.catalogizeEventCall(TI.init, EventNames.ElementSetVisibility);
+
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.ConfigFileGet);
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.GetHomePageData);
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.GET_ACTIVE_LANGUAGE);
+    
+    TI.catalogizeEventCall(TI.onETChapterShown, EventNames.ElementSetVisibility);
+ 
+    super.init();
+
     hideButton(TI.button.id, false);
     TI.button.classList.add(C_HIDDENCPRESMODE);
   }

@@ -19,6 +19,12 @@ class puiButtonHome extends puiButton {
     TI.eventDefinitions.push([T.EVT_HOME_GETDATA, IEvent, onET_GetHomePageData]);
     super.init();
 
+    TI.catalogizeEventCall(TI.init, EventNames.ElementSetVisibility);
+
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.ShowChapter);
+
+    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.ElementSetVisibility);
+
     hideButton(TI.button.id, false);
   }
 

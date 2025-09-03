@@ -16,6 +16,8 @@ class pTRBookmarkAnalysis extends pTRPhasePlugin {
     const T = this.constructor;
     const TI = this;
 
+    TI.catalogizeEventCall(TI.onETShowChapterResolutions, T.EVT_BMARKA_BMARKS_CHANGED);
+
     TI.eventDefinitions.push([T.EVT_BMARKA_BMARKS_CHANGED, BmarksChanged, null]); // outside event handlers
     super.init();
   }

@@ -4,6 +4,12 @@ class pTRVersionSearch extends pTRPhasePlugin {
   }
 
   init() {
+    const TI = this;
+
+    TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.ConfigFileGet);
+    TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.GetHomePageData);
+    TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.GET_ACTIVE_LANGUAGE);
+
     super.init();
   }
 
