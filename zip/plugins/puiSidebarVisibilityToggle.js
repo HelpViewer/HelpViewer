@@ -35,6 +35,9 @@ class puiSidebarVisibilityToggle extends IPlugin {
 
     TI.catalogizeEventCall(TI.init, EventNames.ButtonCreate);
     TI.catalogizeEventCall(TI.init, EventNames.ButtonSend);
+    TI.catalogizeEventCall(TI.init, EventNames.UserConfigGet);
+    TI.catalogizeEventCall(TI.init, EventNames.SidebarVisibilitySet);
+    TI.catalogizeEventCall(TI._refreshInternalState, EventNames.UserConfigSet);
 
     toggleVisibility(TI.buttonShow, !TI.sidebarVisible);
 

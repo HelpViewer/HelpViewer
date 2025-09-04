@@ -13,6 +13,7 @@ class puiButtonAsBook extends puiButtonTab {
     TI.catalogizeEventCall(TI.init, EventNames.ElementSetVisibility);
 
     TI.catalogizeEventCall(TI._preShowAction, EventNames.ClickHandlerRegister);
+    TI.catalogizeEventCall(TI._preShowAction, EventNames.UserConfigSet);
     
     TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.ElementSetVisibility);
 
