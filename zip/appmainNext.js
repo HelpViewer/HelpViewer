@@ -297,12 +297,3 @@ const plgName = 'pAppmainNext';
 const plgAlias = '';
 activatePlugin(plgName, plgAlias).then(() => sendEvent(EVT_PluginsLoadingFinished));
 pAppmainNext._fileLength = new TextEncoder().encode(pAppmainNext.toString()).length;
-
-{
-  const sidebar = $('sidebar');
-  sidebar.classList.remove(C_NOTRANSITION);
-  if (!sidebar.style.display) {
-    sidebar.style.display = 'flex';
-    sidebar.style.opacity = '1';
-  }
-}

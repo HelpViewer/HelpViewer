@@ -41,18 +41,53 @@ h1 {
   border-left: 1px solid var(--c-border);
   position: relative;
   opacity: 1;
-  transition: width 1.0s ease, opacity 1.0s ease;
+  transition: width 1.5s ease, opacity 1.5s ease;
   display: flex;
   flex-direction: column;
 }
 
-.sidebar.hidden {
-  width: 0;
-  opacity: 0;
+@keyframes flashOut {
+  0% {
+    width: 250px;
+    background: var(--c-background);
+    opacity: 1;
+  }
+  50% {
+    width: 0;
+    background: #ffffff;
+    opacity: 0;
+  }
+  100% {
+    width: 0;
+    background: #ffffff;
+    opacity: 0;
+  }
 }
 
-.notransition {
-  transition: none;
+@keyframes flashIn {
+  0% {
+    width: 0;
+    background: #ffffff;
+    opacity: 0;
+  }
+  50% {
+    width: 250px;
+    background: var(--c-background);
+    opacity: 1;
+  }
+  100% {
+    width: 250px;
+    background: var(--c-background);
+    opacity: 1;
+  }
+}
+
+.sidebar.flash-out {
+  animation: flashOut 1s forwards;
+}
+
+.sidebar.flash-in {
+  animation: flashIn 1s forwards;
 }
 
 .main {
