@@ -292,6 +292,8 @@ function toText(ab) {
   return text;
 }
 
+const EMBEDRES = '@EMBED://';
+
 class StorageDir extends IStorage {
   constructor() {
     super();
@@ -321,6 +323,9 @@ class StorageDir extends IStorage {
     }
 
     const response = await this.fetchDataOrEmpty(fpath);
+
+    if (response && format == STOF_TEXT && /\.(js|css)$/i.test(fpath))
+      return `${EMBEDRES}${fpath}`;
 
     switch (format) {
       case STOF_B64:
@@ -381,8 +386,7 @@ async function main(baseDataStream = null) {
     st = await _Storage.add(STO_DATA, `${DATA_FILE_PATH_BASE}.zip`, baseDataStream);
   }
   const srcT = await _Storage.search(STO_DATA, 'appmainRun.js');
-  appendJavaScript(id_JSAppRun, srcT, document.body);
-  runApp();
+  appendJavaScript(id_JSAppRun, srcT, document.body, () => runApp());
 }
 
 async function fetchData(url) {
@@ -429,19 +433,39 @@ const ZIPHelpers = (() => {
 
 function appendCSS(id, content) {
   //if ($(id)) return;
-  const style = document.createElement('style');
-  style.textContent = content;
+  log('E APPENDCSS', id, content);
+  var style;
+  if (content.startsWith(EMBEDRES)) {
+    style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = content.substring(EMBEDRES.length);
+  } else {
+    style = document.createElement('style');
+    style.textContent = content;
+  }
+
   style.id = id;
   document.head.appendChild(style);
 }
 
-function appendJavaScript(id, content, parentO) {
+function appendJavaScript(id, content, parentO, handler) {
   if ($(id)) return;
+  log('E APPENDJS', id, content, parentO);
   const script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.textContent = content;
   script.id = id;
-  parentO.appendChild(script);
+  script.type = 'text/javascript';
+  if (content.startsWith(EMBEDRES)) {
+    script.src = content.substring(EMBEDRES.length);
+    script.async = true;
+    parentO = document.head;
+    log('E JSP', script.src);
+    script.onload = () => handler?.();
+    parentO.appendChild(script);
+  } else {
+    script.textContent = content;
+    parentO.appendChild(script);
+    handler?.();
+  }
 }
 
 function rowsToArray(t) {
