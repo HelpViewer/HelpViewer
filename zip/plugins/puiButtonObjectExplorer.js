@@ -482,17 +482,22 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     var pluginCallee = stack.filter((x) => x.startsWith('p'));
     if (pluginCallee && pluginCallee.length > 0)
       pluginCallee = pluginCallee[0];
-    else
-      return;
+    else {
+      pluginCallee = stack.filter((x) => x.startsWith('$'));
+      if (pluginCallee && pluginCallee.length > 0)
+        pluginCallee = pluginCallee[0].substring(1).replace('$', '.');
+      else
+        return;
+    }
+
 
     if (pluginCallee)
-      var [pluginCallee, method] =  pluginCallee.split('.');      
+      var [pluginCallee, method] = pluginCallee.split('.');
 
     if (pluginCallee && method) {
       method = method.split(' ')[0];
-      if (evt.data.eventName == 'SidebarVisibilitySet')
-      log(`Found sure event call (${evt.data.eventName}) for plugin (${pluginCallee}) on method ${method}`, evt.stack, stack);
-      [...Plugins.plugins.keys()].filter(x => x.startsWith(pluginCallee)).forEach((x) => Plugins.plugins.get(x).catalogizeEventCall(method, evt.data.eventName, evt.data.id));
+      //log(`Found sure event call (${evt.data.eventName}) for plugin (${pluginCallee}) on method ${method}`, evt.stack, stack);
+      [...Plugins.plugins.keys()].filter(x => x.startsWith(pluginCallee + ':')).forEach((x) => Plugins.plugins.get(x).catalogizeEventCall(method, evt.data.eventName, ''));
       this.foundEventCalls++;
     }
   }
