@@ -150,6 +150,9 @@ class puiButton extends IPlugin {
     const handlerResolved = handler ? handler : (evt) => this._buttonAction(evt);
     this.button = uiAddButton(this.cfgId, this.cfgCaption, this.cfgTarget, handlerResolved);
 
+    TI.catalogizeEventCall(TI.init, EventNames.ButtonCreate);
+    TI.catalogizeEventCall(TI.init, EventNames.ButtonSend);
+
     super.init();
   }
 
@@ -176,6 +179,7 @@ class puiButtonTab extends puiButton {
     TI.tab = TI.button[1];
     TI.button = TI.button[0];
     registerOnClick(TI.button.id, (evt) => TI._buttonAction(evt));
+    TI.catalogizeEventCall(TI.init, pui.EVT_CLICK_HANDLER_REGISTER);
   }
 
   deInit() {

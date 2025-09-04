@@ -17,6 +17,7 @@ class puiButtonAsBook extends puiButtonTab {
     TI.catalogizeEventCall(hnd, EventNames.ShowChapter);
     TI.catalogizeEventCall(hnd, EventNames.ShowBookmarks);
     TI.catalogizeEventCall(hnd, evtHideIfTooWide);
+    TI.catalogizeEventCall(TI._preShowAction, EventNames.UserConfigSet);
   }
 
   deInit() {

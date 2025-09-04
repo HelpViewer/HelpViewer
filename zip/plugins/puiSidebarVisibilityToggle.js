@@ -38,6 +38,11 @@ class puiSidebarVisibilityToggle extends IPlugin {
     if (TI.sidebarVisible == 0)
       _sidebarToggle();
 
+    TI.catalogizeEventCall(TI.init, EventNames.ButtonCreate);
+    TI.catalogizeEventCall(TI.init, EventNames.ButtonSend);
+    TI.catalogizeEventCall(TI.init, EventNames.UserConfigGet);
+    TI.catalogizeEventCall(TI.init, EventNames.SidebarVisibilitySet);
+    
     super.init();
   }
 
