@@ -25,12 +25,6 @@ class pKWGenerateIndex extends IPlugin {
     this.cfgFilenameFiles = this.config[T.KEY_CFG_FILENAMELISTFILES] || TI.DEFAULT_KEY_CFG_FILENAMELISTFILES;
     this.cfgMinWordLength = parseInt(this.config[T.KEY_CFG_MINWORDLENGTH]) || TI.DEFAULT_KEY_CFG_MINWORDLENGTH;
     this.cfgAdditionalIndexFiles = this.config[T.KEY_CFG_ADDITIONALINDEXFILES] || TI.DEFAULT_KEY_CFG_ADDITIONALINDEXFILES;
-
-    TI.catalogizeEventCall(TI.onETIndexFileNotExists, EventNames.GetTOCData);
-    TI.catalogizeEventCall(TI.onETIndexFileNotExists, EventNames.GetHomePageData);
-    TI.catalogizeEventCall(TI.onETIndexFileNotExists, EventNames.ChapterIndexFileGetDataAll);
-    TI.catalogizeEventCall(TI.onETIndexFileNotExists, EventNames.IndexFileSetData);
-    TI.catalogizeEventCall(TI.onETIndexFileNotExists, EventNames.ShowChapter);
     
     super.init();
     this.asyncStack = undefined;

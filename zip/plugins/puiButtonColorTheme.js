@@ -8,10 +8,6 @@ class puiButtonColorTheme extends puiButton {
     }
   
     init() {
-      const TI = this;
-
-      TI.catalogizeEventCall(TI._buttonAction, EventNames.ColorThemeSet);
-  
       super.init();
     }
   

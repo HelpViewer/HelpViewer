@@ -16,13 +16,6 @@ class puiButtonBmarks extends puiButtonTabTree {
     const T = this.constructor;
     const TI = this;
 
-    [TI.onET_UserDataFileLoaded, TI.onET_BmarksChanged].forEach((h) => {
-      TI.catalogizeEventCall(h, EventNames.ElementSetVisibility);
-      TI.catalogizeEventCall(h, EventNames.SidebarPageShow);  
-    });
-
-    TI.catalogizeEventCall(TI.onET_BmarksChanged, EventNames.SetTreeData);  
-
     const onET_ShowBookmarks = (data) => showSidebarTab(this.tab.id);
     TI.eventDefinitions.push([T.EVT_BMARKS_SHOW, IEvent, onET_ShowBookmarks]);
     super.init();

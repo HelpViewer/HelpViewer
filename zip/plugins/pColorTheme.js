@@ -31,9 +31,6 @@ class pColorTheme extends IPlugin {
       T.ColorTheme.setColorMode(data.name);
     TI.eventDefinitions.push([T.EVT_CT_SET, ColorThemeSet, h_EVT_CT_SET]);
 
-    TI.catalogizeEventCall(h_EVT_CT_GET, EventNames.UserConfigGet);
-    TI.catalogizeEventCall(h_EVT_CT_SET, EventNames.UserConfigSet);
-
     super.init();
     T.ColorTheme.init();
   }

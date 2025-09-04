@@ -10,14 +10,6 @@ class puiButtonEditRepo extends puiButton {
   init() {
     const T = this.constructor;
     const TI = this;
-
-    TI.catalogizeEventCall(TI.init, EventNames.ElementSetVisibility);
-
-    TI.catalogizeEventCall(TI._buttonAction, EventNames.ConfigFileGet);
-    TI.catalogizeEventCall(TI._buttonAction, EventNames.GetHomePageData);
-    TI.catalogizeEventCall(TI._buttonAction, EventNames.GET_ACTIVE_LANGUAGE);
-    
-    TI.catalogizeEventCall(TI.onETChapterShown, EventNames.ElementSetVisibility);
  
     super.init();
 

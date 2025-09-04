@@ -46,15 +46,6 @@ class pConfigFile extends IPlugin {
 
     TI.eventDefinitions.push([T.EVT_CF_RELOAD_FINISHED, IEvent, null]); // outside event handlers
 
-    TI.catalogizeEventCall(h_EVT_CF_GET, T.EVT_CF_GET, FILE_CONFIG_DEFAULT);
-
-    const n_h_EVT_CF_RELOAD = 'h_EVT_CF_RELOAD';
-    TI.catalogizeEventCall(n_h_EVT_CF_RELOAD, EventNames.StorageGet);
-    TI.catalogizeEventCall(n_h_EVT_CF_RELOAD, T.EVT_CF_RELOAD_FINISHED);
-
-    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.StorageGet);
-    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, T.EVT_CF_RELOAD_FINISHED);
-
     super.init();
   }
 

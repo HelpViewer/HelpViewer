@@ -15,12 +15,6 @@ class puiButtonChangeLanguage extends puiButtonTab {
     const T = this.constructor;
     const TI = this;
 
-    TI.catalogizeEventCall(TI.init, EventNames.ClickHandlerRegister);
-    TI.catalogizeEventCall(TI.init, EventNames.LOC_LOAD);
-
-    TI.catalogizeEventCall(TI._preShowAction, EventNames.ConfigFileGet);
-    TI.catalogizeEventCall(TI._preShowAction, EventNames.LocGetLanguages);
-  
     this.cfgTemplate = TI.config[T.KEY_CFG_TEMPLATE] || "<li><a class='langLink' href='' id='%ID%' title='%A%'>%A%</a></li>";
     this.langTab = uiAddTreeView('langList', TI.tab);
 

@@ -25,8 +25,6 @@ class pClickConverter extends IPlugin {
 
     document.body.addEventListener('click', this._processClick);
     
-    TI.catalogizeEventCall(TI._processClick, T.EVT_CD_CLICK);
-
     super.init();
   }
   

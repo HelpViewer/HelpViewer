@@ -4,10 +4,6 @@ class pTRFlushToDOM extends pTRPhasePlugin {
   }
 
   init() {
-    const TI = this;
-
-    TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.HeaderSet);
-
     super.init();
   }
 

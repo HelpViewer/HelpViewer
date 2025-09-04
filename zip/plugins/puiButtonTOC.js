@@ -25,13 +25,6 @@ class puiButtonTOC extends puiButtonTabTree {
 
     super.init();
     hideButton(TI.button.id, false);
-
-    TI.catalogizeEventCall(TI.init, EventNames.ElementSetVisibility);
-
-    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.ElementSetVisibility);
-    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.SetTreeData);
-    
-    TI.catalogizeEventCall(TI._getTOCData, EventNames.StorageGet);
   }
   
   deInit() {

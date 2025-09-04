@@ -23,12 +23,6 @@ class puiButtonPresMode extends puiButton {
     this.fsFunction = this._fullScreenChange.bind(this);
     this._keyPressHandlerFunction = this._keyPressHandler.bind(this);
     document.addEventListener("fullscreenchange", this.fsFunction);
-
-    TI.catalogizeEventCall(TI._keyPressHandler, EventNames.DoNavigationMove);
-
-    TI.catalogizeEventCall(TI._fullScreenChange, EventNames.SidebarVisibilitySet);
-
-    TI.catalogizeEventCall(TI._buttonAction, EventNames.SidebarVisibilitySet);
   }
 
   deInit() {

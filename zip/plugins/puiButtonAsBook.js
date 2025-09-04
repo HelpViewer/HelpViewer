@@ -8,27 +8,6 @@ class puiButtonAsBook extends puiButtonTab {
   }
 
   init() {
-    const TI = this;
-
-    TI.catalogizeEventCall(TI.init, EventNames.ElementSetVisibility);
-
-    TI.catalogizeEventCall(TI._preShowAction, EventNames.ClickHandlerRegister);
-    TI.catalogizeEventCall(TI._preShowAction, EventNames.UserConfigSet);
-    
-    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.ElementSetVisibility);
-
-    TI.catalogizeEventCall(TI._buttonAction, EventNames.GetTOCData);
-    TI.catalogizeEventCall(TI._buttonAction, EventNames.GetHomePageData);
-
-    const hnd = TI._prepareDump;
-    TI.catalogizeEventCall(hnd, EventNames.StorageGet);
-    TI.catalogizeEventCall(hnd, EventNames.UserConfigGet);
-    TI.catalogizeEventCall(hnd, EventNames.ShowChapter);
-    TI.catalogizeEventCall(hnd, EventNames.ShowBookmarks);
-    TI.catalogizeEventCall(hnd, evtHideIfTooWide);
-
-    TI.catalogizeEventCall(TI.onETChapterShown, EventNames.HeaderSet);
-    
     super.init();
     hideButton(this.button.id, false);
   }

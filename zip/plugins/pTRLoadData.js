@@ -4,11 +4,6 @@ class pTRLoadData extends pTRPhasePlugin {
   }
 
   init() {
-    const TI = this;
-
-    TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.GET_ACTIVE_LANGUAGE);
-    TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.StorageGet);
-
     super.init();
   }
 
