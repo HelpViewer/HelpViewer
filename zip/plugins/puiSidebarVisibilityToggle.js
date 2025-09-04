@@ -33,6 +33,9 @@ class puiSidebarVisibilityToggle extends IPlugin {
     TI.buttonHide = uiAddButton(T.ID_DOWNPB, captionHide, UI_PLUGIN_SIDEBAR, _sidebarToggle);
     TI.buttonShow = uiAddButton(T.ID_TOPPB, captionShow, UI_PLUGIN_HEADER, _sidebarToggle);
 
+    TI.catalogizeEventCall(TI.init, EventNames.ButtonCreate);
+    TI.catalogizeEventCall(TI.init, EventNames.ButtonSend);
+
     toggleVisibility(TI.buttonShow, !TI.sidebarVisible);
 
     if (TI.sidebarVisible == 0)
