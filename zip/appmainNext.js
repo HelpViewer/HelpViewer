@@ -104,6 +104,36 @@ class pAppmainNext extends IPlugin {
     TI.eventDefinitions.push([evtHashDefined, IEvent, h_EVT_HASHDEFINED]);
 
     super.init();
+
+    TI.catalogizeEventCall(TI.onETPluginsLoadingFinished, EventNames.LOC_LOAD);
+    
+    TI.catalogizeEventCall(TI.onETIndexFileLoaded, EventNames.ShowChapter);
+
+    TI.catalogizeEventCall(TI.onETStorageAdded, EventNames.UserDataFileLoaded);
+
+    TI.catalogizeEventCall(TI.onETClickedEventTree, evtHideIfTooWide);
+
+    TI.catalogizeEventCall(TI.onETHIDEIFTOOWIDE, EventNames.SidebarVisibilitySet);
+
+    TI.catalogizeEventCall(TI.onETUserDataFileLoaded, EventNames.ConfigFileReload);
+    TI.catalogizeEventCall(TI.onETUserDataFileLoaded, EventNames.ShowChapter);
+    TI.catalogizeEventCall(TI.onETUserDataFileLoaded, EventNames.SidebarPageShow);
+
+    TI.catalogizeEventCall(TI.onETConfigFileReloadFinished, EventNames.ConfigFileGet);
+    TI.catalogizeEventCall(TI.onETConfigFileReloadFinished, EventNames.StorageGetImages);
+
+    TI.catalogizeEventCall(TI.onETBeforePrint, EventNames.HeaderGet);
+    TI.catalogizeEventCall(TI.onETBeforePrint, EventNames.HeaderSet);
+    TI.catalogizeEventCall(TI.onETBeforePrint, EventNames.ConfigFileGet);
+    TI.catalogizeEventCall(TI.onETBeforePrint, EventNames.UserConfigGet);
+
+    TI.catalogizeEventCall(TI.onETLOC_LOADED, EventNames.GET_ACTIVE_LANGUAGE);
+    TI.catalogizeEventCall(TI.onETLOC_LOADED, EventNames.StorageAdd);
+    TI.catalogizeEventCall(TI.onETLOC_LOADED, EventNames.StorageAdded);
+
+    TI.catalogizeEventCall(TI.onETChapterShown, evtHashDefined);
+    TI.catalogizeEventCall(TI.onETChapterShown, EventNames.LOC_REFRESH);
+    
   }
 
   deInit() {
