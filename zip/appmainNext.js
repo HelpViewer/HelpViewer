@@ -104,6 +104,11 @@ class pAppmainNext extends IPlugin {
     TI.eventDefinitions.push([evtHashDefined, IEvent, h_EVT_HASHDEFINED]);
 
     super.init();
+
+    TI.catalogizeEventCall(TI.onETBeforePrint, EventNames.HeaderGet);
+    TI.catalogizeEventCall(TI.onETBeforePrint, EventNames.UserConfigGet);
+    TI.catalogizeEventCall(TI.onETLOC_LOADED, EventNames.StorageAdded);
+    TI.catalogizeEventCall(TI.onETChapterShown, evtHashDefined);    
   }
 
   deInit() {
