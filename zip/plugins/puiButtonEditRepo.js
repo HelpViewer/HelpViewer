@@ -15,6 +15,12 @@ class puiButtonEditRepo extends puiButton {
 
     hideButton(TI.button.id, false);
     TI.button.classList.add(C_HIDDENCPRESMODE);
+
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.ConfigFileGet);
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.GetHomePageData);
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.GET_ACTIVE_LANGUAGE);
+    
+    TI.catalogizeEventCall(TI.onETChapterShown, EventNames.ElementSetVisibility);
   }
 
   deInit() {

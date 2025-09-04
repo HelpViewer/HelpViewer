@@ -73,7 +73,6 @@ class pLocalizationSwitcher extends IPlugin {
 
     TI.catalogizeEventCall(TI.init, EventNames.UserConfigGet);
     TI.catalogizeEventCall(h_EVT_LOC_LOAD, T.EVT_LOC_LOAD);
-    TI.catalogizeEventCall(h_EVT_LOC_LANGUAGES, EventNames.StorageGetSubdirs);
 
     super.init();
   }

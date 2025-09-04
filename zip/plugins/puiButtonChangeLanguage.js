@@ -22,6 +22,9 @@ class puiButtonChangeLanguage extends puiButtonTab {
       loadLocalization(e.elementIdVal);
       e.event.preventDefault();
     });
+
+    TI.catalogizeEventCall(TI.init, EventNames.ClickHandlerRegister);
+    TI.catalogizeEventCall(TI.init, EventNames.LOC_LOAD);
   }
   
   deInit() {

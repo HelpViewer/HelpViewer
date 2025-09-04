@@ -10,6 +10,13 @@ class puiButtonAsBook extends puiButtonTab {
   init() {
     super.init();
     hideButton(this.button.id, false);
+
+    const TI = this;
+    const hnd = TI._prepareDump;
+    TI.catalogizeEventCall(hnd, EventNames.StorageGet);
+    TI.catalogizeEventCall(hnd, EventNames.ShowChapter);
+    TI.catalogizeEventCall(hnd, EventNames.ShowBookmarks);
+    TI.catalogizeEventCall(hnd, evtHideIfTooWide);
   }
 
   deInit() {

@@ -5,6 +5,10 @@ class pTR1stHeadingToTopPanel extends pTRPhasePlugin {
 
   init() {
     super.init();
+
+    const TI = this;
+    
+    TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.HeaderSet);
   }
 
   deInit() {
