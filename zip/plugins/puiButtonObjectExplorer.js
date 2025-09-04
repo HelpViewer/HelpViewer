@@ -491,13 +491,10 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     if (pluginCallee && method) {
       method = method.split(' ')[0];
       if (evt.data.eventName == 'SidebarVisibilitySet')
-      log(`E Found sure event call (${evt.data.eventName}) for plugin (${pluginCallee}) on method ${method}`, evt.stack, stack);
+      log(`Found sure event call (${evt.data.eventName}) for plugin (${pluginCallee}) on method ${method}`, evt.stack, stack);
       [...Plugins.plugins.keys()].filter(x => x.startsWith(pluginCallee)).forEach((x) => Plugins.plugins.get(x).catalogizeEventCall(method, evt.data.eventName, evt.data.id));
       this.foundEventCalls++;
     }
-    // //evt.data.eventName
-    // log('E dfssg', evt.data);
-    // log('E stackA', stack, evt.data.eventName, pluginCallee);
   }
 }
 
