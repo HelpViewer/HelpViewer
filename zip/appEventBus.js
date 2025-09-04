@@ -1,3 +1,7 @@
+const evtDebugEventEvent = 'DebugEventEvent';
+
+var _debugEventSendEvent = (evt) => {};
+
 const EventBus = {
   events: new Map(),
 
@@ -19,6 +23,8 @@ const EventBus = {
   snd(data, eventKeyName) {
     if (!data) return;
     var event = eventKeyName || data.eventName;
+    _debugEventSendEvent(data);
+
     var handlers = this.events.get(event);
     log(`Event ${event} arrived. Data:`, data);
 
@@ -164,4 +170,24 @@ class IEvent {
     this.requiresDoneHandler = false;
     this.stop = false;
   }
+}
+
+class DebugEventEvent extends IEvent {
+  constructor() {
+    super();
+    this.data = undefined;
+    this.stack = undefined;
+  }
+}
+
+if (DEBUG_MODE) {
+  addEventDefinition(evtDebugEventEvent, new EventDefinition(DebugEventEvent, evtDebugEventEvent));
+  _debugEventSendEvent = (data) => {
+    if (!data || data.eventName == evtDebugEventEvent) return;
+    const stackLines = new Error().stack;
+    sendEvent(evtDebugEventEvent, (x) => {
+      x.data = data;
+      x.stack = stackLines;
+    });
+  };
 }

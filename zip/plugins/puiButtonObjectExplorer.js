@@ -150,6 +150,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     // passing data to tree
     const treeDataFlat = this._prepareFlatTreeInput(this.treeData);
     setTreeData(treeDataFlat, this.aliasName);
+
+    log('W Found event calls by auto discover:', this.foundEventCalls);
   }
 
   _prepareFlatTreeInput(objectData, level = 0) {
@@ -472,6 +474,30 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     cls = getEventInput(eventName);
 
     return [eventName, cls, handlerName];
+  }
+
+  onET_DebugEventEvent(evt) {
+    this.foundEventCalls = this.foundEventCalls || 0;
+    const stack = evt.stack.split('\n').slice(2).map((x) => x.trim().substring(3)).filter((x) => !/^(<anonymous>|sendEventWProm|new Promise|sendEvent|Object.snd|handlerFilterId)/i.test(x));
+    var pluginCallee = stack.filter((x) => x.startsWith('p'));
+    if (pluginCallee && pluginCallee.length > 0)
+      pluginCallee = pluginCallee[0];
+    else
+      return;
+
+    if (pluginCallee)
+      var [pluginCallee, method] =  pluginCallee.split('.');      
+
+    if (pluginCallee && method) {
+      method = method.split(' ')[0];
+      if (evt.data.eventName == 'SidebarVisibilitySet')
+      log(`E Found sure event call (${evt.data.eventName}) for plugin (${pluginCallee}) on method ${method}`, evt.stack, stack);
+      [...Plugins.plugins.keys()].filter(x => x.startsWith(pluginCallee)).forEach((x) => Plugins.plugins.get(x).catalogizeEventCall(method, evt.data.eventName, evt.data.id));
+      this.foundEventCalls++;
+    }
+    // //evt.data.eventName
+    // log('E dfssg', evt.data);
+    // log('E stackA', stack, evt.data.eventName, pluginCallee);
   }
 }
 
