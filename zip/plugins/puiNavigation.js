@@ -138,6 +138,8 @@ class puiNavigation extends IPlugin {
 
       super.init();
 
+      TI.catalogizeEventCall(_buttonAction, T.EVT_NAV_MOVE, this.aliasName);
+
       this.updateNavButtons(this.getId());
     }
   

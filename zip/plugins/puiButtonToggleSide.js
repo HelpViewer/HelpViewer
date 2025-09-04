@@ -19,6 +19,8 @@ class puiButtonToggleSide extends puiButton {
     if (this.state == 0) 
       this.toggleSidebarSideHandler();
 
+    TI.catalogizeEventCall(TI.init, EventNames.UserConfigGet);
+    
     super.init();
   }
 
