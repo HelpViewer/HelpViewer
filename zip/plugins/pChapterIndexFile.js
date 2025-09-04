@@ -75,9 +75,8 @@ class pChapterIndexFile extends IPlugin {
   }
 
   onET_UserDataFileLoaded(evt) {
-    this._getIndexData().then((docList) => {
-      setChapterIndex(docList);
-    });
+    const $pChapterIndexFile$onET_UserDataFileLoaded = (docList) => setChapterIndex(docList);
+    this._getIndexData().then((docList) => $pChapterIndexFile$onET_UserDataFileLoaded(docList));
   }
 
   onET_ChapterIndexFileGetDataAll(evt) {

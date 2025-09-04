@@ -37,6 +37,7 @@ class pConfigFile extends IPlugin {
       data.result = this._configGetValue(data.key, data.backup);  
     }
     TI.eventDefinitions.push([T.EVT_CF_GET, ConfigFileGet, h_EVT_CF_GET]);
+    TI.catalogizeEventCall(h_EVT_CF_GET, T.EVT_CF_GET, FILE_CONFIG_DEFAULT);
 
     const h_EVT_CF_RELOAD = IPlugin.wrapAsyncHandler((data) => {
       this._loadCFG();

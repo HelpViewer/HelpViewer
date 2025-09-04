@@ -66,8 +66,10 @@ class pKWGenerateIndex extends IPlugin {
     setChapterIndex(flArray.map((x) => `${x[0]}|${x[1]}`).join('\n'));
     this.countRequired = 0;
 
+    const $pKWGenerateIndex$oneDocumentRead = (file) => Promise.resolve(showChapter(undefined, undefined, file, undefined, undefined, this.aliasName));
+
     this.asyncStack = this.asyncStack.then(() => {
-      const filesIndexed = flArray.map(([file, title]) => Promise.resolve(showChapter(undefined, undefined, file, undefined, undefined, this.aliasName)));
+      const filesIndexed = flArray.map(([file, title]) => $pKWGenerateIndex$oneDocumentRead(file));
       return Promise.all(filesIndexed).then((fileIndexes) => {
         this.countRequired = fileIndexes.length;
         return fileIndexes;
