@@ -487,3 +487,8 @@ function groupBy(data, keyGetter) {
 
   return grouped;
 }
+
+function insertToStringAtIndex(str, index, insertedText) {
+  if (index < 0 || index > str.length) return str;
+  return str.slice(0, index) + insertedText + str.slice(index);
+}
