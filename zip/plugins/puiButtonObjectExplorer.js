@@ -400,7 +400,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
           browseMember(proto, name, (desc) => {
             const v = desc.value;
             if ((!v.aliasName || !v._fileLength)) return;
-            resourcesList.push(`\n- ${v.aliasName}: ${valKiBs(v._fileLength)} kB`);
+            resourcesList.push(`\n- [${v.aliasName}](:_${ObjectExplorerObjectDescriptor.RESOURCE.abbr}:${objName}:${v.aliasName}.md): ${valKiBs(v._fileLength)} kB`);
           });
         });
 
