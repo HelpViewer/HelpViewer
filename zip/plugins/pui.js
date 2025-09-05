@@ -83,6 +83,7 @@ class pui extends IPlugin {
 
     TI.eventDefinitions.push([T.EVT_BUTTON_SEND, ButtonSend, null]); // outside event handlers
 
+    TI.catalogizeEventCall(TI.onET_ClickedEvent, EventNames.ClickedEventNotForwarded);
     super.init();
   }
 
@@ -180,6 +181,7 @@ class puiButtonTab extends puiButton {
     TI.button = TI.button[0];
     registerOnClick(TI.button.id, (evt) => TI._buttonAction(evt));
     TI.catalogizeEventCall(TI.init, pui.EVT_CLICK_HANDLER_REGISTER);
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.SidebarPageShow);
   }
 
   deInit() {
@@ -264,6 +266,10 @@ class puiButtonTabTree extends puiButtonTab {
     TI.eventDefinitions.push([T.EVT_SET_TREE_DATA, SetTreeData, h_EVT_SET_TREE_DATA]);
     TI.eventDefinitions.push([T.EVT_TREE_DATA_CHANGED, SetTreeData, null]); // outside event handlers
     TI.eventDefinitions.push([T.EVT_TREE_CLICKED, ClickedEventTree, null]); // outside event handlers
+
+    TI.catalogizeEventCall(TI.init, ClickedEventTree.name);
+    TI.catalogizeEventCall(h_EVT_SET_TREE_DATA, T.EVT_TREE_DATA_CHANGED);
+    //_notifyClickedEvent(
 
     super.init();
     TI._preStandardInit();

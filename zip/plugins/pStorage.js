@@ -60,12 +60,11 @@ class pStorage extends IPlugin {
     );
     TI.eventDefinitions.push([T.EVT_STORAGE_GET_IMAGE, StorageGetImages, h_EVT_STORAGE_GET_IMAGE]);
 
+    const $pStorage$h_EVT_STORAGE_ADD = (fileName, storageName) => storageAddedNotification(fileName, storageName);
     const h_EVT_STORAGE_ADD = IPlugin.wrapAsyncHandler((data) => {
       var reply = _Storage.add(data.storageName, data.fileName, data.fileData);
 
-      reply.then((x) => {
-        storageAddedNotification(data.fileName, data.storageName);
-      });
+      reply.then((x) => $pStorage$h_EVT_STORAGE_ADD(data.fileName, data.storageName));
 
       return reply;
     });
