@@ -215,3 +215,5 @@ function inheritsFrom(cls, base) {
   }
   return false;
 }
+
+Plugins.catalogize(Resource);
