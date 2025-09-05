@@ -34,6 +34,44 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   _preShowAction(evt) {
     const plugins = getPluginsState();
 
+    // dependency tree for plugin classes preparation
+    const clsList = plugins[0].map((x) => Plugins.pluginsClasses.get(x));
+    var depTree = clsList.map((x) => x.name);
+    for (let x = 0; x < clsList.length; x++) {
+      var cls = clsList[x];
+      const chain = [];
+
+      while (cls && cls !== Object) {
+        chain.push(cls.name || undefined);
+        cls = Object.getPrototypeOf(cls);
+      }
+
+      chain.push("Object");
+      depTree[x] = chain.filter((x) => x).reverse();
+    }
+
+    depTree.sort();
+
+    const reply = new Map();
+    const dpB = JSON.parse(JSON.stringify(depTree));
+    log('E TTTT1', dpB);
+    var depTree2 = this._getTreeFromArraysList(depTree, reply);
+
+    // var treeString = [];
+    // if (depTree.length > 0) {
+    //   const base = depTree[0].split(';', 2)[0];
+    //   const found = depTree.
+    // }
+    
+    log('E TTTTC', depTree);
+    
+    log('E TTTT', depTree2);
+
+    var tree = buildStringTreeFromMap(depTree2);
+    log('E uuuuuu', tree);
+    this.tree.innerHTML = linesToHtmlTree(tree.join('\n'), 'x');
+    return;
+
     // preparation of flat lists
     this.treeData = [];
     const pluginGroups = this.cfgGroupsList.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`]?.split(';')]));
@@ -152,6 +190,35 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     setTreeData(treeDataFlat, this.aliasName);
 
     log('W Found event calls by auto discover:', this.foundEventCalls);
+  }
+
+  _getTreeFromArraysList(source, reply) {
+    if (!source || source.length == 0)
+      return reply;
+
+    source = source.filter((x) => x && x.length > 0);
+
+    // if (!source || source.length == 0)
+    //   return reply;
+
+    const siblings = [...new Set(source.map((x) => x[0]))].filter((x) => x);
+
+    siblings.forEach((x) => reply.set(x, []));
+
+    source.forEach(r => {
+      const first = r.shift();
+
+      if (first)
+        reply.get(first).push(r);
+    });
+
+    reply.forEach((v, k) => {
+      const oneLev = new Map();
+      this._getTreeFromArraysList(v, oneLev);
+      reply.set(k, oneLev);
+    });
+
+    return reply;
   }
 
   _prepareFlatTreeInput(objectData, level = 0) {
