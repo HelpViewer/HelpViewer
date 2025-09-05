@@ -392,7 +392,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         const t = found.interconnectedObject.eventIdStrict ? _T('eventIdStrict1') : _T('eventIdStrict0');
         const parentClasses = this._getLineWithDependencyTree(found?.interconnectedObject?.constructor);
         
-        desc = `- 📂 ${parentClasses}\n- ${sign} ${t}\n## 📦 ${_T('resources')}\n- ${_T('oeod_plg')}: ${valKiBs(found?.interconnectedObject?.constructor?._fileLength)} kB`;
+        desc = `- 📂 ${parentClasses}\n- ${sign} ${t}\n## 📦 ${_T('resources')}\n- [${_T('oeod_plg')}](:_${ObjectExplorerObjectDescriptor.CODEPRINT.abbr}:${objName.split(':')[0]}.md): ${valKiBs(found?.interconnectedObject?.constructor?._fileLength)} kB`;
 
         var proto = found?.interconnectedObject;
         const resourcesList = [];
@@ -472,6 +472,10 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         }
         break;
 
+      case ObjectExplorerObjectDescriptor.CODEPRINT.abbr:
+        desc = `## </> ${_T('oeod_res')}\n\`\`\`javascript\n${Plugins.pluginsClasses.get(objName)}\n\`\`\`\n`;
+        break;
+          
       default:
         break;
     }
@@ -606,6 +610,7 @@ class ObjectExplorerObjectDescriptor {
   static UI_TREE = new ObjectExplorerObjectDescriptor('tree', '📂');
 
   static DOCUMENT = new ObjectExplorerObjectDescriptor('', '📄');
+  static CODEPRINT = new ObjectExplorerObjectDescriptor('cpp', '📄');
   static TREE = new ObjectExplorerObjectDescriptor('', '📂');
 
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
