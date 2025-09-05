@@ -383,7 +383,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
       case ObjectExplorerObjectDescriptor.PLUGIN.abbr:
         const parentClasses1 = this._getLineWithDependencyTree(found?.interconnectedObject);
-        desc = `📂 ${parentClasses1}\n\n`;
+        desc += `📂 ${parentClasses1}\n\n`;
+        desc += `[</> ${_T('source')}](:_${ObjectExplorerObjectDescriptor.CODEPRINT.abbr}:${objName.split(':')[0]}.md)\n\n`;
         break;
 
       case ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr:
@@ -473,7 +474,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
 
       case ObjectExplorerObjectDescriptor.CODEPRINT.abbr:
-        desc = `## </> ${_T('oeod_res')}\n\`\`\`javascript\n${Plugins.pluginsClasses.get(objName)}\n\`\`\`\n`;
+        desc = `## </> ${_T('source')}\n\`\`\`javascript\n${Plugins.pluginsClasses.get(objName)}\n\`\`\`\n`;
         break;
           
       default:
