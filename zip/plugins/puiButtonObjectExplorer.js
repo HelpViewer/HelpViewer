@@ -44,8 +44,14 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     var tree = buildStringTreeFromMap(this._getTreeFromArraysList(depTree, new Map()));
     // adding object tree links
+    const pluginGroupsTable = this.cfgGroupsList.map(x => [this.config[`${x}-F`]?.split(';'), this.config[x]]);
+    pluginGroupsTable.push([['Object'], '⚙️']);
     tree = tree.map(row => {
+      const nameR = row.trim();
       var newRow = `${row}|||:_plg:${row.trim()}.md`;
+      const firstIndex = row.search(/\S/);
+      const icon = pluginGroupsTable.find((g) => g[0].some(prefix => nameR.startsWith(prefix)))?.[1] || '🧩';
+      newRow = insertToStringAtIndex(newRow, firstIndex, icon + ' ');
       return newRow;
     });
 
