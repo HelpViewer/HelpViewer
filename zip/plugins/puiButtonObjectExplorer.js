@@ -60,7 +60,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     // preparation of flat lists
     this.treeData = [];
     const pluginGroups = this.cfgGroupsList.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`]?.split(';')]));
-    var pluginNodes = plugins[0].map(x => new ObjectExplorerTreeItem(x, ObjectExplorerObjectDescriptor.PLUGIN, [], ));
+    var pluginNodes = plugins[0].map(x => new ObjectExplorerTreeItem(x, ObjectExplorerObjectDescriptor.PLUGIN, [], Plugins.pluginsClasses.get(x) ));
     var pluginInstanceNodes = plugins[2].map(x => new ObjectExplorerTreeItem(x[0], ObjectExplorerObjectDescriptor.PLUGININSTANCE, [], x[1]));
     this.pluginNodes = pluginNodes;
 
@@ -381,11 +381,19 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         desc += `## ${_T('resources')}\n${fileList}\n---\n**${_T('size')}:** ${valKiBs(found.plus[0])} kB`;
         break;
 
+      case ObjectExplorerObjectDescriptor.PLUGIN.abbr:
+        log('E fsgs', found?.interconnectedObject);
+        const parentClasses1 = getAllParents(found?.interconnectedObject).filter((x) => x).join(' -> ');
+        desc = `📂 ${parentClasses1}\n\n`;
+        break;
+
       case ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr:
         objNameLocal = objName;
         const sign = found.interconnectedObject.eventIdStrict ? '🔺' : '🟢';//🔻
         const t = found.interconnectedObject.eventIdStrict ? _T('eventIdStrict1') : _T('eventIdStrict0');
-        desc = `- ${sign} ${t}\n## 📦 ${_T('resources')}\n- ${_T('oeod_plg')}: ${valKiBs(found?.interconnectedObject?.constructor?._fileLength)} kB`;
+        const parentClasses = getAllParents(found?.interconnectedObject?.constructor).filter((x) => x).join(' -> ');
+        
+        desc = `- 📂 ${parentClasses}\n- ${sign} ${t}\n## 📦 ${_T('resources')}\n- ${_T('oeod_plg')}: ${valKiBs(found?.interconnectedObject?.constructor?._fileLength)} kB`;
 
         var proto = found?.interconnectedObject;
         const resourcesList = [];
