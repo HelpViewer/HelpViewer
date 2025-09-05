@@ -36,6 +36,10 @@ class pKWGenerateIndex extends IPlugin {
     super.deInit();
   }
 
+  onET_UserDataFileLoaded(r) {
+    this.asyncStack = undefined;
+  }
+
   onETIndexFileNotExists(r) {
     if (this.asyncStack) 
       return;
