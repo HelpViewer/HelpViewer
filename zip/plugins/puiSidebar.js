@@ -60,6 +60,7 @@ class puiSidebar extends IPlugin {
       y.handlerId = T.toolbarButtonIdRoot;
       y.handler = T._processClickedBottomPanelEvent;
     });
+    TI.catalogizeEventCall(TI.init, EventNames.ClickHandlerRegister);
 
     const containerMain = $('container');
     const tmpDiv = document.createElement('div');

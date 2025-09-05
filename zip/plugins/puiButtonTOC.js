@@ -30,6 +30,7 @@ class puiButtonTOC extends puiButtonTabTree {
 
     TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.ElementSetVisibility);
     TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.SetTreeData);
+    TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.StorageGetImages);
   }
   
   deInit() {

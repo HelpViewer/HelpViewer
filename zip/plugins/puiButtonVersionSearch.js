@@ -23,7 +23,7 @@ class puiButtonVersionSearch extends puiButton {
   _buttonAction(evt) {
     const reply = showChapter(null, _T('versionList'), '~' + this.FILENAME_CHANGELOG, null, this.txt);
     hideButton(this.button.id, reply?.content?.length > 0)
-    sendEvent('ShowBookmarks');
+    sendEvent(EventNames.ShowBookmarks);
   }
 
   onET_ConfigFileReloadFinished(evt) {
