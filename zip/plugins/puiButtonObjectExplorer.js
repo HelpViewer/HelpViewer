@@ -48,7 +48,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     pluginGroupsTable.push([['Object'], '⚙️']);
     tree = tree.map(row => {
       const nameR = row.trim();
-      var newRow = `${row}|||:_plg:${row.trim()}.md`;
+      var newRow = `${row}|||:_${ObjectExplorerObjectDescriptor.PLUGIN.abbr}:${row.trim()}.md`;
       const firstIndex = row.search(/\S/);
       const icon = pluginGroupsTable.find((g) => g[0].some(prefix => nameR.startsWith(prefix)))?.[1] || '🧩';
       newRow = insertToStringAtIndex(newRow, firstIndex, icon + ' ');
@@ -335,7 +335,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       return;
     }
 
-    if (r.uri.toLowerCase().endsWith('tree.md')) {
+    if (r.uri.toLowerCase().endsWith('/tree.md')) {
       r.result = r.result.then(() => {
         r.content = `<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>`;
       });
@@ -382,7 +382,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
 
       case ObjectExplorerObjectDescriptor.PLUGIN.abbr:
-        const parentClasses1 = getAllParents(found?.interconnectedObject).filter((x) => x).join(' -> ');
+        const parentClasses1 = this._getLineWithDependencyTree(found?.interconnectedObject);
         desc = `📂 ${parentClasses1}\n\n`;
         break;
 
@@ -390,7 +390,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         objNameLocal = objName;
         const sign = found.interconnectedObject.eventIdStrict ? '🔺' : '🟢';//🔻
         const t = found.interconnectedObject.eventIdStrict ? _T('eventIdStrict1') : _T('eventIdStrict0');
-        const parentClasses = getAllParents(found?.interconnectedObject?.constructor).filter((x) => x).join(' -> ');
+        const parentClasses = this._getLineWithDependencyTree(found?.interconnectedObject?.constructor);
         
         desc = `- 📂 ${parentClasses}\n- ${sign} ${t}\n## 📦 ${_T('resources')}\n- ${_T('oeod_plg')}: ${valKiBs(found?.interconnectedObject?.constructor?._fileLength)} kB`;
 
@@ -522,6 +522,15 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       r.result = r.result.then(() => delayedFunction().then(x => r.content += x));
 
     r.result = r.result.then(() => r.content = r.content.replace(this.C_AUTODESC, desc));
+  }
+
+  _getLineWithDependencyTree(baseClass, delimiter = ' -> ', links = true) {
+    var depends = getAllParents(baseClass).filter((x) => x);
+
+    if (links)
+      depends = depends.map((x) => `[${x}](:_${ObjectExplorerObjectDescriptor.PLUGIN.abbr}:${x}.md)`);
+
+    return depends.join(delimiter);
   }
 
   _getNamesForEventClassHandler(found) {
