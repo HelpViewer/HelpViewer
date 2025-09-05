@@ -19,6 +19,7 @@ class puiButtonEditRepo extends puiButton {
     TI.catalogizeEventCall(TI._buttonAction, EventNames.ConfigFileGet);
     TI.catalogizeEventCall(TI._buttonAction, EventNames.GetHomePageData);
     TI.catalogizeEventCall(TI._buttonAction, EventNames.GET_ACTIVE_LANGUAGE);
+    TI.catalogizeEventCall(TI._buttonAction, EventNames.GetsGet);
     
     TI.catalogizeEventCall(TI.onETChapterShown, EventNames.ElementSetVisibility);
   }

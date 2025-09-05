@@ -57,7 +57,7 @@ class puiButtonAsBook extends puiButtonTab {
     if (this.tab.classList.contains(C_HIDDENC)) {
       super._buttonAction();
     } else {
-      const tocData = sendEvent('GetTOCData') || Promise.resolve([]);
+      const tocData = sendEvent(EventNames.GetTOCData) || Promise.resolve([]);
       this.homeData = getHomePageData() || '';
       const homeData = this.homeData;
   
@@ -133,7 +133,7 @@ class puiButtonAsBook extends puiButtonTab {
       if (!PAGE_BREAK)
         textOfFiles = textOfFiles.replace(new RegExp(DIRECTIVE_PRINT_PAGEBREAK, 'g'), '');
       reply = showChapter(undefined, undefined, homeData, undefined, textOfFiles);
-      sendEvent('ShowBookmarks');
+      sendEvent(EventNames.ShowBookmarks);
       return reply;
     }).then(() => sendEvent(evtHideIfTooWide));
   }

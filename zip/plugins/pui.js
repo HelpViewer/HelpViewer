@@ -269,7 +269,6 @@ class puiButtonTabTree extends puiButtonTab {
 
     TI.catalogizeEventCall(TI.init, ClickedEventTree.name);
     TI.catalogizeEventCall(h_EVT_SET_TREE_DATA, T.EVT_TREE_DATA_CHANGED);
-    //_notifyClickedEvent(
 
     super.init();
     TI._preStandardInit();
