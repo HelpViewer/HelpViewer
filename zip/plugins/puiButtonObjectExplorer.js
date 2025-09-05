@@ -382,7 +382,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
 
       case ObjectExplorerObjectDescriptor.PLUGIN.abbr:
-        log('E fsgs', found?.interconnectedObject);
         const parentClasses1 = getAllParents(found?.interconnectedObject).filter((x) => x).join(' -> ');
         desc = `📂 ${parentClasses1}\n\n`;
         break;
