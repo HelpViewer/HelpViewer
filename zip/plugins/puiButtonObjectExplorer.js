@@ -42,24 +42,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     depTree.sort();
 
-    const reply = new Map();
-    const dpB = JSON.parse(JSON.stringify(depTree));
-    log('E TTTT1', dpB);
-    var depTree2 = this._getTreeFromArraysList(depTree, reply);
-
-    // var treeString = [];
-    // if (depTree.length > 0) {
-    //   const base = depTree[0].split(';', 2)[0];
-    //   const found = depTree.
-    // }
-    
-    log('E TTTTC', depTree);
-    
-    log('E TTTT', depTree2);
-
-    var tree = buildStringTreeFromMap(depTree2);
-    log('E uuuuuu', tree);
-    this.tree.innerHTML = linesToHtmlTree(tree.join('\n'), 'x');
+    var tree = buildStringTreeFromMap(this._getTreeFromArraysList(depTree, new Map()));
+    this.TextObjectTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
     // preparation of flat lists
     this.treeData = [];
@@ -170,9 +154,10 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     //:_/__/README.md
     var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('overview'));
+    var objectTree = new ObjectExplorerTreeItem('/TREE', ObjectExplorerObjectDescriptor.TREE, [], undefined, _T('dependTree'));
 
     // prepare top level data
-    this.treeData.push(firstPage, ...pluginGroups, ...pluginNodes, prodLines);
+    this.treeData.push(firstPage, objectTree, ...pluginGroups, ...pluginNodes, prodLines);
 
     // passing data to tree
     const treeDataFlat = this._prepareFlatTreeInput(this.treeData);
@@ -337,7 +322,14 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       });
       return;
     }
-    
+
+    if (r.uri.toLowerCase().endsWith('tree.md')) {
+      r.result = r.result.then(() => {
+        r.content = `<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>`;
+      });
+      return;
+    }
+
     const generalType = ObjectExplorerObjectDescriptor._BIGCLASS.get(typeInRequest) || typeInRequest;
     const objNamePreprocessed = objName.replace(new RegExp(':', 'g'), '_');
     const objNameLocalSplits = objName.split(':');
@@ -586,6 +578,7 @@ class ObjectExplorerObjectDescriptor {
   static UI_TREE = new ObjectExplorerObjectDescriptor('tree', '📂');
 
   static DOCUMENT = new ObjectExplorerObjectDescriptor('', '📄');
+  static TREE = new ObjectExplorerObjectDescriptor('', '📂');
 
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
   static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
