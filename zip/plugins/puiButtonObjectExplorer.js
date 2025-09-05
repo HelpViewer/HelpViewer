@@ -499,11 +499,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         }
   
         if (k == ObjectExplorerObjectDescriptor._BIGCLASS_HDL) {
-          const items = v.map((r) => `- ${r.descriptor.image} [${r.title}](:_${ObjectExplorerObjectDescriptor.HANDLER.abbr}:${r.id}.md) (${_T(r.title.startsWith('_') ? 'openToIdAll' : 'openToId')})`);
+          const items = v.map((r) => `- ${r.descriptor.image} [${r.title}](:_${r.descriptor.abbr}:${r.id}.md) (${_T(r.title.startsWith('_') ? 'openToIdAll' : 'openToId')})`);
           return `## ${ObjectExplorerObjectDescriptor.HANDLER.image} ${_T(k)}\n${items.join('\n')}`;
         }
         
-        const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} ${r.title}`);
+        const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} [${r.title}](:_${r.descriptor.abbr}:${r.id}.md)`);
         return `## ${ObjectExplorerObjectDescriptor[`_i_${k}`]} ${_T(k)}\n${items.join('\n')}`;
       });
   
