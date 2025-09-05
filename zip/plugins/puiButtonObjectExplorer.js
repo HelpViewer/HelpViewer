@@ -43,6 +43,12 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     depTree.sort();
 
     var tree = buildStringTreeFromMap(this._getTreeFromArraysList(depTree, new Map()));
+    // adding object tree links
+    tree = tree.map(row => {
+      var newRow = `${row}|||:_plg:${row.trim()}.md`;
+      return newRow;
+    });
+
     this.TextObjectTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
     // preparation of flat lists
