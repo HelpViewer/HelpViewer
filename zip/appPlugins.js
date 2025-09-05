@@ -216,4 +216,16 @@ function inheritsFrom(cls, base) {
   return false;
 }
 
+function getAllParents(cls) {
+  const chain = [];
+
+  while (cls && cls !== Object) {
+    chain.push(cls.name || undefined);
+    cls = Object.getPrototypeOf(cls);
+  }
+
+  chain.push("Object");
+  return chain;
+}
+
 Plugins.catalogize(Resource);

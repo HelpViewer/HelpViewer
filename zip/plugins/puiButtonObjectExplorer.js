@@ -37,18 +37,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     // dependency tree for plugin classes preparation
     const clsList = plugins[0].map((x) => Plugins.pluginsClasses.get(x));
     var depTree = clsList.map((x) => x.name);
-    for (let x = 0; x < clsList.length; x++) {
-      var cls = clsList[x];
-      const chain = [];
-
-      while (cls && cls !== Object) {
-        chain.push(cls.name || undefined);
-        cls = Object.getPrototypeOf(cls);
-      }
-
-      chain.push("Object");
-      depTree[x] = chain.filter((x) => x).reverse();
-    }
+    for (let x = 0; x < clsList.length; x++)
+      depTree[x] = getAllParents(clsList[x]).filter((x) => x).reverse();
 
     depTree.sort();
 
@@ -70,7 +60,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     var tree = buildStringTreeFromMap(depTree2);
     log('E uuuuuu', tree);
     this.tree.innerHTML = linesToHtmlTree(tree.join('\n'), 'x');
-    return;
 
     // preparation of flat lists
     this.treeData = [];

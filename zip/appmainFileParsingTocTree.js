@@ -109,12 +109,12 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
 }
 // E: File formats
 
-function buildStringTreeFromMap(source, reply, level = 0) {
+function buildStringTreeFromMap(source, reply, step = 1, level = 0) {
   var replyI = reply || [];
   source.forEach((value, key, map) => {
     const nextLev = level + 1;
-    replyI.push(' '.repeat(level) + key);
-    replyI.push(...buildStringTreeFromMap(value, [], nextLev));
+    replyI.push(' '.repeat(step).repeat(level) + key);
+    replyI.push(...buildStringTreeFromMap(value, [], step, nextLev));
   });
   return replyI;
 }
