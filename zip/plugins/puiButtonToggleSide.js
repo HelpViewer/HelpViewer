@@ -5,6 +5,7 @@ class puiButtonToggleSide extends puiButton {
     this.DEFAULT_KEY_CFG_ID = 'downP-ToggleSide';
     this.DEFAULT_KEY_CFG_CAPTION = '↔';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
+    this.DEFAULT_KEY_CFG_STOREKEY = 'sidebarSide';
   }
 
   static KEY_CFG_STOREKEY = 'STOREKEY';
@@ -13,7 +14,7 @@ class puiButtonToggleSide extends puiButton {
     const T = this.constructor;
     const TI = this;
 
-    this.KEY_LS_SIDEBARSIDE = this.config[T.KEY_CFG_STOREKEY] || 'sidebarSide';
+    this.KEY_LS_SIDEBARSIDE = this.config[T.KEY_CFG_STOREKEY] || this.DEFAULT_KEY_CFG_STOREKEY;
     this.state = getUserConfigValue(this.KEY_LS_SIDEBARSIDE) || 0;
     
     if (this.state == 0) 
