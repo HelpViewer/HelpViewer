@@ -167,8 +167,6 @@ class puiSidebar extends IPlugin {
   }
 
   deInit() {
-    this.SEVT_RESIZE?.deInit();
-    this.SEVT_LOAD?.deInit();
     this.prigetSidebar()?.remove();
     super.deInit();
   }

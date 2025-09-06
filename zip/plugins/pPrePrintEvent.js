@@ -17,8 +17,6 @@ class pPrePrintEvent extends IPlugin {
   }
 
   deInit() {
-    this.SEVT_BEFOREPRINT?.deInit();
-
     super.deInit();
   }
 

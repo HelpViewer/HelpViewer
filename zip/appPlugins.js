@@ -45,6 +45,12 @@ class IPlugin {
       one();
 
     this.unsubscribersToEB = [];
+
+    const siblingDeInit = Object.values(this).filter((x) => typeof x?.['deInit'] === "function").map(x => x.deInit.bind(x)).filter(x => x);
+
+    log(`Plugin deInit ${this.constructor.name} found ${siblingDeInit.length} ... calling deInit also for them.`);
+    siblingDeInit.forEach(x => x());
+    log(`Plugin deInit ${this.constructor.name} siblings finished.`);
   }
 
   createEvent(name, handler, dataClass = IEvent) {

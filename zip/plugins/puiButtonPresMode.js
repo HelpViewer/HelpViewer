@@ -30,8 +30,6 @@ class puiButtonPresMode extends puiButton {
   }
 
   deInit() {
-    this.SEVT_FSCHANGE?.deInit();
-
     super.deInit();
   }
 

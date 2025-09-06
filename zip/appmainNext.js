@@ -107,8 +107,6 @@ class pAppmainNext extends IPlugin {
   }
 
   deInit() {
-    this.SEVT_POPSTATE?.deInit();
-
     super.deInit();
   }
 

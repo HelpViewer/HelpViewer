@@ -43,8 +43,6 @@ class pClickConverter extends IPlugin {
   }
 
   deInit() {
-    this.SEVT_CLICK?.deInit();
-
     super.deInit();
   }
 }

@@ -133,11 +133,6 @@ class pGets extends IPlugin {
   }
   
   deInit() {
-    const TI = this;
-    
-    TI.SEVT_HASHCHANGE?.deInit();
-    TI.SEVT_POPSTATE?.deInit();
-
     super.deInit();
   }
 
