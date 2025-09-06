@@ -269,7 +269,7 @@ class SystemEventHandler extends IPlugin {
 
     if (target.startsWith('#')) return $(target.substring(1));
 
-    log(`W Target ${target} could not be mapped to any element! ... returns undefined`);
+    log(`E Target ${target} could not be mapped to any element! ... returns undefined`);
 
     return undefined;
   }
