@@ -303,7 +303,7 @@ class pAppmainNext extends IPlugin {
 Plugins.catalogize(pAppmainNext);
 const plgName = 'pAppmainNext';
 const plgAlias = '';
-activatePlugin(plgName, plgAlias).then(() => sendEvent(EVT_PluginsLoadingFinished));
+activatePlugin(plgName, plgAlias).then(() => sendEvent(EVT_PluginsLoadingFinished, (x) => x.result = [ [plgName, plgAlias] ]));
 pAppmainNext._fileLength = new TextEncoder().encode(pAppmainNext.toString()).length;
 
 {
