@@ -83,7 +83,8 @@ async function loadPluginList(listFileName, storage, basePath = loadPluginListBa
       aliases = names[1].split(';');
 
     if (aliases.length == 0)
-      aliases.push('');
+      //aliases.push('');
+      log(`W Plugin: ${name} will be loaded only ... no aliases defined`);
 
     try {
       await loadPlugin(name, basePath(name), storage);
