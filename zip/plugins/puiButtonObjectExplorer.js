@@ -147,6 +147,12 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         plug.subItems.push(new ObjectExplorerTreeItem(baseN + v.aliasName, ObjectExplorerObjectDescriptor.RESOURCE, [], v, v.aliasName, [v._fileLength]));
       });
 
+      proto.filter(name => name.startsWith('SEVT_')).forEach(name => {
+        const v = plg[name];
+        if (!v.aliasName) return;
+        plug.subItems.push(new ObjectExplorerTreeItem(baseN + v.aliasName, ObjectExplorerObjectDescriptor.SYSTEMEVENT, [], v, v.aliasName, [v]));
+      });
+
       // sending events
       plg.eventCallsMap.keys().forEach(evt => {
         plug.subItems.push(new ObjectExplorerTreeItem(baseN + evt, 
@@ -615,6 +621,8 @@ class ObjectExplorerObjectDescriptor {
   static PLUGIN  = new ObjectExplorerObjectDescriptor('plg', '🧩');
   static PLUGININSTANCE = new ObjectExplorerObjectDescriptor('inst', '🔹');
 
+  static SYSTEMEVENT = new ObjectExplorerObjectDescriptor('evtSys', '⭐');
+  
   static EVENT = new ObjectExplorerObjectDescriptor('evt', '⚡');
   static EVENT_NOHANDLER = new ObjectExplorerObjectDescriptor('evtD', '📄⚡');
 
@@ -641,6 +649,7 @@ class ObjectExplorerObjectDescriptor {
   static _BIGCLASS_HDL = 'hdl';
   static _BIGCLASS_UIO = 'uiobject';
   static _BIGCLASS_EVT = 'event';
+  static _BIGCLASS_SEVT = 'sysevent';
 
   static _i_cfgopt = '⚙️';
   static _i_hdl = '👂';
@@ -648,10 +657,12 @@ class ObjectExplorerObjectDescriptor {
   static _i_uiobject = '🔘';
   static _i_event = '⚡';
   static _i_oeod_inst = '🔹';
+  static _i_sysevent = '⭐';
 
   static _BIGCLASS = new Map([
     ['cfg', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
     ['cfgE', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
+    ['evtSys', ObjectExplorerObjectDescriptor._BIGCLASS_SEVT],
     ['evt', ObjectExplorerObjectDescriptor._BIGCLASS_EVT],
     ['evtD', ObjectExplorerObjectDescriptor._BIGCLASS_EVT],
     ['hdl', ObjectExplorerObjectDescriptor._BIGCLASS_HDL],

@@ -228,5 +228,46 @@ function getAllParents(cls) {
   return chain;
 }
 
+class SystemEventHandler extends IPlugin {
+  constructor(aliasName, data, target, eventName, handler) {
+    super(aliasName, data);
+    this.target = target;
+    this.eventName = eventName;
+    this.handler = handler;
+    this.aliasName = this.aliasName || `${this.getTargetName(target)}.${eventName}`;
+  }
+
+  init() {
+    this.target.addEventListener(this.eventName, this.handler);
+  }
+
+  deInit() {
+    this.target.removeEventListener(this.eventName, this.handler);
+  }
+
+  getTargetName(target) {
+    if (target === window) return "window";
+    if (target instanceof Document) return "Document";
+    if (target instanceof HTMLElement)
+      return this.target.id || this.target.tagName;
+    if (target instanceof EventTarget) return "EventTarget";
+    return Object.prototype.toString.call(target);
+  }
+
+  static getTargetFromName(target) {
+    const targetType = target.toLowerCase();
+    if (targetType == 'window') return window;
+    if (targetType == 'document') return document;
+    if (targetType == 'body') return document.body;
+
+    if (target.startsWith('#')) return $(target.substring(1));
+
+    log(`W Target ${target} could not be mapped to any element! ... returns undefined`);
+
+    return undefined;
+  }
+}
+
 Plugins.catalogize(IPlugin);
 Plugins.catalogize(Resource);
+Plugins.catalogize(SystemEventHandler);
