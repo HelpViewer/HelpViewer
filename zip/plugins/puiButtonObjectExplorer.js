@@ -489,7 +489,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
             for (const path in grouped) {
               desc += `\n### ⇄ ${path}\n| ${_T('oeod_plg')} | ${_T('oeod_inst')} | ${_T('oeod_hdl')} | ${_T('direction')} | ${_T('filter')} |\n| --- | --- | --- | :---: | :---: |\n`;
               grouped[path].forEach(i => 
-                desc += `| ${i.pluginName} | ${i.instanceName} | ${i.handlerName} | ${i.direction} | ${i.openedAll ? '🟢' : '🔺'} |\n`
+                desc += `| [${i.pluginName}](:_${ObjectExplorerObjectDescriptor.PLUGIN.abbr}:${i.pluginName}.md) | [${i.instanceName}](:_${ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr}:${i.pluginName}:${i.instanceName}.md) | ${i.handlerName} | ${i.direction} | ${i.openedAll ? '🟢' : '🔺'} |\n`
               );
             }
 
