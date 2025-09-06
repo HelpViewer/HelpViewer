@@ -46,6 +46,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     // adding object tree links
     const pluginGroupsTable = this.cfgGroupsList.map(x => [this.config[`${x}-F`]?.split(';'), this.config[x]]);
     pluginGroupsTable.push([['Object'], '⚙️']);
+    pluginGroupsTable.push([['IEvent'], '⚡']);
     tree = tree.map(row => {
       const nameR = row.trim();
       var newRow = `${row}|||:_${ObjectExplorerObjectDescriptor.PLUGIN.abbr}:${row.trim()}.md`;
@@ -56,6 +57,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     });
 
     this.TextObjectTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
+
+    // dependency tree for events preparation
+    this.TextEventTree = Object.entries(EventDefinitions).map(([key, value]) => [...new Set([...getAllParents(value.inputType).filter((x) => x).reverse(), key])]);
+    tree = buildStringTreeFromMap(this._getTreeFromArraysList(this.TextEventTree, new Map()));
+    this.TextEventTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
     // preparation of flat lists
     this.treeData = [];
@@ -337,7 +343,10 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     if (r.uri.toLowerCase().endsWith('/tree.md')) {
       r.result = r.result.then(() => {
-        r.content = `<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>`;
+        var descr = ObjectExplorerObjectDescriptor.PLUGIN;
+        r.content = `## ${descr.image} ${_T(descr.t)} (~${Plugins.pluginsClasses.size}|${Plugins.plugins.size})\n<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
+        var descr = ObjectExplorerObjectDescriptor.EVENT;
+        r.content += `## ${descr.image} ${_T('event')} (~${Object.entries(EventDefinitions).length})\n<ul class="tree">${this.TextEventTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
       });
       return;
     }
