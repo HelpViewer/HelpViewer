@@ -175,10 +175,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     //:_/__/README.md
     var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('overview'));
-    var objectTree = new ObjectExplorerTreeItem('/TREE', ObjectExplorerObjectDescriptor.TREE, [], undefined, _T('dependTree'));
+    var objectTree = new ObjectExplorerTreeItem('/TREE', ObjectExplorerObjectDescriptor.UI_TREE, [], undefined, _T('dependTree'));
+    var orderTree = new ObjectExplorerTreeItem('/LORDER', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('orderLoading'));
 
     // prepare top level data
-    this.treeData.push(firstPage, objectTree, ...pluginGroups, ...pluginNodes, prodLines);
+    this.treeData.push(firstPage, objectTree, orderTree, ...pluginGroups, ...pluginNodes, prodLines);
 
     // passing data to tree
     const treeDataFlat = this._prepareFlatTreeInput(this.treeData);
@@ -348,9 +349,14 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         r.content += '&nbsp;\n\n';
         descr = ObjectExplorerObjectDescriptor.EVENT;
         r.content += `## ${descr.image} ${_T('event')} (~${Object.entries(EventDefinitions).length})\n<ul class="tree">${this.TextEventTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
-        r.content += '&nbsp;\n\n';
-        descr = ObjectExplorerObjectDescriptor.PLUGININSTANCE;
-        r.content += `## ${descr.image} ${_T('orderLoading')} (${this.PluginInstanceList.length})\n${this.PluginInstanceList.map(x => `- ${descr.image} [${x}](:_${descr.abbr}:${x}.md)`).join('\n')}\n\n`;
+      });
+      return;
+    }
+
+    if (r.uri.toLowerCase().endsWith('/lorder.md')) {
+      r.result = r.result.then(() => {
+        var descr = ObjectExplorerObjectDescriptor.PLUGININSTANCE;
+        r.content += `# ${descr.image} ${_T('orderLoading')} (${this.PluginInstanceList.length})\n${this.PluginInstanceList.map(x => `- ${descr.image} [${x}](:_${descr.abbr}:${x}.md)`).join('\n')}\n\n`;
       });
       return;
     }
@@ -397,7 +403,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       case ObjectExplorerObjectDescriptor.PLUGIN.abbr:
         const parentClasses1 = this._getLineWithDependencyTree(found?.interconnectedObject);
         desc += `📂 ${parentClasses1}\n\n`;
-        desc += `[</> ${_T('source')}](:_${ObjectExplorerObjectDescriptor.CODEPRINT.abbr}:${objName.split(':')[0]}.md)\n\n`;
+        desc += `[</> ${_T('oeod_cpp')}](:_${ObjectExplorerObjectDescriptor.CODEPRINT.abbr}:${objName.split(':')[0]}.md)\n\n`;
         break;
 
       case ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr:
@@ -487,7 +493,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
 
       case ObjectExplorerObjectDescriptor.CODEPRINT.abbr:
-        desc = `## </> ${_T('source')}\n\`\`\`javascript\n${Plugins.pluginsClasses.get(objName)}\n\`\`\`\n`;
+        desc = `## </> ${_T('oeod_cpp')}\n\`\`\`javascript\n${Plugins.pluginsClasses.get(objName)}\n\`\`\`\n`;
         break;
           
       default:
@@ -624,7 +630,6 @@ class ObjectExplorerObjectDescriptor {
 
   static DOCUMENT = new ObjectExplorerObjectDescriptor('', '📄');
   static CODEPRINT = new ObjectExplorerObjectDescriptor('cpp', '📄');
-  static TREE = new ObjectExplorerObjectDescriptor('', '📂');
 
   static UNDECIDED = new ObjectExplorerObjectDescriptor('und', '❔');
   static GROUP = new ObjectExplorerObjectDescriptor('grp', '');
