@@ -73,13 +73,11 @@ class pIndexFile extends IPlugin {
     TI.catalogizeEventCall(h_EVT_IF_SET, T.EVT_IF_NOTEXISTS);
     
     const h_EVT_IF_GET = (data) => {
-      //if (data.id != this.aliasName) return;
       data.result = index.getTreeData(data.key, data.cap);
     }
     TI.eventDefinitions.push([T.EVT_IF_GET, IndexFileGetData, h_EVT_IF_GET]);
 
     const h_EVT_IF_GETKDW = (data) => {
-      //if (data.id != this.aliasName) return;
       data.result = index.searchKeyword(data.key);
     }
     TI.eventDefinitions.push([T.EVT_IF_GETKDW, IndexFileGetKeywordData, h_EVT_IF_GETKDW]);

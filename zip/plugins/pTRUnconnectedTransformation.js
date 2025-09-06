@@ -38,17 +38,6 @@ class pTRUnconnectedTransformation extends pTRPhasePlugin {
       });
     });
 
-    // //code listings lines numbering
-    // $A('pre code', r.doc).forEach((block) => {
-    //   const lines = block.innerText.split('\n');
-    //   if (lines[lines.length - 1].trim() === '') {
-    //     lines.pop();
-    //   }
-    //   block.innerHTML = lines.map(line =>
-    //     `<span>${line}</span>`).join('\n');
-    //   block.parentElement.classList.add('code-numbers');
-    // });
-
   }
 }
 

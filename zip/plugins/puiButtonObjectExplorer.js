@@ -190,9 +190,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     source = source.filter((x) => x && x.length > 0);
 
-    // if (!source || source.length == 0)
-    //   return reply;
-
     const siblings = [...new Set(source.map((x) => x[0]))].filter((x) => x);
 
     siblings.forEach((x) => reply.set(x, []));
@@ -586,7 +583,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     if (pluginCallee && method) {
       method = method.split(' ')[0];
-      //log(`Found sure event call (${evt.data.eventName}) for plugin (${pluginCallee}) on method ${method}`, evt.stack, stack);
       [...Plugins.plugins.keys()].filter(x => x.startsWith(pluginCallee + ':')).forEach((x) => Plugins.plugins.get(x).catalogizeEventCall(method, evt.data.eventName, ''));
       this.foundEventCalls++;
     }
