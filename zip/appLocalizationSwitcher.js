@@ -20,7 +20,7 @@ function getLanguagesList(additionalList = null) {
 }
 
 function loadLocalization(localizationName) {
-  sendEvent('LOC_LOAD', (d) => {
+  sendEvent(EventNames.LocLoad, (d) => {
     d.name = localizationName;
   });
 

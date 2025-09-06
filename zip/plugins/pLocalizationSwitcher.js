@@ -31,7 +31,7 @@ class pLocalizationSwitcher extends IPlugin {
   static EVT_LOC_TRANSLATE = LocTranslate.name;
   static EVT_LOC_GET_ACTIVE_LANGUAGE = 'GET_ACTIVE_LANGUAGE';
   static EVT_LOC_LANGUAGES = LocGetLanguages.name;
-  static EVT_LOC_LOAD = 'LOC_LOAD';
+  static EVT_LOC_LOAD = LocLoad.name;
   static EVT_LOC_LOADED = 'LOC_LOADED';
   static EVT_LOC_REFRESH = 'LOC_REFRESH';
 
