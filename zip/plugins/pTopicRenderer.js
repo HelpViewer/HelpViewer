@@ -241,3 +241,5 @@ class pTRPhasePlugin extends IPlugin {
     return r.doc.body ? r.doc.body : r.doc;
   }
 }
+
+Plugins.catalogize(pTRPhasePlugin);
