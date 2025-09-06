@@ -228,4 +228,5 @@ function getAllParents(cls) {
   return chain;
 }
 
+Plugins.catalogize(IPlugin);
 Plugins.catalogize(Resource);
