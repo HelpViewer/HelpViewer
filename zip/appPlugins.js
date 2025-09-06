@@ -46,9 +46,10 @@ class IPlugin {
 
     this.unsubscribersToEB = [];
 
-    const siblingDeInit = Object.values(this).filter((x) => typeof x?.['deInit'] === "function").map(x => x.deInit.bind(x)).filter(x => x);
+    const siblingDeInitParents = Object.values(this).filter((x) => typeof x?.['deInit'] === "function");
+    const siblingDeInit = siblingDeInitParents.map(x => x.deInit.bind(x)).filter(x => x);
 
-    log(`Plugin deInit ${this.constructor.name} found ${siblingDeInit.length} ... calling deInit also for them.`);
+    log(`Plugin deInit ${this.constructor.name} found ${siblingDeInit.length} (${siblingDeInitParents.map(x => `${x.constructor.name}:${x.aliasName}` || x.constructor.name).join(', ')}) ... calling deInit also for them.`);
     siblingDeInit.forEach(x => x());
     log(`Plugin deInit ${this.constructor.name} siblings finished.`);
   }
