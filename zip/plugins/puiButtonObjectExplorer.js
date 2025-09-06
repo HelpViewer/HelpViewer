@@ -356,7 +356,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     if (r.uri.toLowerCase().endsWith('/lorder.md')) {
       r.result = r.result.then(() => {
         var descr = ObjectExplorerObjectDescriptor.PLUGININSTANCE;
-        r.content += `# ${descr.image} ${_T('orderLoading')} (${this.PluginInstanceList.length})\n${this.PluginInstanceList.map(x => `- ${descr.image} [${x}](:_${descr.abbr}:${x}.md)`).join('\n')}\n\n`;
+        r.content += `# ${descr.image} ${_T('orderLoading')} (${this.PluginInstanceList.length})\n${this.PluginInstanceList.map((x,idx) => `${idx + 1}. ${descr.image} [${x}](:_${descr.abbr}:${x}.md)`).join('\n')}\n\n`;
       });
       return;
     }
