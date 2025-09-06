@@ -63,6 +63,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     tree = buildStringTreeFromMap(this._getTreeFromArraysList(this.TextEventTree, new Map()));
     this.TextEventTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
+    // plugin instances list
+    this.PluginInstanceList = plugins[1].map(x => x);
+
     // preparation of flat lists
     this.treeData = [];
     const pluginGroups = this.cfgGroupsList.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`]?.split(';')]));
@@ -342,9 +345,12 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       r.result = r.result.then(() => {
         var descr = ObjectExplorerObjectDescriptor.PLUGIN;
         r.content = `## ${descr.image} ${_T(descr.t)} (~${Plugins.pluginsClasses.size}/${Plugins.plugins.size})\n<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
-        var descr = ObjectExplorerObjectDescriptor.EVENT;
         r.content += '&nbsp;\n\n';
+        descr = ObjectExplorerObjectDescriptor.EVENT;
         r.content += `## ${descr.image} ${_T('event')} (~${Object.entries(EventDefinitions).length})\n<ul class="tree">${this.TextEventTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
+        r.content += '&nbsp;\n\n';
+        descr = ObjectExplorerObjectDescriptor.PLUGININSTANCE;
+        r.content += `## ${descr.image} ${_T('orderLoading')} (${this.PluginInstanceList.length})\n${this.PluginInstanceList.map(x => `- ${descr.image} [${x}](:_${descr.abbr}:${x}.md)`).join('\n')}\n\n`;
       });
       return;
     }
