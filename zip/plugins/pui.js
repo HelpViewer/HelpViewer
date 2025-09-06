@@ -327,3 +327,8 @@ function _notifyClickedEvent(e, result, cfgTreeId, eventName = ClickedEventTree.
     dc.treeId = cfgTreeId;
   });
 }
+
+Plugins.catalogize(puiButton);
+Plugins.catalogize(puiButtonTab);
+Plugins.catalogize(puiButtonTabTree);
+
