@@ -154,8 +154,12 @@ class puiSidebar extends IPlugin {
       T.recomputeButtonPanel(reply.button);
     }
 
-    window.addEventListener("resize", this.handler_checkSidebarWidth);
-    window.addEventListener("load", this.handler_checkSidebarWidth);
+    TI.SEVT_RESIZE = new SystemEventHandler('', undefined, window, 'resize', this.handler_checkSidebarWidth);
+    TI.SEVT_RESIZE.init();
+
+    TI.SEVT_LOAD = new SystemEventHandler('', undefined, window, 'load', this.handler_checkSidebarWidth);
+    TI.SEVT_LOAD.init();
+
     TI._checkSidebarWidth();
 
     super.init();
@@ -163,8 +167,8 @@ class puiSidebar extends IPlugin {
   }
 
   deInit() {
-    window.removeEventListener("resize", this.handler_checkSidebarWidth);
-    window.removeEventListener("load", this.handler_checkSidebarWidth);
+    this.SEVT_RESIZE?.deInit();
+    this.SEVT_LOAD?.deInit();
     this.prigetSidebar()?.remove();
     super.deInit();
   }

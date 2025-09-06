@@ -24,7 +24,9 @@ class pClickConverter extends IPlugin {
     TI.eventDefinitions.push([T.EVT_CD_CLICK, ClickedEvent, null]); // outside event handlers
 
     TI.catalogizeEventCall(TI._processClick, T.EVT_CD_CLICK);
-    document.body.addEventListener('click', this._processClick);
+
+    TI.SEVT_CLICK = new SystemEventHandler('', undefined, document.body, 'click', this._processClick);
+    TI.SEVT_CLICK.init();
     
     super.init();
   }
@@ -41,9 +43,9 @@ class pClickConverter extends IPlugin {
   }
 
   deInit() {
-    super.deInit();
+    this.SEVT_CLICK?.deInit();
 
-    document.body.removeEventListener('click', this._processClick);
+    super.deInit();
   }
 }
 

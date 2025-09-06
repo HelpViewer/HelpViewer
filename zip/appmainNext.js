@@ -65,14 +65,6 @@ const treeItemHandlerGet = () => idxTreeItem;
 
 const tree = $('tree');
 
-window.addEventListener('popstate', () => {
-  if (typeof dataPath !== 'string' || dataPath.trim() === '')
-    dataPath = FILENAME_DEFAULT_HELPFILE;
-
-  LoadURLParameters();
-  showChapterByData(idxTreeItem, pagePath);
-});
-
 var languages = getLanguagesList();
 
 loadLocalization(activeLanguage).then(() => {
@@ -108,12 +100,25 @@ class pAppmainNext extends IPlugin {
     TI.catalogizeEventCall(TI.onETBeforePrint, EventNames.HeaderGet);
     TI.catalogizeEventCall(TI.onETBeforePrint, EventNames.UserConfigGet);
     TI.catalogizeEventCall(TI.onETLOC_LOADED, EventNames.StorageAdded);
-    TI.catalogizeEventCall(TI.onETChapterShown, evtHashDefined);    
+    TI.catalogizeEventCall(TI.onETChapterShown, evtHashDefined);
+
+    TI.SEVT_POPSTATE = new SystemEventHandler('', undefined, window, 'popstate', this._handlePopstate);
+    TI.SEVT_POPSTATE.init();
   }
 
   deInit() {
+    this.SEVT_POPSTATE?.deInit();
+
     super.deInit();
   }
+
+  _handlePopstate() {
+    if (typeof dataPath !== 'string' || dataPath.trim() === '')
+      dataPath = FILENAME_DEFAULT_HELPFILE;
+  
+    LoadURLParameters();
+    showChapterByData(idxTreeItem, pagePath);
+  };
 
   async onETPluginsLoadingFinished(d) {
     if (DEBUG_MODE) {

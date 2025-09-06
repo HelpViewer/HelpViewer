@@ -22,13 +22,17 @@ class puiButtonPresMode extends puiButton {
 
     this.fsFunction = this._fullScreenChange.bind(this);
     this._keyPressHandlerFunction = this._keyPressHandler.bind(this);
-    document.addEventListener("fullscreenchange", this.fsFunction);
+
+    TI.SEVT_FSCHANGE = new SystemEventHandler('', undefined, document, 'fullscreenchange', this.fsFunction);
+    TI.SEVT_FSCHANGE.init();
+
+    TI.SEVT_FSKEYDOWN = new SystemEventHandler('', undefined, document, 'keydown', this._keyPressHandlerFunction);
   }
 
   deInit() {
-    super.deInit();
+    this.SEVT_FSCHANGE?.deInit();
 
-    document.removeEventListener("fullscreenchange", this.fsFunction);
+    super.deInit();
   }
 
   _keyPressHandler(e) {
@@ -77,7 +81,7 @@ class puiButtonPresMode extends puiButton {
     } else {
       $(this.presModeCSSAddName)?.remove();
       toggleSidebar(true);
-      document.removeEventListener("keydown", this._keyPressHandlerFunction);
+      this.SEVT_FSKEYDOWN?.deInit();
     }
   }
 
@@ -89,7 +93,7 @@ class puiButtonPresMode extends puiButton {
       document.documentElement.requestFullscreen();
       toggleSidebar(false);
       appendCSS(this.presModeCSSAddName, presModeCSSAdd);
-      document.addEventListener("keydown", this._keyPressHandlerFunction);
+      this.SEVT_FSKEYDOWN?.init();
     }
   }
 }

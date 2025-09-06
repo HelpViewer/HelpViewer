@@ -120,8 +120,10 @@ class pGets extends IPlugin {
 
     TI.eventDefinitions.push([T.EVT_GETS_CHANGES, GetsChanges, null]); // outside event handlers
 
-    window.addEventListener('popstate', this.onUriChanged);
-    window.addEventListener('hashchange', this.onUriChanged);
+    TI.SEVT_POPSTATE = new SystemEventHandler('', undefined, window, 'popstate', this.onUriChanged);
+    TI.SEVT_POPSTATE.init();
+    TI.SEVT_HASHCHANGE = new SystemEventHandler('', undefined, window, 'hashchange', this.onUriChanged);
+    TI.SEVT_HASHCHANGE.init();
 
     super.init();
   }
@@ -131,10 +133,12 @@ class pGets extends IPlugin {
   }
   
   deInit() {
-    super.deInit();
+    const TI = this;
+    
+    TI.SEVT_HASHCHANGE?.deInit();
+    TI.SEVT_POPSTATE?.deInit();
 
-    window.removeEventListener('popstate', this.onUriChanged);
-    window.removeEventListener('hashchange', this.onUriChanged);
+    super.deInit();
   }
 
   h_EVT_GETS_LOAD(data) {

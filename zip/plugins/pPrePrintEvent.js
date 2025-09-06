@@ -6,13 +6,18 @@ class pPrePrintEvent extends IPlugin {
   }
 
   init() {
-    window.addEventListener('beforeprint', this._beforeprint);
+    const T = this.constructor;
+    const TI = this;
+
+    TI.SEVT_BEFOREPRINT = new SystemEventHandler('', undefined, window, 'beforeprint', this._beforeprint);
+    TI.SEVT_BEFOREPRINT.init();
+    TI.catalogizeEventCall(this._beforeprint, T.EVT_BEFORE_PRINT);
 
     super.init();
   }
 
   deInit() {
-    window.removeEventListener('beforeprint', this._beforeprint);
+    this.SEVT_BEFOREPRINT?.deInit();
 
     super.deInit();
   }
