@@ -28,7 +28,7 @@ function loadLocalization(localizationName) {
 }
 
 function refreshTitlesForLangStrings(strings = {}) {
-  sendEvent('LOC_REFRESH', (d) => {
+  sendEvent(EventNames.LocRefresh, (d) => {
     d.strings = strings;
   });
 }
