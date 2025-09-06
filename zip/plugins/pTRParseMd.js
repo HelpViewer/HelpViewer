@@ -15,7 +15,6 @@ class pTRParseMd extends pTRPhasePlugin {
   }
 
   deInit() {
-    this.RES_MARKED?.deInit();
     super.deInit();
   }
 

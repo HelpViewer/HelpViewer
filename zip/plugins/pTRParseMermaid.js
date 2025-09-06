@@ -15,7 +15,6 @@ class pTRParseMermaid extends pTRPhasePlugin {
   }
 
   deInit() {
-    this.RES_MERMAID?.deInit();
     super.deInit();
   }
 

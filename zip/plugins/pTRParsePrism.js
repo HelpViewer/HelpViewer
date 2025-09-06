@@ -15,7 +15,6 @@ class pTRParsePrism extends pTRPhasePlugin {
   }
 
   deInit() {
-    this.RES_PRISM?.deInit();
     super.deInit();
   }
 
