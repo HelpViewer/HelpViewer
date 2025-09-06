@@ -1,7 +1,4 @@
 /*S: Feature: Language switching management */
-const DEFAULT_LANG = 'en';
-const KEY_LS_LANG = "language";
-
 function _T(key, strings = {}) {
   return sendEvent(EventNames.LocTranslate, (d) => {
     d.name = key;

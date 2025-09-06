@@ -35,22 +35,35 @@ class pLocalizationSwitcher extends IPlugin {
   static EVT_LOC_LOADED = 'LOC_LOADED';
   static EVT_LOC_REFRESH = LocRefresh.name;
 
+  static KEY_CFG_STOREKEY = 'STOREKEY';
+  static KEY_CFG_DEFAULTLANG = 'DEFAULTLANG';
+
   constructor(aliasName, data) {
     super(aliasName, data);
+
     this.langStrs = undefined;
     this.langKeysDyn = undefined;
+
+    this.DEFAULT_KEY_CFG_STOREKEY = 'language';
+    this.DEFAULT_KEY_CFG_DEFAULTLANG = 'en';
   }
 
   init() {
     const T = this.constructor;
     const TI = this;
+
+    TI.cfgStoreKey = TI.config[T.KEY_CFG_STOREKEY] || this.DEFAULT_KEY_CFG_STOREKEY;
+    TI.cfgDefaultLang = TI.config[T.KEY_CFG_DEFAULTLANG] || this.DEFAULT_KEY_CFG_DEFAULTLANG;
+
+    TI.activeLanguage = getUserConfigValue(TI.cfgStoreKey) || TI.cfgDefaultLang;
+
     const h_EVT_LOC_TRANSLATE = (data) => {
       data.result = this._T(data.name, data.strings);
     };
     TI.eventDefinitions.push([T.EVT_LOC_TRANSLATE, LocTranslate, h_EVT_LOC_TRANSLATE]);
 
     const h_EVT_LOC_GET_ACTIVE_LANGUAGE = (data) => {
-      data.result = T.activeLanguage;
+      data.result = TI.activeLanguage;
     };
     TI.eventDefinitions.push([T.EVT_LOC_GET_ACTIVE_LANGUAGE, IEvent, h_EVT_LOC_GET_ACTIVE_LANGUAGE]);
 
@@ -86,8 +99,6 @@ class pLocalizationSwitcher extends IPlugin {
   static langFileTXT = 'lstr.txt';
   static languagesMainPath = 'lang/';
   
-  static activeLanguage = getUserConfigValue(KEY_LS_LANG) || DEFAULT_LANG;
-  
   async _storageSearch(filePath, format = STOF_TEXT) {
     return storageSearch(STO_DATA, filePath, format);
   }
@@ -117,6 +128,8 @@ class pLocalizationSwitcher extends IPlugin {
   async loadLocalization(localizationName, parentEventId)
   {
     const T = this.constructor;
+    const TI = this;
+
     this.langStrs = {};
   
     const langJS = await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileJS}`);
@@ -127,8 +140,7 @@ class pLocalizationSwitcher extends IPlugin {
     const langFlatStrs = (await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileTXT}`)).split("\n");
     
     if (!langFlatStrs || langFlatStrs.length == 0  || langFlatStrs == '') {
-      loadLocalization(DEFAULT_LANG);
-      //this.loadLocalization(DEFAULT_LANG, parentEventId);
+      loadLocalization(TI.cfgDefaultLang);
       return;
     }
 
@@ -147,8 +159,8 @@ class pLocalizationSwitcher extends IPlugin {
     }
 
     this.refreshTitlesForLangStrings(Object.keys(this.langStrs));
-    T.activeLanguage = localizationName;
-    setUserConfigValue(KEY_LS_LANG, localizationName);
+    TI.activeLanguage = localizationName;
+    setUserConfigValue(TI.cfgStoreKey, localizationName);
     
     sendEvent(T.EVT_LOC_LOADED, (x) => {
       x.name = localizationName;
