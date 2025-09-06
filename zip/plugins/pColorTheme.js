@@ -16,13 +16,20 @@ class pColorTheme extends IPlugin {
   static EVT_CT_GET = ColorThemeGet.name;
   static EVT_CT_SET = ColorThemeSet.name;
 
+  static KEY_CFG_STOREKEY = 'STOREKEY';
+
   constructor(aliasName, data) {
     super(aliasName, data);
+
+    this.DEFAULT_KEY_CFG_STOREKEY = 'colorTheme';
   }
 
   init() {
     const T = this.constructor;
     const TI = this;
+    
+    this.cfgStoreKey = this.config[T.KEY_CFG_STOREKEY] || this.DEFAULT_KEY_CFG_STOREKEY;
+
     const h_EVT_CT_GET = (data) =>
       data.result = T.ColorTheme.getCurrentColorMode();
     TI.eventDefinitions.push([T.EVT_CT_GET, ColorThemeGet, h_EVT_CT_GET]);
@@ -35,7 +42,7 @@ class pColorTheme extends IPlugin {
     TI.catalogizeEventCall(h_EVT_CT_SET, EventNames.UserConfigSet);
 
     super.init();
-    T.ColorTheme.init();
+    T.ColorTheme.init(this.cfgStoreKey);
   }
 
   deInit() {
@@ -44,7 +51,7 @@ class pColorTheme extends IPlugin {
 
   /*S: Feature: Set color theme */
   static ColorTheme = (() => {
-    var KEY_LS_COLORTHEME = "colorTheme";
+    var KEY_LS_COLORTHEME = undefined;
     
     // reimplement yourself
     var colorModes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
@@ -52,7 +59,8 @@ class pColorTheme extends IPlugin {
     
     var targetElement = document.body;
   
-    function init() {
+    function init(key) {
+      KEY_LS_COLORTHEME = key;
       const val = getCurrentColorMode();
       setColorMode(val);
     }
