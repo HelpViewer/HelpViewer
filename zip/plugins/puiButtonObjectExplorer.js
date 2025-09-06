@@ -344,7 +344,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     if (r.uri.toLowerCase().endsWith('/tree.md')) {
       r.result = r.result.then(() => {
         var descr = ObjectExplorerObjectDescriptor.PLUGIN;
-        r.content = `## ${descr.image} ${_T(descr.t)} (~${Plugins.pluginsClasses.size}|${Plugins.plugins.size})\n<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
+        r.content = `## ${descr.image} ${_T(descr.t)} (~${Plugins.pluginsClasses.size}/${Plugins.plugins.size})\n<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
         var descr = ObjectExplorerObjectDescriptor.EVENT;
         r.content += `## ${descr.image} ${_T('event')} (~${Object.entries(EventDefinitions).length})\n<ul class="tree">${this.TextEventTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
       });
