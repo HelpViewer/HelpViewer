@@ -52,9 +52,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     const treeDesc = ObjectExplorerObjectDescriptor.UI_TREE;
     var desc = treeDesc;
-    uiAddButton(desc.t, desc.image, this.aliasName, handlerResolved);
+    this.topPTreeBtn = uiAddButton(desc.t, desc.image, this.aliasName, handlerResolved);
     var desc = ObjectExplorerObjectDescriptor.GROUPPROC;
-    uiAddButton(desc.t, desc.image, this.aliasName, handlerResolved);
+    this.topPProcessBtn = uiAddButton(desc.t, desc.image, this.aliasName, handlerResolved);
+    this.topPanel = topPanel;
+    this.searchField = field;
   }
 
   onETButtonSend(x) {

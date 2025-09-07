@@ -68,6 +68,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     const field = $(fieldId);
     const T = this.constructor;
     field.addEventListener('keydown', T._handleEnterOnField.bind(this));
+    this.searchField = field;
   }
 
   static _handleEnterOnField(event) {
