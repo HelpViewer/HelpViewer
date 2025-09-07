@@ -131,10 +131,6 @@ class pGets extends IPlugin {
   onET_PluginsLoadingFinished(evt) {
     this.onUriChanged();
   }
-  
-  deInit() {
-    super.deInit();
-  }
 
   h_EVT_GETS_LOAD(data) {
     const url = new URL(window.location.href);

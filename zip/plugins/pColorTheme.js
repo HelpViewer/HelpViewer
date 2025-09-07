@@ -44,11 +44,7 @@ class pColorTheme extends IPlugin {
     super.init();
     T.ColorTheme.init(this.cfgStoreKey);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   /*S: Feature: Set color theme */
   static ColorTheme = (() => {
     var KEY_LS_COLORTHEME = undefined;

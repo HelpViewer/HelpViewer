@@ -15,11 +15,7 @@ class puiButtonVersionSearch extends puiButton {
     super.init();
     hideButton(this.button.id, false);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   _buttonAction(evt) {
     const reply = showChapter(null, _T('versionList'), '~' + this.FILENAME_CHANGELOG, null, this.txt);
     hideButton(this.button.id, reply?.content?.length > 0)

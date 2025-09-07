@@ -11,11 +11,7 @@ class puiButtonPrint extends puiButton {
     super.init();
     this.button.classList.add(C_HIDDENCPRESMODE);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   _buttonAction(evt) {
     window.print();
   }

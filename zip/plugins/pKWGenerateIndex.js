@@ -31,11 +31,7 @@ class pKWGenerateIndex extends IPlugin {
     super.init();
     this.asyncStack = undefined;
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onET_UserDataFileLoaded(r) {
     this.asyncStack = undefined;
   }

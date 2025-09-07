@@ -49,11 +49,7 @@ class pConfigFile extends IPlugin {
 
     super.init();
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onET_UserDataFileLoaded(evt) {
     this._loadCFG();
   }

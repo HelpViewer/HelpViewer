@@ -23,11 +23,7 @@ class puiButtonEditRepo extends puiButton {
     
     TI.catalogizeEventCall(TI.onETChapterShown, EventNames.ElementSetVisibility);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   _buttonAction(evt) {
     const PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
     const fileLink = getHelpRepoUriEditFile(PRJNAME_VAL[0], PRJNAME_VAL[1], (getGets(PAR_NAME_PAGE) || getHomePageData())?.split(MARKER_MARKWORD)[0], getActiveLanguage(), 'main');

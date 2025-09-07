@@ -3,14 +3,6 @@ class pKWGetChapterLinks extends pTRPhasePlugin {
     super(aliasName, data);
   }
 
-  init() {
-    super.init();
-  }
-
-  deInit() {
-    super.deInit();
-  }
-
   onETShowChapterResolutions(r) {
     const nodes = $A('a', r.doc);
     var links = [];

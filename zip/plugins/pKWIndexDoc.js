@@ -2,15 +2,7 @@ class pKWIndexDoc extends pTRPhasePlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
   }
-
-  init() {
-    super.init();
-  }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     r.result = r.result.then((x) => {
       var content = r.content[0];

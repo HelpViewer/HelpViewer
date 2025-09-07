@@ -41,11 +41,7 @@ class pConvertSysEventToEvent extends IPlugin {
 
     super.init();
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   _fireEBEvent(e) {
     sendEvent(this.cfgEVENTBUSEVENT, (x) => this._fillEventObject(x, e));
   }

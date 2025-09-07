@@ -19,11 +19,7 @@ class pTRBookmarkAnalysis extends pTRPhasePlugin {
     TI.eventDefinitions.push([T.EVT_BMARKA_BMARKS_CHANGED, BmarksChanged, null]); // outside event handlers
     super.init();
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     const C_ANCHOR_CONTENT = ' #';
     // append bookmarks to chapters

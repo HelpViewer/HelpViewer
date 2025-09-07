@@ -2,15 +2,7 @@ class pTRTriage extends pTRPhasePlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
   }
-
-  init() {
-    super.init();
-  }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     const isNetwork = (r.fileMedium == UserDataFileLoadedFileType.NETWORK);// || resolveFileMedium(r.helpFile) == UserDataFileLoadedFileType.NETWORK;
 

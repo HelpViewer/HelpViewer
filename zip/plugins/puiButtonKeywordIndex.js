@@ -19,10 +19,6 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     hideButton(TI.button.id, false);
   }
   
-  deInit() {
-    super.deInit();
-  }
-
   onETIndexFileLoaded(x) {
     const alias = this.aliasName;
       

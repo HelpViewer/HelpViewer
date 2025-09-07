@@ -2,15 +2,7 @@ class pTRKeywordInText extends pTRPhasePlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
   }
-
-  init() {
-    super.init();
-  }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     const stripDiacritics = textCleanupPhrase;
 

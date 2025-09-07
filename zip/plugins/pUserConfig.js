@@ -33,10 +33,6 @@ class pUserConfig extends IPlugin {
 
     super.init();
   }
-
-  deInit() {
-    super.deInit();
-  }
 }
 
 Plugins.catalogize(pUserConfig);

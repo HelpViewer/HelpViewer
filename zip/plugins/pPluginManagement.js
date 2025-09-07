@@ -18,10 +18,7 @@ class pPluginManagement extends IPlugin {
 
     super.init();
   }
-
-  deInit() {
-    super.deInit();
-  }
+  
 }
 
 Plugins.catalogize(pPluginManagement);

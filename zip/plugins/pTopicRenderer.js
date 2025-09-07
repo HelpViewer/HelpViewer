@@ -213,10 +213,6 @@ class pTopicRenderer extends IPlugin {
 
     super.init();
   }
-  
-  deInit() {
-    super.deInit();
-  }
 
 }
 
@@ -228,15 +224,7 @@ class pTRPhasePlugin extends IPlugin {
     this.eventIdStrict = true;
     this.doneVal = Promise.resolve();
   }
-
-  init() {
-    super.init();
-  }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   doc(r) {
     return r.doc.body ? r.doc.body : r.doc;
   }

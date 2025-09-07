@@ -28,11 +28,7 @@ class puiButtonPresMode extends puiButton {
 
     TI.SEVT_FSKEYDOWN = new SystemEventHandler('', undefined, document, 'keydown', this._keyPressHandlerFunction);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   _keyPressHandler(e) {
     const aLeft = 'ArrowLeft';
     const aRight = 'ArrowRight';

@@ -24,11 +24,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     TI.catalogizeEventCall(TI._handleEnterOnField, EventNames.ClickedEvent);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onET_UserDataFileLoaded(evt) {
     hideButton(this.button.id, true);
   }

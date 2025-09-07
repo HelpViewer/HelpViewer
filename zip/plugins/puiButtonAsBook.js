@@ -19,11 +19,7 @@ class puiButtonAsBook extends puiButtonTab {
     TI.catalogizeEventCall(hnd, evtHideIfTooWide);
     TI.catalogizeEventCall(TI._preShowAction, EventNames.UserConfigSet);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onET_UserDataFileLoaded(evt) {
     hideButton(this.button.id, true);
   }

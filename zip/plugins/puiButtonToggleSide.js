@@ -24,11 +24,7 @@ class puiButtonToggleSide extends puiButton {
     
     super.init();
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   _buttonAction(evt) {
     this.toggleSidebarSideHandler();
   }

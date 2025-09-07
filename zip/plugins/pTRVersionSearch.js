@@ -10,11 +10,7 @@ class pTRVersionSearch extends pTRPhasePlugin {
     
     TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.GetHomePageData);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     const C_ANCHOR_CONTENT = ' #';
     const FILENAME_CHANGELOG = 'CHANGELOG.md';

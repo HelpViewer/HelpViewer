@@ -9,11 +9,7 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     const TI = this;
     TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.StorageGetImages);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     log(`Rendering ${r.uri} data attached to DOM - visible to user now`);
     r.fixRelativePathToZipPaths(r.heading, ":not(.treepic)");

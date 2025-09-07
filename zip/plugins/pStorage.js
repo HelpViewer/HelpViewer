@@ -79,9 +79,6 @@ class pStorage extends IPlugin {
     super.init();
   }
   
-  deInit() {
-    super.deInit();
-  }
 }
 
 Plugins.catalogize(pStorage);

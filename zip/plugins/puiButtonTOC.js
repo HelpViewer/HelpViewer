@@ -33,10 +33,6 @@ class puiButtonTOC extends puiButtonTabTree {
     TI.catalogizeEventCall(TI.onET_UserDataFileLoaded, EventNames.StorageGetImages);
   }
   
-  deInit() {
-    super.deInit();
-  }
-
   _preShowAction(evt) {
   }
 

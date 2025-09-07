@@ -11,10 +11,6 @@ class pTR1stHeadingToTopPanel extends pTRPhasePlugin {
     TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.HeaderSet);
   }
 
-  deInit() {
-    super.deInit();
-  }
-
   onETShowChapterResolutions(r) {
     const firstChild = this.doc(r).firstElementChild;
     const firstH1 = $O('h1', r.doc);

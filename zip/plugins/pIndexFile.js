@@ -91,11 +91,7 @@ class pIndexFile extends IPlugin {
 
     super.init();
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onET_UserDataFileLoaded(evt) {
     Promise.all([
       storageSearch(STO_HELP, this.cfgFilenameKW),

@@ -13,11 +13,7 @@ class pTRParsePrism extends pTRPhasePlugin {
     this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
     this.RES_PRISM = new Resource('PRISM', undefined, STO_DATA, this.cfgFileName);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     const loadExtern = () => {
       return this.RES_PRISM?.init(Promise.resolve());

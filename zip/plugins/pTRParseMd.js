@@ -13,11 +13,7 @@ class pTRParseMd extends pTRPhasePlugin {
     this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
     this.RES_MARKED = new Resource('MARKED', undefined, STO_DATA, this.cfgFileName);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     if (!window.marked)
       r.result = this.RES_MARKED?.init(r.result);

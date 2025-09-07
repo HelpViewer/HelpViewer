@@ -27,10 +27,6 @@ class puiButtonChangeLanguage extends puiButtonTab {
     TI.catalogizeEventCall(TI.init, EventNames.LOC_LOAD);
   }
   
-  deInit() {
-    super.deInit();
-  }
-
   _preShowAction(evt) {
     const T = this.constructor;
     var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];

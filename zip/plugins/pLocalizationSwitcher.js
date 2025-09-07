@@ -90,10 +90,6 @@ class pLocalizationSwitcher extends IPlugin {
     super.init();
   }
   
-  deInit() {
-    super.deInit();
-  }
-
   static langFileAlias = 'lname.txt';
   static langFileJS = 'lstr.js';
   static langFileTXT = 'lstr.txt';

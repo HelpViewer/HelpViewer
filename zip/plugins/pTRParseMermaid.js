@@ -13,11 +13,7 @@ class pTRParseMermaid extends pTRPhasePlugin {
     this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
     this.RES_MERMAID = new Resource('MERMAID', undefined, STO_DATA, this.cfgFileName);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     const loadExtern = () => {
       return this.RES_MERMAID?.init(Promise.resolve());

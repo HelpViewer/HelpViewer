@@ -281,11 +281,7 @@ class puiButtonTabTree extends puiButtonTab {
       _notifyClickedEvent(e, result, this.cfgTreeId);
     });
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   _preStandardInit() {
   }
 

@@ -21,11 +21,7 @@ class puiButtonHome extends puiButton {
 
     hideButton(TI.button.id, false);
   }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   _buttonAction(evt) {
     if (!evt.event.isTrusted)
       return;

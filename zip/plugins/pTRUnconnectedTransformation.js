@@ -2,15 +2,7 @@ class pTRUnconnectedTransformation extends pTRPhasePlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
   }
-
-  init() {
-    super.init();
-  }
-
-  deInit() {
-    super.deInit();
-  }
-
+  
   onETShowChapterResolutions(r) {
     //relative link paths update for ZIP structure
     const checkList = ["href", "src", "data-href"];
