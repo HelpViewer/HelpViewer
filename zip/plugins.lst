@@ -23,8 +23,7 @@ puiButtonToggleSide:
 puiButtonFullScreen:
 puiButtonPresMode:
 puiSidebarVisibilityToggle:
-pConvertSysEventToEvent
-pPrePrintEvent:
+pConvertSysEventToEvent:pPrePrintEvent
 puiButtonPrint:
 puiNavigation:nav
 puiButtonEditRepo:
