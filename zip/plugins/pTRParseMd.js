@@ -9,7 +9,7 @@ class pTRParseMd extends pTRPhasePlugin {
     super.init();
 
     const T = this.constructor;
-    this.DEFAULT_KEY_CFG_FILENAME = 'marked.min.js';
+    this.DEFAULT_KEY_CFG_FILENAME = 'marked.min.js;LICENSE-marked.md';
     this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
     this.RES_MARKED = new Resource('MARKED', undefined, STO_DATA, this.cfgFileName);
   }
