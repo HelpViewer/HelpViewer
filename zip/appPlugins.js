@@ -123,6 +123,7 @@ class Resource extends IPlugin {
     this.fileList = fileList.split(';');
     this.source = source;
     this._fileLength = 0;
+    this.licenseFile = this.fileList.filter(x => /licen[cs]e/i.test(x));
 
     Promise.all(
       this.fileList.map(async f => {
