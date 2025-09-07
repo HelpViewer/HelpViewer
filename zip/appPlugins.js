@@ -46,7 +46,7 @@ class IPlugin {
 
     this.unsubscribersToEB = [];
 
-    const siblingDeInitParents = Object.values(this).filter((x) => typeof x?.['deInit'] === "function");
+    const siblingDeInitParents = getSubmodulesInModule(this);
     const siblingDeInit = siblingDeInitParents.map(x => x.deInit.bind(x)).filter(x => x);
 
     log(`Plugin deInit ${this.constructor.name} found ${siblingDeInit.length} (${siblingDeInitParents.map(x => `${x.constructor.name}:${x.aliasName}` || x.constructor.name).join(', ')}) ... calling deInit also for them.`);
@@ -107,6 +107,10 @@ class IPlugin {
     const val = `${fn.__name || fn.name || fn}:${eventId}`;
     this.eventCallsMap.get(key).add(val);
   }
+}
+
+function getSubmodulesInModule(pluginInstance) {
+  return Object.values(pluginInstance).filter((x) => typeof x?.['deInit'] === "function");
 }
 
 function isEventHandlerOpened(alias, strictSwitch, eventId) {
