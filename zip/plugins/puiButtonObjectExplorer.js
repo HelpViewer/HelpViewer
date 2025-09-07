@@ -220,7 +220,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         ]);
         var el = plg[d];
         const typeO = pairing.get(el.tagName.toLowerCase()) || pairing.get('div');
-        const nameBase = el.id;
+        const nameBase = el.id || el.tagName;
         plug.subItems.push(new ObjectExplorerTreeItem(baseN + el.id, typeO, [], el, nameBase, [el.tagName.toLowerCase(), el.innerText]));
       });
 
