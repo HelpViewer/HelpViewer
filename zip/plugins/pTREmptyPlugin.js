@@ -3,6 +3,7 @@ class pTREmptyPlugin extends pTRPhasePlugin {
     super(aliasName, data);
   }
 
+  /*
   init() {
     super.init();
   }
@@ -10,6 +11,7 @@ class pTREmptyPlugin extends pTRPhasePlugin {
   deInit() {
     super.deInit();
   }
+  */
 
   onETShowChapterResolutions(r) {
   }
