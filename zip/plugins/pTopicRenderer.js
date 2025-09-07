@@ -4,7 +4,7 @@ class ShowChapterResolutions extends IEvent {
     this.heading = '';
     this.content = '';
     this.uri = '';
-    this.fileMedium = undefined;
+    this.fileMedium = '';
     this.uriAnchor = '';
     this.addData = new Map();
     /** @type {(fileName : string) => string} */
