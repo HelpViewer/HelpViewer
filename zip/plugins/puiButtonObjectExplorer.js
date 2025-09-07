@@ -41,20 +41,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       depTree[x] = getAllParents(clsList[x]).filter((x) => x).reverse();
 
     depTree.sort();
+    this.DepTree = getObjectCopy(depTree);
 
     var tree = buildStringTreeFromMap(this._getTreeFromArraysList(depTree, new Map()));
     // adding object tree links
-    const pluginGroupsTable = this.cfgGroupsList.map(x => [this.config[`${x}-F`]?.split(';'), this.config[x]]);
-    pluginGroupsTable.push([['Object'], '⚙️']);
-    pluginGroupsTable.push([['IEvent'], '⚡']);
-    tree = tree.map(row => {
-      const nameR = row.trim();
-      var newRow = `${row}|||:_${ObjectExplorerObjectDescriptor.PLUGIN.abbr}:${row.trim()}.md`;
-      const firstIndex = row.search(/\S/);
-      const icon = pluginGroupsTable.find((g) => g[0].some(prefix => nameR.startsWith(prefix)))?.[1] || '🧩';
-      newRow = insertToStringAtIndex(newRow, firstIndex, icon + ' ');
-      return newRow;
-    });
+    tree = this._renderPluginClassTree(tree);
 
     this.TextObjectTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
@@ -192,6 +183,21 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     setTreeData(treeDataFlat, this.aliasName);
 
     log('W Found event calls by auto discover:', this.foundEventCalls);
+  }
+
+  _renderPluginClassTree(treeI) {
+    const pluginGroupsTable = this.cfgGroupsList.map(x => [this.config[`${x}-F`]?.split(';'), this.config[x]]);
+    pluginGroupsTable.push([['Object'], '⚙️']);
+    pluginGroupsTable.push([['IEvent'], '⚡']);
+    treeI = treeI.map(row => {
+      const nameR = row.trim();
+      var newRow = `${row}|||:_${ObjectExplorerObjectDescriptor.PLUGIN.abbr}:${row.trim()}.md`;
+      const firstIndex = row.search(/\S/);
+      const icon = pluginGroupsTable.find((g) => g[0].some(prefix => nameR.startsWith(prefix)))?.[1] || '🧩';
+      newRow = insertToStringAtIndex(newRow, firstIndex, icon + ' ');
+      return newRow;
+    });
+    return treeI;
   }
 
   _getTreeFromArraysList(source, reply) {
@@ -408,8 +414,22 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
       case ObjectExplorerObjectDescriptor.PLUGIN.abbr:
         const parentClasses1 = this._getLineWithDependencyTree(found?.interconnectedObject);
-        desc += `📂 ${parentClasses1}\n\n`;
-        desc += `[</> ${_T('oeod_cpp')}](:_${ObjectExplorerObjectDescriptor.CODEPRINT.abbr}:${objName.split(':')[0]}.md)\n\n`;
+        desc += `\n\n[</> ${_T('oeod_cpp')}](:_${ObjectExplorerObjectDescriptor.CODEPRINT.abbr}:${objName.split(':')[0]}.md)\n\n`;
+
+        // prepare dependency tree with current plugin class as base (top level item) and down to implementing classes
+        const clsName = found?.interconnectedObject.name;
+        var classTree = getObjectCopy(this.DepTree).filter(x => x.includes(clsName));
+        if (classTree.length > 1) {
+          const index = classTree[0]?.findIndex(x => x == clsName);
+          classTree = classTree.map(x => x.splice(index));
+          classTree = buildStringTreeFromMap(this._getTreeFromArraysList(classTree, new Map()));
+          classTree = this._renderPluginClassTree(classTree);
+          classTree = linesToHtmlTree(classTree.join('\n'), 'tree-' + newUID());
+          classTree = `<ul class="tree">${classTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;  
+        } else {
+          classTree = '';
+        }
+        desc += `## 📂 ${_T('dependTree')}\n${parentClasses1}\n\n${classTree}`;
         break;
 
       case ObjectExplorerObjectDescriptor.PLUGININSTANCE.abbr:
