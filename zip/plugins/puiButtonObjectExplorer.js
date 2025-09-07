@@ -133,7 +133,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       });
 
       const addParamsGetter = new Map([
-        [Resource.name.toUpperCase(), (v) => [v._fileLength, v.licenseFile]]
+        [Resource.name.toUpperCase(), (v) => [v._fileLength, v.licenseFile, v.readmeFile]]
       ]);
       const addParamsGetterBackup = (v) => [v];
 
@@ -406,19 +406,23 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
       case ObjectExplorerObjectDescriptor.RESOURCE.abbr:
         delayedFunction = async () => {
+          const fLoadResourceFile = async (licFileI, maskf) => {
+            var licFile = licFileI;
+
+            if (licFile) {
+              licFile = await storageSearch(found.interconnectedObject.source, licFile);
+              return licFile ? maskf(licFile) : '';
+            }
+          }
+
           var desc = '';
-          var prom = Promise.resolve();
+
+          desc += await fLoadResourceFile(found.plus?.[2], (x) => `## ${_T('overview')}\n\n${x}\n\n`);
 
           const fileList = found.interconnectedObject.fileList.map((x) => `- ${x}`).join('\n');
-          desc += `## ${_T('resources')}\n${fileList}\n---\n**${_T('size')}:** ${valKiBs(found.plus[0])} kB\n\n`
+          desc += `## ${_T('resources')}\n${fileList}\n---\n**${_T('size')}:** ${valKiBs(found.plus[0])} kB\n\n`;
 
-          var licFile = found.plus?.[1];
-          if (licFile) {
-            licFile = await storageSearch(found.interconnectedObject.source, licFile);
-
-            if (licFile)
-              desc += `## ⚖ ${_T('license')}\n\n${licFile}\n\n`;
-          }
+          desc += await fLoadResourceFile(found.plus?.[1], (x) => `## ⚖ ${_T('license')}\n\n${x}\n\n`);
 
           return desc;
         };
