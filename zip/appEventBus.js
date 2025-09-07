@@ -169,6 +169,10 @@ class IEvent {
     this.doneHandler = undefined;
     this.requiresDoneHandler = false;
     this.stop = false;
+
+    // service properties
+    this.__lastProcessor = '';
+    this.__stopper = '';
   }
 }
 
