@@ -135,3 +135,7 @@ function parseConfigFile(data) {
     }, {});
   return obj;
 }
+
+function getObjectCopy(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}

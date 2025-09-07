@@ -191,8 +191,4 @@ function getDifferenceTwoObjects(obj1i, obj2i) {
   return diffs;
 }
 
-function getObjectCopy(obj) {
-  return JSON.parse(JSON.stringify(obj));
-}
-
 Plugins.catalogize(pGets);
