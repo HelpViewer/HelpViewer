@@ -21,6 +21,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     const T = this.constructor;
     const TI = this;
     this.cfgGroupsList = (this.config[T.KEY_CFG_GROUPSLIST] || TI.DEFAULT_KEY_CFG_GROUPSLIST)?.split(';');
+
+    TI.catalogizeEventCall(TI._handleEnterOnField, EventNames.ClickedEvent);
   }
 
   deInit() {
@@ -29,6 +31,69 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
   onET_UserDataFileLoaded(evt) {
     hideButton(this.button.id, true);
+  }
+
+  _preStandardInit() {
+    super._preStandardInit?.();
+    const fieldId = `${this.cfgTreeId}-i`;
+    this.tab?.insertAdjacentHTML('afterbegin', `<input type="text" id="${fieldId}"></input>`);
+    const field = $(fieldId);
+    field.addEventListener('keydown', this._handleEnterOnField.bind(this));
+
+    const pnlName = 'oexpP';
+    var topPanel = `<div class="toolbar toolbar-down" id='${pnlName}'></div>`;
+    this.tab?.insertAdjacentHTML('beforeend', topPanel);
+    topPanel = $(pnlName);
+    this.handlerButtonSend = createButtonAcceptHandler(this, topPanel);
+    const handlerResolved = (e) => {
+      setTreeData(this.treeDataFull[e.elementId], this.aliasName);
+      this.treeDataFull.current = e.elementId;
+    };
+
+    const treeDesc = ObjectExplorerObjectDescriptor.UI_TREE;
+    var desc = treeDesc;
+    uiAddButton(desc.t, desc.image, this.aliasName, handlerResolved);
+    var desc = ObjectExplorerObjectDescriptor.GROUPPROC;
+    uiAddButton(desc.t, desc.image, this.aliasName, handlerResolved);
+  }
+
+  onETButtonSend(x) {
+    this.handlerButtonSend(x);
+  }
+
+  _handleEnterOnField(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    
+      var id = event.target.id.replace('-i', '');
+      const pane = $(id);
+      
+      if (!pane)
+        return;
+
+      var phrase = event.target.value;
+      this._filterTree(phrase);
+    }
+    
+    if (event.key.substring(0, 3) === 'Esc') {
+      const oldVal = event.target.value;
+      event.target.value = "";
+      event.target.blur();
+
+      if (oldVal != event.target.value)
+        this.doRefreshTree();
+    }
+  }
+
+  _filterTree(phrase) {
+    phrase = phrase.toLowerCase();
+    this.doRefreshTree();
+    const all = [...$A('a', this.tree)].filter(x => x.innerHTML.toLowerCase().includes(phrase)).map(x => {
+      const li = document.createElement('li');
+      li.appendChild(x);
+      return li;
+    });
+    this.tree.replaceChildren(...all);
   }
 
   _preShowAction(evt) {
@@ -58,7 +123,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     this.PluginInstanceList = plugins[1].map(x => x);
 
     // preparation of flat lists
-    this.treeData = [];
     const pluginGroups = this.cfgGroupsList.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`]?.split(';')]));
     var pluginNodes = plugins[0].map(x => new ObjectExplorerTreeItem(x, ObjectExplorerObjectDescriptor.PLUGIN, [], Plugins.pluginsClasses.get(x) ));
     var pluginInstanceNodes = plugins[2].map(x => new ObjectExplorerTreeItem(x[0], ObjectExplorerObjectDescriptor.PLUGININSTANCE, [], x[1]));
@@ -164,20 +228,33 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     prodLines = new ObjectExplorerTreeItem(ObjectExplorerObjectDescriptor.GROUPPROC.t, ObjectExplorerObjectDescriptor.GROUPPROC, prodLines, undefined, _T(ObjectExplorerObjectDescriptor.GROUPPROC.t));
     this.config[ObjectExplorerObjectDescriptor.GROUPPROC.t] = ObjectExplorerObjectDescriptor.GROUPPROC.image;
 
-    this.treeDataFull = [];
-    this.treeDataFull.push(firstPage, ...pluginGroups, ...pluginNodes, prodLines);
-
     //:_/__/README.md
     var firstPage = new ObjectExplorerTreeItem('/README', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('overview'));
     var objectTree = new ObjectExplorerTreeItem('/TREE', ObjectExplorerObjectDescriptor.UI_TREE, [], undefined, _T('dependTree'));
     var orderTree = new ObjectExplorerTreeItem('/LORDER', ObjectExplorerObjectDescriptor.DOCUMENT, [], undefined, _T('orderLoading'));
 
-    // prepare top level data
-    this.treeData.push(firstPage, objectTree, orderTree, ...pluginGroups, ...pluginNodes, prodLines);
+    this.treeDataFull = {
+      heads: [firstPage, objectTree, orderTree],
+      searcheable: [...pluginGroups, ...pluginNodes],
+      prodlines: prodLines,
+      current: undefined
+    };
 
-    // passing data to tree
-    const treeDataFlat = this._prepareFlatTreeInput(this.treeData);
-    setTreeData(treeDataFlat, this.aliasName);
+    this.treeDataFull.full = [...this.treeDataFull.heads, ...pluginGroups, ...pluginNodes, prodLines];
+
+    var desc = ObjectExplorerObjectDescriptor.UI_TREE.t;
+    this.treeDataFull.current = desc;
+    this.treeDataFull[desc] = this._prepareFlatTreeInput([...this.treeDataFull.heads, ...this.treeDataFull.searcheable]);
+    var desc = ObjectExplorerObjectDescriptor.GROUPPROC.t;
+    this.treeDataFull[desc] = this._prepareFlatTreeInput([...this.treeDataFull.heads, ...this.treeDataFull.prodlines.subItems]);
+
+    // prepare top level data
+    this.doRefreshTree = () => sendEvent(EventNames.ClickedEvent, (x) => {
+      x.elementId = this.treeDataFull.current;
+      x.id = this.aliasName;
+    });
+
+    this.doRefreshTree();
 
     log('W Found event calls by auto discover:', this.foundEventCalls);
   }
