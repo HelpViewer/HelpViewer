@@ -47,15 +47,16 @@ class pConvertSysEventToEvent extends IPlugin {
   }
 
   _fireEBEvent(e) {
-    const TI = this;
+    sendEvent(this.cfgEVENTBUSEVENT, (x) => this._fillEventObject(x, e));
+  }
 
-    sendEvent(TI.cfgEVENTBUSEVENT, (x) => {
-      x.event = e;
-      x.sysEventName = TI.cfgSYSEVENTNAME;
-      x.id = TI.cfgEVENTBUSEVENTID;
-      x.senderId = TI.aliasName;
-      x.sysSenderObject = TI.targetSysObject;
-    });
+  _fillEventObject(x, e) {
+    const TI = this;
+    x.event = e;
+    x.sysEventName = TI.cfgSYSEVENTNAME;
+    x.id = TI.cfgEVENTBUSEVENTID;
+    x.senderId = TI.aliasName;
+    x.sysSenderObject = TI.targetSysObject;
   }
 }
 
