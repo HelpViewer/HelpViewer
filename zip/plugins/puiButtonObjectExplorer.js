@@ -229,8 +229,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     objectData.forEach(x => {
       if (x.descriptor.printTree) {
+        const stateIcon = x.descriptor == ObjectExplorerObjectDescriptor.PLUGININSTANCE ? (x.interconnectedObject.eventIdStrict ? '🔺' : '') : '';
         replystr += spaces;
-        replystr += `${x.descriptor.image} ${x.title}|||:_${x.descriptor.abbr ? x.descriptor.abbr + ':' : ''}${x.id}.md\n`;
+        replystr += `${x.descriptor.image}${stateIcon} ${x.title}|||:_${x.descriptor.abbr ? x.descriptor.abbr + ':' : ''}${x.id}.md\n`;
         const newLevel = level + 1;
         replystr += this._prepareFlatTreeInput(x.subItems, newLevel);  
       }
@@ -569,7 +570,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
           return `## ${ObjectExplorerObjectDescriptor.HANDLER.image} ${_T(k)}\n${items.join('\n')}`;
         }
         
-        const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image} [${r.title}](:_${r.descriptor.abbr}:${r.id}.md)`);
+        const items = v.map((r) => `- ${r.plus[0] == 'button' ? r.plus[1] + ' ' : ''}${r.descriptor.image}${r.descriptor == ObjectExplorerObjectDescriptor.PLUGININSTANCE && r.interconnectedObject.eventIdStrict ? '🔺' : ''} [${r.title}](:_${r.descriptor.abbr}:${r.id}.md)`);
         return `## ${ObjectExplorerObjectDescriptor[`_i_${k}`]} ${_T(k)}\n${items.join('\n')}`;
       });
   
