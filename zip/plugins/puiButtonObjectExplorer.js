@@ -88,11 +88,37 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   _filterTree(phrase) {
     phrase = phrase.toLowerCase();
     this.doRefreshTree();
-    const all = [...$A('a', this.tree)].filter(x => x.innerHTML.toLowerCase().includes(phrase)).map(x => {
+    var all = [...$A('a', this.tree)].filter(x => x.innerHTML.toLowerCase().includes(phrase));
+
+    all.filter(x => x.getAttribute('data-param')?.startsWith(':_cfg')).forEach(x => {
+      const img = x.innerHTML.split(' ', 2)[0] + ' ';
+      var cleaned = `${x.getAttribute('data-param').substring(1).split('.')[0]}`;
+      cleaned = cleaned.substring(cleaned.indexOf(':') + 1);
+      x.innerHTML = `${img}${cleaned}`;
+    });
+
+    const uniqueItemsMap = new Map();
+    const shouldBeGroupedByName = /^(👂|⚡|🛰️|📄⚡)/;
+    all.filter(x => shouldBeGroupedByName.test(x.innerHTML)).forEach(x => {
+      log('E pick x:', x.innerHTML.substring(x.innerHTML.indexOf(' ') + 1));
+      var key = x.innerHTML.substring(x.innerHTML.indexOf(' ') + 1);
+      
+      if (key.startsWith('_'))
+        key = key.substring(1);
+
+      uniqueItemsMap.set(key, x);
+    });
+    const uniqueItems = [...uniqueItemsMap.values()];
+    log('E ZZZZ', uniqueItemsMap);
+    all = all.filter(x => !shouldBeGroupedByName.test(x.innerHTML) || uniqueItems.includes(x));
+
+    all = all.map(x => {
+      x.innerHTML = x.innerHTML.replace(new RegExp(':', 'g'), ':<br>&nbsp;&nbsp;&nbsp;');
       const li = document.createElement('li');
       li.appendChild(x);
       return li;
     });
+
     this.tree.replaceChildren(...all);
   }
 
