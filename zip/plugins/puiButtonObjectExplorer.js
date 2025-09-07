@@ -100,7 +100,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     const uniqueItemsMap = new Map();
     const shouldBeGroupedByName = /^(👂|⚡|🛰️|📄⚡)/;
     all.filter(x => shouldBeGroupedByName.test(x.innerHTML)).forEach(x => {
-      log('E pick x:', x.innerHTML.substring(x.innerHTML.indexOf(' ') + 1));
       var key = x.innerHTML.substring(x.innerHTML.indexOf(' ') + 1);
       
       if (key.startsWith('_'))
@@ -108,8 +107,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
       uniqueItemsMap.set(key, x);
     });
+
     const uniqueItems = [...uniqueItemsMap.values()];
-    log('E ZZZZ', uniqueItemsMap);
+    
     all = all.filter(x => !shouldBeGroupedByName.test(x.innerHTML) || uniqueItems.includes(x));
 
     all = all.map(x => {
