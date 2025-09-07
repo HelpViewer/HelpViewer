@@ -597,7 +597,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
             desc += `## ${ObjectExplorerObjectDescriptor.EVENT.image} ${evtName} (${evtClassI.constructor.name})\n| ${_T('name')} | ${_T('default')} | ${_T('datatype')} |\n| --- | --- | --- |\n`;
 
             const props = Object.getOwnPropertyNames(evtClassI);
-            const propRows = props.map((name, i) => `| [${name}](#h-4-${i}) | ${typeof evtClassI[name] === "function" ? '[FUNCTION]' : evtClassI[name]} | ${typeof(evtClassI[name])} |`).join('\n');
+            const propRows = props.map((name, i) => `| [${name}](#h-4-${i}) | ${typeof evtClassI[name] === "function" ? '[FUNCTION]' : (Array.isArray(evtClassI[name]) ? '[ARRAY]' : evtClassI[name])} | ${typeof(evtClassI[name])} |`).join('\n');
             
             desc += propRows;
             desc += `\n### ${_T('meaning')}\n`;
