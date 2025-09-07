@@ -16,10 +16,6 @@ class pUserConfig extends IPlugin {
   static EVT_UC_GET = UserConfigGet.name;
   static EVT_UC_SET = UserConfigSet.name;
 
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-
   init() {
     const T = this.constructor;
     const TI = this;

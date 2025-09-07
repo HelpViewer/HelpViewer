@@ -1,8 +1,4 @@
 class pTRVersionSearch extends pTRPhasePlugin {
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-
   init() {
     super.init();
     

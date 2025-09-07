@@ -7,11 +7,7 @@ class BmarksChanged extends IEvent {
 
 class pTRBookmarkAnalysis extends pTRPhasePlugin {
   static EVT_BMARKA_BMARKS_CHANGED = BmarksChanged.name;
-
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-
+  
   init() {
     const T = this.constructor;
     const TI = this;

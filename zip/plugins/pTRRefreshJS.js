@@ -1,8 +1,4 @@
 class pTRRefreshJS extends pTRPhasePlugin {
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-  
   onETShowChapterResolutions(r) {
     //script blocks refresh
     const scripts = $A('script', r.doc);

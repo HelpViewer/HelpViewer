@@ -1,10 +1,6 @@
 class pTRParseMermaid extends pTRPhasePlugin {
   static KEY_CFG_FILENAME = 'FILENAME';
 
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-
   init() {
     super.init();
 

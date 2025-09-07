@@ -43,10 +43,6 @@ class pStorage extends IPlugin {
   static EVT_STORAGE_GET_IMAGE = StorageGetImages.name;
   static EVT_STORAGE_GET_SUBDIRS = StorageGetSubdirs.name;
 
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-
   init() {
     const T = this.constructor;
     const TI = this;

@@ -9,10 +9,6 @@ class puiHeader extends IPlugin {
   static EVT_HEAD_SET = HeaderSet.name;
   static EVT_HEAD_GET = 'HeaderGet';
 
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-
   static addition = '<div class="header" id="header" role="banner"><h1 id="mtitle">&nbsp;</h1><div id="toolbar" role="navigation"></div></div>';
 
   init() {

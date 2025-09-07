@@ -1,10 +1,6 @@
 class pPluginManagement extends IPlugin {
   static EVT_PD_GET = 'PluginsDump';
 
-  constructor(aliasName, data) {
-  super(aliasName, data);
-  }
-
   init() {
     const T = this.constructor;
     const TI = this;

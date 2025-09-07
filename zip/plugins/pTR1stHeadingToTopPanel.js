@@ -1,8 +1,4 @@
 class pTR1stHeadingToTopPanel extends pTRPhasePlugin {
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-
   init() {
     super.init();
 

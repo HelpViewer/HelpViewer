@@ -1,8 +1,4 @@
 class pTRKeywordRender extends pTRPhasePlugin {
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-  
   onETShowChapterResolutions(r) {
     if (r.uri?.startsWith("@")) {
       r.contentType = ChapterContentType.KEYWORD_LIST;

@@ -1,8 +1,4 @@
 class pTRLoadData extends pTRPhasePlugin {
-  constructor(aliasName, data) {
-    super(aliasName, data);
-  }
-  
   onETShowChapterResolutions(r) {
     var shouldLoad = true;
 
