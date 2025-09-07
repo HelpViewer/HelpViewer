@@ -11,40 +11,32 @@ class ClickedEvent extends IEvent {
   }
 }
 
-class pClickConverter extends IPlugin {
-  static EVT_CD_CLICK = ClickedEvent.name;
-
+class pClickConverter extends pConvertSysEventToEvent {
   constructor(aliasName, data) {
     super(aliasName, data);
+
+    this.DEFAULT_KEY_CFG_SYSEVENTNAME = 'click';
+    this.DEFAULT_KEY_CFG_SYSOBJECT = 'body';
+    this.DEFAULT_KEY_CFG_EVENTBUSEVENT = 'ClickedEvent';
   }
 
   init() {
-    const T = this.constructor;
-    const TI = this;
-    TI.eventDefinitions.push([T.EVT_CD_CLICK, ClickedEvent, null]); // outside event handlers
-
-    TI.catalogizeEventCall(TI._processClick, T.EVT_CD_CLICK);
-
-    TI.SEVT_CLICK = new SystemEventHandler('', undefined, document.body, 'click', this._processClick);
-    TI.SEVT_CLICK.init();
-    
     super.init();
   }
   
-  _processClick(evt) {
-    sendEvent(pClickConverter.EVT_CD_CLICK, (d) => {
-      d.event = evt;
-      d.target = d.event?.target;
-      d.elementId = d.target?.id
-      const splits = d.elementId?.replace('-', '|').split('|').filter(Boolean) ?? [];
-      d.elementIdRoot = splits[0];
-      d.elementIdVal = splits[1];
-    });
-  }
-
   deInit() {
     super.deInit();
   }
+
+  _fillEventObject(d, evt) {
+    d.event = evt;
+    d.target = d.event?.target;
+    d.elementId = d.target?.id
+    const splits = d.elementId?.replace('-', '|').split('|').filter(Boolean) ?? [];
+    d.elementIdRoot = splits[0];
+    d.elementIdVal = splits[1];
+  }
+
 }
 
 Plugins.catalogize(pClickConverter);

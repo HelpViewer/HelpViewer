@@ -6,6 +6,7 @@ pStorage:
 pConfigFile:FILE_CONFIG_DEFAULT;FILE_CONFIG
 pLocalizationSwitcher:
 pColorTheme:
+pConvertSysEventToEvent:pPrePrintEvent
 pClickConverter:
 pui:
 puiHeader:header
@@ -23,7 +24,6 @@ puiButtonToggleSide:
 puiButtonFullScreen:
 puiButtonPresMode:
 puiSidebarVisibilityToggle:
-pConvertSysEventToEvent:pPrePrintEvent
 puiButtonPrint:
 puiNavigation:nav
 puiButtonEditRepo:
