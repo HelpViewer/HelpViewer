@@ -132,17 +132,14 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         plug.subItems.push(new ObjectExplorerTreeItem(baseN + el.id, typeO, [], el, nameBase, [el.tagName.toLowerCase(), el.innerText]));
       });
 
-      proto.filter(name => name.startsWith('RES_')).forEach(name => {
-        const v = plg[name];
-        if ((!v.aliasName || !v._fileLength)) return;
-        plug.subItems.push(new ObjectExplorerTreeItem(baseN + v.aliasName, ObjectExplorerObjectDescriptor.RESOURCE, [], v, v.aliasName, [v._fileLength]));
-      });
+      const addParamsGetter = new Map([
+        [Resource.name.toUpperCase(), (v) => [v._fileLength]]
+      ]);
+      const addParamsGetterBackup = (v) => [v];
 
-      proto.filter(name => name.startsWith('SEVT_')).forEach(name => {
-        const v = plg[name];
-        if (!v.aliasName) return;
-        plug.subItems.push(new ObjectExplorerTreeItem(baseN + v.aliasName, ObjectExplorerObjectDescriptor.SYSTEMEVENT, [], v, v.aliasName, [v]));
-      });
+      var subModules = getSubmodulesInModule(plg).map(x => [x.constructor.name.toUpperCase(), x.aliasName, x]).sort();
+      subModules = subModules.map(v => new ObjectExplorerTreeItem(baseN + v[1], ObjectExplorerObjectDescriptor[v[0]], [], v[2], v[1], (addParamsGetter.get(v[0]) || addParamsGetterBackup)(v[2]) ));
+      plug.subItems.push(...subModules);
 
       // sending events
       plg.eventCallsMap.keys().forEach(evt => {
@@ -641,7 +638,7 @@ class ObjectExplorerObjectDescriptor {
   static PLUGIN  = new ObjectExplorerObjectDescriptor('plg', '🧩');
   static PLUGININSTANCE = new ObjectExplorerObjectDescriptor('inst', '🔹');
 
-  static SYSTEMEVENT = new ObjectExplorerObjectDescriptor('evtSys', '⭐');
+  static SYSTEMEVENTHANDLER = new ObjectExplorerObjectDescriptor('evtSys', '⭐');
   
   static EVENT = new ObjectExplorerObjectDescriptor('evt', '⚡');
   static EVENT_NOHANDLER = new ObjectExplorerObjectDescriptor('evtD', '📄⚡');
