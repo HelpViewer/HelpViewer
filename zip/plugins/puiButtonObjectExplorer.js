@@ -365,7 +365,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     if (r.uri.toLowerCase().endsWith('/lorder.md')) {
       r.result = r.result.then(() => {
         var descr = ObjectExplorerObjectDescriptor.PLUGININSTANCE;
-        r.content += `# ${descr.image} ${_T('orderLoading')} (${this.PluginInstanceList.length})\n**${_T('filter')}**\n- 🟢 ${_T('openToIdAll')}\n- 🔺 ${_T('openToId')}\n\n&nbsp;\n\n${this.PluginInstanceList.map((x,idx) => `${idx + 1}. ${Plugins.plugins.get(x).eventIdStrict ? '🔺' : '🟢'} [${x}](:_${descr.abbr}:${x}.md)`).join('\n')}\n\n`;
+        r.content += `# ${descr.image} ${_T('orderLoading')} (${this.PluginInstanceList.length})\n**${_T('filter')}**\n- (*) ${_T('openToIdAll')}\n- (id) ${_T('openToId')}\n\n&nbsp;\n\n${this.PluginInstanceList.map((x,idx) => `${idx + 1}. [${x}](:_${descr.abbr}:${x}.md) ${Plugins.plugins.get(x).eventIdStrict ? '(id)' : '(*)'}`).join('\n')}\n\n`;
       });
       return;
     }
