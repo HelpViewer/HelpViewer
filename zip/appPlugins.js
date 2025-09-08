@@ -181,6 +181,7 @@ const Plugins = {
 
     this.pluginsClasses.set(name, plugin);
     log(`Plugins: registered '${name}'`);
+    return name;
   },
 
   activate(pluginName, aliasName, data) {
@@ -204,6 +205,7 @@ const Plugins = {
     var key = this.getKey(pluginName, aliasName);
     this.plugins.set(key, p);
     log(`Plugins: activated '${key}'`);
+    return [key, p];
   },
 
   getKey(pluginName, aliasName) {
@@ -213,11 +215,13 @@ const Plugins = {
   deactivate(pluginName, aliasName = '') {
     var key = this.getKey(pluginName, aliasName);
     var plugin = this.plugins.get(key);
+
     if (!plugin)
       return;
 
     plugin.deInit();
     this.plugins.delete(key);
+    return [key, plugin];
   }
 };
 

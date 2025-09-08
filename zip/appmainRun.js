@@ -103,7 +103,7 @@ async function loadPluginList(listFileName, storage, basePath = loadPluginListBa
   return activatedPluginsList;
 }
 
-async function loadPlugin(name, file, source = STO_DATA) {
+async function lc_loadPlugin(name, file, source = STO_DATA) {
   const appendingAlias = name.replaceAll('/', '_');
   log(`Plugins: loading from file '${file}' under internal alias ${appendingAlias} ...'`);
   const srcMarkedJs = await _Storage.search(source, file);
@@ -113,17 +113,28 @@ async function loadPlugin(name, file, source = STO_DATA) {
   const foundP = Plugins.pluginsClasses.get(pluginPureName);
   if (foundP)
     foundP._fileLength = new TextEncoder().encode(srcMarkedJs).length;
+  
+  return pluginPureName;
 }
 
-async function activatePlugin(name, alias, source = STO_DATA) {
+async function lc_activatePlugin(name, alias, source = STO_DATA) {
   const pluginPureName = name.split('/').pop();
   const cfgFile = `plugins-config/${name}_${alias}.cfg`;
   log(`Plugins: loading configuration for plugin ${pluginPureName} (${name}) from file '${cfgFile}' ...`);
   const configFileRaw = await _Storage.search(source, cfgFile);
   const configFileStruct = parseConfigFile(configFileRaw || '|');
   log(`Plugins: loading configuration for plugin ${pluginPureName} (${name}) from file '${cfgFile}' ... results:`, configFileStruct);
-  Plugins.activate(pluginPureName, alias, configFileStruct || {});
+  return Plugins.activate(pluginPureName, alias, configFileStruct || {});
 }
+
+function lc_deactivatePlugin(pluginName, alias = '') {
+  log(`Plugins: requested deactivation for plugin ${pluginName} (${alias})`);
+  return Plugins.deactivate(pluginName, alias);
+}
+
+var loadPlugin = lc_loadPlugin;
+var activatePlugin = lc_activatePlugin;
+var deactivatePlugin = lc_deactivatePlugin;
 
 function parseConfigFile(data) {
   var rows = rowsToArray(data.trim());
