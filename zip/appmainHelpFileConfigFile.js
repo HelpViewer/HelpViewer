@@ -13,7 +13,7 @@ function configGetValue(key, backup, CFG = FILE_CONFIG) {
     x.key = key;
     x.backup = backup;
     x.id = CFG;
-  });
+  }) || backup;
 }
 
 function configFileReload(CFG = FILE_CONFIG) {

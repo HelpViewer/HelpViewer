@@ -125,7 +125,7 @@ class pTopicRenderer extends IPlugin {
         r.preventDefault();
       }
 
-      r.heading = data.heading || getChapterAlternativeHeading(data.address)[1] || data.address;
+      r.heading = data.heading || getChapterAlternativeHeading(data.address)?.[1] || data.address;
       const containerIdContent = data.containerIdContent || this.cfgIdContent;
       r.docV = $(containerIdContent);
       r.doc = r.docV;
