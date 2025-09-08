@@ -38,7 +38,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     const pnlName = 'oexpP';
     var topPanel = `<div class="toolbar toolbar-down" id='${pnlName}'></div>`;
-    this.tab?.insertAdjacentHTML('beforeend', topPanel);
+    this.tab?.insertAdjacentHTML('afterbegin', topPanel);
     topPanel = $(pnlName);
     this.handlerButtonSend = createButtonAcceptHandler(this, topPanel);
     const handlerResolved = (e) => {
