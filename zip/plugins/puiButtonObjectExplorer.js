@@ -88,9 +88,10 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     this.doRefreshTree();
     var all = [...$A('a', this.tree)].filter(x => x.innerHTML.toLowerCase().includes(phrase));
 
-    all.filter(x => /^(:_cfg|:_res)/.test(x.getAttribute('data-param'))).forEach(x => {
+    all.filter(x => /^(:_cfg|:_res|:_evtSys)/.test(x.getAttribute('data-param'))).forEach(x => {
       const img = x.innerHTML.split(' ', 2)[0] + ' ';
-      var cleaned = `${x.getAttribute('data-param').substring(1).split('.')[0]}`;
+      var cleaned = x.getAttribute('data-param').substring(1);
+      cleaned = cleaned.substring(0, cleaned.lastIndexOf('.'));
       cleaned = cleaned.substring(cleaned.indexOf(':') + 1);
       x.innerHTML = `${img}${cleaned}`;
     });
