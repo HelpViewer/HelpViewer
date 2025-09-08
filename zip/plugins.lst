@@ -12,7 +12,7 @@ pui:
 puiHeader:header
 puiSidebar:sidebar
 puiButtonTOC:toc
-puiButtonBmarks:bmarks
+puiButtonBmarks:
 pIndexFile:keywordList;fulltextList
 puiButtonKeywordIndex:keywordList;fulltextList
 puiButtonHome:
