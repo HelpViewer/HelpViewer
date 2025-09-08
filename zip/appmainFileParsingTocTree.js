@@ -111,9 +111,11 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
 
 function buildStringTreeFromMap(source, reply, step = 1, level = 0) {
   var replyI = reply || [];
+  const tabbing = ' '.repeat(step).repeat(level);
+  
   source.forEach((value, key, map) => {
     const nextLev = level + 1;
-    replyI.push(' '.repeat(step).repeat(level) + key);
+    replyI.push(tabbing + key);
     replyI.push(...buildStringTreeFromMap(value, [], step, nextLev));
   });
   return replyI;
