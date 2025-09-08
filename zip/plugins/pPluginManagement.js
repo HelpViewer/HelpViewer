@@ -65,12 +65,12 @@ class pPluginManagement extends IPlugin {
   }
 
   async _loadPlugin(name, file, source) {
-    const reply = lc_loadPlugin(name, file, source);
+    var reply = lc_loadPlugin(name, file, source);
     const T = this.constructor;
     const action = T.EVT_PD_PLGLOADED;
     const pluginPureName = name.split('/').pop();
 
-    reply.then(
+    reply = reply.then(
       ok => {
         sendEvent(action, (x) => {
           x.className = pluginPureName;
@@ -91,12 +91,12 @@ class pPluginManagement extends IPlugin {
   }
 
   async _activatePlugin(name, alias, source) {
-    const reply = lc_activatePlugin(name, alias, source);
+    var reply = lc_activatePlugin(name, alias, source);
     const T = this.constructor;
     const action = T.EVT_PD_PLGACTIVATED;
     const pluginPureName = name.split('/').pop();
 
-    reply.then(
+    reply = reply.then(
       ok => {
         sendEvent(action, (x) => {
           x.className = pluginPureName;
