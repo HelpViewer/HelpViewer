@@ -20,6 +20,10 @@ class pClickConverter extends pConvertSysEventToEvent {
     this.DEFAULT_KEY_CFG_EVENTBUSEVENT = 'ClickedEvent';
   }
 
+  _getEBEventClass() {
+    return ClickedEvent;
+  }
+
   _fillEventObject(d, evt) {
     d.event = evt;
     d.target = d.event?.target;

@@ -37,11 +37,15 @@ class pConvertSysEventToEvent extends IPlugin {
     TI.SEVT_EVT = new SystemEventHandler('', undefined, TI.targetSysObject, TI.cfgSYSEVENTNAME, this._fireEBEvent.bind(this));
     TI.SEVT_EVT.init();
     TI.catalogizeEventCall(this._fireEBEvent, TI.cfgEVENTBUSEVENT);
-    TI.eventDefinitions.push([TI.cfgEVENTBUSEVENT, ConvertedSystemEvent, null]); // outside event handlers
+    TI.eventDefinitions.push([TI.cfgEVENTBUSEVENT, TI._getEBEventClass(), null]); // outside event handlers
 
     super.init();
   }
   
+  _getEBEventClass() {
+    return ConvertedSystemEvent;
+  }
+
   _fireEBEvent(e) {
     sendEvent(this.cfgEVENTBUSEVENT, (x) => this._fillEventObject(x, e));
   }
