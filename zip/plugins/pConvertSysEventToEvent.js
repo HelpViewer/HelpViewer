@@ -8,6 +8,8 @@ class ConvertedSystemEvent extends IEvent {
   }
 }
 
+ConvertedSystemEvent.register();
+
 class pConvertSysEventToEvent extends IPlugin {
   static KEY_CFG_SYSEVENTNAME = 'SYSEVENTNAME';
   static KEY_CFG_SYSOBJECT = 'SYSOBJECT';
@@ -44,14 +46,13 @@ class pConvertSysEventToEvent extends IPlugin {
   }
   
   _getEBEventClass() {
-    const reply = this._eventDescriptor[0] || ConvertedSystemEvent;
-    log(`Plugin: ${this.constructor.name} (${this.aliasName}) event bus event ${this.cfgEVENTBUSEVENT} recognized as ${reply.name}`);
+    const reply = this._eventDescriptor?.[0] || ConvertedSystemEvent;
     return reply;
   }
 
   _fireEBEvent(e) {
     sendEvent(this.cfgEVENTBUSEVENT, (x) => {
-      const handler = this._eventDescriptor[1] || this._fillEventObject;
+      const handler = this._eventDescriptor?.[1] || this._fillEventObject;
       this._fillMinimum(x, e);
       handler?.(x, e);
     });
