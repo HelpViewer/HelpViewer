@@ -160,8 +160,8 @@ class IEvent {
   //static eventName = 'NewEvent';
   static eventObjects = new Map();
 
-  static register() {
-    IEvent.eventObjects.set(this.name, this);
+  static register(evtName) {
+    IEvent.eventObjects.set(evtName || this.name, this);
   }
 
   constructor() {
