@@ -142,6 +142,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     // dependency tree for events preparation
     this.TextEventTree = Object.entries(EventDefinitions).sort().map(([key, value]) => [...new Set([...getAllParents(value.inputType).filter((x) => x).reverse(), key])]);
     tree = buildStringTreeFromMap(this._getTreeFromArraysList(this.TextEventTree, new Map()));
+    tree = tree.map(row => `${row}|||:_${ObjectExplorerObjectDescriptor.EVENT.abbr}:IPlugin:${row.trim()}.md`);
     this.TextEventTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
     // plugin instances list
@@ -169,7 +170,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       });
 
       plg.eventDefinitions.forEach(evt => {
-        plug.subItems.push(new ObjectExplorerTreeItem(baseN + evt[0], 
+        plug.subItems.push(new ObjectExplorerTreeItem(evt[0], 
           evt[2] ? ObjectExplorerObjectDescriptor.EVENT : ObjectExplorerObjectDescriptor.EVENT_NOHANDLER, 
           [], evt, evt[0], 
           [evt[2] ? ObjectExplorerTreeItem.F_EVENT_WHANDLER : ObjectExplorerTreeItem.F_EVENT_NOHANDLER]
@@ -491,7 +492,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     this.C_AUTODESC = '<!-- %AUTODESC% -->';
     r.result = r.result.then(() => r.getStorageData(altPath).then((v) => r.content = v ? `## ${_T('overview')}\n${v}\n` : ''));
     r.result = r.result.then(() => r.content += (!r.content.includes(this.C_AUTODESC)) ? `${this.C_AUTODESC}\n` : '');
-    const found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
+    var found = this._browseTreeForItem(objName.split(':'), this.pluginNodes);
     var desc = '';
     r.tokens.push(r.TOKEN_NONOTFOUNDMSG);
 
@@ -596,6 +597,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       case ObjectExplorerObjectDescriptor.EVENT_NOHANDLER.abbr:
       case ObjectExplorerObjectDescriptor.HANDLER.abbr:
       case ObjectExplorerObjectDescriptor.TRANSMIT.abbr:
+        if (!found || !found.interconnectedObject)
+          found = { interconnectedObject: [objNameLocal], subItems: [] };
+
         const reply = this._getNamesForEventClassHandler(found?.interconnectedObject);
         if (reply && reply.length >= 3) {
           const [evtName, evtClassI, evtHandler] = reply;
