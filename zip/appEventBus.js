@@ -161,7 +161,9 @@ class IEvent {
   static eventObjects = new Map();
 
   static register(evtName, convertMethod = undefined) {
-    IEvent.eventObjects.set(evtName || this.name, [this, convertMethod]);
+    const ename = evtName || this.name;
+    IEvent.eventObjects.set(ename, [this, convertMethod]);
+    addEventDefinition(ename, new EventDefinition(this, ename));
   }
 
   constructor() {
