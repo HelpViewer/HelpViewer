@@ -135,12 +135,13 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     var tree = buildStringTreeFromMap(this._getTreeFromArraysList(depTree, new Map()));
     // adding object tree links
-    tree = this._renderPluginClassTree(tree);
+    tree = this._renderClassTree(tree);
 
     this.TextObjectTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
     // dependency tree for events preparation
     this.TextEventTree = Object.entries(EventDefinitions).sort().map(([key, value]) => [...new Set([...getAllParents(value.inputType).filter((x) => x).reverse(), key])]);
+    this.DepTreeEvents = getObjectCopy(this.TextEventTree);
     tree = buildStringTreeFromMap(this._getTreeFromArraysList(this.TextEventTree, new Map()));
     tree = tree.map(row => `${row}|||:_${ObjectExplorerObjectDescriptor.EVENT.abbr}:IPlugin:${row.trim()}.md`);
     this.TextEventTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
@@ -285,15 +286,15 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     log('W Found event calls by auto discover:', this.foundEventCalls);
   }
 
-  _renderPluginClassTree(treeI) {
+  _renderClassTree(treeI, desc = ObjectExplorerObjectDescriptor.PLUGIN) {
     const pluginGroupsTable = this.cfgGroupsList.map(x => [this.config[`${x}-F`]?.split(';'), this.config[x]]);
     pluginGroupsTable.push([['Object'], '⚙️']);
     pluginGroupsTable.push([['IEvent'], '⚡']);
     treeI = treeI.map(row => {
       const nameR = row.trim();
-      var newRow = `${row}|||:_${ObjectExplorerObjectDescriptor.PLUGIN.abbr}:${row.trim()}.md`;
+      var newRow = `${row}|||:_${desc.abbr}:${row.trim()}.md`;
       const firstIndex = row.search(/\S/);
-      const icon = pluginGroupsTable.find((g) => g[0].some(prefix => nameR.startsWith(prefix)))?.[1] || '🧩';
+      const icon = pluginGroupsTable.find((g) => g[0].some(prefix => nameR.startsWith(prefix)))?.[1] || desc.image;
       newRow = insertToStringAtIndex(newRow, firstIndex, icon + ' ');
       return newRow;
     });
@@ -541,17 +542,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
         // prepare dependency tree with current plugin class as base (top level item) and down to implementing classes
         const clsName = found?.interconnectedObject.name;
-        var classTree = getObjectCopy(this.DepTree).filter(x => x.includes(clsName));
-        if (classTree.length > 1) {
-          const index = classTree[0]?.findIndex(x => x == clsName);
-          classTree = classTree.map(x => x.splice(index));
-          classTree = buildStringTreeFromMap(this._getTreeFromArraysList(classTree, new Map()));
-          classTree = this._renderPluginClassTree(classTree);
-          classTree = linesToHtmlTree(classTree.join('\n'), 'tree-' + newUID());
-          classTree = `<ul class="tree">${classTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;  
-        } else {
-          classTree = '';
-        }
+        var classTree = this._getDependencySubtree(clsName);
         desc += `## 📂 ${_T('dependTree')}\n${parentClasses1}\n\n${classTree}`;
         break;
 
@@ -605,11 +596,15 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
           const [evtName, evtClassI, evtHandler] = reply;
           delayedFunction = async () => {
             var desc = '';
-            desc += `## ${ObjectExplorerObjectDescriptor.EVENT.image} ${evtName} (${evtClassI.constructor.name})\n| ${_T('name')} | ${_T('default')} | ${_T('datatype')} |\n| --- | --- | --- |\n`;
+            const parentClasses = this._getLineWithDependencyTree(evtClassI.constructor, ObjectExplorerObjectDescriptor.EVENT);
+            var classTree = this._getDependencySubtree(evtClassI.constructor.name, this.DepTreeEvents, ObjectExplorerObjectDescriptor.EVENT);
+            desc += `## 📂 ${_T('dependTree')}\n${parentClasses}\n\n${classTree}\n&nbsp;\n`;
 
             const props = Object.getOwnPropertyNames(evtClassI);
             const propRows = props.map((name, i) => `| [${name}](#h-4-${i}) | ${typeof evtClassI[name] === "function" ? '[FUNCTION]' : (Array.isArray(evtClassI[name]) ? '[ARRAY]' : evtClassI[name])} | ${typeof(evtClassI[name])} |`).join('\n');
             
+            desc += `## ${ObjectExplorerObjectDescriptor.EVENT.image} ${evtName} (${evtClassI.constructor.name})\n\n`;
+            desc += `| ${_T('name')} | ${_T('default')} | ${_T('datatype')} |\n| --- | --- | --- |\n`;
             desc += propRows;
             desc += `\n### ${_T('meaning')}\n`;
 
@@ -707,11 +702,27 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     r.result = r.result.then(() => r.content = r.content.replace(this.C_AUTODESC, desc));
   }
 
-  _getLineWithDependencyTree(baseClass, delimiter = ' -> ', links = true) {
+  _getDependencySubtree(clsName, depTree = this.DepTree, desc = ObjectExplorerObjectDescriptor.PLUGIN) {
+    var classTree = getObjectCopy(depTree).filter(x => x.includes(clsName));
+    if (classTree.length > 1) {
+      const index = classTree[0]?.findIndex(x => x == clsName);
+      classTree = classTree.map(x => x.splice(index));
+      classTree = buildStringTreeFromMap(this._getTreeFromArraysList(classTree, new Map()));
+      classTree = this._renderClassTree(classTree, desc);
+      classTree = linesToHtmlTree(classTree.join('\n'), 'tree-' + newUID());
+      classTree = `<ul class="tree">${classTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;  
+    } else {
+      classTree = '';
+    }
+
+    return classTree;
+  }
+
+  _getLineWithDependencyTree(baseClass, descr = ObjectExplorerObjectDescriptor.PLUGIN, delimiter = ' -> ', links = true) {
     var depends = getAllParents(baseClass).filter((x) => x);
 
     if (links)
-      depends = depends.map((x) => `[${x}](:_${ObjectExplorerObjectDescriptor.PLUGIN.abbr}:${x}.md)`);
+      depends = depends.map((x) => `[${x}](:_${descr.abbr}:${x}.md)`);
 
     return depends.join(delimiter);
   }
