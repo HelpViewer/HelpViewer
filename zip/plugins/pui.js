@@ -40,7 +40,7 @@ class pui extends IPlugin {
 
   constructor(aliasName, data) {
     super(aliasName, data);
-    this.btnHandlers = new Map();
+    this.routing = new Map();
   }
 
   init() {
@@ -50,7 +50,7 @@ class pui extends IPlugin {
     const h_EVT_CLICK_HANDLER_REGISTER = (reply) => {
       if (!reply.handlerId || !reply.handler)
         return;
-      this.btnHandlers.set(reply.handlerId, reply.handler);
+      this.routing.set(reply.handlerId, reply.handler);
       reply.result = reply.handlerId;
     }
     TI.eventDefinitions.push([T.EVT_CLICK_HANDLER_REGISTER, ClickHandlerRegister, h_EVT_CLICK_HANDLER_REGISTER]);
@@ -88,14 +88,14 @@ class pui extends IPlugin {
   }
 
   deInit() {
-    this.btnHandlers.clear();
+    this.routing.clear();
 
     super.deInit();
   }
 
   onET_ClickedEvent(e) {
-    const foundExactEqual = this.btnHandlers.get(e.elementId);
-    const foundRootEqual = this.btnHandlers.get(e.elementIdRoot);
+    const foundExactEqual = this.routing.get(e.elementId);
+    const foundRootEqual = this.routing.get(e.elementIdRoot);
     const found = foundExactEqual || foundRootEqual;
 
     if (found) {

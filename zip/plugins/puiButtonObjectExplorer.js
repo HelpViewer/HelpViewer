@@ -575,8 +575,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         desc += resourcesList.join('');
 
         var btnClickHandlers = '';
-        if (found.interconnectedObject.btnHandlers)
-          btnClickHandlers = [...found.interconnectedObject.btnHandlers.entries()].map(([x, v]) => `- ${x} (${v.name})`).join('\n');
+        if (found.interconnectedObject.routing)
+          btnClickHandlers = [...found.interconnectedObject.routing.entries()].map(([x, v]) => `- ${x} (${v.name})`).join('\n');
 
         if (btnClickHandlers)
           desc += `\n\n## 🔀 ${_T('routing')}\n${btnClickHandlers}`
