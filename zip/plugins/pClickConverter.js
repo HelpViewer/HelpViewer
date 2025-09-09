@@ -2,9 +2,9 @@
 class ClickedEvent extends IEvent {
   constructor() {
     super();
-    this.elementId = null;
-    this.elementIdRoot = null;
-    this.elementIdVal = null;
+    this.elementId = '';
+    this.elementIdRoot = '';
+    this.elementIdVal = '';
     this.target = null;
     this.event = null;
     this.forwarded = false;
