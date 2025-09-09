@@ -37,28 +37,37 @@ class pConvertSysEventToEvent extends IPlugin {
     TI.SEVT_EVT = new SystemEventHandler('', undefined, TI.targetSysObject, TI.cfgSYSEVENTNAME, this._fireEBEvent.bind(this));
     TI.SEVT_EVT.init();
     TI.catalogizeEventCall(this._fireEBEvent, TI.cfgEVENTBUSEVENT);
+    TI._eventDescriptor = IEvent.eventObjects.get(this.cfgEVENTBUSEVENT);
     TI.eventDefinitions.push([TI.cfgEVENTBUSEVENT, TI._getEBEventClass(), null]); // outside event handlers
 
     super.init();
   }
   
   _getEBEventClass() {
-    const reply = IEvent.eventObjects.get(this.cfgEVENTBUSEVENT) || ConvertedSystemEvent;
+    const reply = this._eventDescriptor[0] || ConvertedSystemEvent;
     log(`Plugin: ${this.constructor.name} (${this.aliasName}) event bus event ${this.cfgEVENTBUSEVENT} recognized as ${reply.name}`);
     return reply;
   }
 
   _fireEBEvent(e) {
-    sendEvent(this.cfgEVENTBUSEVENT, (x) => this._fillEventObject(x, e));
+    sendEvent(this.cfgEVENTBUSEVENT, (x) => {
+      const handler = this._eventDescriptor[1] || this._fillEventObject;
+      this._fillMinimum(x, e);
+      handler?.(x, e);
+    });
   }
 
   _fillEventObject(x, e) {
     const TI = this;
     x.event = e;
     x.sysEventName = TI.cfgSYSEVENTNAME;
-    x.id = TI.cfgEVENTBUSEVENTID;
     x.senderId = TI.aliasName;
     x.sysSenderObject = TI.targetSysObject;
+  }
+
+  _fillMinimum(x, e) {
+    const TI = this;
+    x.id = TI.cfgEVENTBUSEVENTID;
   }
 }
 

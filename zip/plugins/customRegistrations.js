@@ -1,1 +1,1 @@
-IEvent.register('BeforePrint');
+IEvent.register('BeforePrint', (ebe, syse) => {});
