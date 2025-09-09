@@ -43,7 +43,9 @@ class pConvertSysEventToEvent extends IPlugin {
   }
   
   _getEBEventClass() {
-    return ConvertedSystemEvent;
+    const reply = IEvent.eventObjects.get(this.cfgEVENTBUSEVENT) || ConvertedSystemEvent;
+    log(`Plugin: ${this.constructor.name} (${this.aliasName}) event bus event ${this.cfgEVENTBUSEVENT} recognized as ${reply.name}`);
+    return reply;
   }
 
   _fireEBEvent(e) {

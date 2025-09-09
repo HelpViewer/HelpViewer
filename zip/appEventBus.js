@@ -158,6 +158,11 @@ function sendEventObject(eventData, eventId = undefined) {
 
 class IEvent {
   //static eventName = 'NewEvent';
+  static eventObjects = new Map();
+
+  static register() {
+    IEvent.eventObjects.set(this.name, this);
+  }
 
   constructor() {
     this.createdAt = new Date();

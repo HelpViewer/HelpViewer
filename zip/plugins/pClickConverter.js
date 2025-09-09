@@ -11,6 +11,8 @@ class ClickedEvent extends IEvent {
   }
 }
 
+ClickedEvent.register();
+
 class pClickConverter extends pConvertSysEventToEvent {
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -18,10 +20,6 @@ class pClickConverter extends pConvertSysEventToEvent {
     this.DEFAULT_KEY_CFG_SYSEVENTNAME = 'click';
     this.DEFAULT_KEY_CFG_SYSOBJECT = 'body';
     this.DEFAULT_KEY_CFG_EVENTBUSEVENT = 'ClickedEvent';
-  }
-
-  _getEBEventClass() {
-    return ClickedEvent;
   }
 
   _fillEventObject(d, evt) {
