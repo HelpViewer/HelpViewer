@@ -598,6 +598,12 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
             var desc = '';
             const parentClasses = this._getLineWithDependencyTree(evtClassI.constructor, ObjectExplorerObjectDescriptor.EVENT);
             var classTree = this._getDependencySubtree(evtClassI.constructor.name, this.DepTreeEvents, ObjectExplorerObjectDescriptor.EVENT);
+            
+            const count = (classTree.match(new RegExp('<a href', "g")) || []).length;
+
+            if (count > 10)
+              classTree = classTree.replace('<details open>', '<details>');
+
             desc += `## 📂 ${_T('dependTree')}\n${parentClasses}\n\n${classTree}\n&nbsp;\n`;
 
             const props = Object.getOwnPropertyNames(evtClassI);
