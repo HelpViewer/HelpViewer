@@ -457,12 +457,13 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     if (r.uri.toLowerCase().endsWith('/tree.md')) {
       r.result = r.result.then(() => {
         var descr = ObjectExplorerObjectDescriptor.PLUGIN;
-        r.content = `## ${descr.image} ${_T(descr.t)} (~${Plugins.pluginsClasses.size}/${Plugins.plugins.size})\n<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
+        r.content = `## ${descr.image} ${_T(descr.t)} (${Plugins.pluginsClasses.size}, ${Plugins.plugins.size})\n<ul class="tree">${this.TextObjectTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
         r.content += '&nbsp;\n\n';
         descr = ObjectExplorerObjectDescriptor.EVENT;
-        r.content += `## ${descr.image} ${_T('event')} (~${Object.entries(EventDefinitions).length})\n<ul class="tree">${this.TextEventTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
+        r.content += `## ${descr.image} ${_T('event')} (${Object.entries(EventDefinitions).length})\n<ul class="tree">${this.TextEventTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
         const eventToEvent = [...IEvent.eventObjects.entries()].map(([k,v]) => `|${k}|${v.name}|`).join('\n');
-        r.content += `|${_T('source')}|${_T('event')}|\n|---|---|\n${eventToEvent}\n\n`;
+        r.content += '&nbsp;\n\n';
+        r.content += `### 🔗 ${_T('_viewRepo-link')} (${IEvent.eventObjects.size})\n|${_T('source')}|${_T('event')}|\n|---|---|\n${eventToEvent}\n\n`;
       });
       return;
     }
