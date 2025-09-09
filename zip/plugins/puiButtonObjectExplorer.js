@@ -140,7 +140,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     this.TextObjectTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
     // dependency tree for events preparation
-    this.TextEventTree = Object.entries(EventDefinitions).map(([key, value]) => [...new Set([...getAllParents(value.inputType).filter((x) => x).reverse(), key])]);
+    this.TextEventTree = Object.entries(EventDefinitions).sort().map(([key, value]) => [...new Set([...getAllParents(value.inputType).filter((x) => x).reverse(), key])]);
     tree = buildStringTreeFromMap(this._getTreeFromArraysList(this.TextEventTree, new Map()));
     this.TextEventTree = linesToHtmlTree(tree.join('\n'), 'tree-' + newUID());
 
