@@ -462,7 +462,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         r.content += '&nbsp;\n\n';
         descr = ObjectExplorerObjectDescriptor.EVENT;
         r.content += `## ${descr.image} ${_T('event')} (${Object.entries(EventDefinitions).length})\n<ul class="tree">${this.TextEventTree.replace(new RegExp('<details>', 'g'), '<details open>')}</ul>\n\n`;
-        const eventToEvent = [...IEvent.eventObjects.entries()].map(([k,v]) => `|${k}|${v?.[0]?.name}|`).join('\n');
+        const eventToEvent = [...IEvent.eventObjects.entries()].map(([k,v]) => `|[${k}](:_${ObjectExplorerObjectDescriptor.EVENT.abbr}:IPlugin:${k}.md)|${v?.[0]?.name}|`).join('\n');
         r.content += '&nbsp;\n\n';
         r.content += `### 🔗 ${_T('_viewRepo-link')} (${IEvent.eventObjects.size})\n|${_T('source')}|${_T('event')}|\n|---|---|\n${eventToEvent}\n\n`;
       });
