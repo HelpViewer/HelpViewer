@@ -163,7 +163,20 @@ function newKeywordDatabase(id, keywordData, keywordToFilesData) {
         keywordToIndex.set(key, keywordFiles.length - 1);
       }
     }
+
+    // clear empty or deleted files signed -|- in file
+    const docEmptyHeadings = [...new Set(keywordFiles.flat())].map(x => [x, getChapterAlternativeHeading(x)[0]]).filter(x => x[1] == '-').map(x => x[0]);
+    keywordFiles = keywordFiles.map(x => x.filter(y => !docEmptyHeadings.includes(y)));
+    var emptyIndexes = keywordFiles.map((arr, i) => arr.length === 0 ? i : null).filter(i => i !== null);
+    emptyIndexes = keywordFiles.map((subArr, index) => (subArr.length === 0 ? index : -1)).filter(index => index !== -1);
     
+    emptyIndexes.forEach(idx => {
+      keywordFiles.splice(idx, 1);
+    });
+
+    keywordToIndex = new Map([...keywordToIndex.entries()].filter(([k, v]) => !emptyIndexes.includes(v)));
+    // E: clear empty or deleted files signed -|- in file
+
     keywordSorted = [...new Set(keywordToIndex.keys())];
     keywordSorted.sort((a, b) => a.localeCompare(b));
 
