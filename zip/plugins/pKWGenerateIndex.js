@@ -127,13 +127,16 @@ class pKWGenerateIndex extends IPlugin {
         // all index records in flat, min word length filtered out
         flatArray = flatArray.filter((x) => x && x[0] && x[0].length >= this.cfgMinWordLength);
 
-        const grouped = {};
+        const grouped = Object.create(null);
         const flArrayFiles = flArray.map((x) => x[0]);
 
         for (const [file, innerMap] of this.indexes) {
-          for (const [key, value] of innerMap) {
+          for (var [key, value] of innerMap) {
             if (!key || key.length < this.cfgMinWordLength) 
               continue;
+
+            if (key === 'constructor')
+              key = 'constructo';
             
             // grouping per word
             if (!grouped[key])
