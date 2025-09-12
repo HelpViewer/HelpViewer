@@ -17,12 +17,14 @@ var srcJSOverridePlus = null;
 
 async function initLayout(store) {
   const srcLayout = await _Storage.search(store, FILENAME_LAYOUT);
-  if (!srcLayout) return
-  document.body.innerHTML = srcLayout;
+  if (srcLayout)
+    document.body.innerHTML = srcLayout;
   
   const srcMainCSS = await _Storage.search(store, FILENAME_MAINCSS);
   if (!srcMainCSS) return
-  appendCSS('mainCSS', srcMainCSS);
+  const mainCSSAlias = 'mainCSS';
+  $(mainCSSAlias)?.remove();
+  appendCSS(mainCSSAlias, srcMainCSS);
 }
 
 async function runApp() {
