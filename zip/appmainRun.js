@@ -61,7 +61,16 @@ async function runApp() {
   if (srcJSOverridePlus)
     appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);
 
-  sendEvent(EVT_PluginsLoadingFinished, (x) => x.result = loadedList);
+  sendEvent(EVT_PluginsLoadingFinished, (x) => {
+    x.result = loadedList;
+    x.source = STO_DATA;
+  });
+
+  const loadedListH = await loadPluginList(FILENAME_LIST_JS_PLUGINS, STO_HELP);
+  sendEvent(EVT_PluginsLoadingFinished, (x) => {
+    x.result = loadedListH;
+    x.source = STO_HELP;
+  });
 }
 
 const loadPluginListBasePath = (name) => `plugins/${name}.js`;
@@ -99,8 +108,6 @@ async function loadPluginList(listFileName, storage, basePath = loadPluginListBa
       log('E Error during loading plugin: ', name, aliases);
     }
   }
-
-  sendEvent(EVT_PluginsLoadingFinished, (x) => x.result = activatedPluginsList);
 
   return activatedPluginsList;
 }

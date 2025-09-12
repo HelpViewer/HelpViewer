@@ -186,6 +186,13 @@ const Plugins = {
 
   activate(pluginName, aliasName, data) {
     var plugin = this.pluginsClasses.get(pluginName);
+
+    var key = this.getKey(pluginName, aliasName);
+    if (this.plugins.get(key)) {
+      log(`W Plugin ${key} already instantiated.`);
+      return;
+    }
+
     var p = null;
 
     try {
@@ -202,7 +209,6 @@ const Plugins = {
     }
 
     p.init();
-    var key = this.getKey(pluginName, aliasName);
     this.plugins.set(key, p);
     log(`Plugins: activated '${key}'`);
     return [key, p];
