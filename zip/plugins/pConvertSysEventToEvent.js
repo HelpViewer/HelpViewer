@@ -42,6 +42,8 @@ class pConvertSysEventToEvent extends IPlugin {
     TI._eventDescriptor = IEvent.eventObjects.get(this.cfgEVENTBUSEVENT);
     TI.eventDefinitions.push([TI.cfgEVENTBUSEVENT, TI._getEBEventClass(), null]); // outside event handlers
 
+    TI.resolvedFillEventObject = this._eventDescriptor?.[1] || this._fillEventObject;
+
     super.init();
   }
   
@@ -52,9 +54,8 @@ class pConvertSysEventToEvent extends IPlugin {
 
   _fireEBEvent(e) {
     sendEvent(this.cfgEVENTBUSEVENT, (x) => {
-      const handler = this._eventDescriptor?.[1] || this._fillEventObject;
       this._fillMinimum(x, e);
-      handler?.(x, e);
+      this.resolvedFillEventObject(x, e);
     });
   }
 
