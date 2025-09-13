@@ -195,8 +195,10 @@ class puiButtonTab extends puiButton {
   }
 
   _buttonAction(evt) {
-    this._preShowAction(evt);
-    showSidebarTab(this.tab?.id);
+    const reply = this._preShowAction(evt) == false ? false : true;
+
+    if (reply)
+      showSidebarTab(this.tab?.id);
   }
 }
 
