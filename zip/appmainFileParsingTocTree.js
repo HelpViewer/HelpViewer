@@ -96,10 +96,10 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
     const content = makeLink(name, note, path, image);
 
     if (nextIndent > indent) {
-      html += `<li><details><summary>${content}</summary><ul>`;
+      html += `<li role='treeitem'><details><summary>${content}</summary><ul role='group'>`;
       stack.push(indent);
     } else {
-      html += `<li>${content}</li>`;
+      html += `<li role='treeitem'>${content}</li>`;
     }
   }
 
