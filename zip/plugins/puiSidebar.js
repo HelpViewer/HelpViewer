@@ -78,7 +78,7 @@ class puiSidebar extends IPlugin {
         return;
       
       const div = document.createElement('div');
-      div.className = T.cssClassSideBarPage + ' hidden';
+      div.className = T.cssClassSideBarPage + ' ' + C_HIDDENC;
       div.id = `sp-${reply.pageId}`;
 
       if (reply.role)
