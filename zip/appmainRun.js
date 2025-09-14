@@ -101,7 +101,7 @@ async function loadPluginList(listFileName, storage, basePath = loadPluginListBa
       await loadPlugin(name, basePath(name), storage);
 
       for (const oneAlias of aliases) {
-        await activatePlugin(name, oneAlias);
+        await activatePlugin(name, oneAlias, storage);
         activatedPluginsList.push([name, oneAlias]);
       }
     } catch (error) {
