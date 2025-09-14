@@ -112,6 +112,7 @@ class puiSidebar extends IPlugin {
       const obj = document.createElement('ul');
       obj.className = 'tree';
       obj.id = reply.treeViewId;
+      obj.setAttribute('role', 'tree');
 
       reply.page.appendChild(obj);
       reply.result = obj;
