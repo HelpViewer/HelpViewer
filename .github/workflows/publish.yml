@@ -106,7 +106,6 @@ jobs:
           cd _distrib
           find .. -maxdepth 1 -type f \
             ! -name 'Dockerfile' \
-            ! -name 'LICENSE' \
             ! -name 'deps.lst' \
             ! -name '*.md' \
             ! -name '.*' \
@@ -160,23 +159,23 @@ jobs:
           
           TAG="$VERSION"
 
-          echo "::group::Old release delete"
-          RELEASE_ID=$(curl -s -H "Authorization: token $TOKEN" \
-            https://api.github.com/repos/$REPO/releases/tags/$TAG | jq -r .id)
+          #echo "::group::Old release delete"
+          #RELEASE_ID=$(curl -s -H "Authorization: token $TOKEN" \
+          #  https://api.github.com/repos/$REPO/releases/tags/$TAG | jq -r .id)
 
-          if [ "$RELEASE_ID" != "null" ]; then
-            echo "Deleting release ID $RELEASE_ID"
-            curl -s -X DELETE -H "Authorization: token $TOKEN" \
-              https://api.github.com/repos/$REPO/releases/$RELEASE_ID
-          fi
-          echo "::endgroup::"
-          
-          echo "::group::Old tag delete"
-          if git ls-remote --tags origin | grep -q "$TAG"; then
-            git tag -d "$TAG" || true
-            git push origin ":refs/tags/$TAG" || true
-          fi
-          echo "::endgroup::"
+          #if [ "$RELEASE_ID" != "null" ]; then
+          #  echo "Deleting release ID $RELEASE_ID"
+          #  curl -s -X DELETE -H "Authorization: token $TOKEN" \
+          #    https://api.github.com/repos/$REPO/releases/$RELEASE_ID
+          #fi
+          #echo "::endgroup::"
+          #
+          #echo "::group::Old tag delete"
+          #if git ls-remote --tags origin | grep -q "$TAG"; then
+          #  git tag -d "$TAG" || true
+          #  git push origin ":refs/tags/$TAG" || true
+          #fi
+          #echo "::endgroup::"
 
           echo "::group::New tag created"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
