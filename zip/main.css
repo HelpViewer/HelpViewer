@@ -355,6 +355,10 @@ ul:has(li input[type="checkbox"]) {
   filter: grayscale(100%) contrast(200%);
 }
 
+.inSepia {
+  filter: sepia(0.7);
+}
+
 .treepic {
     padding-right: 0.3em;
 }
@@ -376,6 +380,10 @@ ul:has(li input[type="checkbox"]) {
 
 /*S: print support*/
 @media print {
+  .inSepia {
+    filter: sepia(0);
+  }
+
   body * {
     visibility: hidden;
     color: black !important;

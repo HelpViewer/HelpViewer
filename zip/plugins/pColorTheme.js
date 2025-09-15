@@ -50,7 +50,7 @@ class pColorTheme extends IPlugin {
     var KEY_LS_COLORTHEME = undefined;
     
     // reimplement yourself
-    var colorModes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor"];
+    var colorModes = ["inStandard", "inGray", "inBlackWhite", "inBWDuoColor", "inSepia"];
     var defaultColorTheme = colorModes[0];
     
     var targetElement = document.body;
