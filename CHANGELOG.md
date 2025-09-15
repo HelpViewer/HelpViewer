@@ -1,5 +1,44 @@
 # Changelog
 
+## 20250915
+
+### 🧑‍🤝‍🧑 User
+- ➕🔎 Chapter content is now automatically indexed for full-text search when it’s not included in the help package
+- ➕📽 Presentation mode
+- ➕📖 Added static ARIA roles for tree nodes
+- ➕📘🧩 Help for developers published
+- Word-wrapping and hyphens in text improved
+- sidebar animation improved
+
+### 🐞 Bugfix
+- ✏️ fix of some tries to access to not exists pages
+- 🌐 last empty link is not produced anymore
+- 🌐 html lang tag is updated with language change
+- missing source usage when loading customization CSS files in help file base part
+- help file custom layout and CSS file loading are not interconnected anymore
+- 🧩 plugins now are not allowed to be instantiated twice under the same key name
+
+### 🧩 Technology
+- ➕🧩 plugin system : 
+  - update in form of definition for some objects
+  - plugins can deinit Resource and other sub plugins automatically
+  - minimization of plugin functions with super call only
+  - improved event system over plugin management actions
+- ➕🧩 object explorer:
+  - 2 object trees - classes, processes
+  - significantly improved with detection of objects
+  - cross hyperlinks to objects on pages
+  - Filter state icons near plugin instances
+  - sender - receiver connection detection
+  - dependency trees
+  - loading order overview
+  - descriptive texts for objects extended
+  - some event members typed more strictly than previous time
+- ⚡ support for mapping javascript events to application events (event bus)
+- 🖼️ pTopicRenderer can now support more than one phase named by file extension
+- various refactor in 🖥️ pui plugin to support of javascript events mapping or showing mouse click routing list
+- 🖥️ puiButtonTab : _buttonAction will process reply from _preShowAction - if value is false, then tab showing is stopped
+
 ## 20250828
 
 ### User
