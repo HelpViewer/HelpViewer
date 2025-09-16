@@ -56,3 +56,5 @@ pTRUnconnectedTransformation:fulltextList-unconnected
 pKWGetChapterLinks:fulltextList-unconnected2
 pKWHTMLToText:fulltextList-unconnected2
 pKWIndexDoc:fulltextList-unconnected2
+pServicePlugin
+pServiceLocalization:

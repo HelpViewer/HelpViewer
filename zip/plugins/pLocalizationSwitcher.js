@@ -27,6 +27,12 @@ class LocGetLanguages extends IEvent {
   }
 }
 
+class LocAppend extends IEvent {
+  constructor() {
+    super();
+    this.strings = {};
+  }
+}
 class pLocalizationSwitcher extends IPlugin {
   static EVT_LOC_TRANSLATE = LocTranslate.name;
   static EVT_LOC_GET_ACTIVE_LANGUAGE = 'GET_ACTIVE_LANGUAGE';
@@ -34,6 +40,7 @@ class pLocalizationSwitcher extends IPlugin {
   static EVT_LOC_LOAD = LocLoad.name;
   static EVT_LOC_LOADED = 'LOC_LOADED';
   static EVT_LOC_REFRESH = LocRefresh.name;
+  static EVT_LOC_APPEND = LocAppend.name;
 
   static KEY_CFG_STOREKEY = 'STOREKEY';
   static KEY_CFG_DEFAULTLANG = 'DEFAULTLANG';
@@ -83,6 +90,16 @@ class pLocalizationSwitcher extends IPlugin {
     TI.eventDefinitions.push([T.EVT_LOC_REFRESH, LocRefresh, h_EVT_LOC_REFRESH]);
 
     TI.eventDefinitions.push([T.EVT_LOC_LOADED, LocLoad, null]); // outside event handlers
+
+    const h_EVT_LOC_APPEND = (data) => {
+      alert('h_EVT_LOC_APPEND');
+      log('E h_EVT_LOC_APPEND 1');
+      const keys = this._processFlatStrings(data.strings);
+      log('E h_EVT_LOC_APPEND 2');
+      h_EVT_LOC_REFRESH({strings : keys});
+      log('E h_EVT_LOC_APPEND 3');
+    };
+    TI.eventDefinitions.push([T.EVT_LOC_APPEND, LocAppend, h_EVT_LOC_APPEND]);
 
     TI.catalogizeEventCall(TI.init, EventNames.UserConfigGet);
     TI.catalogizeEventCall(h_EVT_LOC_LOAD, T.EVT_LOC_LOAD);
@@ -140,14 +157,7 @@ class pLocalizationSwitcher extends IPlugin {
       return;
     }
 
-    for (var i = 0; i < langFlatStrs.length; i++) {
-      const line = langFlatStrs[i];
-      const trimmed = line.trim();
-      const parts = trimmed.split("|", 2);
-      const key = parts[0]?.trim() || "";
-      const val = parts[1]?.trim() || "";
-      this.langStrs[key] = (s) => val;
-    }
+    this._processFlatStrings(langFlatStrs);
     
     if (typeof _lstr !== "undefined") {
       this.langKeysDyn = Object.keys(_lstr);
@@ -194,6 +204,22 @@ class pLocalizationSwitcher extends IPlugin {
         }
       }
     });
+  }
+
+  _processFlatStrings(langFlatStrs) {
+    const keys = {};
+
+    for (var i = 0; i < langFlatStrs.length; i++) {
+      const line = langFlatStrs[i];
+      const trimmed = line.trim();
+      const parts = trimmed.split("|", 2);
+      const key = parts[0]?.trim() || "";
+      const val = parts[1]?.trim() || "";
+      this.langStrs[key] = (s) => val;
+      keys[key] = val;
+    }
+
+    return keys;
   }
   
   _T(key, strings) {
