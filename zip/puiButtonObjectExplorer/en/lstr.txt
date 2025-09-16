@@ -55,3 +55,4 @@ license|License
 routing|Routing
 SVCPLG|Service plugins
 SVCPLG-D|Extended service plugins. The purpose of plugins is to respond to the loading of a plugin with a specific action. An example would be a separate localization table that is loaded when the plugin is initialized and connected to the main localization.
+objectList-i__placeholder|Type name, press Enter
