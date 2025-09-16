@@ -22,3 +22,4 @@
 - customizer for project download as help file plugin
 - service plugin (general service plugin attached to plugin handling events and providing some functionality - e.g. append to language localization when plugin is newly loaded)
 - extra CSS styles + plugin for switching them
+- custom log explorer
