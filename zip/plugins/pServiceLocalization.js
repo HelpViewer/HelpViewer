@@ -7,9 +7,6 @@ class pServiceLocalization extends pServicePlugin {
   }
 
   _pluginActivated(pluginName, instanceName, instance, storageName) {
-    //log('E !!!ggg', pluginName, instanceName, instance, storageName);
-    log('E _pluginActivated_pluginActivated', this);
-
     const langFileJS = 'lstr.js';
     const langFileTXT = 'lstr.txt';
     const lang = getActiveLanguage();
@@ -26,12 +23,8 @@ class pServiceLocalization extends pServicePlugin {
       }
 
       if (txt) {
-        log('E !!!ggg', pluginName, instanceName, instance, storageName);
-        log('E GGG found langs:', txt, instanceName);
         this.addPlugin(pluginName, instanceName);
-        alert('x');
         sendEvent(EventNames.LocAppend, (x) => x.strings = txt);
-        alert('x2');
       }
     });
   }

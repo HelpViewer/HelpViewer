@@ -6,7 +6,6 @@ class pServicePlugin extends IPlugin {
 
   init() {
     super.init();
-
     this._doForAllInstances(this._pluginActivated.bind(this));
   }
 
@@ -29,7 +28,6 @@ class pServicePlugin extends IPlugin {
   }
 
   _doForAllInstances(action) {
-    log('E TTT _doForAllInstances', this);
     if (!action || typeof action !== 'function') return;
     const act = (x) => action(x.constructor.name, x.aliasName, x, x.storageName);
     Plugins.plugins.forEach(x => act(x));
