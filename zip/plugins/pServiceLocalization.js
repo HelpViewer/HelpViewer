@@ -1,8 +1,5 @@
 class pServiceLocalization extends pServicePlugin {
   init() {
-    this.plgActivate = this._pluginActivated.bind(this);
-    this.plgDeactivate = this._pluginDeactivated.bind(this);
-
     super.init();
 
     const TI = this;
@@ -16,14 +13,13 @@ class pServiceLocalization extends pServicePlugin {
     const langFileJS = 'lstr.js';
     const langFileTXT = 'lstr.txt';
     const lang = getActiveLanguage();
-    const addPlugin = this.addPlugin;
     
     Promise.all([
       storageSearch(storageName, `${pluginName}/${lang}/${langFileTXT}`),
       storageSearch(storageName, `${pluginName}/${lang}/${langFileJS}`),
     ]).then(([txt, js]) => {
       if (js) {
-        addPlugin(pluginName, instanceName);
+        this.addPlugin(pluginName, instanceName);
         const jsAlias = `lngk_${pluginName}`;
         $O(jsAlias)?.remove();
         appendJavaScript(jsAlias, js, document.head);
@@ -32,7 +28,7 @@ class pServiceLocalization extends pServicePlugin {
       if (txt) {
         log('E !!!ggg', pluginName, instanceName, instance, storageName);
         log('E GGG found langs:', txt, instanceName);
-        addPlugin(pluginName, instanceName);
+        this.addPlugin(pluginName, instanceName);
         alert('x');
         sendEvent(EventNames.LocAppend, (x) => x.strings = txt);
         alert('x2');
@@ -41,7 +37,7 @@ class pServiceLocalization extends pServicePlugin {
   }
 
   onETLOC_LOADED(evt) {
-    this._doForAllInstances(this._pluginActivated);
+    this._doForAllInstances(this._pluginActivated.bind(this));
   }
 }
 

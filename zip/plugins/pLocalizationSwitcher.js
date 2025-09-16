@@ -93,11 +93,12 @@ class pLocalizationSwitcher extends IPlugin {
 
     const h_EVT_LOC_APPEND = (data) => {
       alert('h_EVT_LOC_APPEND');
-      log('E h_EVT_LOC_APPEND 1');
-      const keys = this._processFlatStrings(data.strings);
+      log('E h_EVT_LOC_APPEND 1', data.strings);
+      const keys = this._processFlatStrings(data.strings.split('\n'));
       log('E h_EVT_LOC_APPEND 2');
-      h_EVT_LOC_REFRESH({strings : keys});
-      log('E h_EVT_LOC_APPEND 3');
+      //this.refreshTitlesForLangStrings(keys, []); 
+      refreshTitlesForLangStrings();
+      log('E h_EVT_LOC_APPEND 3', keys);
     };
     TI.eventDefinitions.push([T.EVT_LOC_APPEND, LocAppend, h_EVT_LOC_APPEND]);
 

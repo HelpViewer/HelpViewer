@@ -7,32 +7,32 @@ class pServicePlugin extends IPlugin {
   init() {
     super.init();
 
-    this.plgActivate = this.plgActivate || this._pluginActivated.bind(this);
-    this.plgDeactivate = this.plgDeactivate || this._pluginDeactivated.bind(this);
-    this.addPlugin = (pluginName, instanceName) => {
-      this.plugins.add(Plugins.getKey(pluginName, instanceName));
-    }
+    this._doForAllInstances(this._pluginActivated.bind(this));
+  }
 
-    this._doForAllInstances(this.plgActivate);
+  addPlugin(pluginName, instanceName) {
+    this.plugins.add(Plugins.getKey(pluginName, instanceName));
   }
 
   deInit() {
-    this._doForAllInstances(this.plgDeactivate);
+    this._doForAllInstances(this._pluginDeactivated.bind(this));
     super.deInit();
   }
 
   onETPluginActivated(evt) {
-    evt.result = this.plgActivate?.(evt.className, evt.instanceName, evt.instanceObject, evt.storageName);
+    evt.result = this._pluginActivated?.(evt.className, evt.instanceName, evt.instanceObject, evt.storageName);
   }
 
   onETPluginDeactivated(evt) {
     this.plugins.delete(Plugins.getKey(evt.className, evt.instanceName));
-    evt.result = this.plgDeactivate?.(evt.className, evt.instanceName, evt.instanceObject, evt.storageName);
+    evt.result = this._pluginDeactivated?.(evt.className, evt.instanceName, evt.instanceObject, evt.storageName);
   }
 
   _doForAllInstances(action) {
+    log('E TTT _doForAllInstances', this);
     if (!action || typeof action !== 'function') return;
-    Plugins.plugins.forEach(x => action(x.constructor.name, x.aliasName, x, x.storageName));
+    const act = (x) => action(x.constructor.name, x.aliasName, x, x.storageName);
+    Plugins.plugins.forEach(x => act(x));
   }
 
   _pluginActivated(pluginName, instanceName, instance, storageName) {
