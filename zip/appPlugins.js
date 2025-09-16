@@ -6,6 +6,7 @@ class IPlugin {
     this.eventIdStrict = false;
     this.eventDefinitions = [];
     this.eventCallsMap = new Map();
+    this.storageName = undefined;
   }
 
   init() {

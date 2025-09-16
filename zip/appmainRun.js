@@ -133,7 +133,9 @@ async function lc_activatePlugin(name, alias, source = STO_DATA) {
   const configFileRaw = await _Storage.search(source, cfgFile);
   const configFileStruct = parseConfigFile(configFileRaw || '|');
   log(`Plugins: loading configuration for plugin ${pluginPureName} (${name}) from file '${cfgFile}' ... results:`, configFileStruct);
-  return Plugins.activate(pluginPureName, alias, configFileStruct || {});
+  const plugin = Plugins.activate(pluginPureName, alias, configFileStruct || {});
+  plugin[1].storageName = source;
+  return plugin;
 }
 
 function lc_deactivatePlugin(pluginName, alias = '') {
