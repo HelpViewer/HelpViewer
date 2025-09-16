@@ -1,0 +1,57 @@
+downP-ObjectExplorer|Prohlížeč objektů
+oeod_plg|Zásuvný modul
+oeod_inst|Instance zásuvného modulu
+oeod_grp|Skupina modulů (ikony jsou určeny konfiguračními klíči v puiButtonObjectExplorer)
+TECH|Technologické moduly
+UI|UI moduly
+RENDER|Formátování výstupu
+HELPSYSTEM|HelpViewer
+overview|Přehled
+oeod_evt|Událost včetně obsluhy
+oeod_evtD|Definice události (bez obsluhy)
+oeod_hdl|Obsluha události, posluchač
+oeod_cfg|Konfigurační volba definovaná modulem
+oeod_cfgE|Konfigurační volba definovaná v konfiguračním souboru. Není přímým jménem uvedena v modulu (dynamické klíče)
+oeod_btn|UI tlačítko
+oeod_page|UI stránka/karta
+oeod_tree|UI strom
+oeod_|Dokument
+oeod_und|Neznámý nebo neidentifikovaný prvek (nekompletní a chybné definice)
+TECH-D|Odpovídají za správu zásuvných modulů, jejich inicializaci a deinicializaci, zpracování GET parametrů URI adresy, směrování požadavků na zdrojová úložiště (ZIP archivy, adresáře, síť), konverze události kliknutí myši, filtraci a směrování událostí uvnitř aplikace
+UI-D|Zajišťují prvky uživatelského rozhraní nebo panely
+RENDER-D|Formátování obsahu kapitol (md, HTML) a předtiskové operace
+HELPSYSTEM-D|Specifické moduly pro HelpViewer, například správa indexových souborů pro kapitoly a slovníky
+uiobject|UI prvek
+event|Událost
+cfgopt|Konfigurační volba
+hdl|Naslouchá
+default|Výchozí
+value|Hodnota
+name|Jméno
+openToIdAll|Přijímá všechny zprávy, id nezohledňuje
+openToId|Přijímá všechny zprávy s id instance modulu
+meaning|Význam
+datatype|Datový typ
+eventIdStrict1|požadována striktní shoda id v událostech
+eventIdStrict0|id v událostech nefiltrováno
+oeod_grpproc|Integrovaný proces
+oeod_grpproc-D|Seznam integrovaných procesů. Sloučeno podle id zásuvných modulů.
+resources|Zdroje
+oeod_res|Zdroj
+size|Velikost
+commPath|Komunikační cesty
+filter|Filtr
+direction|Směr
+transmitter|Vysílá
+interactDiagram|Interakční diagram
+oeod_tra|Vysílač události
+dependTree|Strom dědičnosti
+source|Zdroj
+orderLoading|Pořadí načtení pluginů
+oeod_cpp|Zdrojový kód
+sysevent|Zpracování systémové události
+oeod_evtSys|Zpracování systémové události (zapouzdřené volání metod add/remove-EventListener)
+license|Licence
+routing|Směrování
+SVCPLG|Pluginy služeb
+SVCPLG-D|Pluginy rozšířených služeb. Cílem pluginů je reagovat na načtení pluginu konkrétní akcí. Příkladem může být samostatná lokalizační tabulka, která se načte s inicializací pluginu a připojí se k hlavní lokalizaci.

@@ -1,0 +1,57 @@
+downP-ObjectExplorer|Object explorer
+oeod_plg|Plugin
+oeod_inst|Plugin instance
+oeod_grp|Plugin group (icons specified by configuration keys in puiButtonObjectExplorer)
+TECH|Technology plugins
+UI|UI plugins
+RENDER|Output rendering
+HELPSYSTEM|HelpViewer
+overview|Overview
+oeod_evt|Event with handler
+oeod_evtD|Event definition (without handler)
+oeod_hdl|Event handler (listener)
+oeod_cfg|Configuration key defined by plugin
+oeod_cfgE|Configuration key defined by configuration file. Not defined in plugin by direct name (dynamic keys)
+oeod_btn|UI button
+oeod_page|UI tab/page
+oeod_tree|UI tree
+oeod_|Document
+oeod_und|Unknown/unidentified item (incomplete or incorrect definitions)
+TECH-D|Responsive for plugin (de)init handling, GET params processing, managing and dispatching resource storages requests, mouse click events conversion and filtering and dispatch events in the app
+UI-D|All plugins with UI controls and panels
+RENDER-D|Rendering of topic content (md, HTML) and prior print operations
+HELPSYSTEM-D|HelpViewer specific plugins, e.g. index files for chapters or dictionaries
+uiobject|UI component
+event|Event
+cfgopt|Configuration key
+hdl|Handling events
+default|Default
+value|Value
+name|Name
+openToIdAll|Accepts all events, does not take ID into account
+openToId|Accepts all events with the same ID as plugin instance ID
+meaning|meaning
+datatype|Data type
+eventIdStrict1|strict equality filter (exact equality of events id required)
+eventIdStrict0|id not filtered (all message ids/groups dispatched here)
+oeod_grpproc|Integrated process
+oeod_grpproc-D|Integrated processes list. Group by plugins id.
+resources|Resources
+oeod_res|Resource
+size|Size
+commPath|Communication paths
+filter|Filter
+direction|Direction
+transmitter|Transmitter
+interactDiagram|Interaction Diagram
+oeod_tra|Transmitter of event
+dependTree|Dependency tree
+source|Source
+orderLoading|Loading order
+oeod_cpp|Source code
+sysevent|System event handler
+oeod_evtSys|Handler of system events (encapsulated call of add/remove-EventListener)
+license|License
+routing|Routing
+SVCPLG|Service plugins
+SVCPLG-D|Extended service plugins. The purpose of plugins is to respond to the loading of a plugin with a specific action. An example would be a separate localization table that is loaded when the plugin is initialized and connected to the main localization.
