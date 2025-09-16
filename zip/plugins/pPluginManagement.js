@@ -2,6 +2,7 @@ class PluginLoaded extends IEvent {
   constructor() {
     super();
     this.className = '';
+    this.storageName = '';
   }
 }
 
@@ -74,6 +75,7 @@ class pPluginManagement extends IPlugin {
       ok => {
         sendEvent(action, (x) => {
           x.className = pluginPureName;
+          x.storageName = source;
         });
       },
       error => {
@@ -83,6 +85,7 @@ class pPluginManagement extends IPlugin {
           x.opEventName = action;
           x.className = pluginPureName;
           x.error = error;
+          x.storageName = source;
         });
       }
     );
@@ -102,6 +105,7 @@ class pPluginManagement extends IPlugin {
           x.className = pluginPureName;
           x.instanceObject = ok[1];
           x.instanceName = ok[0];
+          x.storageName = source;
         });
       },
       error => {
@@ -111,6 +115,7 @@ class pPluginManagement extends IPlugin {
           x.opEventName = action;
           x.className = pluginPureName;
           x.error = error;
+          x.storageName = source;
         });
       }
     );
