@@ -88,7 +88,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     this.doRefreshTree();
     var all = [...$A('a', this.tree)].filter(x => x.innerHTML.toLowerCase().includes(phrase));
 
-    all.filter(x => /^(:_cfg|:_res|:_evtSys)/.test(x.getAttribute('data-param'))).forEach(x => {
+    all.filter(x => /^(:_cfg|:_res|:_evtSys|:_fn)/.test(x.getAttribute('data-param'))).forEach(x => {
       const img = x.innerHTML.split(' ', 2)[0] + ' ';
       var cleaned = x.getAttribute('data-param').substring(1);
       cleaned = cleaned.substring(0, cleaned.lastIndexOf('.'));
@@ -162,11 +162,19 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       const baseN = `${plug.id}:`;
 
       const prefixEventHandler = /^onET/;
-      Object.getOwnPropertyNames(proto).filter(name => prefixEventHandler.test(name)).forEach(name => {
+      const methods = Object.getOwnPropertyNames(proto);
+      methods.filter(name => prefixEventHandler.test(name)).forEach(name => {
         browseMember(proto, name, (desc) => {
           if (typeof desc.value !== 'function') return;
           var nameBase = name.replace(prefixEventHandler, '');
           plug.subItems.push(new ObjectExplorerTreeItem(baseN + name, ObjectExplorerObjectDescriptor.HANDLER, [], desc, nameBase));
+        });
+      });
+
+      methods.filter(name => !prefixEventHandler.test(name)).forEach(name => {
+        browseMember(proto, name, (desc) => {
+          if (typeof desc.value !== 'function' || name === 'constructor') return;
+          plug.subItems.push(new ObjectExplorerTreeItem(baseN + name, ObjectExplorerObjectDescriptor.METHOD, [], desc, name));
         });
       });
 
@@ -655,7 +663,11 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       case ObjectExplorerObjectDescriptor.CODEPRINT.abbr:
         desc = `## </> ${_T('oeod_cpp')}\n\`\`\`javascript\n${Plugins.pluginsClasses.get(objName)}\n\`\`\`\n`;
         break;
-          
+
+      case ObjectExplorerObjectDescriptor.METHOD.abbr:
+        desc = `## </> ${_T('oeod_cpp')}\n\`\`\`javascript\n${found.interconnectedObject.value}\n\`\`\`\n`;
+        break;
+
       default:
         break;
     }
@@ -814,12 +826,15 @@ class ObjectExplorerObjectDescriptor {
   static GROUPPROC = new ObjectExplorerObjectDescriptor('grpproc', '⇄');
 
   static RESOURCE = new ObjectExplorerObjectDescriptor('res', '📦');
+
+  static METHOD = new ObjectExplorerObjectDescriptor('fn', '🏷️');
   
   static _BIGCLASS_CFGOPT = 'cfgopt';
   static _BIGCLASS_HDL = 'hdl';
   static _BIGCLASS_UIO = 'uiobject';
   static _BIGCLASS_EVT = 'event';
   static _BIGCLASS_SEVT = 'sysevent';
+  static _BIGCLASS_FN = 'method';
 
   static _i_cfgopt = '⚙️';
   static _i_hdl = '👂';
@@ -828,6 +843,7 @@ class ObjectExplorerObjectDescriptor {
   static _i_event = '⚡';
   static _i_oeod_inst = '🔹';
   static _i_sysevent = '⭐';
+  static _i_method = '🏷️';
 
   static _BIGCLASS = new Map([
     ['cfg', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
@@ -841,6 +857,7 @@ class ObjectExplorerObjectDescriptor {
     ['page', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['tree', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['inst', 'oeod_inst'],
+    ['fn', ObjectExplorerObjectDescriptor._BIGCLASS_FN],
   ]);
 
   static _BIGCLASS_R = reverseMap(this._BIGCLASS);
