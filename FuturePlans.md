@@ -18,8 +18,8 @@
 - Associated topics groups (something like links/keywords/topics, see also )
 - Dead links checker
 - Discussion (e.g.: Disqus or other service) plugin
-- prod logs to console, debug logs to custom tool
 - customizer for project download as help file plugin
-- service plugin (general service plugin attached to plugin handling events and providing some functionality - e.g. append to language localization when plugin is newly loaded)
 - extra CSS styles + plugin for switching them
+- prod logs to console, debug logs to custom tool
 - custom log explorer
+- add jsdoc and auto parse of it
