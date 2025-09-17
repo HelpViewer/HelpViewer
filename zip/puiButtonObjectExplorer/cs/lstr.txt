@@ -57,3 +57,4 @@ SVCPLG|Pluginy služeb
 SVCPLG-D|Pluginy rozšířených služeb. Cílem pluginů je reagovat na načtení pluginu konkrétní akcí. Příkladem může být samostatná lokalizační tabulka, která se načte s inicializací pluginu a připojí se k hlavní lokalizaci.
 objectList-i__placeholder|Zadejte název, stiskněte Enter
 method|Funkce
+oeod_fn|Funkce třídy (ve zdrojovém kódu)
