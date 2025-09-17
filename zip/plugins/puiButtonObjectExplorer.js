@@ -171,6 +171,15 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         });
       });
 
+      const protoParent = Object.getPrototypeOf(proto);
+      Object.getOwnPropertyNames(protoParent).filter(name => prefixEventHandler.test(name)).forEach(name => {
+        browseMember(protoParent, name, (desc) => {
+          if (typeof desc.value !== 'function') return;
+          var nameBase = name.replace(prefixEventHandler, '');
+          plug.subItems.push(new ObjectExplorerTreeItem(baseN + name, ObjectExplorerObjectDescriptor.HANDLER, [], desc, nameBase));
+        });
+      });
+
       methods.filter(name => !prefixEventHandler.test(name)).forEach(name => {
         browseMember(proto, name, (desc) => {
           if (typeof desc.value !== 'function' || name === 'constructor') return;
