@@ -126,6 +126,12 @@ class pAppmainNext extends IPlugin {
       await activatePlugin(objExplorerName, '-load');
       loadLocalization(getActiveLanguage());
     }
+
+    if (!Plugins.pluginsClasses.has('puiButtonToggleSide')) {
+      const container = $('container');
+      if (container)
+        container.classList.add('toright');
+    }
   }
 
   onETIndexFileLoaded(d) {
