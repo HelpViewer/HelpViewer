@@ -185,6 +185,8 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         globalFuncs.subItems.push(...fnList);
     }
 
+    this.globalObjDump = globalFuncs;
+
     // plugin instances data reading
     pluginInstanceNodes.forEach(plug => {
       const plg = plug.interconnectedObject;
@@ -712,6 +714,10 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         desc = `## </> ${_T('oeod_cpp')}\n\`\`\`javascript\n${sourceRef}\n\`\`\`\n`;
         break;
 
+      case ObjectExplorerObjectDescriptor.GLOBAL.abbr:
+        found = this.globalObjDump;
+        break;
+
       default:
         break;
     }
@@ -882,6 +888,7 @@ class ObjectExplorerObjectDescriptor {
   static _BIGCLASS_EVT = 'event';
   static _BIGCLASS_SEVT = 'sysevent';
   static _BIGCLASS_FN = 'method';
+  static _BIGCLASS_VAR = 'oeod_var';
 
   static _i_cfgopt = '⚙️';
   static _i_hdl = '👂';
@@ -891,6 +898,7 @@ class ObjectExplorerObjectDescriptor {
   static _i_oeod_inst = '🔹';
   static _i_sysevent = '⭐';
   static _i_method = '🏷️';
+  static _i_oeod_var = '⚪';
 
   static _BIGCLASS = new Map([
     ['cfg', ObjectExplorerObjectDescriptor._BIGCLASS_CFGOPT],
@@ -905,6 +913,7 @@ class ObjectExplorerObjectDescriptor {
     ['tree', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['inst', 'oeod_inst'],
     ['fn', ObjectExplorerObjectDescriptor._BIGCLASS_FN],
+    ['var', ObjectExplorerObjectDescriptor._BIGCLASS_VAR],
   ]);
 
   static _BIGCLASS_R = reverseMap(this._BIGCLASS);
