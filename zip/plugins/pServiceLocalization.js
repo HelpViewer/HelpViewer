@@ -15,7 +15,15 @@ class pServiceLocalization extends pServicePlugin {
     Promise.all([
       storageSearch(storageName, `${baseDir}/${langFileTXT}`),
       storageSearch(storageName, `${baseDir}/${langFileJS}`),
-    ]).then(([txt, js]) => {
+      storageSearch(storageName, `${pluginName}/${langFileTXT}`),
+      storageSearch(storageName, `${pluginName}/${langFileJS}`),
+    ]).then(([txt, js, txtInArc, jsInArc]) => {
+      if (txtInArc)
+        txt = txtInArc;
+
+      if (jsInArc)
+        js = jsInArc;
+
       if (js) {
         this.addPlugin(pluginName, instanceName);
         const jsAlias = `lngk_${pluginName}`;
@@ -32,6 +40,10 @@ class pServiceLocalization extends pServicePlugin {
 
   onETLOC_LOADED(evt) {
     this.lang = evt.name;
+    this._doForAllInstances(this._pluginActivated.bind(this));
+  }
+
+  onETUserDataFileLoaded(evt) {
     this._doForAllInstances(this._pluginActivated.bind(this));
   }
 }
