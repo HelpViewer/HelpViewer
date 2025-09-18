@@ -15,6 +15,7 @@ const FILENAME_FAVICON = 'favicon.png';
 
 const UI_PLUGIN_SIDEBAR = 'sidebar';
 const UI_PLUGIN_HEADER = 'header';
+const UI_PLUGIN_BOTTOMPANEL = 'bottom';
 
 const MARKER_MARKWORD = '@@';
 

@@ -12,6 +12,7 @@ pClickConverter:
 pui:
 puiHeader:header
 puiSidebar:sidebar
+puiBottomPanel:bottom
 puiButtonTOC:toc
 puiButtonBmarks:
 pIndexFile:keywordList;fulltextList
