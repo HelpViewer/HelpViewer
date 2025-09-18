@@ -877,10 +877,10 @@ class ObjectExplorerObjectDescriptor {
 
   static RESOURCE = new ObjectExplorerObjectDescriptor('res', '📦');
 
+  static VARIABLE = new ObjectExplorerObjectDescriptor('var', '⚪');
   static METHOD = new ObjectExplorerObjectDescriptor('fn', '🏷️');
   
   static GLOBAL = new ObjectExplorerObjectDescriptor('g', '🌐');
-  static VARIABLE = new ObjectExplorerObjectDescriptor('var', '⚪');
   
   static _BIGCLASS_CFGOPT = 'cfgopt';
   static _BIGCLASS_HDL = 'hdl';
@@ -912,8 +912,8 @@ class ObjectExplorerObjectDescriptor {
     ['page', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['tree', ObjectExplorerObjectDescriptor._BIGCLASS_UIO],
     ['inst', 'oeod_inst'],
-    ['fn', ObjectExplorerObjectDescriptor._BIGCLASS_FN],
     ['var', ObjectExplorerObjectDescriptor._BIGCLASS_VAR],
+    ['fn', ObjectExplorerObjectDescriptor._BIGCLASS_FN],
   ]);
 
   static _BIGCLASS_R = reverseMap(this._BIGCLASS);
