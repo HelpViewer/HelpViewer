@@ -7,6 +7,7 @@ pStorage:
 pConfigFile:FILE_CONFIG_DEFAULT;FILE_CONFIG
 pLocalizationSwitcher:
 pColorTheme:
+pConvertSysEventToEvent
 pConvertSysEventToEvent:pPrePrintEvent
 pClickConverter:
 pui:
