@@ -25,16 +25,26 @@ class puiButtonCustPackage extends puiButton {
   }
   
   _buttonAction(evt) {
+    const TI = this;
     const treeId = 'partsTree';
+    const downloadButtonID = 'DWNL-' + TI.aliasName;
     var tree = $(treeId);
     if (!tree) {
-      const contentPane = $(this.cfgIdContent);
+      const contentPane = $(TI.cfgIdContent);
       const buttonInvert = document.createElement("button");
       buttonInvert.innerHTML = '🔄';
       buttonInvert.onclick = () => Array.from($A('input', tree)).forEach(x => x.checked = !x.checked);
+      const buttonDownload = document.createElement("button");
+      buttonDownload.innerHTML = TI.cfgCaption;
+      buttonDownload.onclick = () => {
+        log('E CHCK', Array.from($A('input', tree)).filter(x => x.checked).map(x => x.id));
+      }
+      buttonDownload.id = downloadButtonID;
+
       setHeader(_T('downP-CustPackage'));
-      contentPane.innerHTML = `<ul id='${treeId}' class='tree'>${linesToHtmlTree(this.partsTree, treeId)}</ul>`;
+      contentPane.innerHTML = `<ul id='${treeId}' class='tree'>${linesToHtmlTree(TI.partsTree, treeId)}</ul>`;
       contentPane.append(buttonInvert);
+      contentPane.append(buttonDownload);
       tree = $(treeId);
       openSubtree(tree);
       $A('a', tree).forEach(a => {
@@ -44,11 +54,11 @@ class puiButtonCustPackage extends puiButton {
         const label = document.createElement("label");
         checkbox.id = a.textContent;
         label.appendChild(checkbox);
-        label.appendChild(document.createTextNode((this.config[`I-${a.textContent}`] || '🧩') + ' ' + _T(a.textContent)));
+        label.appendChild(document.createTextNode((TI.config[`I-${a.textContent}`] || '🧩') + ' ' + _T(a.textContent)));
         a.replaceWith(label);
       });  
     } else {
-      log('E CHCK', Array.from($A('input', tree)).filter(x => x.checked).map(x => x.id));
+      $(downloadButtonID).click();
     }
   }
 }
