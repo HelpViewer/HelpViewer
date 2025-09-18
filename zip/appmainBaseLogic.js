@@ -37,6 +37,10 @@ function nameForAnchor(text, level, levelCounter) {
   //   .replace(/-+/g, '-');
 }
 
+function valKiBs(size) {
+  return Math.round(size / 1024 * 100) / 100;
+}
+
 function textCleanupPhrase(p) {
   if (!p) return '';
   return p.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");

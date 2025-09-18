@@ -550,7 +550,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     r.tokens.push(r.TOKEN_NONOTFOUNDMSG);
 
     var delayedFunction = undefined;
-    const valKiBs = (size) => Math.round(size / 1024 * 100) / 100;
 
     switch (typeInRequest) {
       case ObjectExplorerObjectDescriptor.GROUP.abbr:
