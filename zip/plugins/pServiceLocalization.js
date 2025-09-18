@@ -9,11 +9,12 @@ class pServiceLocalization extends pServicePlugin {
   _pluginActivated(pluginName, instanceName, instance, storageName) {
     const langFileJS = 'lstr.js';
     const langFileTXT = 'lstr.txt';
-    const lang = getActiveLanguage();
+    const lang = this.lang
+    const baseDir = storageName == STO_DATA ? `${pluginName}/${lang}` : `../${lang}/${pluginName}`;
     
     Promise.all([
-      storageSearch(storageName, `${pluginName}/${lang}/${langFileTXT}`),
-      storageSearch(storageName, `${pluginName}/${lang}/${langFileJS}`),
+      storageSearch(storageName, `${baseDir}/${langFileTXT}`),
+      storageSearch(storageName, `${baseDir}/${langFileJS}`),
     ]).then(([txt, js]) => {
       if (js) {
         this.addPlugin(pluginName, instanceName);
@@ -30,6 +31,7 @@ class pServiceLocalization extends pServicePlugin {
   }
 
   onETLOC_LOADED(evt) {
+    this.lang = evt.name;
     this._doForAllInstances(this._pluginActivated.bind(this));
   }
 }
