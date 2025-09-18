@@ -1,0 +1,31 @@
+downP-CustPackage|Custom package download
+HEADER|Header panel
+BOTTOM|Bottom panel
+SIDEBAR|Sidebar
+TOC|TOC
+NAVIGATION|Navigation
+SUBCHAPTERS|Subchapters
+GLOSSARY|Glossary
+FULLTEXT|Fulltext index
+FULLTEXTGEN|Backup fulltext indexing
+CHANGELANG|Change language
+SHOWALLBOOK|Show all as book
+CHANGESIDEBARSIDE|Change sidebar side
+PRESENTATIONMODE|Presentation mode
+HIDESHOWSIDEBAR|Hide/Show sidebar
+PLUGINMANAGEMENT|Plugin management events
+OBJECTEXPLORER|Object explorer
+INTERNALREFERENCE|Internal reference documentation
+HOME|Home
+CHANGEVER|Change version
+CHANGECOLORMODE|Change color mode
+FULLSCREEN|Switch fullscreen
+PRINT|Print
+PREPRINT|Pre print preparations
+EDITPAGEREPOSITORY|Edit page in repository
+EXTERNALLIB|External libraries
+MARKED|MARKED - md renderer
+PRISM|PRISM - code highlighting
+MERMAID|MERMAID - diagrams renderer
+CHAPTERINDEXFILE|User headings for file names
+REFRESHJS|Execute embedded JavaScript

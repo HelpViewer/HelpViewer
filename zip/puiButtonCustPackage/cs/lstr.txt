@@ -1,0 +1,31 @@
+downP-CustPackage|Vlastní balíček
+HEADER|Záhlaví
+BOTTOM|Spodní panel
+SIDEBAR|Boční panel
+TOC|Seznam témat
+NAVIGATION|Navigace
+SUBCHAPTERS|Části vybrané kapitoly
+GLOSSARY|Slovník klíčových slov
+FULLTEXT|Fulltextové vyhledávání
+FULLTEXTGEN|Záložní generování fulltextového indexu
+CHANGELANG|Změnit jazyk prostředí
+SHOWALLBOOK|Zobrazit všechny kapitoly jako jeden dokument
+CHANGESIDEBARSIDE|Přesunout panel na druhou stranu
+PRESENTATIONMODE|Prezentační režim
+HIDESHOWSIDEBAR|Skrýt panel
+PLUGINMANAGEMENT|Události řízení pluginů
+OBJECTEXPLORER|Prohlížeč objektů
+INTERNALREFERENCE|Referenční dokumentace systému
+HOME|Domů
+CHANGEVER|Najít jinou verzi nápovědy
+CHANGECOLORMODE|Změnit schéma barev
+FULLSCREEN|Přepnout full screen
+PRINT|Vytisknout
+PREPRINT|Předtiskové úpravy výstupu
+EDITPAGEREPOSITORY|Editovat v repozitáři
+EXTERNALLIB|Externí balíčky
+MARKED|Marked - vypisování a formátování md souborů do HTML formátu
+PRISM|Prism - zvýraznění syntaxe výpisů kódu
+MERMAID|Mermaid - vykresluje grafy a schémata podle speciálních textových definic
+CHAPTERINDEXFILE|Uživatelské nadpisy k názvům souborů
+REFRESHJS|Vykonávat vložený JavaScript
