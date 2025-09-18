@@ -59,3 +59,4 @@ objectList-i__placeholder|Zadejte název, stiskněte Enter
 method|Funkce
 oeod_fn|Funkce třídy (ve zdrojovém kódu)
 oeod_g|globalThis objekt
+oeod_var|Proměnná

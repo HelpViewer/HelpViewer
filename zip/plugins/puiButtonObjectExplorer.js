@@ -158,15 +158,31 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     // var globalFuncs = Object.getOwnPropertyNames(globalThis).map(key => globalThis[key])
     //   .filter(v => typeof v === "function" && v.name && !global1stState.has(v.name)).map(fn => 
     //   new ObjectExplorerTreeItem(fn.name, ObjectExplorerObjectDescriptor.METHOD, [], desc, fn.name));
-    var globalFuncs = Object.getOwnPropertyNames(globalThis)
+    const globalProps = Object.getOwnPropertyNames(globalThis);
+    var globalFuncs = globalProps
       .filter(key => typeof globalThis[key] === "function" && !global1stState.has(key))
       .map(fnName => new ObjectExplorerTreeItem(fnName, ObjectExplorerObjectDescriptor.METHOD, [], globalThis, fnName, [desc]));
     
-    if (globalFuncs.length == 0) {
+    var globalVars = globalProps
+      .filter(key => typeof globalThis[key] !== "function" && !global1stState.has(key))
+      .map(fnName => new ObjectExplorerTreeItem(fnName, ObjectExplorerObjectDescriptor.VARIABLE, [], globalThis, fnName, [desc]));
+    
+    if (globalVars.length == 0)
+      globalVars = undefined;
+
+    if (globalFuncs.length == 0)
       globalFuncs = undefined;
-    } else {
+
+    if (globalVars || globalFuncs) {
       const globalAlias = 'global';
-      globalFuncs = new ObjectExplorerTreeItem(globalAlias, ObjectExplorerObjectDescriptor.GLOBAL, globalFuncs, globalThis, globalAlias);
+      const fnList = globalFuncs;
+      globalFuncs = new ObjectExplorerTreeItem(globalAlias, ObjectExplorerObjectDescriptor.GLOBAL, [], globalThis, globalAlias);
+
+      if (globalVars.length > 0)
+        globalFuncs.subItems.push(...globalVars);
+
+      if (fnList)
+        globalFuncs.subItems.push(...fnList);
     }
 
     // plugin instances data reading
@@ -856,8 +872,9 @@ class ObjectExplorerObjectDescriptor {
   static RESOURCE = new ObjectExplorerObjectDescriptor('res', '📦');
 
   static METHOD = new ObjectExplorerObjectDescriptor('fn', '🏷️');
-
+  
   static GLOBAL = new ObjectExplorerObjectDescriptor('g', '🌐');
+  static VARIABLE = new ObjectExplorerObjectDescriptor('var', '⚪');
   
   static _BIGCLASS_CFGOPT = 'cfgopt';
   static _BIGCLASS_HDL = 'hdl';
