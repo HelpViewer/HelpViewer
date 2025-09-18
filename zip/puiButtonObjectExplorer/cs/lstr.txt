@@ -58,3 +58,4 @@ SVCPLG-D|Pluginy rozšířených služeb. Cílem pluginů je reagovat na načten
 objectList-i__placeholder|Zadejte název, stiskněte Enter
 method|Funkce
 oeod_fn|Funkce třídy (ve zdrojovém kódu)
+oeod_g|globalThis objekt

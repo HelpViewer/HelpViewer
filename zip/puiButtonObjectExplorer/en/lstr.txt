@@ -58,3 +58,4 @@ SVCPLG-D|Extended service plugins. The purpose of plugins is to respond to the l
 objectList-i__placeholder|Type name, press Enter
 method|Function
 oeod_fn|Class function (in source code)
+oeod_g|Object globalThis

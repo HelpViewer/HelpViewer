@@ -155,6 +155,20 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     var pluginInstanceNodes = plugins[2].map(x => new ObjectExplorerTreeItem(x[0], ObjectExplorerObjectDescriptor.PLUGININSTANCE, [], x[1]));
     this.pluginNodes = pluginNodes;
 
+    // var globalFuncs = Object.getOwnPropertyNames(globalThis).map(key => globalThis[key])
+    //   .filter(v => typeof v === "function" && v.name && !global1stState.has(v.name)).map(fn => 
+    //   new ObjectExplorerTreeItem(fn.name, ObjectExplorerObjectDescriptor.METHOD, [], desc, fn.name));
+    var globalFuncs = Object.getOwnPropertyNames(globalThis)
+      .filter(key => typeof globalThis[key] === "function" && !global1stState.has(key))
+      .map(fnName => new ObjectExplorerTreeItem(fnName, ObjectExplorerObjectDescriptor.METHOD, [], globalThis, fnName, [desc]));
+    
+    if (globalFuncs.length == 0) {
+      globalFuncs = undefined;
+    } else {
+      const globalAlias = 'global';
+      globalFuncs = new ObjectExplorerTreeItem(globalAlias, ObjectExplorerObjectDescriptor.GLOBAL, globalFuncs, globalThis, globalAlias);
+    }
+
     // plugin instances data reading
     pluginInstanceNodes.forEach(plug => {
       const plg = plug.interconnectedObject;
@@ -283,6 +297,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       prodlines: prodLines,
       current: undefined
     };
+
+    if (globalFuncs)
+      this.treeDataFull.searcheable.push(globalFuncs);
 
     this.treeDataFull.full = [...this.treeDataFull.heads, ...pluginGroups, ...pluginNodes, prodLines];
 
@@ -674,7 +691,9 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         break;
 
       case ObjectExplorerObjectDescriptor.METHOD.abbr:
-        desc = `## </> ${_T('oeod_cpp')}\n\`\`\`javascript\n${found.interconnectedObject.value}\n\`\`\`\n`;
+        const sourceRef = (!found || !found.interconnectedObject || found.interconnectedObject == globalThis) 
+          ? globalThis[objNameLocal] : found.interconnectedObject.value;
+        desc = `## </> ${_T('oeod_cpp')}\n\`\`\`javascript\n${sourceRef}\n\`\`\`\n`;
         break;
 
       default:
@@ -837,6 +856,8 @@ class ObjectExplorerObjectDescriptor {
   static RESOURCE = new ObjectExplorerObjectDescriptor('res', '📦');
 
   static METHOD = new ObjectExplorerObjectDescriptor('fn', '🏷️');
+
+  static GLOBAL = new ObjectExplorerObjectDescriptor('g', '🌐');
   
   static _BIGCLASS_CFGOPT = 'cfgopt';
   static _BIGCLASS_HDL = 'hdl';
