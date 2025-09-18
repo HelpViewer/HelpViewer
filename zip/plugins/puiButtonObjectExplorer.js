@@ -718,6 +718,10 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         found = this.globalObjDump;
         break;
 
+      case ObjectExplorerObjectDescriptor.VARIABLE.abbr:
+        desc = `\`\`\`\n${globalThis[objNameLocal]}\n\`\`\`\n\n`;
+        break;
+  
       default:
         break;
     }
