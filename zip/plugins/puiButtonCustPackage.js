@@ -97,6 +97,34 @@ class puiButtonCustPackage extends puiButton {
   }
 
   checkboxChanged(event) {
+    if (event) {
+      if (event.target.checked) {
+        // check parents
+        var base = event.target;
+        while (base) {
+          const detailsParent = base.closest('li');
+          const checkbox = base.closest('input');
+
+          if (checkbox) {
+            //base = undefined; //TML
+            checkbox.checked = true;
+            base = detailsParent.parentElement.parentElement.firstElementChild;
+            base = $O('input', base);
+          } else {
+            base = undefined;
+          }
+
+          if (checkbox == base)
+            base = undefined;
+        }
+      } else {
+        // uncheck siblings
+        const detailsParent = event.target.closest('li');
+        if (detailsParent)
+          Array.from($A('input', detailsParent)).forEach(x => x.checked = false);
+      }
+    }
+
     const selected = Array.from($A('input', this.tree)).filter(x => x.checked).map(x => x.id);
     const sum = [...this.keyAndSizes.entries()].reduce((acc, [key, value]) => 
       selected.includes(key) ? acc + value.r._fileLength : acc, 0);
