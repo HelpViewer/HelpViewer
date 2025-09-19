@@ -145,6 +145,8 @@ class puiButtonCustPackage extends puiButton {
         pluginsToExclude = [...new Set(pluginsToExclude)];
         filesToExclude.push(...pluginsToExclude.map(x => `plugins/${x}.js`));
         filesToExclude.push(...pluginsToExclude.map(x => `${x}/`));
+        //filesToExclude.push(...pluginsToExclude.map(x => `plugins-config/${x}_`));
+        
         log('W Files in ZIP for deletion:', filesToExclude);
         log('W Old starting sequence:', sequence);
         log('W New starting sequence:', newSequence);
