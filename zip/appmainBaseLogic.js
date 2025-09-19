@@ -370,7 +370,7 @@ function showChapterA(event, a) {
     a.getAttribute('data-param') || href, a);
 }
 
-function showChapter(event, heading, address, sourceObject, content, id = undefined) {
+function showChapter(event, heading, address, sourceObject, content, id = undefined, container = undefined) {
   return sendEvent(EventNames.ShowChapter, (x) => {
     x.event = event;
     x.heading = heading;
@@ -385,7 +385,7 @@ function showChapter(event, heading, address, sourceObject, content, id = undefi
     // x.parentEvent = parentEvent;
     // x.parentEventId = parentEvent.eventId || undefined;
     // x.containerIdTitle = undefined;
-    // x.containerIdContent = undefined;
+    x.containerIdContent = container;
   });
 }
 /*E: Plugin: pTopicRenderer */

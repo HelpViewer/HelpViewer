@@ -1,6 +1,7 @@
 class pTRClearPanels extends pTRPhasePlugin {
   onETShowChapterResolutions(r) {
-    setPanelsEmpty();
+    if (!r.containerIdContent)
+      setPanelsEmpty();
   }
 }
 

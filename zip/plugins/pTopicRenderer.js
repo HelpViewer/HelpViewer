@@ -43,6 +43,7 @@ class ShowChapterResolutions extends IEvent {
     this.helpFile = '';
     this.found = false;
     this.contentType = undefined;
+    this.containerIdContent = '';
   }
 }
 
@@ -57,7 +58,7 @@ class ShowChapter extends IEvent {
     this.result.parentEventId = this.eventId;
     //this.result.parentEvent = this;
     this.result.preventDefault = () => this.event?.preventDefault?.();
-    this.containerIdContent = undefined;
+    this.containerIdContent = '';
     this.helpFile = '';
   }
 }
@@ -127,6 +128,7 @@ class pTopicRenderer extends IPlugin {
 
       r.heading = data.heading || getChapterAlternativeHeading(data.address)?.[1] || data.address;
       const containerIdContent = data.containerIdContent || this.cfgIdContent;
+      r.containerIdContent = containerIdContent;
       r.docV = $(containerIdContent);
       r.doc = r.docV;
       r.uri = typeof data.address === 'string' ? data.address.split(T.MARKER_ADDDATA) : [];
