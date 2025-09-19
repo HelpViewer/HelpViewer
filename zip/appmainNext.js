@@ -119,18 +119,18 @@ class pAppmainNext extends IPlugin {
   };
 
   async onETPluginsLoadingFinished(d) {
+    if (!Plugins.pluginsClasses.has('puiButtonToggleSide')) {
+      const container = $('container');
+      if (container)
+        container.classList.add('toright');
+    }
+
     if (DEBUG_MODE) {
       log('W Application is in DEBUG_MODE, debug tools will be attached. Turn DEBUG_MODE to off in hvdata/appmain.js file for work in production.');
       const objExplorerName = 'puiButtonObjectExplorer';
       await loadPlugin(objExplorerName, loadPluginListBasePath(objExplorerName));
       await activatePlugin(objExplorerName, '-load');
       loadLocalization(getActiveLanguage());
-    }
-
-    if (!Plugins.pluginsClasses.has('puiButtonToggleSide')) {
-      const container = $('container');
-      if (container)
-        container.classList.add('toright');
     }
   }
 
