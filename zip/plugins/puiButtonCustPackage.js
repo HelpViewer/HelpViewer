@@ -109,7 +109,7 @@ class puiButtonCustPackage extends puiButton {
       items = this.partsList.filter(x => !items.includes(x));
       log('W features for deletion', items);
       items = items.map(x => [TI.config[`P-${x}`], TI.config[`F-${x}`]]);
-      const filesToExclude = [...new Set(items.map(x => x[1]).join(';').split(';').filter(x => x))];
+      var filesToExclude = [...new Set(items.map(x => x[1]).join(';').split(';').filter(x => x))];
       var pluginsToExclude = items.map(x => x[0]).join(';').split(';').filter(x => x);
       const pluginMaskToExclude = pluginsToExclude.filter(x => x.startsWith(':'));
       pluginsToExclude = pluginsToExclude.filter(x => !pluginMaskToExclude.includes(x));
@@ -155,7 +155,7 @@ class puiButtonCustPackage extends puiButton {
         jszip.remove(FILENAME_LIST_JS_PLUGINS);
         jszip.file(FILENAME_LIST_JS_PLUGINS, newSequence.join('\n'));
       }).then(x => {
-        const masksToExclude = filesToExclude.filter(x => x.endsWith('/'));
+        var masksToExclude = filesToExclude.filter(x => x.endsWith('/'));
         masksToExclude.push(...pluginsToExclude.map(x => `plugins-config/${x}_`));
         masksToExclude = masksToExclude.filter(x => x);
         this.deleteFromZip(jszip, filesToExclude.filter(x => !x.endsWith('/')), masksToExclude);
