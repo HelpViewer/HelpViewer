@@ -94,7 +94,7 @@ class puiButtonCustPackage extends puiButton {
           const oneSize = valKiBs(re);
           a.parentNode.childNodes[1].nodeValue += ` (${oneSize} kB)`;
           sizeSum += oneSize;
-          spanSum.innerText = sizeSum + ' kB';
+          spanSum.innerText = roundToDecPlaces(sizeSum, 2) + ' kB';
         })
       });
     } else {
