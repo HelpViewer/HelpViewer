@@ -30,3 +30,4 @@ MERMAID|Mermaid - vykresluje grafy a schémata podle speciálních textových de
 CHAPTERINDEXFILE|Uživatelské nadpisy k názvům souborů
 REFRESHJS|Vykonávat vložený JavaScript
 SvcCantBeProvided|Službu nelze poskytnout. Základní data nejsou obsažena v archivu.
+SUBCHAPTERSPANEL|Seznam částí vybrané kapitoly
