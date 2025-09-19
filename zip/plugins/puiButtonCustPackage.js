@@ -17,11 +17,16 @@ class puiButtonCustPackage extends puiButton {
 
     TI.cfgIdContent = TI.config[T.KEY_CFG_IDCONTENT] || TI.DEFAULT_KEY_CFG_IDCONTENT;
     this.partsTree = '';
+    this.partsList = [];
     storageSearch(STO_DATA, `plugins-config/${T.name}_${TI.aliasName}_tree.cfg`).then(x => {
       this.partsTree = x;
+      this.partsList = x.split('\n').filter(x => x).map(x => x.trim());
     });
 
     super.init();
+
+    const zip = _Storage.getKey(STO_DATA)?.storageO;
+    hideButton(TI.button.id, typeof zip !== "string");
   }
   
   _buttonAction(evt) {
@@ -92,9 +97,88 @@ class puiButtonCustPackage extends puiButton {
   }
 
   _preparePackage(items) {
-    alert('Ahoj');
-    log('E CHCK', items);
+    const TI = this;
+    const jszip = _Storage.getKey(STO_DATA)?.storageO;
+
+    if (!jszip || typeof zip === "string") {
+      const contentPane = $(TI.cfgIdContent);
+      contentPane.innerText = _T('SvcCantBeProvided');
+      return;
+    } else {
+      log('E CHECKED', items);
+      items = this.partsList.filter(x => !items.includes(x));
+      log('E TODELETE', items);
+      items = items.map(x => [TI.config[`P-${x}`], TI.config[`F-${x}`]]);
+      const filesToExclude = [...new Set(items.map(x => x[1]).join(';').split(';').filter(x => x))];
+      var pluginsToExclude = items.map(x => x[0]).join(';').split(';').filter(x => x);
+      const pluginMaskToExclude = pluginsToExclude.filter(x => x.startsWith(':'));
+      log('E TODELETE LISTS', filesToExclude, pluginsToExclude);
+      pluginsToExclude = pluginsToExclude.filter(x => !pluginMaskToExclude.includes(x));
+      log('E TODELETE LISTS DIV', filesToExclude, pluginsToExclude, pluginMaskToExclude);
+  
+      log('E JSZ', jszip);
+      storageSearch(STO_DATA, FILENAME_LIST_JS_PLUGINS).then(x => {
+        const sequence = x.trim().split('\n').map(x => x.trim()).map(x => x);
+        var newSequence = sequence.filter(line => {
+          return !pluginsToExclude.some(excl =>
+            line === excl || line.startsWith(excl)
+          );
+        });
+
+        newSequence = newSequence.filter(line => {
+          return !pluginMaskToExclude.some(excl =>
+            line.includes(excl)
+          );
+        });
+
+        const newPluginsList = newSequence.map(x => x.split(':')[0]);
+        const dependencyCheckKeys = Object.keys(TI.config).filter(x => x.startsWith('DE-'));
+        const overallDependency = (TI.config['DE'] || '').split(';');
+        pluginsToExclude.push(...overallDependency);
+        const overallDependenciesDeletions = dependencyCheckKeys.filter(x => !newPluginsList.includes(x.split('-')[1])).map(x => TI.config[x]).join(';').split(';');
+        pluginsToExclude.push(...overallDependenciesDeletions);
+
+        newSequence = newSequence.filter(line => {
+          return !pluginsToExclude.some(excl =>
+            line === excl || line.startsWith(excl)
+          );
+        });
+        
+        pluginsToExclude = [...new Set(pluginsToExclude)];
+        filesToExclude.push(...pluginsToExclude.map(x => `plugins/${x}.js`));
+        filesToExclude.push(...pluginsToExclude.map(x => `${x}/`));
+        log('E Files in ZIP for deletion:', filesToExclude);
+        log('E Old starting sequence:', sequence);
+        log('E New starting sequence:', newSequence);
+      });
+      //this.deleteFromZip(jszip, filesToExclude, filesToExclude.filter(x => x.endsWith('/')));
+
+      // provide started download of result
+      jszip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(x => {
+        const url = URL.createObjectURL(x);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'hvdata.zip';
+        a.setAttribute('data-param', url);
+        a.target = '_blank';
+        a.id = ID_DOWNLOADLINK;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 5000);  
+      });
+    }
   }
+
+  // deleteFromZip(zip, names, prefixes) {
+  //   const toDelete = Object.keys(zip.files).filter(name => name.startsWith(prefix));
+  //   for (const name of Object.keys(zip.files)) {
+  //     if (removeSet.includes(name) || removeSet.some(prefix => name.startsWith(prefix))) {
+  //       delete zip.files[name];
+  //       log('ZIP deleted: ' + name);
+  //     }
+  //   }
+  // }
 
   checkChildren(target, checked) {
     const li = target.closest("li[role=treeitem]");

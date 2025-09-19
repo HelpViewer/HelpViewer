@@ -21,6 +21,8 @@ const MARKER_MARKWORD = '@@';
 
 const EventIdDynamic = '[D]';
 
+const ID_DOWNLOADLINK = 'downloadLink';
+
 const ChapterContentType = {
   CHAPTER_SOURCE: 'CHAPTER_SOURCE',
   KEYWORD_LIST: 'KEYWORD_LIST',
@@ -396,6 +398,9 @@ const evtHideIfTooWide = 'HIDEIFTOOWIDE';
 
 function processAClick(a, evt) {
   if (!a)
+    return;
+
+  if (a.id == ID_DOWNLOADLINK)
     return;
 
   revealTreeItem(a?.id);

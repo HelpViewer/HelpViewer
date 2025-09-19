@@ -29,3 +29,4 @@ PRISM|Prism - zvýraznění syntaxe výpisů kódu
 MERMAID|Mermaid - vykresluje grafy a schémata podle speciálních textových definic
 CHAPTERINDEXFILE|Uživatelské nadpisy k názvům souborů
 REFRESHJS|Vykonávat vložený JavaScript
+SvcCantBeProvided|Službu nelze poskytnout. Základní data nejsou obsažena v archivu.

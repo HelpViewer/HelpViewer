@@ -29,3 +29,4 @@ PRISM|PRISM - code highlighting
 MERMAID|MERMAID - diagrams renderer
 CHAPTERINDEXFILE|User headings for file names
 REFRESHJS|Execute embedded JavaScript
+SvcCantBeProvided|The service cannot be provided. The basic data is not contained in the archive.

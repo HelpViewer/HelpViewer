@@ -222,11 +222,19 @@ var _Storage = (() => {
     return await storagesC.get(key).searchImage(filePath);
   }
 
+  function getKey(key) {
+    if (!storagesC.has(key))
+      return null;
+
+    return storagesC.get(key);
+  }
+
   return {
     add,
     search,
     getSubdirs,
-    searchImage
+    searchImage,
+    getKey
   };
 })();
 
