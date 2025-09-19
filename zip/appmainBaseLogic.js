@@ -42,7 +42,12 @@ function nameForAnchor(text, level, levelCounter) {
 }
 
 function valKiBs(size) {
-  return Math.round(size / 1024 * 100) / 100;
+  return roundToDecPlaces(size / 1024, 2);
+}
+
+function roundToDecPlaces(number, places) {
+  const placesN = Math.pow(10, places);
+  return Math.round(number * placesN) / placesN;
 }
 
 function textCleanupPhrase(p) {
