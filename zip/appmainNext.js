@@ -248,7 +248,7 @@ class pAppmainNext extends IPlugin {
   }
 
   onETBeforePrint(d) {
-    removeIconsForPrint();
+    removeIconsForPrint?.();
   }
 
   //EventNames.LOC_LOADED

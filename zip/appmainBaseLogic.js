@@ -23,6 +23,8 @@ const EventIdDynamic = '[D]';
 
 const ID_DOWNLOADLINK = 'downloadLink';
 
+const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
+
 const ChapterContentType = {
   CHAPTER_SOURCE: 'CHAPTER_SOURCE',
   KEYWORD_LIST: 'KEYWORD_LIST',

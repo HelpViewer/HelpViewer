@@ -1,5 +1,3 @@
-const DIRECTIVE_PRINT_PAGEBREAK = '<!-- @print-break -->';
-
 function removeIconsForPrint() {
   openSubtree(contentPane);
 
