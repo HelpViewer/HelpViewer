@@ -130,8 +130,11 @@ class puiButtonCustPackage extends puiButton {
         });
 
         const newPluginsList = newSequence.map(x => x.split(':')[0]);
+        const excludedByIds = sequence.map(x => x.split(':')[0]).filter(x => !newPluginsList.includes(x));
+
         const dependencyCheckKeys = Object.keys(TI.config).filter(x => x.startsWith('DE-'));
         const overallDependency = (TI.config['DE'] || '').split(';');
+        pluginsToExclude.push(...excludedByIds);
         pluginsToExclude.push(...overallDependency);
         const overallDependenciesDeletions = dependencyCheckKeys.filter(x => !newPluginsList.includes(x.split('-')[1])).map(x => TI.config[x]).join(';').split(';');
         pluginsToExclude.push(...overallDependenciesDeletions);
