@@ -42,7 +42,7 @@ class puiButtonCustPackage extends puiButton {
       buttonDownload.innerHTML = TI.cfgCaption;
       buttonDownload.onclick = () => this._preparePackage(Array.from($A('input', tree)).filter(x => x.checked).map(x => x.id));
       buttonDownload.id = downloadButtonID;
-      setHeader(_T('downP-CustPackage'));
+      SetHeaderText(TI.cfgCaption + ' ' + _T('downP-CustPackage'));
       contentPane.innerHTML = `<ul id='${treeId}' class='tree'>${linesToHtmlTree(TI.partsTree, treeId)}</ul>`;
       contentPane.append(document.createElement("hr"));
       const spanSumId = 'spanSum';
