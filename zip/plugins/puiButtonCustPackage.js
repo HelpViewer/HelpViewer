@@ -135,6 +135,7 @@ class puiButtonCustPackage extends puiButton {
         pluginsToExclude.push(...overallDependency);
         const overallDependenciesDeletions = dependencyCheckKeys.filter(x => !newPluginsList.includes(x.split('-')[1])).map(x => TI.config[x]).join(';').split(';');
         pluginsToExclude.push(...overallDependenciesDeletions);
+        pluginsToExclude = pluginsToExclude.filter(x => x);
 
         newSequence = newSequence.filter(line => {
           return !pluginsToExclude.some(excl =>
@@ -145,7 +146,7 @@ class puiButtonCustPackage extends puiButton {
         pluginsToExclude = [...new Set(pluginsToExclude)];
         filesToExclude.push(...pluginsToExclude.map(x => `plugins/${x}.js`));
         filesToExclude.push(...pluginsToExclude.map(x => `${x}/`));
-        //filesToExclude.push(...pluginsToExclude.map(x => `plugins-config/${x}_`));
+        filesToExclude.push(...pluginsToExclude.map(x => `plugins-config/${x}_`));
         
         log('W Files in ZIP for deletion:', filesToExclude);
         log('W Old starting sequence:', sequence);
