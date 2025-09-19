@@ -96,32 +96,40 @@ class puiButtonCustPackage extends puiButton {
     log('E CHCK', items);
   }
 
+  checkChildren(target, checked) {
+    const li = target.closest("li[role=treeitem]");
+    if (!li) return;
+    const childCheckboxes = li.querySelectorAll("ul input[type=checkbox]");
+    childCheckboxes.forEach(cb => cb.checked = checked);
+    // const detailsParent = event.target.closest('li');
+    // if (detailsParent)
+    //   Array.from($A('input', detailsParent)).forEach(x => x.checked = false);
+  }
+
   checkboxChanged(event) {
     if (event) {
       if (event.target.checked) {
+        // check children
+        this.checkChildren(event.target, true);
         // check parents
-        var base = event.target;
-        while (base) {
-          const detailsParent = base.closest('li');
-          const checkbox = base.closest('input');
-
-          if (checkbox) {
-            //base = undefined; //TML
-            checkbox.checked = true;
-            base = detailsParent.parentElement.parentElement.firstElementChild;
-            base = $O('input', base);
-          } else {
-            base = undefined;
+        var li = event.target.closest("li[role=treeitem]");
+        while (li) {
+          const details = li.closest("details");
+          if (!details) break;
+      
+          const parentLi = details.closest("li[role=treeitem]");
+          if (!parentLi) break;
+      
+          const parentCheckbox = parentLi.querySelector("summary input[type=checkbox]");
+          if (parentCheckbox) {
+            parentCheckbox.checked = true;
           }
-
-          if (checkbox == base)
-            base = undefined;
+      
+          li = parentLi;
         }
       } else {
         // uncheck siblings
-        const detailsParent = event.target.closest('li');
-        if (detailsParent)
-          Array.from($A('input', detailsParent)).forEach(x => x.checked = false);
+        this.checkChildren(event.target, false);
       }
     }
 
