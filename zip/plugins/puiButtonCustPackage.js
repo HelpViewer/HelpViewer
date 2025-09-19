@@ -30,6 +30,7 @@ class puiButtonCustPackage extends puiButton {
   }
   
   _buttonAction(evt) {
+    const T = this.constructor;
     const TI = this;
     const treeId = 'partsTree';
     const downloadButtonID = 'DWNL-' + TI.aliasName;
@@ -37,6 +38,9 @@ class puiButtonCustPackage extends puiButton {
     if (!tree) {
       this.keyAndSizes = new Map();
       const contentPane = $(TI.cfgIdContent);
+      const divTemp = document.createElement("div");
+      divTemp.id = 'd-' + newUID();
+
       const buttonInvert = document.createElement("button");
       buttonInvert.innerHTML = '🔄';
       buttonInvert.onclick = () => {
@@ -49,6 +53,8 @@ class puiButtonCustPackage extends puiButton {
       buttonDownload.id = downloadButtonID;
       SetHeaderText(TI.cfgCaption + ' ' + _T('downP-CustPackage'));
       contentPane.innerHTML = `<ul id='${treeId}' class='tree'>${linesToHtmlTree(TI.partsTree, treeId)}</ul>`;
+      contentPane.prepend(divTemp);
+      showChapter(undefined, undefined, `:${T.name}/${getActiveLanguage()}/tree.md`, undefined, undefined, undefined, divTemp.id);
       contentPane.append(document.createElement("hr"));
       const spanSumId = 'spanSum';
       var spanSum = document.createElement("div");
