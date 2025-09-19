@@ -1,7 +1,6 @@
 # Future plans
 
 - Support old help CHM file format with defined conversion steps.
-- Prepare description help ZIP file for the solution.
 - Left panel with multi pages:
   - User notes list and links to headings inside documents
 - Possibility to add custom user note to anchor (heading) + data management in separated ZIP
@@ -18,7 +17,6 @@
 - Associated topics groups (something like links/keywords/topics, see also )
 - Dead links checker
 - Discussion (e.g.: Disqus or other service) plugin
-- customizer for project download as help file plugin
 - extra CSS styles + plugin for switching them
 - prod logs to console, debug logs to custom tool
 - custom log explorer
