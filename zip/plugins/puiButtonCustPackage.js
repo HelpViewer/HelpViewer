@@ -105,15 +105,15 @@ class puiButtonCustPackage extends puiButton {
       contentPane.innerText = _T('SvcCantBeProvided');
       return;
     } else {
-      log('E checked features', items);
+      log('W checked features', items);
       items = this.partsList.filter(x => !items.includes(x));
-      log('E features for deletion', items);
+      log('W features for deletion', items);
       items = items.map(x => [TI.config[`P-${x}`], TI.config[`F-${x}`]]);
       const filesToExclude = [...new Set(items.map(x => x[1]).join(';').split(';').filter(x => x))];
       var pluginsToExclude = items.map(x => x[0]).join(';').split(';').filter(x => x);
       const pluginMaskToExclude = pluginsToExclude.filter(x => x.startsWith(':'));
       pluginsToExclude = pluginsToExclude.filter(x => !pluginMaskToExclude.includes(x));
-      log('E lists to exclude (files, plugins, plugin ids)', filesToExclude, pluginsToExclude, pluginMaskToExclude);
+      log('W lists to exclude (files, plugins, plugin ids)', filesToExclude, pluginsToExclude, pluginMaskToExclude);
   
       storageSearch(STO_DATA, FILENAME_LIST_JS_PLUGINS).then(x => {
         const sequence = x.trim().split('\n').map(x => x.trim()).map(x => x);
@@ -145,9 +145,9 @@ class puiButtonCustPackage extends puiButton {
         pluginsToExclude = [...new Set(pluginsToExclude)];
         filesToExclude.push(...pluginsToExclude.map(x => `plugins/${x}.js`));
         filesToExclude.push(...pluginsToExclude.map(x => `${x}/`));
-        log('E Files in ZIP for deletion:', filesToExclude);
-        log('E Old starting sequence:', sequence);
-        log('E New starting sequence:', newSequence);
+        log('W Files in ZIP for deletion:', filesToExclude);
+        log('W Old starting sequence:', sequence);
+        log('W New starting sequence:', newSequence);
 
         jszip.remove(FILENAME_LIST_JS_PLUGINS);
         jszip.file(FILENAME_LIST_JS_PLUGINS, newSequence.join('\n'));
@@ -174,13 +174,12 @@ class puiButtonCustPackage extends puiButton {
   }
 
   deleteFromZip(zip, names = [], prefixes = []) {
-    log('E ZIP cleaning ... (names, prefixes):', names, prefixes);
-    log('E ZIP contents', Object.keys(zip.files));
+    log('W ZIP cleaning ... (names, prefixes):', names, prefixes);
+    log('W ZIP contents', Object.keys(zip.files));
 
     for (const fileName of Object.keys(zip.files)) {
       const isNameMatch = names.includes(fileName);
       const isPrefixMatch = prefixes.some(prefix => fileName.startsWith(prefix));
-      log('E DECISION:', fileName, isNameMatch, isPrefixMatch);
   
       if (isNameMatch || isPrefixMatch) {
         zip.remove(fileName);
