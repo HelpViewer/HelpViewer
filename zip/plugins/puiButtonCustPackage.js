@@ -146,7 +146,7 @@ class puiButtonCustPackage extends puiButton {
         pluginsToExclude = [...new Set(pluginsToExclude)];
         filesToExclude.push(...pluginsToExclude.map(x => `plugins/${x}.js`));
         filesToExclude.push(...pluginsToExclude.map(x => `${x}/`));
-        filesToExclude.push(...pluginsToExclude.map(x => `plugins-config/${x}_`));
+        filesToExclude = filesToExclude.filter(x => x);
         
         log('W Files in ZIP for deletion:', filesToExclude);
         log('W Old starting sequence:', sequence);
@@ -155,7 +155,10 @@ class puiButtonCustPackage extends puiButton {
         jszip.remove(FILENAME_LIST_JS_PLUGINS);
         jszip.file(FILENAME_LIST_JS_PLUGINS, newSequence.join('\n'));
       }).then(x => {
-        this.deleteFromZip(jszip, filesToExclude.filter(x => !x.endsWith('/')), filesToExclude.filter(x => x.endsWith('/')));
+        const masksToExclude = filesToExclude.filter(x => x.endsWith('/'));
+        masksToExclude.push(...pluginsToExclude.map(x => `plugins-config/${x}_`));
+        masksToExclude = masksToExclude.filter(x => x);
+        this.deleteFromZip(jszip, filesToExclude.filter(x => !x.endsWith('/')), masksToExclude);
   
         // provide started download of result
         jszip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(x => {
