@@ -16,8 +16,10 @@ puiSidebar:sidebar
 puiBottomPanel:bottom
 puiButtonTOC:toc
 puiButtonBmarks:
-pIndexFile:keywordList;fulltextList
-puiButtonKeywordIndex:keywordList;fulltextList
+pIndexFile:keywordList
+puiButtonKeywordIndex:keywordList
+pIndexFile:fulltextList
+puiButtonKeywordIndex:fulltextList
 puiButtonHome:
 puiButtonChangeLanguage:
 puiButtonVersionSearch:
