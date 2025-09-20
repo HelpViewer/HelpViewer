@@ -510,3 +510,11 @@ function insertToStringAtIndex(str, index, insertedText) {
   if (index < 0 || index > str.length) return str;
   return str.slice(0, index) + insertedText + str.slice(index);
 }
+
+/*S: Plugin: puiWatermark */
+function setWatermark(content) {
+  return sendEvent(EventNames.WatermarkSet, (ed) => {
+    ed.payload = content;
+  });
+}
+/*E: Plugin: puiWatermark */

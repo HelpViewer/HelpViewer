@@ -1,10 +1,19 @@
+class WatermarkSet extends IEvent {
+  constructor() {
+    super();
+    this.payload = '';
+  }
+}
+
 class puiWatermark extends IPlugin {
-  static KEY_CFG_PARENT = 'IDPARENT';
+  static EVT_WATERMARK_SET = WatermarkSet.name;
+
+  static KEY_CFG_PARENT = 'PARENT';
   static KEY_CFG_TEXT = 'TEXT';
   static KEY_CFG_IMAGEPATH = 'IMAGEPATH';
   static KEY_CFG_CSSADD = 'CSSADD';
   static KEY_CFG_CSSCLASS = 'CSSCLASS';
-  static KEY_CFG_ADDCSSCLASSES = 'CSSCLASSESELEM';
+  static KEY_CFG_ADDCSSCLASSES = 'ADDCSSCLASSES';
 
   constructor(aliasName, data) {
     super(aliasName, data);
@@ -29,10 +38,44 @@ class puiWatermark extends IPlugin {
     TI.cfgAddCSSClasses = TI.config[T.KEY_CFG_ADDCSSCLASSES] || TI.DEFAULT_KEY_CFG_ADDCSSCLASSES;
     
     TI.cssIDName = `addition-${T.name}-${TI.aliasName}`;
+    TI.assemble();
+
+    const h_EVT_WatermarkSet = (data) => {
+      var payload = data.payload;
+
+      if (payload === undefined || payload === null)
+        return false;
+
+      TI.cfgText = '';
+      TI.cfgImage = '';
+
+      if (typeof payload === 'function') {
+        payload = payload();
+        TI.cfgImage = payload;
+      } else {
+        TI.cfgText = payload;
+      }
+
+      TI.assemble();
+      return true;
+    };
+    TI.eventDefinitions.push([T.EVT_WATERMARK_SET, WatermarkSet, h_EVT_WatermarkSet]);
+
+    super.init();
+  }
+
+  assemble() {
+    const T = this.constructor;
+    const TI = this;
 
     const isImage = !!TI.cfgImage;
     const isActive = !!TI.cfgImage || TI.cfgText;
-    if (!isActive) return;
+    if (!isActive) {
+      //TI.watermark?.innerHTML = '';
+      return;
+    }
+
+    $(TI.cssIDName)?.remove();
 
     const cssResolved = isImage 
       ? "background: url('%%') no-repeat center/contain; opacity: 0.1; width: 100%; height: 100%;".replace('%%', TI.cfgImage)
@@ -41,18 +84,19 @@ class puiWatermark extends IPlugin {
     const cssSrc = `.${TI.cfgCSSClass} { pointer-events: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; ${cssResolved} ${TI.cfgCSSAdd} }`;
     appendCSS(TI.cssIDName, cssSrc);
 
-    const cont = $(TI.cfgIdParent)
-    const watermark = document.createElement('span');
-    watermark.classList.add(
-      ...(TI.cfgCSSClass ? [TI.cfgCSSClass] : []), 
-      ...(TI.cfgAddCSSClasses ? TI.cfgAddCSSClasses.split(' ') : [])
-    );
-    watermark.innerText = isImage ? '' : TI.cfgText;
-    watermark.id = `watermark-${T.name}-${TI.aliasName}`;
-    this.watermark = watermark;
-    cont.append(watermark);    
+    if (!TI.watermark) {
+      const cont = $(TI.cfgIdParent)
+      const watermark = document.createElement('span');
+      watermark.classList.add(
+        ...(TI.cfgCSSClass ? [TI.cfgCSSClass] : []), 
+        ...(TI.cfgAddCSSClasses ? TI.cfgAddCSSClasses.split(' ') : [])
+      );
+      watermark.id = `watermark-${T.name}-${TI.aliasName}`;
+      TI.watermark = watermark;
+      cont.append(watermark);  
+    }
 
-    super.init();
+    TI.watermark.innerHTML = isImage ? '' : TI.cfgText;
   }
 
   deInit() {
