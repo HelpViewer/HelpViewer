@@ -23,7 +23,7 @@ class puiWatermark extends IPlugin {
     this.DEFAULT_KEY_CFG_TEXT = '';
     this.DEFAULT_KEY_CFG_IMAGEPATH = '';
     this.DEFAULT_KEY_CFG_CSSADD = '';
-    this.DEFAULT_KEY_CFG_CSSCLASS = 'watermark';
+    this.DEFAULT_KEY_CFG_CSSCLASS = 'watermark-' + aliasName;
     this.DEFAULT_KEY_CFG_ADDCSSCLASSES = 'hiddenprint';
   }
 
@@ -44,8 +44,10 @@ class puiWatermark extends IPlugin {
     const h_EVT_WatermarkSet = (data) => {
       var payload = data.payload;
 
-      if (payload === undefined || payload === null)
+      if (payload === undefined || payload === null) {
+        data.result = false;
         return false;
+      }
 
       TI.cfgText = '';
       TI.cfgImage = '';
@@ -58,6 +60,7 @@ class puiWatermark extends IPlugin {
       }
 
       TI.assemble();
+      data.result = true;
       return true;
     };
     TI.eventDefinitions.push([T.EVT_WATERMARK_SET, WatermarkSet, h_EVT_WatermarkSet]);
