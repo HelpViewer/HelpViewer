@@ -16,6 +16,7 @@ puiSidebar:sidebar
 puiButtonTab
 puiButtonTabTree
 puiPanel:bottom
+puiPanel:top
 puiButtonTOC:toc
 puiButtonBmarks:
 pIndexFile:keywordList
