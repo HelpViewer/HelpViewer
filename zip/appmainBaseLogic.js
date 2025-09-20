@@ -1,5 +1,6 @@
 const C_HIDDENC = 'hidden';
 const C_HIDDENCPRESMODE = 'hiddenPresmode';
+const C_HIDDENCPRINT = 'hiddenprint';
 const C_NOTRANSITION = 'notransition';
 
 const FILENAME_1STTOPIC = 'README.md';

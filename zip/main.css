@@ -60,6 +60,7 @@ h1 {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 
 .header {
@@ -79,6 +80,7 @@ h1 {
 }
 
 .content {
+  position: relative;
   flex: 1;
   overflow-y: auto;
   padding: 1em;
@@ -429,6 +431,10 @@ ul:has(li input[type="checkbox"]) {
   .page-break {
     page-break-before: always;
     break-before: page;
+  }
+
+  .hiddenprint {
+    display: none;
   }
 }
 /*E: print support*/
