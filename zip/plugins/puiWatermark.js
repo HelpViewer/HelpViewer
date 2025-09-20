@@ -46,7 +46,7 @@ class puiWatermark extends IPlugin {
 
       if (payload === undefined || payload === null) {
         data.result = false;
-        return false;
+        return;
       }
 
       TI.cfgText = '';
@@ -61,7 +61,7 @@ class puiWatermark extends IPlugin {
 
       TI.assemble();
       data.result = true;
-      return true;
+      return;
     };
     TI.eventDefinitions.push([T.EVT_WATERMARK_SET, WatermarkSet, h_EVT_WatermarkSet]);
 
