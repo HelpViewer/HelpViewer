@@ -18,13 +18,15 @@ Interested?
 
 Don’t want to just read other people’s help files?
 
-📘 Start to write your own [help files][AGuide].
+📗 Start to write your own [help files][AGuide].
 
 Want to be involved even more?
 
 📘 Read our [Contribution guidelines][Contrib].
 
 📜 Check out other important [project policies][DotGH].
+
+📙 Explore [Documentation for developers][DGuide] to start custom development.
 
 ## Features
 
@@ -112,4 +114,5 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [Contrib]: https://helpviewer.github.io/?d=https%3A%2F%2Fraw.githubusercontent.com%2FHelpViewer%2F.github%2Fmaster%2F&p=CONTRIBUTING.md&id=4 "Contribution guidelines"
 [DotGH]: https://helpviewer.github.io/?d=https%3A%2F%2Fraw.githubusercontent.com%2FHelpViewer%2F.github%2Fmaster%2F&id=0 "Maintenance documents"
 [AGuide]: https://helpviewer.github.io/?d=hlp-aguide/Help-__.zip "Authoring guide"
+[DGuide]: https://helpviewer.github.io/?d=hlp-dguide/Help-__.zip "Developer guide"
 [Prism]: https://prismjs.com/ "Prism - syntax highlighting"
