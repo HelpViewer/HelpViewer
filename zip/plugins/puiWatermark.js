@@ -17,6 +17,7 @@ class puiWatermark extends IPlugin {
 
   constructor(aliasName, data) {
     super(aliasName, data);
+    this.eventIdStrict = true;
 
     this.DEFAULT_KEY_CFG_PARENT = 'main';
     this.DEFAULT_KEY_CFG_TEXT = '';
@@ -71,7 +72,8 @@ class puiWatermark extends IPlugin {
     const isImage = !!TI.cfgImage;
     const isActive = !!TI.cfgImage || TI.cfgText;
     if (!isActive) {
-      //TI.watermark?.innerHTML = '';
+      if (TI.watermark)
+        TI.watermark.innerHTML = '';
       return;
     }
 

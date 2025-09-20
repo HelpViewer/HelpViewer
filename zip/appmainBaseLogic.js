@@ -512,9 +512,10 @@ function insertToStringAtIndex(str, index, insertedText) {
 }
 
 /*S: Plugin: puiWatermark */
-function setWatermark(content) {
+function setWatermark(content, id = '') {
   return sendEvent(EventNames.WatermarkSet, (ed) => {
     ed.payload = content;
+    ed.id = id;
   });
 }
 /*E: Plugin: puiWatermark */
