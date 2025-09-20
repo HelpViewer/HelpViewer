@@ -74,11 +74,6 @@ class puiWatermark extends IPlugin {
 
     const isImage = !!TI.cfgImage;
     const isActive = !!TI.cfgImage || TI.cfgText;
-    if (!isActive) {
-      if (TI.watermark)
-        TI.watermark.innerHTML = '';
-      return;
-    }
 
     $(TI.cssIDName)?.remove();
 
@@ -88,6 +83,12 @@ class puiWatermark extends IPlugin {
 
     const cssSrc = `.${TI.cfgCSSClass} { pointer-events: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; ${cssResolved} ${TI.cfgCSSAdd} }`;
     appendCSS(TI.cssIDName, cssSrc);
+
+    if (!isActive) {
+      if (TI.watermark)
+        TI.watermark.innerHTML = '';
+      return;
+    }
 
     if (!TI.watermark) {
       const cont = $(TI.cfgIdParent)
