@@ -1,4 +1,4 @@
-class puiBottomPanel extends IPlugin {
+class puiPanel extends IPlugin {
   static addition = '<div class="header" id="%%-bottomPanel"><div id="%%-toolbarBottom" role="navigation"></div></div>';
 
   init() {
@@ -35,4 +35,4 @@ class puiBottomPanel extends IPlugin {
   }
 }
 
-Plugins.catalogize(puiBottomPanel);
+Plugins.catalogize(puiPanel);

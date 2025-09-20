@@ -1,6 +1,6 @@
 downP-CustPackage|Vlastní balíček
 HEADER|Záhlaví
-BOTTOM|Spodní panel
+BOTTOM|Nástrojový panel
 SIDEBAR|Boční panel
 TOC|Seznam témat
 NAVIGATION|Navigace

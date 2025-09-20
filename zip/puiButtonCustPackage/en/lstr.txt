@@ -1,6 +1,6 @@
 downP-CustPackage|Custom package download
 HEADER|Header panel
-BOTTOM|Bottom panel
+BOTTOM|Toolbar
 SIDEBAR|Sidebar
 TOC|TOC
 NAVIGATION|Navigation
