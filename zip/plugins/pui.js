@@ -168,56 +168,6 @@ class puiButton extends IPlugin {
   }
 }
 
-class puiButtonTab extends puiButton {
-  constructor(aliasName, data) {
-    super(aliasName, data);
-    this.tab = undefined;
-  }
-
-  init() {
-    super.init(H_BUTTON_WITH_TAB);
-    const TI = this;
-    TI.tab = TI.button[1];
-    TI.button = TI.button[0];
-    registerOnClick(TI.button.id, (evt) => TI._buttonAction(evt));
-    TI.catalogizeEventCall(TI.init, pui.EVT_CLICK_HANDLER_REGISTER);
-    TI.catalogizeEventCall(TI._buttonAction, EventNames.SidebarPageShow);
-  }
-
-  deInit() {
-    this.tab?.remove();
-
-    super.deInit();
-  }
-
-  _preShowAction(evt) {
-    log('W puiButtonTab._preShowAction must be overriden in ' + this.constructor.name);
-  }
-
-  _buttonAction(evt) {
-    const reply = this._preShowAction(evt) == false ? false : true;
-
-    if (reply)
-      showSidebarTab(this.tab?.id);
-  }
-}
-
-class SetTreeData extends IEvent {
-  constructor() {
-    super();
-    this.data = undefined;
-    this.targetTree = '';
-    this.append = false;
-  }
-}
-
-class ClickedEventTree extends ClickedEvent {
-  constructor() {
-    super();
-    this.treeId = undefined;
-  }
-}
-
 class ClickedEventNotForwarded extends ClickedEvent {
   constructor() {
     super();
@@ -225,89 +175,7 @@ class ClickedEventNotForwarded extends ClickedEvent {
   }
 }
 
-class puiButtonTabTree extends puiButtonTab {
-  static EVT_SET_TREE_DATA = SetTreeData.name;
-  static EVT_TREE_DATA_CHANGED = 'TreeDataChanged';
-  static EVT_TREE_CLICKED = ClickedEventTree.name;
-
-  static KEY_CFG_TREEID = 'TREEID';
-
-  constructor(aliasName, data) {
-    super(aliasName, data);
-    this.tree = undefined;
-
-    this.DEFAULT_KEY_CFG_TREEID = 'tree';
-    this.eventIdStrict = true;
-  }
-
-  init() {
-    const TI = this;
-    const T = this.constructor;
-    this.cfgTreeId = this.config[T.KEY_CFG_TREEID] || TI.DEFAULT_KEY_CFG_TREEID;
-    var tree = null;
-
-    const h_EVT_SET_TREE_DATA = (data) => {
-      if (data.id != this.aliasName)
-        return;
-
-      if (!data.append)
-        tree.textContent = '';
-
-      tree.insertAdjacentHTML('beforeend', linesToHtmlTree(data.data, this.cfgTreeId));
-
-      data.targetTree = this.cfgTreeId;
-      data.result = this.aliasName;
-
-      sendEvent(T.EVT_TREE_DATA_CHANGED, (dc) => {
-        dc.data = data.data;
-        dc.targetTree = data.targetTree;
-        dc.append = data.append;
-        dc.id = this.aliasName;
-      });
-    };
-    TI.eventDefinitions.push([T.EVT_SET_TREE_DATA, SetTreeData, h_EVT_SET_TREE_DATA]);
-    TI.eventDefinitions.push([T.EVT_TREE_DATA_CHANGED, SetTreeData, null]); // outside event handlers
-    TI.eventDefinitions.push([T.EVT_TREE_CLICKED, ClickedEventTree, null]); // outside event handlers
-
-    TI.catalogizeEventCall(TI.init, ClickedEventTree.name);
-    TI.catalogizeEventCall(h_EVT_SET_TREE_DATA, T.EVT_TREE_DATA_CHANGED);
-
-    super.init();
-    TI._preStandardInit();
-
-    this.tree = uiAddTreeView(TI.cfgTreeId, TI.tab);
-    tree = this.tree;
-
-    registerOnClick(TI.cfgTreeId, (e) => {
-      const result = this._treeClick(e);
-      _notifyClickedEvent(e, result, this.cfgTreeId);
-    });
-  }
-  
-  _preStandardInit() {
-  }
-
-  _treeClick(e) {
-    const a = e.event.target?.closest('a');
-    if (a) 
-      processAClick(a, e);
-  }
-
-  _buttonActionClickOpenCloseAll(isTrusted) {
-    if (this.tab.classList.contains(C_HIDDENC)) {
-      super._buttonAction();
-    } else {
-      if (!isTrusted) return;
-      if ($O('details:not([open])', this.tree))
-        openSubtree(this.tree);
-      else
-        closeSubtree(this.tree);
-    }
-  }
-  
-}
-
-function _notifyClickedEvent(e, result, cfgTreeId, eventName = ClickedEventTree.name) {
+function _notifyClickedEvent(e, result, cfgTreeId, eventName = 'ClickedEventTree') {
   return sendEvent(eventName, (dc) => {
     const bkpCreatedAt = dc.createdAt;
     const bkpEventId = dc.eventId;
@@ -327,6 +195,3 @@ function _notifyClickedEvent(e, result, cfgTreeId, eventName = ClickedEventTree.
 }
 
 Plugins.catalogize(puiButton);
-Plugins.catalogize(puiButtonTab);
-Plugins.catalogize(puiButtonTabTree);
-

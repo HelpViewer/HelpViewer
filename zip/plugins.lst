@@ -13,6 +13,8 @@ pClickConverter:
 pui:
 puiHeader:header
 puiSidebar:sidebar
+puiButtonTab
+puiButtonTabTree
 puiBottomPanel:bottom
 puiButtonTOC:toc
 puiButtonBmarks:
