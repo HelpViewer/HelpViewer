@@ -79,7 +79,7 @@ class puiButtonCustPackage extends puiButton {
           dirsAndFiles = [];
         }
 
-        const files = ([TI.config[`F-${a.textContent}`], plugins, ...dirsAndFiles]).filter(x => x).join(';');
+        const files = [...new Set(([TI.config[`F-${a.textContent}`], plugins, ...dirsAndFiles]).filter(x => x).join(';').split(';'))].join(';');
 
         this.keyAndSizes.set(a.textContent, {
           fileList : files,
