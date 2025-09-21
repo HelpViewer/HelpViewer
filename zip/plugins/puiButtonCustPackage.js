@@ -69,7 +69,17 @@ class puiButtonCustPackage extends puiButton {
       openSubtree(tree);
       $A('a', tree).forEach(a => {
         const plugins = TI.config[`P-${a.textContent}`].split(';').map(x => x.split(':')[0]).filter(x => x).map(x => `plugins/${x}.js`).join(';');
-        const files = ([TI.config[`F-${a.textContent}`], plugins]).filter(x => x).join(';');
+        
+        var dirsAndFiles = TI.config[`F-${a.textContent}`].split(';').filter(x => x.endsWith('/'));
+
+        if (dirsAndFiles.length > 0) {
+          const jszip = _Storage.getKey(STO_DATA)?.storageO;
+          dirsAndFiles = Object.keys(jszip.files).filter(x => dirsAndFiles.some(prefix => x.startsWith(prefix)));
+        } else {
+          dirsAndFiles = [];
+        }
+
+        const files = ([TI.config[`F-${a.textContent}`], plugins, ...dirsAndFiles]).filter(x => x).join(';');
 
         this.keyAndSizes.set(a.textContent, {
           fileList : files,
