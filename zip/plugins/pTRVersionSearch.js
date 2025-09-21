@@ -40,7 +40,8 @@ class pTRVersionSearch extends pTRPhasePlugin {
       linkDownload.innerText = '📥';
 
       heading.appendChild(linkDownload);
-      heading.appendChild(boomark);
+      if (boomark)
+        heading.appendChild(boomark);
     });
 
   }
