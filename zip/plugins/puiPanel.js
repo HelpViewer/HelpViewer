@@ -13,7 +13,7 @@ class puiPanel extends IPlugin {
       b: 'b',
     };
 
-    this.DEFAULT_KEY_CFG_POSITION = positions.b;
+    this.DEFAULT_KEY_CFG_POSITION = positions.t;
     this.DEFAULT_KEY_CFG_BASEELEMENTID = 'content';
 
     TI.cfgPosition = TI.config[T.KEY_CFG_POSITION] || TI.DEFAULT_KEY_CFG_POSITION;
