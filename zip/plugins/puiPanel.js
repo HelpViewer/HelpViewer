@@ -4,6 +4,11 @@ class puiPanel extends IPlugin {
   static KEY_CFG_POSITION = 'POSITION';
   static KEY_CFG_BASEELEMENTID = 'BASEELEMENTID';
 
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.eventIdStrict = true;
+  }
+
   init() {
     const T = this.constructor;
     const TI = this;
@@ -13,8 +18,8 @@ class puiPanel extends IPlugin {
       b: 'b',
     };
 
-    this.DEFAULT_KEY_CFG_POSITION = positions.t;
-    this.DEFAULT_KEY_CFG_BASEELEMENTID = 'content';
+    TI.DEFAULT_KEY_CFG_POSITION = positions.t;
+    TI.DEFAULT_KEY_CFG_BASEELEMENTID = 'content';
 
     TI.cfgPosition = TI.config[T.KEY_CFG_POSITION] || TI.DEFAULT_KEY_CFG_POSITION;
     TI.cfgBaseElementId = TI.config[T.KEY_CFG_BASEELEMENTID] || TI.DEFAULT_KEY_CFG_BASEELEMENTID;
@@ -22,7 +27,7 @@ class puiPanel extends IPlugin {
     const containerRelativeTo = $(TI.cfgBaseElementId);
     const parent = containerRelativeTo.parentElement;
     const tmpDiv = document.createElement('div');
-    tmpDiv.innerHTML = T.addition.replace(new RegExp('%%', 'g'), this.aliasName);
+    tmpDiv.innerHTML = T.addition.replace(new RegExp('%%', 'g'), TI.aliasName);
     const node = tmpDiv.firstChild;
     
     if (containerRelativeTo && node) {
@@ -34,14 +39,15 @@ class puiPanel extends IPlugin {
       }
     }
 
-    this.panel = node;
-    this.panel.classList.add(C_HIDDENC);
+    TI.panel = node;
+    TI.panel.classList.add(C_HIDDENC);
 
-    const toolbar = $(this.aliasName + '-toolbar');
+    const toolbar = $(TI.aliasName + '-toolbar');
+    TI.toolbar = toolbar;
 
-    const baseButtonAccept = createButtonAcceptHandler(TI, toolbar);
-    this.handlerButtonSend = (x) => {
-      this.panel.classList.remove(C_HIDDENC);
+    const baseButtonAccept = createButtonAcceptHandler(TI, TI.toolbar);
+    TI.handlerButtonSend = (x) => {
+      TI.panel.classList.remove(C_HIDDENC);
       baseButtonAccept(x);
     }
 
