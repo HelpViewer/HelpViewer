@@ -1,5 +1,34 @@
 # Changelog
 
+## 20250921
+
+### 🧑‍🤝‍🧑 User
+- Customization of download package - customization of **hvdata/data.zip** file
+- Sepia color theme
+- Prism listing using transparent background in more cases
+
+### 🐞 Bugfix
+- Topic renderer ability to render to any other container renewed
+- Sidebar kept on left side if 🧩 puiButtonToggleSide plugin is missing in deployment
+
+### 🧩 Technology
+- ➕🧩 pServicePlugin, pServiceLocalization introduced (each plugin can have its own translation texts)
+- ➕🧩 puiPanel - toolbar in 2 positions - top, bottom
+- ➕🧩 puiButtonCustPackage - Customization of download package
+- ➕🧩 puiWatermark - watermarks in ui can be easily attached
+- ➕🧩 ObjectExplorer:
+  - Localization tables divided from main localization
+  - Added methods from plugins and from global space
+  - Added variables from global space
+  - Reading handler functions from all base classes
+  - Refactor of scanning of configuration options
+  - Correction in scanning event handler functions in plugins
+- ➕ pPluginManagement : storage name added to events
+- ➕ pui divided : puiButtonTab, puiButtonTabTree separed
+- ➕ IPlugin now scans all parents of callee sibling plugin for onET methods (fix in binding and mapping of methods across dependency tree)
+- ➕ puiHeader is now parent of generic puiPanel
+- CSS : hiddenprint class introduced
+
 ## 20250915
 
 ### 🧑‍🤝‍🧑 User
