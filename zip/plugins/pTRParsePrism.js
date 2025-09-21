@@ -1,13 +1,12 @@
 class pTRParsePrism extends pTRPhasePlugin {
-  static KEY_CFG_FILENAME = 'FILENAME';
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.DEFAULT_KEY_CFG_FILENAME = 'prism/prism.js;prism/prism.css;prism/override.css;prism/LICENSE.txt';
+  }
 
   init() {
     super.init();
-
-    const T = this.constructor;
-    this.DEFAULT_KEY_CFG_FILENAME = 'prism/prism.js;prism/prism.css;prism/override.css;prism/LICENSE.txt';
-    this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
-    this.RES_PRISM = new Resource('PRISM', undefined, STO_DATA, this.cfgFileName);
+    this.RES_PRISM = new Resource('PRISM', undefined, STO_DATA, this.cfgFILENAME);
   }
   
   onETShowChapterResolutions(r) {

@@ -42,9 +42,6 @@ class pLocalizationSwitcher extends IPlugin {
   static EVT_LOC_REFRESH = LocRefresh.name;
   static EVT_LOC_APPEND = LocAppend.name;
 
-  static KEY_CFG_STOREKEY = 'STOREKEY';
-  static KEY_CFG_DEFAULTLANG = 'DEFAULTLANG';
-
   constructor(aliasName, data) {
     super(aliasName, data);
 
@@ -59,10 +56,7 @@ class pLocalizationSwitcher extends IPlugin {
     const T = this.constructor;
     const TI = this;
 
-    TI.cfgStoreKey = TI.config[T.KEY_CFG_STOREKEY] || this.DEFAULT_KEY_CFG_STOREKEY;
-    TI.cfgDefaultLang = TI.config[T.KEY_CFG_DEFAULTLANG] || this.DEFAULT_KEY_CFG_DEFAULTLANG;
-
-    TI.activeLanguage = getUserConfigValue(TI.cfgStoreKey) || TI.cfgDefaultLang;
+    TI.activeLanguage = getUserConfigValue(TI.cfgSTOREKEY) || TI.cfgDEFAULTLANG;
 
     const h_EVT_LOC_TRANSLATE = (data) => {
       data.result = this._T(data.name, data.strings);
@@ -149,7 +143,7 @@ class pLocalizationSwitcher extends IPlugin {
     const langFlatStrs = (await this._storageSearch(`${T.languagesMainPath}${localizationName}/${T.langFileTXT}`)).split("\n");
     
     if (!langFlatStrs || langFlatStrs.length == 0  || langFlatStrs == '') {
-      loadLocalization(TI.cfgDefaultLang);
+      loadLocalization(TI.cfgDEFAULTLANG);
       return;
     }
 
@@ -162,7 +156,7 @@ class pLocalizationSwitcher extends IPlugin {
 
     this.refreshTitlesForLangStrings(Object.keys(this.langStrs));
     TI.activeLanguage = localizationName;
-    setUserConfigValue(TI.cfgStoreKey, localizationName);
+    setUserConfigValue(TI.cfgSTOREKEY, localizationName);
     
     sendEvent(T.EVT_LOC_LOADED, (x) => {
       x.name = localizationName;

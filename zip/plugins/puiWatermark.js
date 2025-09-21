@@ -8,13 +8,6 @@ class WatermarkSet extends IEvent {
 class puiWatermark extends IPlugin {
   static EVT_WATERMARK_SET = WatermarkSet.name;
 
-  static KEY_CFG_PARENT = 'PARENT';
-  static KEY_CFG_TEXT = 'TEXT';
-  static KEY_CFG_IMAGEPATH = 'IMAGEPATH';
-  static KEY_CFG_CSSADD = 'CSSADD';
-  static KEY_CFG_CSSCLASS = 'CSSCLASS';
-  static KEY_CFG_ADDCSSCLASSES = 'ADDCSSCLASSES';
-
   constructor(aliasName, data) {
     super(aliasName, data);
     this.eventIdStrict = true;
@@ -31,13 +24,6 @@ class puiWatermark extends IPlugin {
     const T = this.constructor;
     const TI = this;
 
-    TI.cfgIdParent = TI.config[T.KEY_CFG_PARENT] || TI.DEFAULT_KEY_CFG_PARENT;
-    TI.cfgText = TI.config[T.KEY_CFG_TEXT] || TI.DEFAULT_KEY_CFG_TEXT;
-    TI.cfgImage = TI.config[T.KEY_CFG_IMAGEPATH] || TI.DEFAULT_KEY_CFG_IMAGEPATH;
-    TI.cfgCSSAdd = TI.config[T.KEY_CFG_CSSADD] || TI.DEFAULT_KEY_CFG_CSSADD;
-    TI.cfgCSSClass = TI.config[T.KEY_CFG_CSSCLASS] || TI.DEFAULT_KEY_CFG_CSSCLASS;
-    TI.cfgAddCSSClasses = TI.config[T.KEY_CFG_ADDCSSCLASSES] || TI.DEFAULT_KEY_CFG_ADDCSSCLASSES;
-    
     TI.cssIDName = `addition-${T.name}-${TI.aliasName}`;
     TI.assemble();
 
@@ -49,18 +35,18 @@ class puiWatermark extends IPlugin {
         return;
       }
 
-      TI.cfgText = '';
-      TI.cfgImage = '';
+      TI.cfgTEXT = '';
+      TI.cfgIMAGEPATH = '';
 
       if (typeof payload === 'function') {
         payload = payload();
-        TI.cfgImage = payload;
+        TI.cfgIMAGEPATH = payload;
       } else {
-        TI.cfgText = payload;
+        TI.cfgTEXT = payload;
       }
 
-      TI.config[T.KEY_CFG_TEXT] = TI.cfgText;
-      TI.config[T.KEY_CFG_IMAGEPATH] = TI.cfgImage;
+      TI.config[T.KEY_CFG_TEXT] = TI.cfgTEXT;
+      TI.config[T.KEY_CFG_IMAGEPATH] = TI.cfgIMAGEPATH;
 
       TI.assemble();
       data.result = true;
@@ -75,16 +61,16 @@ class puiWatermark extends IPlugin {
     const T = this.constructor;
     const TI = this;
 
-    const isImage = !!TI.cfgImage;
-    const isActive = !!TI.cfgImage || TI.cfgText;
+    const isImage = !!TI.cfgIMAGEPATH;
+    const isActive = isImage || TI.cfgTEXT;
 
     $(TI.cssIDName)?.remove();
 
     const cssResolved = isImage 
-      ? "background: url('%%') no-repeat center/contain; opacity: 0.1; width: 100%; height: 100%;".replace('%%', TI.cfgImage)
+      ? "background: url('%%') no-repeat center/contain; opacity: 0.1; width: 100%; height: 100%;".replace('%%', TI.cfgIMAGEPATH)
       :'font-size: 5rem; color: rgba(0, 0, 0, 0.1);';
 
-    const cssSrc = `.${TI.cfgCSSClass} { pointer-events: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; ${cssResolved} ${TI.cfgCSSAdd} }`;
+    const cssSrc = `.${TI.cfgCSSCLASS} { pointer-events: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; ${cssResolved} ${TI.cfgCSSADD} }`;
     appendCSS(TI.cssIDName, cssSrc);
 
     if (!isActive) {
@@ -94,18 +80,18 @@ class puiWatermark extends IPlugin {
     }
 
     if (!TI.watermark) {
-      const cont = $(TI.cfgIdParent)
+      const cont = $(TI.cfgPARENT)
       const watermark = document.createElement('span');
       watermark.classList.add(
-        ...(TI.cfgCSSClass ? [TI.cfgCSSClass] : []), 
-        ...(TI.cfgAddCSSClasses ? TI.cfgAddCSSClasses.split(' ') : [])
+        ...(TI.cfgCSSCLASS ? [TI.cfgCSSCLASS] : []), 
+        ...(TI.cfgADDCSSCLASSES ? TI.cfgADDCSSCLASSES.split(' ') : [])
       );
       watermark.id = `watermark-${T.name}-${TI.aliasName}`;
       TI.watermark = watermark;
       cont.append(watermark);  
     }
 
-    TI.watermark.innerHTML = isImage ? '' : TI.cfgText;
+    TI.watermark.innerHTML = isImage ? '' : TI.cfgTEXT;
   }
 
   deInit() {

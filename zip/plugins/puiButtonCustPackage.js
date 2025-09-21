@@ -1,6 +1,4 @@
 class puiButtonCustPackage extends puiButton {
-  static KEY_CFG_IDCONTENT = 'IDCONTENT';
-
   constructor(aliasName, data) {
     super(aliasName, data);
 
@@ -15,7 +13,6 @@ class puiButtonCustPackage extends puiButton {
     const T = this.constructor;
     const TI = this;
 
-    TI.cfgIdContent = TI.config[T.KEY_CFG_IDCONTENT] || TI.DEFAULT_KEY_CFG_IDCONTENT;
     this.partsTree = '';
     this.partsList = [];
     storageSearch(STO_DATA, `plugins-config/${T.name}_${TI.aliasName}_tree.cfg`).then(x => {
@@ -37,7 +34,7 @@ class puiButtonCustPackage extends puiButton {
     var tree = $(treeId);
     if (!tree) {
       this.keyAndSizes = new Map();
-      const contentPane = $(TI.cfgIdContent);
+      const contentPane = $(TI.cfgIDCONTENT);
       const divTemp = document.createElement("div");
       divTemp.id = 'd-' + newUID();
 
@@ -48,10 +45,10 @@ class puiButtonCustPackage extends puiButton {
         this.checkboxChanged();
       }
       const buttonDownload = document.createElement("button");
-      buttonDownload.innerHTML = TI.cfgCaption;
+      buttonDownload.innerHTML = TI.cfgCAPTION;
       buttonDownload.onclick = () => this._preparePackage(Array.from($A('input', tree)).filter(x => x.checked).map(x => x.id));
       buttonDownload.id = downloadButtonID;
-      SetHeaderText(TI.cfgCaption + ' ' + _T('downP-CustPackage'));
+      SetHeaderText(TI.cfgCAPTION + ' ' + _T('downP-CustPackage'));
       contentPane.innerHTML = `<ul id='${treeId}' class='tree'>${linesToHtmlTree(TI.partsTree, treeId)}</ul>`;
       contentPane.prepend(divTemp);
       showChapter(undefined, undefined, `:${T.name}/${getActiveLanguage()}/tree.md`, undefined, undefined, undefined, divTemp.id);
@@ -117,7 +114,7 @@ class puiButtonCustPackage extends puiButton {
     const jszip = _Storage.getKey(STO_DATA)?.storageO;
 
     if (!jszip || typeof jszip === "string") {
-      const contentPane = $(TI.cfgIdContent);
+      const contentPane = $(TI.cfgIDCONTENT);
       contentPane.innerText = _T('SvcCantBeProvided');
       return;
     } else {

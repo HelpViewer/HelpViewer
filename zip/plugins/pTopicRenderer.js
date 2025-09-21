@@ -82,9 +82,6 @@ class pTopicRenderer extends IPlugin {
   static EVT_TOPREN_SHOW_CHAPTER_RES = ShowChapterResolutions.name;
   static EVT_TOPREN_CHAPTER_SHOWN = ChapterShown.name;
 
-  static KEY_CFG_IDCONTENT = 'IDCONTENT';
-  static KEY_CFG_PHASELIST = 'PHASELIST';
-
   static MARKER_ADDDATA = MARKER_MARKWORD;
   static MARKER_ADDDATA_SPLITTER = ';';
 
@@ -103,9 +100,6 @@ class pTopicRenderer extends IPlugin {
     const T = this.constructor;
     const TI = this;
     
-    this.cfgIdContent = this.config[T.KEY_CFG_IDCONTENT] || TI.DEFAULT_KEY_CFG_IDCONTENT;
-    this.cfgPhaseList = this.config[T.KEY_CFG_PHASELIST] || TI.DEFAULT_KEY_CFG_PHASELIST;
-
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
       const r = data.result;
 
@@ -127,7 +121,7 @@ class pTopicRenderer extends IPlugin {
       }
 
       r.heading = data.heading || getChapterAlternativeHeading(data.address)?.[1] || data.address;
-      const containerIdContent = data.containerIdContent || this.cfgIdContent;
+      const containerIdContent = data.containerIdContent || this.cfgIDCONTENT;
       r.containerIdContent = containerIdContent;
       r.docV = $(containerIdContent);
       r.doc = r.docV;
@@ -163,11 +157,11 @@ class pTopicRenderer extends IPlugin {
 
       var result = Promise.resolve();
       r.result = result;
-      var subIds = this.cfgPhaseList;
+      var subIds = this.cfgPHASELIST;
 
       if (data.content) {
         log(`Forwarded exact data content in length: ${data.content.length} letters, updating phases list ...`);
-        subIds = '%%' + this.cfgPhaseList.split('%%', 2)[1];
+        subIds = '%%' + this.cfgPHASELIST.split('%%', 2)[1];
         r.content = data.content;
       }
       subIds = subIds.replace(new RegExp('%%', 'g'), r.type?.substring(0, 3).toLowerCase()).split(';');

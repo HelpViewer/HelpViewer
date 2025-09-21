@@ -128,10 +128,6 @@ function registerOnClick(handlerId, handler) {
 }
 
 class puiButton extends IPlugin {
-  static KEY_CFG_ID = 'ID';
-  static KEY_CFG_CAPTION = 'CAPTION';
-  static KEY_CFG_TARGET = 'TARGET';
-
   constructor(aliasName, data) {
     super(aliasName, data);
     this.button = undefined;
@@ -144,12 +140,9 @@ class puiButton extends IPlugin {
   init(handler = null) {
     const T = this.constructor;
     const TI = this;
-    this.cfgId = this.config[T.KEY_CFG_ID] || TI.DEFAULT_KEY_CFG_ID;
-    this.cfgCaption = this.config[T.KEY_CFG_CAPTION] || TI.DEFAULT_KEY_CFG_CAPTION;
-    this.cfgTarget = this.config[T.KEY_CFG_TARGET] || TI.DEFAULT_KEY_CFG_TARGET;
 
     const handlerResolved = handler ? handler : (evt) => this._buttonAction(evt);
-    this.button = uiAddButton(this.cfgId, this.cfgCaption, this.cfgTarget, handlerResolved);
+    this.button = uiAddButton(this.cfgID, this.cfgCAPTION, this.cfgTARGET, handlerResolved);
 
     TI.catalogizeEventCall(TI.init, EventNames.ButtonCreate);
     TI.catalogizeEventCall(TI.init, EventNames.ButtonSend);

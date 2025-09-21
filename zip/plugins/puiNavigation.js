@@ -24,11 +24,11 @@ class puiNavigation extends IPlugin {
       this.buttonTop = undefined;
       this.buttonRight = undefined;
       this.eventIdStrict = true;
+
+      this.DEFAULT_KEY_CFG_TARGET = 'header';
+      this.DEFAULT_KEY_CFG_TREEID = 'tree';
+      this.DEFAULT_KEY_CFG_IDNAMEGETPAR = 'id';
     }
-  
-    static KEY_CFG_TARGET = 'TARGET';
-    static KEY_CFG_TREE_ID = 'TREEID';
-    static KEY_CFG_PARAM_ID_NAME = 'IDNAMEGETPAR';
   
     static EVT_NAV_MOVE = NavigationMove.name;
     static EVT_NAV_DOMOVE = DoNavigationMove.name;
@@ -38,14 +38,10 @@ class puiNavigation extends IPlugin {
       const TI = this;
 
       TI.eventDefinitions.push([T.EVT_NAV_MOVE, NavigationMove, null]); // outside event handlers
-
-      this.DEFAULT_KEY_CFG_TARGET = 'header';
-      this.DEFAULT_KEY_CFG_TREEID = 'tree';
-      this.DEFAULT_KEY_CFG_IDNAMEGETPAR = 'id';
   
       const baseId = this.aliasName;
-      const target = this.config[T.KEY_CFG_TARGET] || this.DEFAULT_KEY_CFG_TARGET;
-      this.treeId = this.config[T.KEY_CFG_TREE_ID] || this.DEFAULT_KEY_CFG_TREEID;
+      const target = TI.cfgTARGET;
+      this.treeId = TI.cfgTREEID;
       const treeId = this.treeId;
       const parIdName = this.config[T.KEY_CFG_PARAM_ID_NAME] || this.DEFAULT_KEY_CFG_IDNAMEGETPAR;
 

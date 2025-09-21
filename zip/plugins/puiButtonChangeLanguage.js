@@ -5,20 +5,18 @@ class puiButtonChangeLanguage extends puiButtonTab {
     this.DEFAULT_KEY_CFG_ID = 'downP-ChangeLanguage';
     this.DEFAULT_KEY_CFG_CAPTION = '🌐';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
+
+    this.DEFAULT_KEY_CFG_TEMPLATE = "<li><a class='langLink' href='' id='%ID%' title='%A%'>%A%</a></li>";
+    this.DEFAULT_KEY_CFG_LINKPREFIX = 'lng';
   }
-  
-  static KEY_CFG_TEMPLATE = 'LINKTEMPLATE';
-  static LANGLINKS_PREFIX = 'lng';
   
   init() {
     super.init();
-    const T = this.constructor;
     const TI = this;
 
-    this.cfgTemplate = TI.config[T.KEY_CFG_TEMPLATE] || "<li><a class='langLink' href='' id='%ID%' title='%A%'>%A%</a></li>";
     this.langTab = uiAddTreeView('langList', TI.tab);
 
-    registerOnClick(T.LANGLINKS_PREFIX, (e) => {
+    registerOnClick(TI.cfgLINKPREFIX, (e) => {
       loadLocalization(e.elementIdVal);
       e.event.preventDefault();
     });
@@ -28,7 +26,6 @@ class puiButtonChangeLanguage extends puiButtonTab {
   }
   
   _preShowAction(evt) {
-    const T = this.constructor;
     var langsFromHelp = (configGetValue(CFG_KEY_Languages, '') || '')?.split(';') || [];
     var languages = getLanguagesList(langsFromHelp);
 
@@ -39,7 +36,7 @@ class puiButtonChangeLanguage extends puiButtonTab {
         const parts = languages[i].split("|");
         const alias = parts[0]?.trim() || "";
         const name = parts[1]?.trim() || "";
-        const linkSrc = this.cfgTemplate.replaceAll('%ID%', `${T.LANGLINKS_PREFIX}|${name}`).replaceAll('%A%', alias);
+        const linkSrc = this.cfgTEMPLATE.replaceAll('%ID%', `${this.cfgLINKPREFIX}|${name}`).replaceAll('%A%', alias);
         this.langTab.innerHTML += linkSrc;
       }  
     });

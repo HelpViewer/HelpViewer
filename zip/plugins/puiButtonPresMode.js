@@ -5,18 +5,14 @@ class puiButtonPresMode extends puiButton {
     this.DEFAULT_KEY_CFG_ID = 'downP-TogglePresMode';
     this.DEFAULT_KEY_CFG_CAPTION = '📽';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
+    this.DEFAULT_KEY_CFG_NAVIGATIONID = 'nav';
 
     this.presModeCSSAddName = 'presModeCSSAdd';
   }
 
-  static KEY_CFG_NAVIGATIONID = 'NAVIGATIONID';
-
   init() {
     const T = this.constructor;
     const TI = this;
-
-    this.DEFAULT_KEY_CFG_NAVIGATIONID = 'nav';
-    this.navigationId = TI.config[T.KEY_CFG_NAVIGATIONID] || TI.DEFAULT_KEY_CFG_NAVIGATIONID;
 
     super.init();
 
@@ -56,7 +52,7 @@ class puiButtonPresMode extends puiButton {
       e.preventDefault();
       sendEvent(evtNameNav, (x) => {
         x.direction = 1;
-        x.id = this.navigationId;
+        x.id = this.cfgNAVIGATIONID;
         x.event = e;
       });
     }
@@ -64,7 +60,7 @@ class puiButtonPresMode extends puiButton {
       e.preventDefault();
       sendEvent(evtNameNav, (x) => {
         x.direction = -1;
-        x.id = this.navigationId;
+        x.id = this.cfgNAVIGATIONID;
         x.event = e;
       });
     }

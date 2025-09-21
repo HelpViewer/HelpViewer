@@ -1,6 +1,4 @@
 class puiButtonObjectExplorer extends puiButtonTabTree {
-  static KEY_CFG_GROUPSLIST = 'GROUPSLIST';
-
   constructor(aliasName, data) {
     super(aliasName, data);
 
@@ -20,7 +18,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
     const T = this.constructor;
     const TI = this;
-    this.cfgGroupsList = (this.config[T.KEY_CFG_GROUPSLIST] || TI.DEFAULT_KEY_CFG_GROUPSLIST)?.split(';');
+    TI.cfgGROUPSLIST = TI.cfgGROUPSLIST?.split(';');
 
     TI.catalogizeEventCall(TI._handleEnterOnField, EventNames.ClickedEvent);
   }
@@ -31,7 +29,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
 
   _preStandardInit() {
     super._preStandardInit?.();
-    const fieldId = `${this.cfgTreeId}-i`;
+    const fieldId = `${this.cfgTREEID}-i`;
     this.tab?.insertAdjacentHTML('afterbegin', `<input type="text" id="${fieldId}"></input>`);
     const field = $(fieldId);
     field.addEventListener('keydown', this._handleEnterOnField.bind(this));
@@ -150,7 +148,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
     this.PluginInstanceList = plugins[1].map(x => x);
 
     // preparation of flat lists
-    const pluginGroups = this.cfgGroupsList.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`]?.split(';')]));
+    const pluginGroups = this.cfgGROUPSLIST.map(x => new ObjectExplorerTreeItem(x, new ObjectExplorerObjectDescriptor('grp', this.config[x], true), [], undefined, _T(x), [this.config[`${x}-F`]?.split(';')]));
     var pluginNodes = plugins[0].map(x => new ObjectExplorerTreeItem(x, ObjectExplorerObjectDescriptor.PLUGIN, [], Plugins.pluginsClasses.get(x) ));
     var pluginInstanceNodes = plugins[2].map(x => new ObjectExplorerTreeItem(x[0], ObjectExplorerObjectDescriptor.PLUGININSTANCE, [], x[1]));
     this.pluginNodes = pluginNodes;
@@ -333,7 +331,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
   }
 
   _renderClassTree(treeI, desc = ObjectExplorerObjectDescriptor.PLUGIN) {
-    const pluginGroupsTable = this.cfgGroupsList.map(x => [this.config[`${x}-F`]?.split(';'), this.config[x]]);
+    const pluginGroupsTable = this.cfgGROUPSLIST.map(x => [this.config[`${x}-F`]?.split(';'), this.config[x]]);
     pluginGroupsTable.push([['Object'], '⚙️']);
     pluginGroupsTable.push([['IEvent'], '⚡']);
     treeI = treeI.map(row => {
@@ -492,7 +490,7 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         r.content = r.content.replace('<!-- %OBJCLASS% -->', objClassExport());
   
         const grpExport = () => {
-          const arr = this.cfgGroupsList.map(grp => {
+          const arr = this.cfgGROUPSLIST.map(grp => {
             return `| ${this.config[grp]} ${_T(grp)} | ${_T(grp + '-D')} |`;
           });
           return arr.join('\n');

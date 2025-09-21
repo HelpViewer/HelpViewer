@@ -3,11 +3,11 @@ class puiSidebarVisibilityToggle extends IPlugin {
     super(aliasName, data);
     this.buttonHide = undefined;
     this.buttonShow = undefined;
-  }
 
-  static KEY_CFG_HIDE = 'HIDE';
-  static KEY_CFG_SHOW = 'SHOW';
-  static KEY_CFG_STOREKEY = 'STOREKEY';
+    this.DEFAULT_KEY_CFG_STOREKEY = 'sidebarVisible';
+    this.DEFAULT_KEY_CFG_HIDE = '❌︎';
+    this.DEFAULT_KEY_CFG_SHOW = '☰';
+  }
 
   static ID_DOWNPB = 'downP-Hide';
   static ID_TOPPB = 'showBtn';
@@ -16,13 +16,7 @@ class puiSidebarVisibilityToggle extends IPlugin {
     const T = this.constructor;
     const TI = this;
 
-    this.DEFAULT_KEY_CFG_STOREKEY = 'sidebarVisible';
-    this.DEFAULT_KEY_CFG_HIDE = '❌︎';
-    this.DEFAULT_KEY_CFG_SHOW = '☰';
-
-    TI.KEY_LS_SIDEBARVISIBLE = this.config[T.KEY_CFG_STOREKEY] || this.DEFAULT_KEY_CFG_STOREKEY;
-    const captionHide = this.config[T.KEY_CFG_HIDE] || this.DEFAULT_KEY_CFG_HIDE;
-    const captionShow = this.config[T.KEY_CFG_SHOW] || this.DEFAULT_KEY_CFG_SHOW;
+    TI.KEY_LS_SIDEBARVISIBLE = TI.cfgSTOREKEY;
     TI.sidebarVisible = getUserConfigValue(TI.KEY_LS_SIDEBARVISIBLE) || 1;
     
     const _sidebarToggle = (evt) => {
@@ -30,8 +24,8 @@ class puiSidebarVisibilityToggle extends IPlugin {
       this._refreshInternalState(newState);
     }
   
-    TI.buttonHide = uiAddButton(T.ID_DOWNPB, captionHide, UI_PLUGIN_SIDEBAR, _sidebarToggle);
-    TI.buttonShow = uiAddButton(T.ID_TOPPB, captionShow, UI_PLUGIN_HEADER, _sidebarToggle);
+    TI.buttonHide = uiAddButton(T.ID_DOWNPB, TI.cfgHIDE, UI_PLUGIN_SIDEBAR, _sidebarToggle);
+    TI.buttonShow = uiAddButton(T.ID_TOPPB, TI.cfgSHOW, UI_PLUGIN_HEADER, _sidebarToggle);
 
     toggleVisibility(TI.buttonShow, !TI.sidebarVisible);
 

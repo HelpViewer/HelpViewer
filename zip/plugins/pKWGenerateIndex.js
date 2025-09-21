@@ -1,17 +1,8 @@
 class pKWGenerateIndex extends IPlugin {
-  static KEY_CFG_FILENAMEKW = 'FILENAMEKW';
-  static KEY_CFG_FILENAMEKWMAP = 'FILENAMEKWMAP';
-  static KEY_CFG_FILENAMELISTFILES = 'FILENAMELISTFILES';
-  static KEY_CFG_MINWORDLENGTH = 'MINWORDLENGTH';
-  static KEY_CFG_ADDITIONALINDEXFILES = 'ADDITIONALINDEXFILES';
-
   constructor(aliasName, data) {
     super(aliasName, data);
     this.eventIdStrict = true;
 
-    this.DEFAULT_KEY_CFG_FILENAMEKW = 'fts-keywords.lst';
-    this.DEFAULT_KEY_CFG_FILENAMEKWMAP = 'fts-keywords-files.lst';
-    this.DEFAULT_KEY_CFG_FILENAMELISTFILES = 'files.lst';
     this.DEFAULT_KEY_CFG_MINWORDLENGTH = 3;
     this.DEFAULT_KEY_CFG_ADDITIONALINDEXFILES = '_sidebar.md;_navbar.md';
   }
@@ -19,12 +10,6 @@ class pKWGenerateIndex extends IPlugin {
   init() {
     const T = this.constructor;
     const TI = this;
-    
-    this.cfgFilenameKW = this.config[T.KEY_CFG_FILENAMEKW] || TI.DEFAULT_KEY_CFG_FILENAMEKW;
-    this.cfgFilenameKWMAP = this.config[T.KEY_CFG_FILENAMEKWMAP] || TI.DEFAULT_KEY_CFG_FILENAMEKWMAP;
-    this.cfgFilenameFiles = this.config[T.KEY_CFG_FILENAMELISTFILES] || TI.DEFAULT_KEY_CFG_FILENAMELISTFILES;
-    this.cfgMinWordLength = parseInt(this.config[T.KEY_CFG_MINWORDLENGTH]) || TI.DEFAULT_KEY_CFG_MINWORDLENGTH;
-    this.cfgAdditionalIndexFiles = this.config[T.KEY_CFG_ADDITIONALINDEXFILES] || TI.DEFAULT_KEY_CFG_ADDITIONALINDEXFILES;
     
     TI.catalogizeEventCall(TI.onETIndexFileNotExists, EventNames.IndexFileSetData);
 
@@ -45,7 +30,7 @@ class pKWGenerateIndex extends IPlugin {
     this.chapterLinks = [];
 
     getHelpListingFiles((fileListM, readme) => {
-      this.cfgAdditionalIndexFiles.split(';').forEach(f => {
+      this.cfgADDITIONALINDEXFILES.split(';').forEach(f => {
         if (!fileListM.has(f))
           fileListM.set(f, f);
       });
@@ -125,14 +110,14 @@ class pKWGenerateIndex extends IPlugin {
         }
 
         // all index records in flat, min word length filtered out
-        flatArray = flatArray.filter((x) => x && x[0] && x[0].length >= this.cfgMinWordLength);
+        flatArray = flatArray.filter((x) => x && x[0] && x[0].length >= this.cfgMINWORDLENGTH);
 
         const grouped = Object.create(null);
         const flArrayFiles = flArray.map((x) => x[0]);
 
         for (const [file, innerMap] of this.indexes) {
           for (var [key, value] of innerMap) {
-            if (!key || key.length < this.cfgMinWordLength) 
+            if (!key || key.length < this.cfgMINWORDLENGTH) 
               continue;
 
             if (key === 'constructor')

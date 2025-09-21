@@ -1,11 +1,12 @@
 class puiPanel extends IPlugin {
   static addition = '<div class="header" id="%%-panel"><div id="%%-toolbar" role="navigation"></div></div>';
 
-  static KEY_CFG_POSITION = 'POSITION';
-  static KEY_CFG_BASEELEMENTID = 'BASEELEMENTID';
-
   constructor(aliasName, data) {
     super(aliasName, data);
+
+    this.DEFAULT_KEY_CFG_POSITION = 't';
+    this.DEFAULT_KEY_CFG_BASEELEMENTID = 'content';
+
     this.eventIdStrict = true;
   }
 
@@ -18,23 +19,17 @@ class puiPanel extends IPlugin {
       b: 'b',
     };
 
-    TI.DEFAULT_KEY_CFG_POSITION = positions.t;
-    TI.DEFAULT_KEY_CFG_BASEELEMENTID = 'content';
-
-    TI.cfgPosition = TI.config[T.KEY_CFG_POSITION] || TI.DEFAULT_KEY_CFG_POSITION;
-    TI.cfgBaseElementId = TI.config[T.KEY_CFG_BASEELEMENTID] || TI.DEFAULT_KEY_CFG_BASEELEMENTID;
-
-    const containerRelativeTo = $(TI.cfgBaseElementId);
+    const containerRelativeTo = $(TI.cfgBASEELEMENTID);
     const parent = containerRelativeTo.parentElement;
     const tmpDiv = document.createElement('div');
     tmpDiv.innerHTML = T.addition.replace(new RegExp('%%', 'g'), TI.aliasName);
     const node = tmpDiv.firstChild;
     
     if (containerRelativeTo && node) {
-      if (TI.cfgPosition == positions.t) {
+      if (TI.cfgPOSITION == positions.t) {
         parent.insertBefore(node, containerRelativeTo);
       } else 
-      if (TI.cfgPosition == positions.b) {
+      if (TI.cfgPOSITION == positions.b) {
         parent.insertBefore(node, containerRelativeTo.nextSibling);
         node.classList.add(C_BOTTOMPANEL);
       }

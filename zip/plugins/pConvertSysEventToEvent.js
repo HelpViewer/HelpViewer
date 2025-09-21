@@ -11,11 +11,6 @@ class ConvertedSystemEvent extends IEvent {
 ConvertedSystemEvent.register();
 
 class pConvertSysEventToEvent extends IPlugin {
-  static KEY_CFG_SYSEVENTNAME = 'SYSEVENTNAME';
-  static KEY_CFG_SYSOBJECT = 'SYSOBJECT';
-  static KEY_CFG_EVENTBUSEVENT = 'EVENTBUSEVENT';
-  static KEY_CFG_EVENTBUSEVENTID = 'EVENTBUSEVENTID';
-
   constructor(aliasName, data) {
     super(aliasName, data);
 
@@ -28,11 +23,6 @@ class pConvertSysEventToEvent extends IPlugin {
   init() {
     const T = this.constructor;
     const TI = this;
-
-    TI.cfgSYSEVENTNAME = TI.config[T.KEY_CFG_SYSEVENTNAME] || TI.DEFAULT_KEY_CFG_SYSEVENTNAME;
-    TI.cfgSYSOBJECT = TI.config[T.KEY_CFG_SYSOBJECT] || TI.DEFAULT_KEY_CFG_SYSOBJECT;
-    TI.cfgEVENTBUSEVENT = TI.config[T.KEY_CFG_EVENTBUSEVENT] || TI.DEFAULT_KEY_CFG_EVENTBUSEVENT;
-    TI.cfgEVENTBUSEVENTID = TI.config[T.KEY_CFG_EVENTBUSEVENTID] || TI.DEFAULT_KEY_CFG_EVENTBUSEVENTID;
 
     TI.targetSysObject = SystemEventHandler.getTargetFromName(TI.cfgSYSOBJECT);
 

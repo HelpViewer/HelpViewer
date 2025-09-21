@@ -1,13 +1,12 @@
 class pTRParseMermaid extends pTRPhasePlugin {
-  static KEY_CFG_FILENAME = 'FILENAME';
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.DEFAULT_KEY_CFG_FILENAME = 'mermaid.min.js;LICENSE-mermaid.md';
+  }
 
   init() {
     super.init();
-
-    const T = this.constructor;
-    this.DEFAULT_KEY_CFG_FILENAME = 'mermaid.min.js;LICENSE-mermaid.md';
-    this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
-    this.RES_MERMAID = new Resource('MERMAID', undefined, STO_DATA, this.cfgFileName);
+    this.RES_MERMAID = new Resource('MERMAID', undefined, STO_DATA, this.cfgFILENAME);
   }
   
   onETShowChapterResolutions(r) {

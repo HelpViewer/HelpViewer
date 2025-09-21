@@ -8,14 +8,10 @@ class puiButtonToggleSide extends puiButton {
     this.DEFAULT_KEY_CFG_STOREKEY = 'sidebarSide';
   }
 
-  static KEY_CFG_STOREKEY = 'STOREKEY';
-
   init() {
-    const T = this.constructor;
     const TI = this;
 
-    this.KEY_LS_SIDEBARSIDE = this.config[T.KEY_CFG_STOREKEY] || this.DEFAULT_KEY_CFG_STOREKEY;
-    this.state = getUserConfigValue(this.KEY_LS_SIDEBARSIDE) || 0;
+    TI.state = getUserConfigValue(TI.cfgSTOREKEY) || 0;
     
     if (this.state == 0) 
       this.toggleSidebarSideHandler();
@@ -32,7 +28,7 @@ class puiButtonToggleSide extends puiButton {
   toggleSidebarSideHandler() {
     const resolution = toggleSidebarSide();
     this.state = resolution;
-    setUserConfigValue(this.KEY_LS_SIDEBARSIDE, String(Number(resolution)));
+    setUserConfigValue(this.cfgSTOREKEY, String(Number(resolution)));
   }
 }
 

@@ -11,17 +11,12 @@ class pConfigFile extends IPlugin {
   static EVT_CF_RELOAD = 'ConfigFileReload';
   static EVT_CF_RELOAD_FINISHED = 'ConfigFileReloadFinished';
 
-  static KEY_CFG_STORAGE = 'STORAGE';
-  static KEY_CFG_FILENAME = 'FILENAME';
-
   constructor(aliasName, data) {
     super(aliasName, data);
 
     this.DEFAULT_KEY_CFG_STORAGE = 'STO_DATA';
     this.DEFAULT_KEY_CFG_FILENAME = '_config.txt';
     const T = this.constructor;
-    this.cfgStorage = this.config[T.KEY_CFG_STORAGE] || this.DEFAULT_KEY_CFG_STORAGE;
-    this.cfgFileName = this.config[T.KEY_CFG_FILENAME] || this.DEFAULT_KEY_CFG_FILENAME;
 
     this.CFG = undefined;
 
@@ -58,16 +53,16 @@ class pConfigFile extends IPlugin {
     const T = this.constructor;
     const thisCfg = '.';
 
-    if (this.cfgStorage == thisCfg && this.cfgFileName == thisCfg) {
+    if (this.cfgSTORAGE == thisCfg && this.cfgFILENAME == thisCfg) {
       this.CFG = this.config;
     } else {
-      const found = await storageSearch(this.cfgStorage, this.cfgFileName);
+      const found = await storageSearch(this.cfgSTORAGE, this.cfgFILENAME);
       this.CFG = parseConfigFile(found);
     }
 
     sendEvent(T.EVT_CF_RELOAD_FINISHED, (x) => {
       x.id = this.aliasName;
-      x.result = `${this.cfgStorage}:${this.cfgFileName}`;
+      x.result = `${this.cfgSTORAGE}:${this.cfgFILENAME}`;
     });
   }
 

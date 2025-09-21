@@ -13,8 +13,6 @@ class ChapterIndexFileGetData extends IEvent {
 }
 
 class pChapterIndexFile extends IPlugin {
-  static KEY_CFG_FILENAME = 'FILENAME';
-
   static EVT_CHF_SET = ChapterIndexFileSetData.name;
   static EVT_CHF_GET = ChapterIndexFileGetData.name;
   static EVT_CHF_GETALL = 'ChapterIndexFileGetDataAll';
@@ -30,8 +28,6 @@ class pChapterIndexFile extends IPlugin {
   init() {
     const T = this.constructor;
     const TI = this;
-
-    this.cfgFilename = this.config[T.KEY_CFG_FILENAME] || TI.DEFAULT_KEY_CFG_FILENAME;
 
     const h_EVT_CHF_SET = (data) => {
       if (!data || !data.data) {
@@ -80,7 +76,7 @@ class pChapterIndexFile extends IPlugin {
   }
 
   _getIndexData() {
-    return storageSearch(STO_HELP, this.cfgFilename);
+    return storageSearch(STO_HELP, this.cfgFILENAME);
   }
 }
 

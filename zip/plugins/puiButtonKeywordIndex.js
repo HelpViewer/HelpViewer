@@ -13,7 +13,6 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
   init() {
     super.init();
 
-    const T = this.constructor;
     const TI = this;
 
     hideButton(TI.button.id, false);
@@ -27,7 +26,7 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
 
     hideButton(this.button.id, x.result);
 
-    const target = $(this.cfgTreeId);
+    const target = $(this.cfgTREEID);
     this.constructor._requestIndexData(target, alias);
   }
 
@@ -53,13 +52,13 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     p.innerHTML = a.innerHTML;
 
     const reply = getIndexFileKeywordData(path[1], path[0]);
-    const tree = linesToHtmlTree(reply, this.cfgTreeId + 'kwidx');
+    const tree = linesToHtmlTree(reply, this.cfgTREEID + 'kwidx');
     p.innerHTML = tree;
     openSubtree(p);
   }
 
   _preStandardInit() {
-    const fieldId = `${this.cfgTreeId}-i`;
+    const fieldId = `${this.cfgTREEID}-i`;
     this.tab?.insertAdjacentHTML('afterbegin', `<input type="text" id="${fieldId}"></input>`);
     const field = $(fieldId);
     const T = this.constructor;

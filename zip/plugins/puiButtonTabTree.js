@@ -19,8 +19,6 @@ class puiButtonTabTree extends puiButtonTab {
   static EVT_TREE_DATA_CHANGED = 'TreeDataChanged';
   static EVT_TREE_CLICKED = ClickedEventTree.name;
 
-  static KEY_CFG_TREEID = 'TREEID';
-
   constructor(aliasName, data) {
     super(aliasName, data);
     this.tree = undefined;
@@ -32,7 +30,6 @@ class puiButtonTabTree extends puiButtonTab {
   init() {
     const TI = this;
     const T = this.constructor;
-    this.cfgTreeId = this.config[T.KEY_CFG_TREEID] || TI.DEFAULT_KEY_CFG_TREEID;
     var tree = null;
 
     const h_EVT_SET_TREE_DATA = (data) => {
@@ -42,9 +39,9 @@ class puiButtonTabTree extends puiButtonTab {
       if (!data.append)
         tree.textContent = '';
 
-      tree.insertAdjacentHTML('beforeend', linesToHtmlTree(data.data, this.cfgTreeId));
+      tree.insertAdjacentHTML('beforeend', linesToHtmlTree(data.data, this.cfgTREEID));
 
-      data.targetTree = this.cfgTreeId;
+      data.targetTree = this.cfgTREEID;
       data.result = this.aliasName;
 
       sendEvent(T.EVT_TREE_DATA_CHANGED, (dc) => {
@@ -64,12 +61,12 @@ class puiButtonTabTree extends puiButtonTab {
     super.init();
     TI._preStandardInit();
 
-    this.tree = uiAddTreeView(TI.cfgTreeId, TI.tab);
+    this.tree = uiAddTreeView(TI.cfgTREEID, TI.tab);
     tree = this.tree;
 
-    registerOnClick(TI.cfgTreeId, (e) => {
+    registerOnClick(TI.cfgTREEID, (e) => {
       const result = this._treeClick(e);
-      _notifyClickedEvent(e, result, this.cfgTreeId);
+      _notifyClickedEvent(e, result, this.cfgTREEID);
     });
   }
   
