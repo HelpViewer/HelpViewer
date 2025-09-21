@@ -59,6 +59,9 @@ class puiWatermark extends IPlugin {
         TI.cfgText = payload;
       }
 
+      TI.config[T.KEY_CFG_TEXT] = TI.cfgText;
+      TI.config[T.KEY_CFG_IMAGEPATH] = TI.cfgImage;
+
       TI.assemble();
       data.result = true;
       return;
