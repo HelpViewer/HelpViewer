@@ -36,6 +36,7 @@ class puiPanel extends IPlugin {
       } else 
       if (TI.cfgPosition == positions.b) {
         parent.insertBefore(node, containerRelativeTo.nextSibling);
+        node.classList.add(C_BOTTOMPANEL);
       }
     }
 

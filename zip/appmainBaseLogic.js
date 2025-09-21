@@ -2,6 +2,7 @@ const C_HIDDENC = 'hidden';
 const C_HIDDENCPRESMODE = 'hiddenPresmode';
 const C_HIDDENCPRINT = 'hiddenprint';
 const C_NOTRANSITION = 'notransition';
+const C_BOTTOMPANEL = 'bottomPanel';
 
 const FILENAME_1STTOPIC = 'README.md';
 const FILENAME_CONFIG = '_config.txt';

@@ -380,6 +380,11 @@ ul:has(li input[type="checkbox"]) {
   border-right: 1px solid var(--c-border);
 }
 
+.bottomPanel {
+  border-bottom: unset;
+  border-top: 1px solid var(--c-border);
+}
+
 /*S: print support*/
 @media print {
   .inSepia {
