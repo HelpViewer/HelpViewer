@@ -9,7 +9,23 @@ class IPlugin {
     this.storageName = undefined;
   }
 
+  _bindConfig() {
+    // set configuration options from configuration data
+    const prefixConfigOptionS = 'DEFAULT_KEY_CFG_';
+    const prefixConfigOption = new RegExp(`^${prefixConfigOptionS}`);
+    const prefLen = prefixConfigOptionS.length;
+    browsePrototypesDeep(this, (instance, definitions) =>
+      definitions.filter(name => prefixConfigOption.test(name)).forEach(name => {
+        const cfgKey = name.substring(prefLen);
+        const defVal = instance[name];
+        const cfgVal = instance.config[cfgKey];
+        instance[`cfg${cfgKey}`] = cfgVal || defVal;
+      })
+    );
+  }
+
   init() {
+    // attach event handlers
     const prefixEventHandler = /^onET/;
     var _handleFunctionToSubscription = (instance, name) => {
       browseMemberDeep(instance, name, (desc) => {
@@ -219,6 +235,7 @@ const Plugins = {
 
     try {
       p = new plugin(aliasName, data);
+      p._bindConfig();
     } catch (error) {
       p = null;
       plugin = pluginName;
