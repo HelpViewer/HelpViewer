@@ -12,7 +12,7 @@ class IPlugin {
   init() {
     const prefixEventHandler = /^onET/;
     var _handleFunctionToSubscription = (instance, name) => {
-      browseMember(instance, name, (desc) => {
+      browseMemberDeep(instance, name, (desc) => {
         if (typeof desc.value !== 'function') return;
         var nameBase = name.replace(prefixEventHandler, '');
   
@@ -25,8 +25,10 @@ class IPlugin {
       });
     };
 
-    var proto = Object.getPrototypeOf(this);
-    Object.getOwnPropertyNames(proto).filter(name => prefixEventHandler.test(name)).forEach(name => _handleFunctionToSubscription(proto, name));
+    // var proto = Object.getPrototypeOf(this);
+    // Object.getOwnPropertyNames(proto).filter(name => prefixEventHandler.test(name)).forEach(name => _handleFunctionToSubscription(proto, name));
+    browsePrototypesDeep(Object.getPrototypeOf(this), (type, definitions) =>
+      definitions.filter(name => prefixEventHandler.test(name)).forEach(name => _handleFunctionToSubscription(type, name)));
 
     this.eventDefinitions.forEach(([name, cls, fn]) => {
       this.createEvent(name, fn, cls);
@@ -153,10 +155,29 @@ class Resource extends IPlugin {
   }
 }
 
+function browsePrototypesDeep(instance, handler) {
+  var proto = instance;
+  var lastFound = false;
+  while (!lastFound && proto && proto !== Object.prototype) {
+    handler(proto, Object.getOwnPropertyNames(proto));
+    proto = Object.getPrototypeOf(proto);
+  }
+};
+
+function browseMemberDeep(instance, name, handler) {
+  var proto = instance;
+  var lastFound = false;
+  while (!lastFound && proto && proto !== Object.prototype) {
+    lastFound = browseMember(proto, name, handler);
+    proto = Object.getPrototypeOf(proto);
+  }
+};
+
 function browseMember(instance, name, handler) {
   const desc = Object.getOwnPropertyDescriptor(instance, name);
-  if (!desc) return;
-  handler(desc);
+  if (desc)
+    handler(desc);
+  return !!desc;
 };
 
 const Plugins = {
