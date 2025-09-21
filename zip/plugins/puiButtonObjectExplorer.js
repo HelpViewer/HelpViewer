@@ -219,20 +219,18 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
         ));
       });
 
-      var prefixCFG = /^KEY_CFG_/;
-      var proto = plg.constructor;
+      var proto = plg;
+      const prefixCFG = /^DEFAULT_KEY_CFG_/;
       const cfgKeysProps = [];
-      const getCfgVarsFromObject = (proto, prefixCFG, getNameBase = (d) => d.value) => Object.getOwnPropertyNames(proto).filter(name => prefixCFG.test(name)).forEach(name => {
-        browseMember(proto, name, (desc) => {
-          var nameBase = getNameBase(desc);
+      browsePrototypesDeep(proto, (instance, definitions) =>
+        definitions.filter(name => prefixCFG.test(name)).forEach(d => {
+          var nameBase = d.replace(prefixCFG, '').replace('_', '');
           if (!cfgKeysProps.includes(nameBase)) {
-            plug.subItems.push(new ObjectExplorerTreeItem(baseN + nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], plg, nameBase));
+            plug.subItems.push(new ObjectExplorerTreeItem(baseN + nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], plg, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
             cfgKeysProps.push(nameBase);
           }
-        });
-      });
-
-      getCfgVarsFromObject(proto, prefixCFG);
+        })
+      );
 
       var cfgKeysCfgState = [...Object.keys(plg.config).filter(x => !cfgKeysProps.includes(x))].filter(x => x);
       cfgKeysCfgState.forEach(name => {
@@ -243,15 +241,6 @@ class puiButtonObjectExplorer extends puiButtonTabTree {
       });
 
       proto = Object.keys(plg);
-      prefixCFG = /^DEFAULT_KEY_CFG_/;
-      proto.filter(name => prefixCFG.test(name)).forEach(d => {
-        var nameBase = d.replace(prefixCFG, '').replace('_', '');
-        if (!cfgKeysProps.includes(nameBase)) {
-          plug.subItems.push(new ObjectExplorerTreeItem(baseN + nameBase, ObjectExplorerObjectDescriptor.CONFIG, [], plg, nameBase, [ObjectExplorerTreeItem.F_CONFIG_DEFAULTVALEXISTS]));
-          cfgKeysProps.push(nameBase);
-        }
-      });
-
       proto.filter(name => plg[name] instanceof HTMLElement).forEach(d => {
         const pairing = new Map([
           ['ul', ObjectExplorerObjectDescriptor.UI_TREE],
