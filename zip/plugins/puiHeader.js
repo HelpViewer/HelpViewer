@@ -5,25 +5,18 @@ class HeaderSet extends IEvent {
   }
 }
 
-class puiHeader extends IPlugin {
+class puiHeader extends puiPanel {
   static EVT_HEAD_SET = HeaderSet.name;
   static EVT_HEAD_GET = 'HeaderGet';
-
-  static addition = '<div class="header" id="header" role="banner"><h1 id="mtitle">&nbsp;</h1><div id="toolbar" role="navigation"></div></div>';
 
   init() {
     const T = this.constructor;
     const TI = this;
-    const containerMain = $('main');
-    const tmpDiv = document.createElement('div');
-    tmpDiv.innerHTML = T.addition;
-    const node = tmpDiv.firstChild;
-    if (containerMain && node)
-      containerMain.prepend(node);
-    this.header = node;
 
-    const mainTitle = $('mtitle');
-    const toolbar = $('toolbar');
+    TI.eventIdStrict = false;
+
+    const h1id = 'mtitle';
+    const mainTitle = document.createElement('h1');
 
     const h_EVT_HEAD_SET = (data) => {
       if (typeof data.payload === 'function') {
@@ -40,19 +33,16 @@ class puiHeader extends IPlugin {
     }
     TI.eventDefinitions.push([T.EVT_HEAD_GET, IEvent, h_EVT_HEAD_GET]);
 
-    this.handlerButtonSend = createButtonAcceptHandler(this, toolbar);
-
     super.init();
-  }
 
-  deInit() {
-    const header = $('header');
-    header?.remove();
-    super.deInit();
-  }
-  
-  onETButtonSend(x) {
-    this.handlerButtonSend(x);
+    TI.panel.classList.remove(C_HIDDENC);
+
+    TI.mainTitle = mainTitle;
+    mainTitle.innerHTML = '&nbsp;';
+    mainTitle.id = h1id;
+    TI.panel.prepend(mainTitle);
+    TI.panel.id = TI.aliasName;
+    TI.panel.role = 'banner';
   }
 }
 

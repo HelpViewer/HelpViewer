@@ -11,6 +11,7 @@ pConvertSysEventToEvent
 pConvertSysEventToEvent:pPrePrintEvent
 pClickConverter:
 pui:
+puiPanel
 puiHeader:header
 puiSidebar:sidebar
 puiButtonTab
