@@ -454,7 +454,7 @@ function appendJavaScript(id, content, parentO) {
 }
 
 function rowsToArray(t) {
-  if (!t) return;
+  if (!t) return [];
   return t.replace(/\r\n|\r/g, '\n').split('\n');
 }
 
