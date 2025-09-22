@@ -4,7 +4,7 @@ BOTTOM|Toolbar
 SIDEBAR|Sidebar
 TOC|TOC
 NAVIGATION|Navigation
-SUBCHAPTERS|Subchapters
+SUBCHAPTERS|Bookmarks for selected chapter sections
 GLOSSARY|Glossary
 FULLTEXT|Fulltext index
 FULLTEXTGEN|Backup fulltext indexing
@@ -30,5 +30,5 @@ MERMAID|MERMAID - diagrams renderer
 CHAPTERINDEXFILE|User headings for file names
 REFRESHJS|Execute embedded JavaScript
 SvcCantBeProvided|The service cannot be provided. The basic data is not contained in the archive.
-SUBCHAPTERSPANEL|Subchapters list
+SUBCHAPTERSPANEL|Subsections of the selected chapter
 WATERMARK|Watermark on content pane

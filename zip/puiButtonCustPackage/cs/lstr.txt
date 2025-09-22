@@ -4,7 +4,7 @@ BOTTOM|Nástrojový panel
 SIDEBAR|Boční panel
 TOC|Seznam témat
 NAVIGATION|Navigace
-SUBCHAPTERS|Části vybrané kapitoly
+SUBCHAPTERS|Záložky částí vybrané kapitoly
 GLOSSARY|Slovník klíčových slov
 FULLTEXT|Fulltextové vyhledávání
 FULLTEXTGEN|Záložní generování fulltextového indexu
