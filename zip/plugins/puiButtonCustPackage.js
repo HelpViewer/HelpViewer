@@ -104,6 +104,8 @@ class puiButtonCustPackage extends puiButton {
           spanSum.innerText = roundToDecPlaces(sizeSum, 2) + ' kB';
         })
       });
+      
+      sendEvent(evtHideIfTooWide);
     } else {
       $(downloadButtonID).click();
     }
