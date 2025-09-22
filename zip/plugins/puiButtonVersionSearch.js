@@ -24,6 +24,10 @@ class puiButtonVersionSearch extends puiButton {
 
   onET_ConfigFileReloadFinished(evt) {
     const PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+    
+    if (!PRJNAME_VAL)
+      return;
+    
     const pathVersions = getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1]) + this.FILENAME_CHANGELOG;
     this.txt = null;
     hideButton(this.button.id, false);
