@@ -24,16 +24,22 @@ class pServiceLocalization extends pServicePlugin {
       if (jsInArc)
         js = jsInArc;
 
+      var dynStrings = undefined;
+
       if (js) {
         this.addPlugin(pluginName, instanceName);
         const jsAlias = `lngk_${pluginName}`;
         $O(jsAlias)?.remove();
         appendJavaScript(jsAlias, js, document.head);
+        dynStrings = _lstr;
       }
 
       if (txt) {
         this.addPlugin(pluginName, instanceName);
-        sendEvent(EventNames.LocAppend, (x) => x.strings = txt);
+        sendEvent(EventNames.LocAppend, (x) => {
+          x.strings = txt;
+          x.dynStrings = dynStrings;
+        });
       }
     });
   }

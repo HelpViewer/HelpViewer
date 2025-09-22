@@ -31,6 +31,7 @@ class LocAppend extends IEvent {
   constructor() {
     super();
     this.strings = {};
+    this.dynStrings = {};
   }
 }
 class pLocalizationSwitcher extends IPlugin {
@@ -46,7 +47,7 @@ class pLocalizationSwitcher extends IPlugin {
     super(aliasName, data);
 
     this.langStrs = undefined;
-    this.langKeysDyn = undefined;
+    this.langKeysDyn = [];
 
     this.DEFAULT_KEY_CFG_STOREKEY = 'language';
     this.DEFAULT_KEY_CFG_DEFAULTLANG = 'en';
@@ -87,6 +88,8 @@ class pLocalizationSwitcher extends IPlugin {
 
     const h_EVT_LOC_APPEND = (data) => {
       const keys = this._processFlatStrings(data.strings.split('\n'));
+      if (data.dynStrings)
+        this._appendDynamicStrings(data.dynStrings);
       this.refreshTitlesForLangStrings(Object.keys(keys), undefined);
     };
     TI.eventDefinitions.push([T.EVT_LOC_APPEND, LocAppend, h_EVT_LOC_APPEND]);
@@ -148,12 +151,8 @@ class pLocalizationSwitcher extends IPlugin {
     }
 
     this._processFlatStrings(langFlatStrs);
+    this._appendDynamicStrings(_lstr);
     
-    if (typeof _lstr !== "undefined") {
-      this.langKeysDyn = Object.keys(_lstr);
-      Object.assign(this.langStrs, _lstr);
-    }
-
     this.refreshTitlesForLangStrings(Object.keys(this.langStrs));
     TI.activeLanguage = localizationName;
     setUserConfigValue(TI.cfgSTOREKEY, localizationName);
@@ -162,6 +161,13 @@ class pLocalizationSwitcher extends IPlugin {
       x.name = localizationName;
       x.parentEventId = parentEventId;
     });
+  }
+
+  _appendDynamicStrings(_lstr) {
+    if (typeof _lstr !== "undefined") {
+      this.langKeysDyn = [...new Set([...this.langKeysDyn, ...Object.keys(_lstr)])];
+      Object.assign(this.langStrs, _lstr);
+    }
   }
   
   refreshTitlesForLangStrings(strings, spars) {
