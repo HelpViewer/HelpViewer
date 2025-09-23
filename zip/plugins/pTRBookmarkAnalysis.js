@@ -19,14 +19,17 @@ class pTRBookmarkAnalysis extends pTRPhasePlugin {
   onETShowChapterResolutions(r) {
     const C_ANCHOR_CONTENT = ' #';
     // append bookmarks to chapters
+    const anchorGetting = getEventInput(EventNames.AnchorNameGet);
+
     const headings = $A('h1, h2, h3, h4, h5, h6', r.doc);
-    const counters = [0, 0, 0, 0, 0, 0];
 
     headings.forEach(heading => {
       const level = parseInt(heading.tagName.substring(1));
 
       if (!heading.id) {
-        heading.id = nameForAnchor(heading.textContent, level, counters[level-1]++);
+        anchorGetting.text = heading.textContent;
+        anchorGetting.level = level;
+        heading.id = nameForAnchor(anchorGetting);
       }
       
       const anchor = r.doc.createElement('a');

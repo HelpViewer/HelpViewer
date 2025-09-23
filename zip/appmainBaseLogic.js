@@ -35,13 +35,8 @@ const ChapterContentType = {
   NETWORK_RESOURCE: 'NETWORK_RESOURCE',
 };
 
-function nameForAnchor(text, level, levelCounter) {
-  return `h-${level}-${levelCounter}`;
-  // return text.toLowerCase()
-  //   .trim()
-  //   .replace(/[^\w\s-]/g, '')
-  //   .replace(/\s+/g, '-')
-  //   .replace(/-+/g, '-');
+function nameForAnchor(request) {
+  return sendEventObject(request);
 }
 
 function valKiBs(size) {
