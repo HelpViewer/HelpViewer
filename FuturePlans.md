@@ -21,3 +21,6 @@
 - prod logs to console, debug logs to custom tool
 - custom log explorer
 - add jsdoc and auto parse of it
+- text bubbles
+- glossary list page (pages with single letter and word list)
+- wizard with points and buttons
