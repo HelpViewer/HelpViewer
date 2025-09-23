@@ -20,7 +20,8 @@ class pTRParsePrism extends pTRPhasePlugin {
       r.result = r.result.then(() => {
         return loadExtern().then(() => {
           codeBlocks.forEach((block) => {
-            block.classList.add('line-numbers');
+            if (!block.classList.contains('language-treeview'))
+              block.classList.add('line-numbers');
             Prism.highlightElement(block);
           });
         });
