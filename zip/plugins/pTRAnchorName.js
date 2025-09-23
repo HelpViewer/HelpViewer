@@ -2,9 +2,9 @@ class AnchorNameGet extends IEvent {
   constructor() {
     super();
     this.text = '';
-    this.level = '';
+    this.level = 1;
     this._internal = undefined;
-    this.format = '';
+    this.strategy = '';
     this.result = '';
   }
 }
@@ -47,7 +47,7 @@ class pTRAnchorName extends IPlugin {
 
   constructor(aliasName, data) {
     super(aliasName, data);
-    this.DEFAULT_KEY_CFG_FORMAT = 'COUNT';
+    this.DEFAULT_KEY_CFG_STRATEGY = 'COUNT';
   }
 
   init() {
@@ -56,7 +56,7 @@ class pTRAnchorName extends IPlugin {
     
     const h_EVT_AN_GET = (data) => {
       if (!data._internal) {
-        const plannedFormat = data.format || TI.cfgFORMAT;
+        const plannedFormat = data.strategy || TI.cfgSTRATEGY;
         const internalObject = T.handlersPrepareInternal[plannedFormat]?.();
 
         data._internal = { 
@@ -65,10 +65,10 @@ class pTRAnchorName extends IPlugin {
           ...internalObject 
         };
       } else {
-        data.format = data._internal.format;
+        data.strategy = data._internal.strategy;
       }
 
-      const resolvedFormat = data._internal.format || TI.cfgFORMAT;
+      const resolvedFormat = data._internal.strategy || TI.cfgSTRATEGY;
       const firstReply = T.handlersGetOne[resolvedFormat](data);
       var reply = firstReply;
       const duplicitySolver = (T.handlersSolveDuplicity[resolvedFormat] || T.handlersSolveDuplicity['']);
