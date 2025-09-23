@@ -35,10 +35,6 @@ const ChapterContentType = {
   NETWORK_RESOURCE: 'NETWORK_RESOURCE',
 };
 
-function nameForAnchor(request) {
-  return sendEventObject(request);
-}
-
 function valKiBs(size) {
   return roundToDecPlaces(size / 1024, 2);
 }

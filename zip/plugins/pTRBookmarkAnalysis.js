@@ -13,6 +13,9 @@ class pTRBookmarkAnalysis extends pTRPhasePlugin {
     const TI = this;
 
     TI.eventDefinitions.push([T.EVT_BMARKA_BMARKS_CHANGED, BmarksChanged, null]); // outside event handlers
+
+    TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.AnchorNameGet);
+
     super.init();
   }
   
@@ -29,7 +32,7 @@ class pTRBookmarkAnalysis extends pTRPhasePlugin {
       if (!heading.id) {
         anchorGetting.text = heading.textContent;
         anchorGetting.level = level;
-        heading.id = nameForAnchor(anchorGetting);
+        heading.id = sendEventObject(anchorGetting);
       }
       
       const anchor = r.doc.createElement('a');
