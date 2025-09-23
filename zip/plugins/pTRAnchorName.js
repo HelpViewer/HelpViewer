@@ -13,8 +13,9 @@ class AnchorNewStrategy extends IEvent {
   constructor() {
     super();
     this.name = '';
-    this.handlerGetOne = (an) => '';
-    this.handlerPrepareInternal = () => { return {} };
+    this.handlerGetOne = pTRAnchorName.handlersGetOne[''];
+    this.handlerPrepareInternal = pTRAnchorName.handlersPrepareInternal[''];
+    this.handlerSolveDuplicity = pTRAnchorName.handlersSolveDuplicity[''];
   }
 }
 
@@ -23,6 +24,7 @@ class pTRAnchorName extends IPlugin {
   static EVT_AN_NEWSTRA = AnchorNewStrategy.name;
 
   static handlersGetOne = {
+    '' : () => '',
     'COUNT' : (an) => `h-${an.level}-${an._internal.levelCounter[an.level-1]++}`,
     'SLUG' : (an) => {
       return an.text.toLowerCase()
@@ -34,8 +36,13 @@ class pTRAnchorName extends IPlugin {
   };
 
   static handlersPrepareInternal = {
+    '' : () => { return {} },
     'COUNT' : () => { return { levelCounter: [0, 0, 0, 0, 0, 0]} },
     'SLUG' : () => { return {} },
+  };
+
+  static handlersSolveDuplicity = {
+    '' : (tryNo, plannedValue, previousDuplicity, firstDuplicity, data, format) => `${firstDuplicity}-${tryNo}`,
   };
 
   constructor(aliasName, data) {
@@ -62,11 +69,23 @@ class pTRAnchorName extends IPlugin {
       }
 
       const resolvedFormat = data._internal.format || TI.cfgFORMAT;
-      var reply = T.handlersGetOne[resolvedFormat](data);
+      const firstReply = T.handlersGetOne[resolvedFormat](data);
+      var reply = firstReply;
+      const duplicitySolver = (T.handlersSolveDuplicity[resolvedFormat] || T.handlersSolveDuplicity['']);
+
+      var tryNo = 1;
+      var lastDup = reply;
+      var firstDup = reply;
 
       while (data._internal.returned.includes(reply)) {
-        reply += '1';
+        reply = duplicitySolver(tryNo, reply, lastDup, firstDup, data, resolvedFormat);
+        log(`W ${T.name} : found duplicity in sub chapter name ${data.text}, trying alternative value ${reply} (try: ${tryNo})!`);
+        lastDup = reply;
+        tryNo++;
       }
+
+      if (tryNo > 1)
+        log(`W ${T.name} : duplicity alternative value ${reply} for sub chapter name ${data.text} accepted after try: ${tryNo}.`);
 
       data._internal.returned.push(reply);
       data.result = reply;
@@ -77,8 +96,10 @@ class pTRAnchorName extends IPlugin {
       if (!data.name)
         return;
 
-      T.handlersGetOne[data.name] = data.handlerGetOne;
-      T.handlersPrepareInternal[data.name] = data.handlerPrepareInternal;
+      const altDefaultKey = '';
+      T.handlersGetOne[data.name] = data.handlerGetOne || T.handlersGetOne[altDefaultKey];
+      T.handlersPrepareInternal[data.name] = data.handlerPrepareInternal || T.handlersPrepareInternal[altDefaultKey];
+      T.handlersSolveDuplicity[data.name] = data.handlerSolveDuplicity || T.handlersSolveDuplicity[altDefaultKey];
     }
 
     TI.eventDefinitions.push([T.EVT_AN_NEWSTRA, AnchorNewStrategy, h_EVT_AN_NEWSTRA]);
