@@ -24,3 +24,5 @@
 - text bubbles
 - glossary list page (pages with single letter and word list)
 - wizard with points and buttons
+- Github and another repository services (appGHIntegration.js refactor)
+- User bookmarks across help pages
