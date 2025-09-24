@@ -27,6 +27,10 @@ class puiButtonHome extends puiButton {
       return;
     
     showChapter(null, undefined, this.cfgHOME, null);
+    setToHrefByValues((x) => {
+      x.kvlist.set(PAR_NAME_PAGE, this.cfgHOME);
+      x.kvlist.set(PAR_NAME_ID, 1);
+    });
   }
 
   onET_UserDataFileLoaded(evt) {
