@@ -32,3 +32,4 @@ REFRESHJS|Execute embedded JavaScript
 SvcCantBeProvided|The service cannot be provided. The basic data is not contained in the archive.
 SUBCHAPTERSPANEL|Subsections of the selected chapter
 WATERMARK|Watermark on content pane
+SPLASH|Splash screen

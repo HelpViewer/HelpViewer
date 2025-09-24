@@ -32,3 +32,4 @@ REFRESHJS|Vykonávat vložený JavaScript
 SvcCantBeProvided|Službu nelze poskytnout. Základní data nejsou obsažena v archivu.
 SUBCHAPTERSPANEL|Seznam částí vybrané kapitoly
 WATERMARK|Vodoznak na panelu s textem kapitoly
+SPLASH|Úvodní obrazovka
