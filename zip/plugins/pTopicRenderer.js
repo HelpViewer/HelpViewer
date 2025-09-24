@@ -44,6 +44,7 @@ class ShowChapterResolutions extends IEvent {
     this.found = false;
     this.contentType = undefined;
     this.containerIdContent = '';
+    this.targetOverriden = false;
   }
 }
 
@@ -121,12 +122,13 @@ class pTopicRenderer extends IPlugin {
       }
 
       r.heading = data.heading || getChapterAlternativeHeading(data.address)?.[1] || data.address;
-      const containerIdContent = data.containerIdContent || this.cfgIDCONTENT;
+      const containerIdContent = data.containerIdContent || TI.cfgIDCONTENT;
       r.containerIdContent = containerIdContent;
       r.docV = $(containerIdContent);
       r.doc = r.docV;
       r.uri = typeof data.address === 'string' ? data.address.split(T.MARKER_ADDDATA) : [];
       r.uri.push('');
+      r.targetOverriden = r.containerIdContent != TI.cfgIDCONTENT;
       
       const splits = r.uri[1].split(T.MARKER_ADDDATA_SPLITTER);
 

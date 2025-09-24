@@ -20,6 +20,9 @@ class pTRBookmarkAnalysis extends pTRPhasePlugin {
   }
   
   onETShowChapterResolutions(r) {
+    if (r.targetOverriden)
+      return;
+
     const C_ANCHOR_CONTENT = ' #';
     // append bookmarks to chapters
     const anchorGetting = getEventInput(EventNames.AnchorNameGet);
