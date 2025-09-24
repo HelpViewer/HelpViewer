@@ -11,10 +11,16 @@ class pTR1stHeadingToTopPanel extends pTRPhasePlugin {
     const firstChild = this.doc(r).firstElementChild;
     const firstH1 = $O('h1', r.doc);
   
-    if (firstH1 && firstChild === firstH1 && r.setTitle(firstH1.innerHTML.trim()) )
+    if (firstH1 && firstChild === firstH1)
     {
-      r.heading = firstH1.innerHTML.trim();
-      firstH1.remove();
+      if (firstH1.innerHTML.startsWith('_')) {
+        firstH1.innerHTML = firstH1.innerHTML.trim().substring(1);
+        return;
+      }
+      if (r.setTitle(firstH1.innerHTML.trim())) {
+        r.heading = firstH1.innerHTML.trim();
+        firstH1.remove();
+      }
     }
   }
 }
