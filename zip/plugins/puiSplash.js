@@ -7,6 +7,8 @@ class puiSplash extends IPlugin {
     this.DEFAULT_KEY_CFG_IDNAME = 'splash';
     this.DEFAULT_KEY_CFG_CSSCLASS = 'splash';
     this.eventIdStrict = true;
+
+    this.show = (file) => showChapter(undefined, undefined, file, undefined, undefined, undefined, this.splashPanel.id);
   }
   
   onETChapterShown(evt) {
@@ -18,10 +20,7 @@ class puiSplash extends IPlugin {
     const TI = this;
 
     if (TI.splashPanel)
-      TI.splashPanel.remove();
-    
-    TI.splashPanel = undefined;
-    TI._prepare(TI.lastOrig);
+      TI.show(TI.cfgFILENAME);
   }
 
   _prepare(addressOrig) {
@@ -52,7 +51,7 @@ class puiSplash extends IPlugin {
           sp.classList.add(TI.cfgCSSCLASS);
           sp.id = TI.cfgIDNAME;
           relative.parentElement.insertBefore(sp, relative);
-          showChapter(undefined, undefined, TI.cfgFILENAME, undefined, undefined, undefined, sp.id);
+          TI.show(TI.cfgFILENAME);
         }
       });
     }
