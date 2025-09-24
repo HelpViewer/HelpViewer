@@ -18,6 +18,21 @@
   color: var(--c-wordFound-F);
 }
 
+.cparent {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.page {
+  height: 100vh;
+  scroll-snap-align: start;
+}
+
+body {
+  overflow: hidden;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -45,6 +60,7 @@ h1 {
 .container {
   display: flex;
   height: 100vh;
+  scroll-snap-align: start;
 }
 
 .sidebar {
