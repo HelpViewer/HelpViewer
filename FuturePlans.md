@@ -4,7 +4,6 @@
 - Left panel with multi pages:
   - User notes list and links to headings inside documents
 - Possibility to add custom user note to anchor (heading) + data management in separated ZIP
-- Splash screen for helpfile
 - In commit 1119768 there has been done try with scratch image, but failed so alpine was used. Retry it.
 - Nice URLs (?id=5&d=...&p=... vs /hello.md/3)
 - RSS generator
