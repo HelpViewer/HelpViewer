@@ -221,12 +221,15 @@ function getPluginsState() {
 /*E: Plugin: pPluginManagement */
 
 /*S: Plugin: puiHeader */
-function setHeader(txt) {
-  return sendEvent('HeaderSet', (x) => x.payload = txt);
+function setHeader(txt, id = UI_PLUGIN_HEADER) {
+  return sendEvent('HeaderSet', (x) => {
+    x.payload = txt;
+    x.id = id;
+  });
 }
 
-function getHeader() {
-  return sendEvent('HeaderGet');
+function getHeader(id = UI_PLUGIN_HEADER) {
+  return sendEvent('HeaderGet', (x) => x.id = id);
 }
 /*E: Plugin: puiHeader */
 

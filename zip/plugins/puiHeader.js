@@ -9,11 +9,17 @@ class puiHeader extends puiPanel {
   static EVT_HEAD_SET = HeaderSet.name;
   static EVT_HEAD_GET = 'HeaderGet';
 
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    
+    this.DEFAULT_KEY_CFG_TEXT = '';
+  }
+
   init() {
     const T = this.constructor;
     const TI = this;
 
-    TI.eventIdStrict = false;
+    TI.eventIdStrict = true;
 
     const h1id = 'mtitle';
     const mainTitle = document.createElement('h1');
@@ -38,10 +44,10 @@ class puiHeader extends puiPanel {
     TI.panel.classList.remove(C_HIDDENC);
 
     TI.mainTitle = mainTitle;
-    mainTitle.innerHTML = '&nbsp;';
+    mainTitle.innerHTML = TI.cfgTEXT || '&nbsp;';
     mainTitle.id = h1id;
     TI.panel.prepend(mainTitle);
-    TI.panel.id = TI.aliasName;
+    TI.panel.id = TI.aliasName || 'header';
     TI.panel.role = 'banner';
   }
 }
