@@ -13,6 +13,7 @@ class puiHeader extends puiPanel {
     super(aliasName, data);
     
     this.DEFAULT_KEY_CFG_TEXT = '';
+    this.DEFAULT_KEY_CFG_ARIAHEADER = 'banner';
   }
 
   init() {
@@ -49,7 +50,7 @@ class puiHeader extends puiPanel {
     mainTitle.id = `${TI.aliasName == fallbackId ? '' : TI.aliasName}${h1id}`;
     TI.panel.prepend(mainTitle);
     TI.panel.id = TI.aliasName || fallbackId;
-    TI.panel.role = 'banner';
+    TI.panel.setAttribute('role', TI.cfgARIAHEADER);
   }
 }
 

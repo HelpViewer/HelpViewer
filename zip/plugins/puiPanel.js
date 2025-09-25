@@ -1,11 +1,12 @@
 class puiPanel extends IPlugin {
-  static addition = '<div class="header" id="%%-panel"><div id="%%-toolbar" role="navigation"></div></div>';
+  static addition = '<div class="header" id="%%-panel"><div id="%%-toolbar"></div></div>';
 
   constructor(aliasName, data) {
     super(aliasName, data);
 
     this.DEFAULT_KEY_CFG_POSITION = 't';
     this.DEFAULT_KEY_CFG_BASEELEMENTID = 'content';
+    this.DEFAULT_KEY_CFG_ARIA = 'toolbar';
 
     this.eventIdStrict = true;
   }
@@ -39,6 +40,7 @@ class puiPanel extends IPlugin {
     TI.panel.classList.add(C_HIDDENC);
 
     const toolbar = $(TI.aliasName + '-toolbar');
+    toolbar.setAttribute('role', TI.cfgARIA);
     TI.toolbar = toolbar;
 
     const baseButtonAccept = createButtonAcceptHandler(TI, TI.toolbar);
