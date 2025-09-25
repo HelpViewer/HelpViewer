@@ -6,6 +6,7 @@ class puiSplash extends IPlugin {
     this.DEFAULT_KEY_CFG_FILENAME = '_splash.md';
     this.DEFAULT_KEY_CFG_IDNAME = 'splash';
     this.DEFAULT_KEY_CFG_CSSCLASS = 'splash';
+    this.DEFAULT_KEY_CFG_HOME = FILENAME_1STTOPIC;
     this.eventIdStrict = true;
 
     this.show = (file) => showChapter(undefined, undefined, file, undefined, undefined, undefined, this.splashPanel.id);
@@ -25,7 +26,7 @@ class puiSplash extends IPlugin {
 
   _prepare(addressOrig) {
     const TI = this;
-    const homePage = getHomePageData();
+    const homePage = TI.cfgHOME;
     const relative = $(TI.cfgRELATIVE);
 
     if (!addressOrig || !TI.cfgFILENAME || !homePage || !relative)
