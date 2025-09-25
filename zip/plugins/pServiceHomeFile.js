@@ -28,7 +28,7 @@ class pServiceHomeFile extends IPlugin {
     const helpFile = configGetValue(TI.cfgHELPFILECONFIGKEY, undefined, FILE_CONFIG);
     TI.cfgHOMERESOLVED = helpFile || TI.cfgHOME || FILENAME_1STTOPIC;
     TI.config['HOMERESOLVED'] = TI.cfgHOMERESOLVED;
-    log('E Home file resolution (values), result:', [helpFile, TI.cfgHOME, FILENAME_1STTOPIC], TI.cfgHOMERESOLVED);
+    log('Home file resolution (values), result:', [helpFile, TI.cfgHOME, FILENAME_1STTOPIC], TI.cfgHOMERESOLVED);
   }
 }
 
