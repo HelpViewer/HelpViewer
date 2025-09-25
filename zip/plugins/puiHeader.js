@@ -43,11 +43,12 @@ class puiHeader extends puiPanel {
 
     TI.panel.classList.remove(C_HIDDENC);
 
+    const fallbackId = 'header';
     TI.mainTitle = mainTitle;
     mainTitle.innerHTML = TI.cfgTEXT || '&nbsp;';
-    mainTitle.id = h1id;
+    mainTitle.id = `${TI.aliasName == fallbackId ? '' : TI.aliasName}${h1id}`;
     TI.panel.prepend(mainTitle);
-    TI.panel.id = TI.aliasName || 'header';
+    TI.panel.id = TI.aliasName || fallbackId;
     TI.panel.role = 'banner';
   }
 }
