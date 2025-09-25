@@ -163,7 +163,6 @@ class pAppmainNext extends IPlugin {
 
   onETUserDataFileLoaded(d) {
     configFileReload(FILE_CONFIG);
-    showChapterByData(idxTreeItem, pagePath);
     showSidebarTab();
   }
 
@@ -192,6 +191,10 @@ class pAppmainNext extends IPlugin {
       if (d.id != 'FILE_CONFIG')
         return;
       
+      if (pagePath == FILENAME_1STTOPIC)
+        pagePath = getHomePageData();
+
+      showChapterByData(idxTreeItem, pagePath);
       PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
     
       // Load favicon

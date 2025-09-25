@@ -1,4 +1,3 @@
-puiSplash:
 customRegistrations
 pPluginManagement:
 pUserConfig:
@@ -6,6 +5,8 @@ pChapterIndexFile:
 pGets:
 pStorage:
 pConfigFile:FILE_CONFIG_DEFAULT;FILE_CONFIG
+pServiceHomeFile:
+puiSplash:
 pLocalizationSwitcher:
 pColorTheme:
 pConvertSysEventToEvent
