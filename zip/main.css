@@ -206,7 +206,6 @@ ul.tree details[open] > summary::before {
     line-height: 1.42857143;
     word-break: break-all;
     word-wrap: break-word;
-    /*background-color: var(--c-background);*/
     border: 1px solid var(--c-border);
     border-radius: 4px;
     overflow: auto;
@@ -441,11 +440,6 @@ ul:has(li input[type="checkbox"]) {
     font-size: calc(1em);
   }
   
-/*  svg path {
-    fill: gray !important;
-    stroke: gray !important;
-  }*/
-
   .page-break {
     page-break-before: always;
     break-before: page;
@@ -456,4 +450,3 @@ ul:has(li input[type="checkbox"]) {
   }
 }
 /*E: print support*/
-
