@@ -11,6 +11,7 @@
   --c-anchorColor: #767676;
   --c-contentPaneColor: white;
   --c-wordFound: yellow;
+  --font: sans-serif;
 }
 
 .wordFound {
@@ -22,7 +23,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: sans-serif;
+  font-family: var(--font);
 }
 
 h1 {
