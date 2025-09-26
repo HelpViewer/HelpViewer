@@ -180,7 +180,7 @@ const STO_HELP = 'STO_HELP';
 const STOF_TEXT = 'text';
 const STOF_B64 = 'base64';
 
-const DATA_FILE_PATH_BASE = 'hvdata/data';
+const DATA_FILE_PATH_BASE = DEBUG_MODE ? 'zip' : 'hvdata/data';
 
 const STORAGE_ENGINES = {
   '.zip': async (path) => await new StorageZip().init(path),
