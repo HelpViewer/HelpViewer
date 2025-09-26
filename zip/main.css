@@ -14,6 +14,14 @@
   --font: sans-serif;
 }
 
+.cursorAddon {
+  position: absolute;
+  pointer-events: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  z-index: 9999;
+}
+
 .wordFound {
   background-color: var(--c-wordFound);
   color: var(--c-wordFound-F);

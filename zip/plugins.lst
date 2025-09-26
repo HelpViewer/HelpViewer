@@ -12,6 +12,7 @@ pColorTheme:
 pConvertSysEventToEvent
 pConvertSysEventToEvent:pPrePrintEvent
 pClickConverter:
+pServiceActionCursor:
 pui:
 puiPanel
 puiHeader:header
