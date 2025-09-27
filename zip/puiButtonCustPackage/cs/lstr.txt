@@ -34,3 +34,4 @@ SUBCHAPTERSPANEL|Seznam částí vybrané kapitoly
 WATERMARK|Vodoznak na panelu s textem kapitoly
 SPLASH|Úvodní obrazovka
 USERNOTES|Poznámky
+MODES|Akční režimy

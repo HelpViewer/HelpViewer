@@ -34,3 +34,4 @@ SUBCHAPTERSPANEL|Subsections of the selected chapter
 WATERMARK|Watermark on content pane
 SPLASH|Splash screen
 USERNOTES|User notes
+MODES|Action modes
