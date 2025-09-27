@@ -22,7 +22,16 @@ class HelpViewerDB {
         const request = indexedDB.open('HelpViewer', 1);
 
         request.onerror = () => reject(request.error);
-        request.onsuccess = () => resolve(request.result);
+        request.onsuccess = () => {
+          Object.entries(this.storeConfig).forEach(([storeName, config]) => {
+            const suffixName = storeName.charAt(0).toUpperCase() + storeName.slice(1);
+            this[`add${suffixName}`] = (data) => this.add(storeName, data);
+            this[`get${suffixName}`] = (id) => this.get(storeName, id);
+            this[`update${suffixName}`] = (id, updates) => this.update(storeName, id, updates);
+            this[`delete${suffixName}`] = (id) => this.delete(storeName, id);
+          });
+          return resolve(request.result);
+        };
 
         request.onupgradeneeded = (event) => {
           const db = event.target.result;
@@ -37,11 +46,6 @@ class HelpViewerDB {
               });
             }
 
-            const suffixName = storeName.charAt(0).toUpperCase() + storeName.slice(1);
-            this[`add${suffixName}`] = (data) => this.add(storeName, data);
-            this[`get${suffixName}`] = (id) => this.get(storeName, id);
-            this[`update${suffixName}`] = (id, updates) => this.update(storeName, id, updates);
-            this[`delete${suffixName}`] = (id) => this.delete(storeName, id);
           });
         };
       });
