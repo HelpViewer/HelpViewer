@@ -3,10 +3,12 @@ class puiButtonUserNotes extends puiButtonTabTree {
     super(aliasName, data);
 
     this.DEFAULT_KEY_CFG_ID = 'downP-UserNotes';
-    this.DEFAULT_KEY_CFG_CAPTION = '✏️';
+    this.DEFAULT_KEY_CFG_CAPTION = '📝';
+    this.DEFAULT_KEY_CFG_EDITCAPTION = '✏️';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
 
     this.DEFAULT_KEY_CFG_TREEID = 'notesList';
+    this.DEFAULT_KEY_CFG_IDCONTENT = 'content';
   }
 
   init() {
@@ -36,7 +38,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       const replyStop = sendEvent('StopActionCursor');//, (x) => x.id = TI.aliasName);
       if (!replyStop) {
         sendEvent('SetActionCursor', (x) => {
-          x.cursorAddition = TI.cfgCAPTION;
+          x.cursorAddition = TI.cfgEDITCAPTION;
           x.convertedEventId = TI.aliasName;
           //x.id = TI.aliasName;
           //x.handler = test;
@@ -45,7 +47,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       const callback = EventBus.sub('ActionClickedEvent', test);        
     };
 
-    TI.topPTreeBtn = uiAddButton('notes-add', TI.cfgCAPTION, TI.aliasName, handlerAddNote);
+    TI.topPTreeBtn = uiAddButton('notes-add', TI.cfgEDITCAPTION, TI.aliasName, handlerAddNote);
 
   }
 
@@ -55,15 +57,17 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
   onETActionClickedEvent(evt) {
     var target = evt.target;
-    const contentPane = target.closest('.content');
+    const contentPane = target.closest('#' + this.cfgIDCONTENT);
     if (!evt.event.isTrusted || !target || !contentPane || target.matches('a') || !target.innerText)
       return;
     const newSpan = document.createElement('span');
     const cssClassUNote = 'usernote';
-    if ($O('.' + cssClassUNote, target) )
-      return;
+
     newSpan.classList.add(cssClassUNote);
-    newSpan.innerHTML = '<details open><summary></summary><textarea></textarea></details>';
+    const noteAreaId = 'newNote';
+    //newSpan.innerHTML = `<details open><summary></summary><textarea id='${noteAreaId}'></textarea></details>`;
+    newSpan.innerHTML = `ABC fdgkůlk`;
+    newSpan.setAttribute('contenteditable', 'true');
     const code = target.closest('.code-toolbar')
     if (code)
       target = code;
@@ -76,11 +80,22 @@ class puiButtonUserNotes extends puiButtonTabTree {
       target = header.parentNode;
       before = header;
     }
+
+    //const hasUserNote = $O('.' + cssClassUNote, target);
+    const isUserNote = target.closest('.' + cssClassUNote);
+
+    if (isUserNote) {
+      isUserNote.innerHTML = `<textarea id='${noteAreaId}'>${isUserNote.innerHTML}</textarea>`;
+    } else {
+      if (before)
+        before.after(newSpan);
+      else
+        target.appendChild(newSpan);  
+    }
+
+    const textArea = $O(noteAreaId, target);
+    textArea?.focus();
     
-    if (before)
-      before.after(newSpan);
-    else
-      target.appendChild(newSpan);
     sendEvent('StopActionCursor');
   }
 }
