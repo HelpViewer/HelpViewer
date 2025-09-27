@@ -1,313 +1,274 @@
-class IndexedStore {
-  constructor(dbPromise, storeName) {
-    this.dbPromise = dbPromise;
-    this.storeName = storeName;
-  }
-
-  async _transaction(mode, callback) {
-    const db = await this.dbPromise;
-    const tx = db.transaction(this.storeName, mode);
-    const store = tx.objectStore(this.storeName);
-    return await callback(store);
-  }
-
-  async add(record) {
-    return this._transaction('readwrite', store => new Promise((res, rej) => {
-      const req = store.add(record);
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    }));
-  }
-
-  async get(id) {
-    return this._transaction('readonly', store => new Promise((res, rej) => {
-      const req = store.get(id);
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    }));
-  }
-
-  async getAll() {
-    return this._transaction('readonly', store => new Promise((res, rej) => {
-      const req = store.getAll();
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    }));
-  }
-
-  async update(id, updates) {
-    return this._transaction('readwrite', store => new Promise((res, rej) => {
-      const req = store.get(id);
-      req.onsuccess = () => {
-        if (req.result) {
-          const updated = { ...req.result, ...updates };
-          const putReq = store.put(updated);
-          putReq.onsuccess = () => res(putReq.result);
-          putReq.onerror = () => rej(putReq.error);
-        } else rej(new Error('Záznam nenalezen'));
-      };
-      req.onerror = () => rej(req.error);
-    }));
-  }
-
-  async delete(id) {
-    return this._transaction('readwrite', store => new Promise((res, rej) => {
-      const req = store.delete(id);
-      req.onsuccess = () => res(true);
-      req.onerror = () => rej(req.error);
-    }));
-  }
-
-  async getAllByIndex(indexName, value) {
-    return this._transaction('readonly', store => new Promise((res, rej) => {
-      const index = store.index(indexName);
-      const req = index.getAll(value);
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    }));
-  }
-
-  async getByIndex(indexName, value) {
-    return this._transaction('readonly', store => new Promise((res, rej) => {
-      const index = store.index(indexName);
-      const req = index.get(value);
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    }));
-  }
-
-  async count() {
-    return this._transaction('readonly', store => new Promise((res, rej) => {
-      const req = store.count();
-      req.onsuccess = () => res(req.result);
-      req.onerror = () => rej(req.error);
-    }));
-  }
-}
-
 class HelpViewerDB {
   constructor() {
-    this.dbPromise = null;
-    this.helpFileIdx = null;
-    this.stores = new Map();
-    this.prjName = '';
-  }
+    this.dbPromise = undefined;
+    this.helpFileIdx = undefined;
 
-  async getDb(prjName = this.prjName) {
-    if (!this.dbPromise) {
-      this.dbPromise = this._initializeDatabase();
-      
-      await this.dbPromise;
-      //this.configGetValue('CFG_KEY__PRJNAME', '', 'STO_HELP').trim() || 'dataPathGeneral';
-      this.helpFileIdx = await this.getHelpIdByName(prjName);
-      
-      if (this.helpFileIdx) {
-        await this._ensureHelpTables(this.helpFileIdx);
+    this.storeConfig = {
+      helpFiles: { 
+        indexes: [{ name: 'byName', key: 'name', unique: true }] 
+      },
+      chapters: { 
+        indexes: [{ name: 'byName', key: 'name', unique: true }] 
+      },
+      notes: { 
+        indexes: [{ name: 'byChapterId', key: 'chapterId', unique: false }] 
       }
+    };
+  }
+
+  async getDb() {
+    if (!this.dbPromise) {
+      this.dbPromise = new Promise((resolve, reject) => {
+        const request = indexedDB.open('HelpViewer', 1);
+
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          
+          Object.entries(this.storeConfig).forEach(([storeName, config]) => {
+            if (!db.objectStoreNames.contains(storeName)) {
+              const store = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+              
+              // Vytvoření indexů podle konfigurace
+              config.indexes?.forEach(({ name, key, unique }) => {
+                store.createIndex(name, key, { unique });
+              });
+            }
+          });
+        };
+      });
+
     }
-    
+
     return this.dbPromise;
   }
 
-  async _initializeDatabase() {
+  async _execute(operation) {
+    try {
+      return await operation();
+    } catch (error) {
+      throw new Error(`DB operace selhala: ${error.message}`);
+    }
+  }
+
+  async _transaction(storeName, mode, callback) {
+    const db = await this.getDb();
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("HelpViewer", 1);
-      
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => resolve(request.result);
-      
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-        
-        if (!db.objectStoreNames.contains('helpFiles')) {
-          const table = db.createObjectStore('helpFiles', { keyPath: "id", autoIncrement: true });
-          table.createIndex("byName", "jmeno", { unique: true });
-        }
-      };
+      const tx = db.transaction(storeName, mode);
+      const store = tx.objectStore(storeName);
+      callback(store, resolve, reject);
     });
   }
 
-  async _ensureHelpTables(helpFileIdx) {
-    const db = await this.dbPromise;
-    const tabUserNotes = `hlf.${helpFileIdx}.notes`;
-    const tabUserNotesChapters = `hlf.${helpFileIdx}.chapters`;
-    
-    if (!db.objectStoreNames.contains(tabUserNotes) || !db.objectStoreNames.contains(tabUserNotesChapters)) {
-      await this._upgradeForHelpTables(helpFileIdx);
-    }
+  async add(storeName, record) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
+        const request = store.add(record);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      })
+    );
   }
 
-  async _upgradeForHelpTables(helpFileIdx) {
-    const db = await this.dbPromise;
-    const currentVersion = db.version;
-    db.close();
-    
-    this.dbPromise = new Promise((resolve, reject) => {
-      const request = indexedDB.open("HelpViewer", currentVersion + 1);
-      
-      request.onerror = () => reject(request.error);
-      request.onsuccess = () => resolve(request.result);
-      
-      request.onupgradeneeded = (event) => {
-        const newDb = event.target.result;
-        
-        const tabUserNotes = `hlf.${helpFileIdx}.notes`;
-        const tabUserNotesChapters = `hlf.${helpFileIdx}.chapters`;
-        
-        if (!newDb.objectStoreNames.contains(tabUserNotesChapters)) {
-          const chaptersStore = newDb.createObjectStore(tabUserNotesChapters, { keyPath: "id", autoIncrement: true });
-          chaptersStore.createIndex("byName", "jmeno", { unique: false });
-        }
-        
-        if (!newDb.objectStoreNames.contains(tabUserNotes)) {
-          const notesStore = newDb.createObjectStore(tabUserNotes, { keyPath: "id", autoIncrement: true });
-          notesStore.createIndex("byChapterId", "chapterId", { unique: false });
-        }
-      };
-    });
-    
-    return this.dbPromise;
+  async get(storeName, id) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
+        const request = store.get(id);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      })
+    );
   }
 
-  getStore(storeName) {
-    if (!this.stores.has(storeName)) {
-      this.stores.set(storeName, new IndexedStore(this.dbPromise, storeName));
-    }
-    return this.stores.get(storeName);
+  async getAll(storeName) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      })
+    );
   }
 
-  get helpFilesStore() {
-    return this.getStore('helpFiles');
+  async update(storeName, id, updates) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
+        const getRequest = store.get(id);
+        getRequest.onsuccess = () => {
+          if (getRequest.result) {
+            const updated = { ...getRequest.result, ...updates };
+            const putRequest = store.put(updated);
+            putRequest.onsuccess = () => resolve(updated);
+            putRequest.onerror = () => reject(putRequest.error);
+          } else reject(new Error(`Záznam s ID ${id} nenalezen`));
+        };
+        getRequest.onerror = () => reject(getRequest.error);
+      })
+    );
   }
 
-  get chaptersStore() {
-    if (!this.helpFileIdx) throw new Error('HelpFileIdx není nastaven');
-    return this.getStore(`hlf.${this.helpFileIdx}.chapters`);
+  async delete(storeName, id) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
+        const request = store.delete(id);
+        request.onsuccess = () => resolve(true);
+        request.onerror = () => reject(request.error);
+      })
+    );
   }
 
-  get notesStore() {
-    if (!this.helpFileIdx) throw new Error('HelpFileIdx není nastaven');
-    return this.getStore(`hlf.${this.helpFileIdx}.notes`);
+  async count(storeName) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
+        const request = store.count();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      })
+    );
+  }
+
+  async getByIndex(storeName, indexName, value) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
+        const index = store.index(indexName);
+        const request = index.get(value);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      })
+    );
+  }
+
+  async getAllByIndex(storeName, indexName, value) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
+        const index = store.index(indexName);
+        const request = index.getAll(value);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      })
+    );
   }
 
   async getHelpIdByName(name) {
-    await this.getDb();
-    const result = await this.helpFilesStore.getByIndex('byName', name);
-    return result ? result.id : null;
+    const result = await this.getByIndex('helpFiles', 'byName', name);
+    return result?.id || null;
   }
 
-  async addHelpFile(jmeno, data = {}) {
-    await this.getDb();
-    return await this.helpFilesStore.add({ jmeno, ...data });
+  async getChapterIdByName(name) {
+    const result = await this.getByIndex('chapters', 'byName', name);
+    return result?.id || null;
   }
 
-  async getHelpFile(id) {
-    await this.getDb();
-    return await this.helpFilesStore.get(id);
+  async getNotesByChapter(chapterId) {
+    return this.getAllByIndex('notes', 'byChapterId', chapterId);
   }
 
-  async updateHelpFile(id, updates) {
-    await this.getDb();
-    return await this.helpFilesStore.update(id, updates);
+  async addMany(storeName, records) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
+        const results = [];
+        let completed = 0;
+        
+        if (records.length === 0) {
+          resolve([]);
+          return;
+        }
+
+        records.forEach((record, index) => {
+          const request = store.add(record);
+          request.onsuccess = () => {
+            results[index] = request.result;
+            completed++;
+            if (completed === records.length) resolve(results);
+          };
+          request.onerror = () => reject(request.error);
+        });
+      })
+    );
   }
 
-  async deleteHelpFile(id) {
-    await this.getDb();
-    return await this.helpFilesStore.delete(id);
+  async deleteMany(storeName, ids) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
+        let completed = 0;
+        
+        if (ids.length === 0) {
+          resolve(true);
+          return;
+        }
+
+        ids.forEach(id => {
+          const request = store.delete(id);
+          request.onsuccess = () => {
+            completed++;
+            if (completed === ids.length) resolve(true);
+          };
+          request.onerror = () => reject(request.error);
+        });
+      })
+    );
   }
 
-  async getAllHelpFiles() {
-    await this.getDb();
-    return await this.helpFilesStore.getAll();
+  async exists(storeName, id) {
+    const result = await this.get(storeName, id);
+    return !!result;
   }
 
-  async addChapter(jmeno, data = {}) {
-    await this.getDb();
-    return await this.chaptersStore.add({ jmeno, ...data });
+  async existsByIndex(storeName, indexName, value) {
+    const result = await this.getByIndex(storeName, indexName, value);
+    return !!result;
   }
 
-  async getChapter(id) {
-    await this.getDb();
-    return await this.chaptersStore.get(id);
+  addHelpFile = (data) => this.add('helpFiles', data);
+  addChapter = (data) => this.add('chapters', data);
+  addNote = (data) => this.add('notes', data);
+  
+  getHelpFile = (id) => this.get('helpFiles', id);
+  getChapter = (id) => this.get('chapters', id);
+  getNote = (id) => this.get('notes', id);
+  
+  updateHelpFile = (id, updates) => this.update('helpFiles', id, updates);
+  updateChapter = (id, updates) => this.update('chapters', id, updates);
+  updateNote = (id, updates) => this.update('notes', id, updates);
+  
+  deleteHelpFile = (id) => this.delete('helpFiles', id);
+  deleteChapter = (id) => this.delete('chapters', id);
+  deleteNote = (id) => this.delete('notes', id);
+
+  async getDbStats() {
+    const stats = {};
+    for (const storeName of Object.keys(this.storeConfig)) {
+      stats[storeName] = await this.count(storeName);
+    }
+    return stats;
   }
 
-  async getChapterIdByName(jmeno) {
-    await this.getDb();
-    const result = await this.chaptersStore.getByIndex('byName', jmeno);
-    return result ? result.id : null;
+  async clearStore(storeName) {
+    return this._execute(() => 
+      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
+        const request = store.clear();
+        request.onsuccess = () => resolve(true);
+        request.onerror = () => reject(request.error);
+      })
+    );
   }
 
-  async updateChapter(id, updates) {
-    await this.getDb();
-    return await this.chaptersStore.update(id, updates);
-  }
-
-  async deleteChapter(id) {
-    await this.getDb();
-    return await this.chaptersStore.delete(id);
-  }
-
-  async getAllChapters() {
-    await this.getDb();
-    return await this.chaptersStore.getAll();
-  }
-
-  async addNote(chapterId, content, data = {}) {
-    await this.getDb();
-    return await this.notesStore.add({ chapterId, content, ...data });
-  }
-
-  async getNote(id) {
-    await this.getDb();
-    return await this.notesStore.get(id);
-  }
-
-  async getNotesByChapterId(chapterId) {
-    await this.getDb();
-    return await this.notesStore.getAllByIndex('byChapterId', chapterId);
-  }
-
-  async updateNote(id, updates) {
-    await this.getDb();
-    return await this.notesStore.update(id, updates);
-  }
-
-  async deleteNote(id) {
-    await this.getDb();
-    return await this.notesStore.delete(id);
-  }
-
-  async getAllNotes() {
-    await this.getDb();
-    return await this.notesStore.getAll();
-  }
-
-  async getNotesCount() {
-    await this.getDb();
-    return await this.notesStore.count();
-  }
-
-  async getChaptersCount() {
-    await this.getDb();
-    return await this.chaptersStore.count();
-  }
-
-  async clearDatabase() {
-    const db = await this.dbPromise;
-    db.close();
-    
-    return new Promise((resolve, reject) => {
-      const deleteReq = indexedDB.deleteDatabase("HelpViewer");
-      deleteReq.onsuccess = () => {
-        this.dbPromise = null;
-        this.helpFileIdx = null;
-        this.stores.clear();
-        resolve(true);
-      };
-      deleteReq.onerror = () => reject(deleteReq.error);
-    });
+  async clearAllData() {
+    const promises = Object.keys(this.storeConfig).map(store => this.clearStore(store));
+    return Promise.all(promises);
   }
 }
 
-const helpDB = new HelpViewerDB();
+
+
+
+
+
+
+
+  }
+}
+
 

@@ -30,7 +30,11 @@ class puiButtonUserNotes extends puiButtonTabTree {
       return;
 
     const dbLayerOstore = 'appObjStoreNotes.js';
-    storageSearch(STO_DATA, dbLayerOstore).then(x => appendJavaScript(dbLayerOstore, x, document.head)).then(x => TI.db = new HelpViewerDB());
+    storageSearch(STO_DATA, dbLayerOstore).then(async x => {
+      await appendJavaScript(dbLayerOstore, x, document.head);
+      TI.db = new HelpViewerDB();
+      await TI.db.getDb();
+    });
 
     const h_EVT_UN_SETNOTESVISIBILITY = (data) => {
       const current = !!getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE);
@@ -38,7 +42,6 @@ class puiButtonUserNotes extends puiButtonTabTree {
     };
 
     TI.eventDefinitions.push([T.EVT_UN_SETNOTESVISIBILITY, IEvent, h_EVT_UN_SETNOTESVISIBILITY]);
-
 
     TI.cfgNOTESTYPEDFILTEROUTHTML = TI.cfgNOTESTYPEDFILTEROUTHTML?.split(';');
     TI.cfgCAPTIONNOTESVISIBLE = [...TI.cfgCAPTIONNOTESVISIBLE];
@@ -142,6 +145,14 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
   _setNotesVisibility(state) {
     $A('.' + this.cfgCSSCLASS, $(this.cfgIDCONTENT)).forEach(x => state ? x.classList.remove(C_HIDDENC) : x.classList.add(C_HIDDENC));
+  }
+
+  async onET_ConfigFileReloadFinished(evt) {
+    if (evt.id != FILE_CONFIG)
+      return;
+    const prjName = configGetValue('CFG_KEY__PRJNAME', '')?.trim() || dataPathGeneral;
+    const TI = this;
+    TI.db.helpFileIdx = await TI.db.getHelpIdByName(prjName) || await TI.db.addHelpFile({ name: prjName });
   }
 
   onETButtonSend(x) {
