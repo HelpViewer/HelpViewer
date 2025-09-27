@@ -1,22 +1,7 @@
-class HelpViewerDB {
+class IndexedDBOperator {
   constructor() {
     this.dbPromise = undefined;
-    this.helpFileIdx = undefined;
-
-    this.storeConfig = {
-      helpFile: { 
-        indexes: [{ name: 'byName', key: 'name', unique: true }] 
-      },
-      chapter: { 
-        indexes: [{ name: 'byName', key: 'name', unique: true }] 
-      },
-      note: { 
-        indexes: [
-          { name: 'byChapterId', key: 'chapterId', unique: false },
-          { name: 'byHelpId', key: 'helpId', unique: false }
-        ]
-      }
-    };
+    this.storeConfig = {};
   }
 
   async getDb() {
@@ -143,20 +128,6 @@ class HelpViewerDB {
     );
   }
 
-  async getHelpIdByName(name) {
-    const result = await this.getByIndex('helpFile', 'byName', name);
-    return result?.id || null;
-  }
-
-  async getChapterIdByName(name) {
-    const result = await this.getByIndex('chapter', 'byName', name);
-    return result?.id || null;
-  }
-
-  async getNotesByChapter(chapterId) {
-    return this.getAllByIndex('note', 'byChapterId', chapterId);
-  }
-
   async addMany(storeName, records) {
     return this._execute(() => 
       this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
@@ -234,5 +205,40 @@ class HelpViewerDB {
   async clearAllData() {
     const promises = Object.keys(this.storeConfig).map(store => this.clearStore(store));
     return Promise.all(promises);
+  }
+}
+
+class HelpViewerDB extends IndexedDBOperator {
+  constructor() {
+    super();
+
+    this.storeConfig = {
+      helpFile: { 
+        indexes: [{ name: 'byName', key: 'name', unique: true }] 
+      },
+      chapter: { 
+        indexes: [{ name: 'byName', key: 'name', unique: true }] 
+      },
+      note: { 
+        indexes: [
+          { name: 'byChapterId', key: 'chapterId', unique: false },
+          { name: 'byHelpId', key: 'helpId', unique: false }
+        ]
+      }
+    };
+  }
+
+  async getHelpIdByName(name) {
+    const result = await this.getByIndex('helpFile', 'byName', name);
+    return result?.id || null;
+  }
+
+  async getChapterIdByName(name) {
+    const result = await this.getByIndex('chapter', 'byName', name);
+    return result?.id || null;
+  }
+
+  async getNotesByChapter(chapterId) {
+    return this.getAllByIndex('note', 'byChapterId', chapterId);
   }
 }
