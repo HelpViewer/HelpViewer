@@ -1,42 +1,61 @@
 class puiButtonUserNotes extends puiButtonTabTree {
+  static EVT_UN_SETNOTESVISIBILITY = 'SetNotesVisibility';
+
   constructor(aliasName, data) {
     super(aliasName, data);
 
-    this.DEFAULT_KEY_CFG_ID = 'downP-UserNotes';
-    this.DEFAULT_KEY_CFG_CAPTION = '📝';
-    this.DEFAULT_KEY_CFG_EDITCAPTION = '✏️';
-    this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
+    const TI = this;
+    TI.DEFAULT_KEY_CFG_ID = 'downP-UserNotes';
+    TI.DEFAULT_KEY_CFG_CAPTION = '📝';
+    TI.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
 
-    this.DEFAULT_KEY_CFG_TREEID = 'notesList';
-    this.DEFAULT_KEY_CFG_IDCONTENT = 'content';
-    this.DEFAULT_KEY_CFG_CSSCLASS = 'usernote';
-    this.DEFAULT_KEY_CFG_NOTESONLYTEXTCLIPBOARD = 1;
-    this.DEFAULT_KEY_CFG_NOTESONLYTEXTMANTYPED = 0;
-    this.DEFAULT_KEY_CFG_NOTESTYPEDFILTEROUTHTML = 'script;iframe;img;button;input;frameset;srcdoc;object;embed;applet;video;audio;form;style;base;link;meta';
+    TI.DEFAULT_KEY_CFG_TREEID = 'notesList';
+    TI.DEFAULT_KEY_CFG_IDCONTENT = 'content';
+    TI.DEFAULT_KEY_CFG_CSSCLASS = 'usernote';
+    TI.DEFAULT_KEY_CFG_NOTESONLYTEXTCLIPBOARD = 1;
+    TI.DEFAULT_KEY_CFG_NOTESONLYTEXTMANTYPED = 0;
+    TI.DEFAULT_KEY_CFG_NOTESTYPEDFILTEROUTHTML = 'script;iframe;img;button;input;frameset;srcdoc;object;embed;applet;video;audio;form;style;base;link;meta';
+    TI.DEFAULT_KEY_CFG_CAPTIONNOTESVISIBLE = '🙈👁️';
+    TI.DEFAULT_KEY_CFG_CFGKEYNOTESVISIBLE = 'notesVisible';
+    TI.DEFAULT_KEY_CFG_EDITCAPTION = '✏️';
   }
 
   init() {
-    super.init();
-
     const T = this.constructor;
     const TI = this;
 
     const contentPane = $(TI.cfgIDCONTENT);
 
-    TI.cfgNOTESTYPEDFILTEROUTHTML = TI.cfgNOTESTYPEDFILTEROUTHTML?.split(';');
-
     if (!contentPane)
       return;
 
+    const dbLayerOstore = 'appObjStoreNotes.js';
+    storageSearch(STO_DATA, dbLayerOstore).then(x => appendJavaScript(dbLayerOstore, x, document.head)).then(x => TI.db = new HelpViewerDB());
+
+    const h_EVT_UN_SETNOTESVISIBILITY = (data) => {
+      const current = !!getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE);
+      TI._setNotesVisibility(current);
+    };
+
+    TI.eventDefinitions.push([T.EVT_UN_SETNOTESVISIBILITY, IEvent, h_EVT_UN_SETNOTESVISIBILITY]);
+
+
+    TI.cfgNOTESTYPEDFILTEROUTHTML = TI.cfgNOTESTYPEDFILTEROUTHTML?.split(';');
+    TI.cfgCAPTIONNOTESVISIBLE = [...TI.cfgCAPTIONNOTESVISIBLE];
+    const firstCaption = TI.cfgCAPTIONNOTESVISIBLE.shift();
+    TI.cfgCAPTIONNOTESVISIBLE = [firstCaption, TI.cfgCAPTIONNOTESVISIBLE.join('')];
+
+    super.init();
+
     if (TI.cfgNOTESONLYTEXTCLIPBOARD) {
-      TI.NOTE_PASTE = new SystemEventHandler('', undefined, contentPane, 'paste', (e) => this._handleForNote(e, this._handlePaste.bind(this)));
+      TI.NOTE_PASTE = new SystemEventHandler('', undefined, contentPane, 'paste', (e) => TI._handleForNote(e, TI._handlePaste.bind(TI)));
       TI.NOTE_PASTE.init();  
     }
 
-    TI.NOTE_BLUR = new SystemEventHandler('', undefined, contentPane, 'focusout', (e) => this._handleForNote(e, this._handleBlur.bind(this)));
+    TI.NOTE_BLUR = new SystemEventHandler('', undefined, contentPane, 'focusout', (e) => TI._handleForNote(e, TI._handleBlur.bind(TI)));
     TI.NOTE_BLUR.init();
 
-    TI.NOTE_GETFOCUS = new SystemEventHandler('', undefined, contentPane, 'focusin', (e) => this._handleForNote(e, this._handleFocus.bind(this)));
+    TI.NOTE_GETFOCUS = new SystemEventHandler('', undefined, contentPane, 'focusin', (e) => TI._handleForNote(e, TI._handleFocus.bind(TI)));
     TI.NOTE_GETFOCUS.init();
   }
 
@@ -108,6 +127,21 @@ class puiButtonUserNotes extends puiButtonTabTree {
     };
 
     TI.topPTreeBtn = uiAddButton('notes-add', TI.cfgEDITCAPTION, TI.aliasName, handlerAddNote);
+
+    const handlerVisibleNotes = (e) => {
+      const nextB = getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE) == 0;
+      const next = Number(nextB);
+      setUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE, next);
+      e.target.innerHTML = TI.cfgCAPTIONNOTESVISIBLE[next];
+      TI._setNotesVisibility(nextB);
+    };
+
+    const currentVisibility = Number(getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE) != 0);
+    TI.topPTreeBtn = uiAddButton('notes-visible', TI.cfgCAPTIONNOTESVISIBLE[currentVisibility], TI.aliasName, handlerVisibleNotes);
+  }
+
+  _setNotesVisibility(state) {
+    $A('.' + this.cfgCSSCLASS, $(this.cfgIDCONTENT)).forEach(x => state ? x.classList.remove(C_HIDDENC) : x.classList.add(C_HIDDENC));
   }
 
   onETButtonSend(x) {
@@ -127,6 +161,17 @@ class puiButtonUserNotes extends puiButtonTabTree {
     newSpan.setAttribute('contenteditable', 'true');
     newSpan.setAttribute('role', 'textbox');
     newSpan.setAttribute('aria-multiline', 'true');
+    newSpan.id = cssClassUNote + '_';
+
+    var idx = 1;
+    var nextID = `${newSpan.id}${idx}`;
+
+    while($(nextID)) {
+      idx++;
+      nextID = `${newSpan.id}${idx}`;
+    }
+
+    newSpan.id = nextID;
     
     // Prism source dumps
     const code = target.closest('.code-toolbar')
