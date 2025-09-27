@@ -216,7 +216,11 @@ class puiButtonCustPackage extends puiButton {
     const li = target.closest("li[role=treeitem]");
     if (!li) return;
     const childCheckboxes = li.querySelectorAll("ul input[type=checkbox]");
-    childCheckboxes.forEach(cb => cb.checked = checked);
+    childCheckboxes.forEach(cb => {
+      cb.checked = checked;
+      if (checked)
+        this.checkRequiredSubcomponents(cb.id);
+    });
     // const detailsParent = event.target.closest('li');
     // if (detailsParent)
     //   Array.from($A('input', detailsParent)).forEach(x => x.checked = false);
@@ -243,6 +247,8 @@ class puiButtonCustPackage extends puiButton {
       
           li = parentLi;
         }
+
+        this.checkRequiredSubcomponents(event.target.id);
       } else {
         // uncheck siblings
         this.checkChildren(event.target, false);
@@ -253,6 +259,12 @@ class puiButtonCustPackage extends puiButton {
     const sum = [...this.keyAndSizes.entries()].reduce((acc, [key, value]) => 
       selected.includes(key) ? acc + value.r._fileLength : acc, 0);
     $('spanSum').innerText = valKiBs(sum) + ' kB';
+  }
+
+  checkRequiredSubcomponents(id) {
+    const neededComponentsList = (this.config?.[`C-${id}`] ?? '').split(';').filter(Boolean)
+      .map(x => $(x)).filter(Boolean);
+    neededComponentsList.forEach(x => x.checked = true);
   }
 
   waitForValue(resource, key) {

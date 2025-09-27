@@ -9,3 +9,4 @@ appFTree.js
 appLayoutHandlers.js
 appmainFileParsingTocTree.js
 appPrePrintActions.js
+appIndexedDBOperator.js
