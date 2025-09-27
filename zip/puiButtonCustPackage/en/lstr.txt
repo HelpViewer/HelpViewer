@@ -37,3 +37,5 @@ USERNOTES|User notes
 MODES|Action modes
 INDEXEDDB|Indexed DB storage support
 TECHC|Technology components
+SERVICEPLUGIN|Support for plugins extending services
+SERVICEPLANG|Separate plugin translations

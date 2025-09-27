@@ -264,7 +264,11 @@ class puiButtonCustPackage extends puiButton {
   checkRequiredSubcomponents(id) {
     const neededComponentsList = (this.config?.[`C-${id}`] ?? '').split(';').filter(Boolean)
       .map(x => $(x)).filter(Boolean);
-    neededComponentsList.forEach(x => x.checked = true);
+    
+    neededComponentsList.forEach(x => {
+      x.checked = true;
+      this.checkboxChanged({ target: x});
+    });
   }
 
   waitForValue(resource, key) {
