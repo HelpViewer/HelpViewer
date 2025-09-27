@@ -4,13 +4,13 @@ class HelpViewerDB {
     this.helpFileIdx = undefined;
 
     this.storeConfig = {
-      helpFiles: { 
+      helpFile: { 
         indexes: [{ name: 'byName', key: 'name', unique: true }] 
       },
-      chapters: { 
+      chapter: { 
         indexes: [{ name: 'byName', key: 'name', unique: true }] 
       },
-      notes: { 
+      note: { 
         indexes: [{ name: 'byChapterId', key: 'chapterId', unique: false }] 
       }
     };
@@ -36,6 +36,12 @@ class HelpViewerDB {
                 store.createIndex(name, key, { unique });
               });
             }
+
+            const suffixName = storeName.charAt(0).toUpperCase() + storeName.slice(1);
+            this[`add${suffixName}`] = (data) => this.add(storeName, data);
+            this[`get${suffixName}`] = (id) => this.get(storeName, id);
+            this[`update${suffixName}`] = (id, updates) => this.update(storeName, id, updates);
+            this[`delete${suffixName}`] = (id) => this.delete(storeName, id);
           });
         };
       });
@@ -152,17 +158,17 @@ class HelpViewerDB {
   }
 
   async getHelpIdByName(name) {
-    const result = await this.getByIndex('helpFiles', 'byName', name);
+    const result = await this.getByIndex('helpFile', 'byName', name);
     return result?.id || null;
   }
 
   async getChapterIdByName(name) {
-    const result = await this.getByIndex('chapters', 'byName', name);
+    const result = await this.getByIndex('chapter', 'byName', name);
     return result?.id || null;
   }
 
   async getNotesByChapter(chapterId) {
-    return this.getAllByIndex('notes', 'byChapterId', chapterId);
+    return this.getAllByIndex('note', 'byChapterId', chapterId);
   }
 
   async addMany(storeName, records) {
@@ -221,22 +227,6 @@ class HelpViewerDB {
     return !!result;
   }
 
-  addHelpFile = (data) => this.add('helpFiles', data);
-  addChapter = (data) => this.add('chapters', data);
-  addNote = (data) => this.add('notes', data);
-  
-  getHelpFile = (id) => this.get('helpFiles', id);
-  getChapter = (id) => this.get('chapters', id);
-  getNote = (id) => this.get('notes', id);
-  
-  updateHelpFile = (id, updates) => this.update('helpFiles', id, updates);
-  updateChapter = (id, updates) => this.update('chapters', id, updates);
-  updateNote = (id, updates) => this.update('notes', id, updates);
-  
-  deleteHelpFile = (id) => this.delete('helpFiles', id);
-  deleteChapter = (id) => this.delete('chapters', id);
-  deleteNote = (id) => this.delete('notes', id);
-
   async getDbStats() {
     const stats = {};
     for (const storeName of Object.keys(this.storeConfig)) {
@@ -260,15 +250,3 @@ class HelpViewerDB {
     return Promise.all(promises);
   }
 }
-
-
-
-
-
-
-
-
-  }
-}
-
-
