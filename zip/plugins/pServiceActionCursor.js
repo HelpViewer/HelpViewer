@@ -53,7 +53,10 @@ class pServiceActionCursor extends pClickConverter {
     }
     TI.eventDefinitions.push([T.EVT_AC_SET, SetActionCursor, h_EVT_AC_SET]);
 
-    const h_EVT_AC_STOP = (data) => this._disposeAll();
+    const h_EVT_AC_STOP = (data) => {
+      data.result = this._disposeAll();
+    };
+
     TI.eventDefinitions.push([T.EVT_AC_STOP, IEvent, h_EVT_AC_STOP]);
 
     super.init();
@@ -78,7 +81,7 @@ class pServiceActionCursor extends pClickConverter {
   _fireEBEvent(e) {
     if (this.activeEvent) {
       if (!this.activeEvent.handler) {
-      super._fireEBEvent(e);
+        super._fireEBEvent(e);
       } else {
         const x = getEventInput(this.cfgEVENTBUSEVENT);
         this._fillMinimum(x, e);
@@ -101,6 +104,7 @@ class pServiceActionCursor extends pClickConverter {
 
   _disposeAll() {
     const TI = this;
+    const reply = TI.activeEvent;
     TI.activeEvent = undefined;
     TI.cursorAddon?.remove();
     TI.cursorAddon = undefined;
@@ -108,6 +112,7 @@ class pServiceActionCursor extends pClickConverter {
     TI.SEVT_MOUSE = undefined;
     TI.SEVT_KEYCLICK?.deInit();
     TI.SEVT_KEYCLICK = undefined;
+    return reply;
   }
 }
 

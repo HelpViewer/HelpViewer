@@ -32,6 +32,7 @@ puiButtonChangeLanguage:
 puiButtonVersionSearch:
 puiButtonColorTheme:
 puiButtonAsBook:
+puiButtonUserNotes:notes
 puiButtonToggleSide:
 puiButtonFullScreen:
 puiButtonPresMode:
