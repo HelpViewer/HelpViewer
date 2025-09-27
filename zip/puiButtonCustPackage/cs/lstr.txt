@@ -35,3 +35,4 @@ WATERMARK|Vodoznak na panelu s textem kapitoly
 SPLASH|Úvodní obrazovka
 USERNOTES|Poznámky
 MODES|Akční režimy
+INDEXEDDB|Podpora pro Indexed DB úložiště

@@ -35,3 +35,4 @@ WATERMARK|Watermark on content pane
 SPLASH|Splash screen
 USERNOTES|User notes
 MODES|Action modes
+INDEXEDDB|Indexed DB storage support
