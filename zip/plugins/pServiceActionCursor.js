@@ -4,6 +4,7 @@ class SetActionCursor extends IEvent {
     this.cursorAddition = '';
     this.convertedEventId = '';
     this.offsetLT = [0, 8];
+    this.handler = undefined;
   }
 }
 
@@ -23,6 +24,8 @@ class pServiceActionCursor extends pClickConverter {
 
     this.DEFAULT_KEY_CFG_SYSOBJECT = 'document';
     this.DEFAULT_KEY_CFG_EVENTBUSEVENT = 'ActionClickedEvent';
+
+    this.eventIdStrict = true;
   }
 
   init() {
@@ -64,8 +67,16 @@ class pServiceActionCursor extends pClickConverter {
   }
 
   _fireEBEvent(e) {
-    if (this.activeEvent)
+    if (this.activeEvent) {
+      if (!this.activeEvent.handler) {
       super._fireEBEvent(e);
+      } else {
+        const x = getEventInput(this.cfgEVENTBUSEVENT);
+        this._fillMinimum(x, e);
+        this.resolvedFillEventObject(x, e);
+        this.activeEvent.handler(x);
+      }
+    }
   }
 
   _fillEventObject(x, e) {
