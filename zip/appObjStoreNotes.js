@@ -66,101 +66,80 @@ class HelpViewerDB {
     }
   }
 
-  async _transaction(storeName, mode, callback) {
-    const db = await this.getDb();
+  _request(store, method, ...args) {
     return new Promise((resolve, reject) => {
-      const tx = db.transaction(storeName, mode);
-      const store = tx.objectStore(storeName);
-      callback(store, resolve, reject);
+      const request = store[method](...args);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  // Transakce pro jeden nebo více stores
+  async _transaction(storeNames, mode, callback) {
+    const db = await this.getDb();
+    const tx = db.transaction(storeNames, mode);
+    const stores = Array.isArray(storeNames) 
+      ? Object.fromEntries(storeNames.map(name => [name, tx.objectStore(name)])) 
+      : { [storeNames]: tx.objectStore(storeNames) };
+
+    const result = await callback(stores);
+    return new Promise((resolve, reject) => {
+      tx.oncomplete = () => resolve(result);
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error || new Error('Transaction aborted'));
     });
   }
 
   async add(storeName, record) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
-        const request = store.add(record);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      })
+    return this._transaction(storeName, 'readwrite', store =>
+      this._request(store[storeName], 'add', record)
     );
   }
 
   async get(storeName, id) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
-        const request = store.get(id);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      })
+    return this._transaction(storeName, 'readonly', store =>
+      this._request(store[storeName], 'get', id)
     );
   }
 
   async getAll(storeName) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
-        const request = store.getAll();
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      })
+    return this._transaction(storeName, 'readonly', store =>
+      this._request(store[storeName], 'getAll')
     );
   }
 
   async update(storeName, id, updates) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
-        const getRequest = store.get(id);
-        getRequest.onsuccess = () => {
-          if (getRequest.result) {
-            const updated = { ...getRequest.result, ...updates };
-            const putRequest = store.put(updated);
-            putRequest.onsuccess = () => resolve(updated);
-            putRequest.onerror = () => reject(putRequest.error);
-          } else reject(new Error(`Record ID ${id} not found`));
-        };
-        getRequest.onerror = () => reject(getRequest.error);
-      })
-    );
+    return this._transaction(storeName, 'readwrite', async store => {
+      const existing = await this._request(store[storeName], 'get', id);
+      if (!existing) throw new Error(`Record ${id} not found`);
+      const updated = { ...existing, ...updates };
+      await this._request(store[storeName], 'put', updated);
+      return updated;
+    });
   }
 
   async delete(storeName, id) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
-        const request = store.delete(id);
-        request.onsuccess = () => resolve(true);
-        request.onerror = () => reject(request.error);
-      })
+    return this._transaction(storeName, 'readwrite', store =>
+      this._request(store[storeName], 'delete', id)
     );
   }
 
   async count(storeName) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
-        const request = store.count();
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      })
-    );
+    const db = await this.getDb();
+    const tx = db.transaction(storeName, 'readonly');
+    const store = tx.objectStore(storeName);
+    return this._request(store.count());
   }
 
   async getByIndex(storeName, indexName, value) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
-        const index = store.index(indexName);
-        const request = index.get(value);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      })
+    return this._transaction(storeName, 'readonly', store => 
+      this._request(store[storeName].index(indexName), 'get', value)
     );
   }
 
   async getAllByIndex(storeName, indexName, value) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readonly', (store, resolve, reject) => {
-        const index = store.index(indexName);
-        const request = index.getAll(value);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-      })
+    return this._transaction(storeName, 'readonly', store => 
+      this._request(store[storeName].index(indexName), 'getAll', value)
     );
   }
 
