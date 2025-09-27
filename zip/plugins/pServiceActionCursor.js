@@ -47,6 +47,9 @@ class pServiceActionCursor extends pClickConverter {
       TI.config['EVENTBUSEVENTID'] = data.convertedEventId;
   
       document.body.append(TI.cursorAddon);
+
+      TI.SEVT_KEYCLICK = new SystemEventHandler('', undefined, TI.targetSysObject, 'keydown', this._keyClick.bind(this));
+      TI.SEVT_KEYCLICK.init();
     }
     TI.eventDefinitions.push([T.EVT_AC_SET, SetActionCursor, h_EVT_AC_SET]);
 
@@ -54,6 +57,12 @@ class pServiceActionCursor extends pClickConverter {
     TI.eventDefinitions.push([T.EVT_AC_STOP, IEvent, h_EVT_AC_STOP]);
 
     super.init();
+  }
+
+  _keyClick(e) {
+    if (e.key.substring(0, 3) === 'Esc') {
+      this._disposeAll();
+    }
   }
 
   _mouseMove(e) {
@@ -97,6 +106,8 @@ class pServiceActionCursor extends pClickConverter {
     TI.cursorAddon = undefined;
     TI.SEVT_MOUSE?.deInit();
     TI.SEVT_MOUSE = undefined;
+    TI.SEVT_KEYCLICK?.deInit();
+    TI.SEVT_KEYCLICK = undefined;
   }
 }
 
