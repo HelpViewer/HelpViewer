@@ -59,6 +59,17 @@ function stripTags(htmlString, cleanJS = true) {
   return div.innerText;
 }
 
+function stripTagsSome(htmlString, tags) {
+  if (!tags || tags.length == 0)
+    return htmlString;
+
+  const pattern = tags.join('|');
+  // if (!pattern)
+  //   return stripTags(htmlString);
+  const regex = new RegExp(`<(${pattern})[^>]*>(.*?)<\/\\1>|<(${pattern})[^>]*\\/?>`, 'gi');
+  return htmlString.replace(regex, '');
+}
+
 const UserDataFileLoadedFileType = {
   LOCALDIR: 'LOCALDIR',
   LOCALARC: 'LOCALARC',

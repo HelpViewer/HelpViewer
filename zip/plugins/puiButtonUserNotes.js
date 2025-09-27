@@ -10,7 +10,9 @@ class puiButtonUserNotes extends puiButtonTabTree {
     this.DEFAULT_KEY_CFG_TREEID = 'notesList';
     this.DEFAULT_KEY_CFG_IDCONTENT = 'content';
     this.DEFAULT_KEY_CFG_CSSCLASS = 'usernote';
-    this.DEFAULT_KEY_CFG_NOTESONLYTEXT = 1;
+    this.DEFAULT_KEY_CFG_NOTESONLYTEXTCLIPBOARD = 1;
+    this.DEFAULT_KEY_CFG_NOTESONLYTEXTMANTYPED = 0;
+    this.DEFAULT_KEY_CFG_NOTESTYPEDFILTEROUTHTML = 'script;iframe;img;button;input;frameset;srcdoc;object;embed;applet;video;audio;form;style;base;link;meta';
   }
 
   init() {
@@ -21,17 +23,21 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     const contentPane = $(TI.cfgIDCONTENT);
 
+    TI.cfgNOTESTYPEDFILTEROUTHTML = TI.cfgNOTESTYPEDFILTEROUTHTML?.split(';');
+
     if (!contentPane)
       return;
 
-    if (TI.cfgNOTESONLYTEXT) {
+    if (TI.cfgNOTESONLYTEXTCLIPBOARD) {
       TI.NOTE_PASTE = new SystemEventHandler('', undefined, contentPane, 'paste', (e) => this._handleForNote(e, this._handlePaste.bind(this)));
       TI.NOTE_PASTE.init();  
     }
 
     TI.NOTE_BLUR = new SystemEventHandler('', undefined, contentPane, 'focusout', (e) => this._handleForNote(e, this._handleBlur.bind(this)));
-    TI.NOTE_BLUR.init();  
+    TI.NOTE_BLUR.init();
 
+    TI.NOTE_GETFOCUS = new SystemEventHandler('', undefined, contentPane, 'focusin', (e) => this._handleForNote(e, this._handleFocus.bind(this)));
+    TI.NOTE_GETFOCUS.init();
   }
 
   deInit() {
@@ -61,11 +67,21 @@ class puiButtonUserNotes extends puiButtonTabTree {
   }
 
   _handleBlur(e) {
-    log('E note text:"' + e.target.innerText + '"');
-    e.target.innerHTML = e.target.innerText;
-    if (!e.target.innerText) {
+    const targetVal = stripTagsSome(e.target.innerHTML, this.cfgNOTESTYPEDFILTEROUTHTML)
+      .replace(new RegExp('\n', 'g'), '<br>');
+
+    if (this.cfgNOTESONLYTEXTMANTYPED)
+      e.target.innerText = targetVal;
+    else
+      e.target.innerHTML = targetVal;
+
+    if (!targetVal) {
       e.target.remove();
     }
+  }
+
+  _handleFocus(e) {
+    e.target.innerHTML = e.target.innerHTML.replace(new RegExp('<br>', 'g'), '\n');
   }
 
   _preShowAction(evt) {
@@ -110,6 +126,8 @@ class puiButtonUserNotes extends puiButtonTabTree {
     newSpan.classList.add(cssClassUNote);
     newSpan.innerHTML = ``;
     newSpan.setAttribute('contenteditable', 'true');
+    newSpan.setAttribute('role', 'textbox');
+    newSpan.setAttribute('aria-multiline', 'true');
     
     // Prism source dumps
     const code = target.closest('.code-toolbar')
