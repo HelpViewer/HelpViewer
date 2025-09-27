@@ -9,14 +9,63 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     this.DEFAULT_KEY_CFG_TREEID = 'notesList';
     this.DEFAULT_KEY_CFG_IDCONTENT = 'content';
+    this.DEFAULT_KEY_CFG_CSSCLASS = 'usernote';
+    this.DEFAULT_KEY_CFG_NOTESONLYTEXT = 1;
   }
 
   init() {
     super.init();
+
+    const T = this.constructor;
+    const TI = this;
+
+    const contentPane = $(TI.cfgIDCONTENT);
+
+    if (!contentPane)
+      return;
+
+    if (TI.cfgNOTESONLYTEXT) {
+      TI.NOTE_PASTE = new SystemEventHandler('', undefined, contentPane, 'paste', (e) => this._handleForNote(e, this._handlePaste.bind(this)));
+      TI.NOTE_PASTE.init();  
+    }
+
+    TI.NOTE_BLUR = new SystemEventHandler('', undefined, contentPane, 'focusout', (e) => this._handleForNote(e, this._handleBlur.bind(this)));
+    TI.NOTE_BLUR.init();  
+
   }
 
   deInit() {
     super.deInit();
+  }
+
+  _handleForNote(e, handler) {
+    if (e.target.matches('.' + this.cfgCSSCLASS)) {
+      handler(e);
+    }
+  }
+
+  _handlePaste(e) {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+    const sel = window.getSelection();
+    if (!sel.rangeCount || !text) return;
+  
+    const textRange = sel.getRangeAt(0);
+    textRange.deleteContents();
+  
+    const textNode = document.createTextNode(text);
+    textRange.insertNode(textNode);
+  
+    textRange.setStartAfter(textNode);
+    textRange.setEndAfter(textNode);
+  }
+
+  _handleBlur(e) {
+    log('E note text:"' + e.target.innerText + '"');
+    e.target.innerHTML = e.target.innerText;
+    if (!e.target.innerText) {
+      e.target.remove();
+    }
   }
 
   _preShowAction(evt) {
@@ -25,7 +74,6 @@ class puiButtonUserNotes extends puiButtonTabTree {
   _preStandardInit() {
     super._preStandardInit?.();
 
-    const T = this.constructor;
     const TI = this;
 
     const pnlName = 'notesP';
@@ -40,15 +88,11 @@ class puiButtonUserNotes extends puiButtonTabTree {
         sendEvent('SetActionCursor', (x) => {
           x.cursorAddition = TI.cfgEDITCAPTION;
           x.convertedEventId = TI.aliasName;
-          //x.id = TI.aliasName;
-          //x.handler = test;
         });  
       }
-      const callback = EventBus.sub('ActionClickedEvent', test);        
     };
 
     TI.topPTreeBtn = uiAddButton('notes-add', TI.cfgEDITCAPTION, TI.aliasName, handlerAddNote);
-
   }
 
   onETButtonSend(x) {
@@ -61,17 +105,18 @@ class puiButtonUserNotes extends puiButtonTabTree {
     if (!evt.event.isTrusted || !target || !contentPane || target.matches('a') || !target.innerText)
       return;
     const newSpan = document.createElement('span');
-    const cssClassUNote = 'usernote';
+    const cssClassUNote = this.cfgCSSCLASS;
 
     newSpan.classList.add(cssClassUNote);
-    const noteAreaId = 'newNote';
-    //newSpan.innerHTML = `<details open><summary></summary><textarea id='${noteAreaId}'></textarea></details>`;
-    newSpan.innerHTML = `ABC fdgkůlk`;
+    newSpan.innerHTML = ``;
     newSpan.setAttribute('contenteditable', 'true');
+    
+    // Prism source dumps
     const code = target.closest('.code-toolbar')
     if (code)
       target = code;
   
+    // Headers
     const header = target.closest('h1,h2,h3,h4,h5,h6');
     var before = undefined;
     if (header) {
@@ -81,21 +126,18 @@ class puiButtonUserNotes extends puiButtonTabTree {
       before = header;
     }
 
-    //const hasUserNote = $O('.' + cssClassUNote, target);
+    // Previous user note
     const isUserNote = target.closest('.' + cssClassUNote);
 
-    if (isUserNote) {
-      isUserNote.innerHTML = `<textarea id='${noteAreaId}'>${isUserNote.innerHTML}</textarea>`;
-    } else {
+    if (!isUserNote) {
       if (before)
         before.after(newSpan);
       else
         target.appendChild(newSpan);  
     }
 
-    const textArea = $O(noteAreaId, target);
-    textArea?.focus();
-    
+    newSpan.focus();
+   
     sendEvent('StopActionCursor');
   }
 }
