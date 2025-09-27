@@ -11,7 +11,10 @@ class HelpViewerDB {
         indexes: [{ name: 'byName', key: 'name', unique: true }] 
       },
       note: { 
-        indexes: [{ name: 'byChapterId', key: 'chapterId', unique: false }] 
+        indexes: [
+          { name: 'byChapterId', key: 'chapterId', unique: false },
+          { name: 'byHelpId', key: 'helpId', unique: false }
+        ]
       }
     };
   }
@@ -59,7 +62,7 @@ class HelpViewerDB {
     try {
       return await operation();
     } catch (error) {
-      throw new Error(`DB operace selhala: ${error.message}`);
+      throw new Error(`DB operation failed: ${error.message}`);
     }
   }
 
@@ -112,7 +115,7 @@ class HelpViewerDB {
             const putRequest = store.put(updated);
             putRequest.onsuccess = () => resolve(updated);
             putRequest.onerror = () => reject(putRequest.error);
-          } else reject(new Error(`Záznam s ID ${id} nenalezen`));
+          } else reject(new Error(`Record ID ${id} not found`));
         };
         getRequest.onerror = () => reject(getRequest.error);
       })
