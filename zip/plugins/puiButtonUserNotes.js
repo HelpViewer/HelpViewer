@@ -67,11 +67,10 @@ class puiButtonUserNotes extends puiButtonTabTree {
   }
 
   _handleBlur(e) {
-    const targetVal = stripTagsSome(e.target.innerHTML, this.cfgNOTESTYPEDFILTEROUTHTML)
-      .replace(new RegExp('\n', 'g'), '<br>');
+    const targetVal = stripTagsSome(e.target.innerHTML, this.cfgNOTESTYPEDFILTEROUTHTML);
 
     if (this.cfgNOTESONLYTEXTMANTYPED)
-      e.target.innerText = targetVal;
+      e.target.innerText = stripTags(targetVal);
     else
       e.target.innerHTML = targetVal;
 
@@ -81,7 +80,6 @@ class puiButtonUserNotes extends puiButtonTabTree {
   }
 
   _handleFocus(e) {
-    e.target.innerHTML = e.target.innerHTML.replace(new RegExp('<br>', 'g'), '\n');
   }
 
   _preShowAction(evt) {
@@ -104,7 +102,8 @@ class puiButtonUserNotes extends puiButtonTabTree {
         sendEvent('SetActionCursor', (x) => {
           x.cursorAddition = TI.cfgEDITCAPTION;
           x.convertedEventId = TI.aliasName;
-        });  
+        });
+        sendEvent(evtHideIfTooWide);
       }
     };
 
