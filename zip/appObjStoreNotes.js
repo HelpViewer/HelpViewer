@@ -1,6 +1,6 @@
 class HelpViewerDB extends IndexedDBOperator {
-  constructor() {
-    super();
+  constructor(durability = "relaxed") {
+    super(durability);
 
     this.storeConfig = {
       helpFile: { 

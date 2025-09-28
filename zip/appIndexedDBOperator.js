@@ -1,7 +1,8 @@
 class IndexedDBOperator {
-  constructor() {
+  constructor(durability = "relaxed") {
     this.dbPromise = undefined;
     this.storeConfig = {};
+    this.durability = durability;
   }
 
   async getDb() {
@@ -63,7 +64,7 @@ class IndexedDBOperator {
   // Transakce pro jeden nebo více stores
   async _transaction(storeNames, mode, callback) {
     const db = await this.getDb();
-    const tx = db.transaction(storeNames, mode);
+    const tx = db.transaction(storeNames, mode, { durability: this.durability });
     const stores = Array.isArray(storeNames) 
       ? Object.fromEntries(storeNames.map(name => [name, tx.objectStore(name)])) 
       : { [storeNames]: tx.objectStore(storeNames) };

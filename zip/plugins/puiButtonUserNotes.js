@@ -101,21 +101,19 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     if (!targetVal) {
       if (!targetId.includes('_')) {
-        this.db.deleteNote({ id: noteId });
+        this.db.deleteNote(noteId);
       }
       e.target.remove();
     } else {
-      const chapterId = await this.db.getChapterIdByName(pagePath, this.db.helpFileIdx) || await this.db.addChapter({ name: pagePath, helpId: this.db.helpFileIdx });
       const contentPane = $(this.cfgIDCONTENT);
       const elements = [...$A('*', contentPane)].filter(x => !x.classList.contains(this.cfgCSSCLASS) || x.id == targetId);
-      const noteObject = { data: e.target.innerHTML, position: elements.indexOf(e.target), chapterId: chapterId };
+      const noteObject = { data: e.target.innerHTML, position: elements.indexOf(e.target), chapterId: this.chapterId };
 
       if (targetId.includes('_')) {
         noteId = await this.db.addNote(noteObject);
         e.target.id = `${this.cfgCSSCLASS}-${noteId}`;
       } else {
-        noteObject.id = noteId;
-        this.db.updateNote(noteObject);
+        this.db.updateNote(noteId, noteObject);
       }
     }
 
@@ -168,6 +166,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
   _setNotesVisibility(state) {
     $A('.' + this.cfgCSSCLASS, $(this.cfgIDCONTENT)).forEach(x => state ? x.classList.remove(C_HIDDENC) : x.classList.add(C_HIDDENC));
+    this.notesVisibility = state;
   }
 
   async onET_ConfigFileReloadFinished(evt) {
@@ -182,11 +181,38 @@ class puiButtonUserNotes extends puiButtonTabTree {
     this.handlerButtonSend(x);
   }
 
-  onETActionClickedEvent(evt) {
-    var target = evt.target;
-    const contentPane = target.closest('#' + this.cfgIDCONTENT);
-    if (!evt.event.isTrusted || !target || !contentPane || target.matches('a') || !target.innerText)
+  async onET_ChapterShown(evt) {
+    this.pagePath = evt.addressOrig;
+    
+    if (!this.db || evt.id != '')
       return;
+
+    const contentPane = $(this.cfgIDCONTENT);
+    const elements = [...$A('*', contentPane)];
+    const cssClassUNote = this.cfgCSSCLASS;
+
+    const chapterId = await this.db.getChapterIdByName(this.pagePath, this.db.helpFileIdx) || await this.db.addChapter({ name: this.pagePath, helpId: this.db.helpFileIdx });
+    this.chapterId = chapterId;
+    const notesData = await this.db.getNotesByChapter(chapterId);
+    var notesDataTransposed = notesData.map(x => [elements[x.position-1], x.id, x.data]);
+
+    notesDataTransposed = notesDataTransposed.map(x => {
+      const span = this._getNewNoteSpan();
+      span.id = `${cssClassUNote}-${x[1]}`;
+      span.innerHTML = x[2];
+      return [x[0], span];
+    });
+
+    const currentVisibility = getUserConfigValue(this.cfgCFGKEYNOTESVISIBLE) == 1;
+
+    notesDataTransposed.forEach(x => {
+      x[0].after(x[1]);
+    });
+
+    this._setNotesVisibility(currentVisibility);
+  }
+
+  _getNewNoteSpan() {
     const newSpan = document.createElement('span');
     const cssClassUNote = this.cfgCSSCLASS;
 
@@ -195,6 +221,17 @@ class puiButtonUserNotes extends puiButtonTabTree {
     newSpan.setAttribute('contenteditable', 'true');
     newSpan.setAttribute('role', 'textbox');
     newSpan.setAttribute('aria-multiline', 'true');
+    return newSpan;
+  }
+
+  onETActionClickedEvent(evt) {
+    var target = evt.target;
+    const contentPane = target.closest('#' + this.cfgIDCONTENT);
+    if (!evt.event.isTrusted || !target || !contentPane || target.matches('a') || !target.innerText)
+      return;
+    const newSpan = this._getNewNoteSpan();
+    const cssClassUNote = this.cfgCSSCLASS;
+
     newSpan.id = cssClassUNote + '_';
 
     var idx = 1;

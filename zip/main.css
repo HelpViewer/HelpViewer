@@ -12,6 +12,7 @@
   --c-contentPaneColor: white;
   --c-wordFound: yellow;
   --font: sans-serif;
+  --c-usernoteBackground: rgba(0,0,0,0.05);
 }
 
 .cursorAddon {
@@ -22,13 +23,9 @@
   z-index: 9999;
 }
 
-.usernote textarea {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
-  font-size: 1.2em;
-  line-height: 1.2;
-  height: calc(1.2em * 5);
+.usernote {
+  background-color: var(--c-usernoteBackground);
+  mix-blend-mode: multiply;
 }
 
 .wordFound {
@@ -385,6 +382,10 @@ ul:has(li input[type="checkbox"]) {
 
 .inBWDuoColor .toolbar-down {
   filter: grayscale(100%) contrast(200%);
+}
+
+.inBWDuoColor .usernote {
+  mix-blend-mode: unset;
 }
 
 .inSepia {
