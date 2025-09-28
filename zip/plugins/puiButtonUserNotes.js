@@ -183,6 +183,41 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     TI.btnExport = uiAddButton('notes-clear', '🗑️', TI.aliasName, handlerClear);
 
+    const handlerImport = async (e) => {
+      const formB = document.createElement('span');
+      const fInputId = 'fi-' + newUID();
+      appendField(formB, fInputId, '', FormFieldType.FILE);
+      const fInput = $O('#' + fInputId, formB);
+
+      fInput.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = async () => {
+            const plain = reader.result;
+            const o = JSON.parse(plain);
+
+            var chapters = await Promise.all(o.chapters.map(async x => {
+              const chapterId = await TI.db.getChapterIdByName(x.n, TI.db.helpFileIdx) || await TI.db.addChapter({ name: x.n, helpId: TI.db.helpFileIdx });
+              return [x.i, chapterId];
+            }));
+
+            var chapters = new Map(chapters);
+
+            var notes = o.notes.map(x => {
+              return {chapterId: chapters.get(x.c), position: x.p, data: x.d};
+            });
+
+            notes.forEach(x => TI.db.addNote(x));
+          };
+          reader.readAsText(file);
+        }
+      });
+
+      fInput.click();
+    };
+
+    TI.btnExport = uiAddButton('notes-import', '📥', TI.aliasName, handlerImport);
   }
 
   _setNotesVisibility(state) {
