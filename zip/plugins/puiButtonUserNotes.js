@@ -129,7 +129,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       }
     };
 
-    TI.topPTreeBtn = uiAddButton('notes-add', TI.cfgEDITCAPTION, TI.aliasName, handlerAddNote);
+    TI.btnNoteAdd = uiAddButton('notes-add', TI.cfgEDITCAPTION, TI.aliasName, handlerAddNote);
 
     const handlerVisibleNotes = (e) => {
       const nextB = getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE) == 0;
@@ -140,7 +140,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     };
 
     const currentVisibility = Number(getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE) != 0);
-    TI.topPTreeBtn = uiAddButton('notes-visible', TI.cfgCAPTIONNOTESVISIBLE[currentVisibility], TI.aliasName, handlerVisibleNotes);
+    TI.btnNoteVisibility = uiAddButton('notes-visible', TI.cfgCAPTIONNOTESVISIBLE[currentVisibility], TI.aliasName, handlerVisibleNotes);
   }
 
   _setNotesVisibility(state) {
