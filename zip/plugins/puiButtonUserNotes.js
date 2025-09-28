@@ -178,6 +178,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       const chapters = await TI.db.getChaptersByHelpFile(TI.db.helpFileIdx);
       const notes = [...new Set( (await Promise.all(chapters.map(x => TI.db.getNotesByChapter(x.id)))).flat().map(x => x.id) )];
       notes.forEach(x => TI.db.delete('note', x));
+      chapters.forEach(x => TI.db.delete('chapter', x.id));
     };
 
     TI.btnExport = uiAddButton('notes-clear', '🗑️', TI.aliasName, handlerClear);
@@ -192,7 +193,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
   async onET_ConfigFileReloadFinished(evt) {
     if (evt.id != FILE_CONFIG)
       return;
-    const prjName = configGetValue('CFG_KEY__PRJNAME', '')?.trim() || dataPathGeneral;
+    const prjName = configGetValue(CFG_KEY__PRJNAME, '')?.trim() || dataPathGeneral;
     const TI = this;
     TI.prjName = prjName;
     TI.db.helpFileIdx = await TI.db.getHelpIdByName(prjName) || await TI.db.addHelpFile({ name: prjName });
