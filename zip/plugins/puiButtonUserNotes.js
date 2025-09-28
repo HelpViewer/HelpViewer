@@ -179,6 +179,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       const notes = [...new Set( (await Promise.all(chapters.map(x => TI.db.getNotesByChapter(x.id)))).flat().map(x => x.id) )];
       notes.forEach(x => TI.db.delete('note', x));
       chapters.forEach(x => TI.db.delete('chapter', x.id));
+      this._loadNotes();
     };
 
     TI.btnExport = uiAddButton('notes-clear', '🗑️', TI.aliasName, handlerClear);
@@ -208,7 +209,9 @@ class puiButtonUserNotes extends puiButtonTabTree {
               return {chapterId: chapters.get(x.c), position: x.p, data: x.d};
             });
 
-            notes.forEach(x => TI.db.addNote(x));
+            await Promise.all(notes.map(x => TI.db.addNote(x)));
+
+            TI._loadNotes();
           };
           reader.readAsText(file);
         }
@@ -238,13 +241,19 @@ class puiButtonUserNotes extends puiButtonTabTree {
     this.handlerButtonSend(x);
   }
 
-  async onET_ChapterShown(evt) {
+  onET_ChapterShown(evt) {
     this.pagePath = evt.addressOrig;
     
     if (!this.db || evt.id != '')
       return;
 
+    this._loadNotes();
+  }
+
+  async _loadNotes() {
     const contentPane = $(this.cfgIDCONTENT);
+    const notesObj = [...$A('*', contentPane)].filter(x => x?.classList.contains(this.cfgCSSCLASS));
+    notesObj.forEach(x => x.remove());
     const elements = [...$A('*', contentPane)];
     const cssClassUNote = this.cfgCSSCLASS;
 
