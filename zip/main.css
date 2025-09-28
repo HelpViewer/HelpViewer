@@ -28,6 +28,15 @@
   mix-blend-mode: multiply;
 }
 
+@keyframes flash {
+  0%   { background-color: var(--c-wordFound) }
+  100% { background-color: transparent; }
+}
+
+.act-flash {
+  animation: flash 1.5s ease-out;
+}
+
 .wordFound {
   background-color: var(--c-wordFound);
   color: var(--c-wordFound-F);

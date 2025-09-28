@@ -283,10 +283,24 @@ class puiButtonUserNotes extends puiButtonTabTree {
       const li = document.createElement('li');
       li.innerHTML = x.innerHTML;
       li.setAttribute('role', 'treeitem');
+      li.id = `${this.cfgTREEID}|${x.id.split('-')[1]}`;
       return li;
     });
 
     notesObj.forEach(x => this.tree.appendChild(x));
+  }
+
+  _treeClick(evt) {
+    const convertedId = `${this.cfgCSSCLASS}-${evt.elementIdVal}`;
+    const e = $(convertedId);
+    
+    if (!e)
+      return;
+
+    const cssClass = 'act-flash';
+    e.classList.remove(cssClass);
+    void e.offsetWidth;
+    e.classList.add(cssClass);
   }
 
   _getNewNoteSpan() {
