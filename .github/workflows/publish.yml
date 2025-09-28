@@ -97,7 +97,7 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::Set DEBUG_MODE to false"
-          sed -i '2s/^const DEBUG_MODE.*/const DEBUG_MODE = false;/' ./appmain.js
+          sed -i -e "2s/^const DEBUG_MODE.*/const DEBUG_MODE = false;/" -e "s|^const DATA_FILE_PATH_BASE.*|const DATA_FILE_PATH_BASE = 'hvdata/data';|" ./appmain.js
           echo "::endgroup::"
 
           echo "::group::Packaging deploy bundle"
