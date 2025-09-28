@@ -33,4 +33,8 @@ class HelpViewerDB extends IndexedDBOperator {
   async getNotesByChapter(chapterId) {
     return this.getAllByIndex('note', 'byChapterId', chapterId);
   }
+
+  async getChaptersByHelpFile(helpFileIdx) {
+    return this.getAllByIndex('chapter', 'byHelpId', helpFileIdx);
+  }
 }

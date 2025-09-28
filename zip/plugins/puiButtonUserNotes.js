@@ -17,7 +17,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     TI.DEFAULT_KEY_CFG_NOTESTYPEDFILTEROUTHTML = 'script;iframe;img;button;input;frameset;srcdoc;object;embed;applet;video;audio;form;style;base;link;meta';
     TI.DEFAULT_KEY_CFG_CAPTIONNOTESVISIBLE = '🙈👁️';
     TI.DEFAULT_KEY_CFG_CFGKEYNOTESVISIBLE = 'notesVisible';
-    TI.DEFAULT_KEY_CFG_EDITCAPTION = '✏️';
+    TI.DEFAULT_KEY_CFG_EDITCAPTION = TI.DEFAULT_KEY_CFG_CAPTION;
   }
 
   init() {
@@ -57,9 +57,6 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     TI.NOTE_BLUR = new SystemEventHandler('', undefined, contentPane, 'focusout', (e) => TI._handleForNote(e, TI._handleBlur.bind(TI)));
     TI.NOTE_BLUR.init();
-
-    TI.NOTE_GETFOCUS = new SystemEventHandler('', undefined, contentPane, 'focusin', (e) => TI._handleForNote(e, TI._handleFocus.bind(TI)));
-    TI.NOTE_GETFOCUS.init();
   }
 
   deInit() {
@@ -116,13 +113,6 @@ class puiButtonUserNotes extends puiButtonTabTree {
         this.db.updateNote(noteId, noteObject);
       }
     }
-
-    //if (targetId.contains('_'))
-
-    //if (e.target)
-  }
-
-  _handleFocus(e) {
   }
 
   _preShowAction(evt) {
@@ -162,6 +152,36 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     const currentVisibility = Number(getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE) != 0);
     TI.btnNoteVisibility = uiAddButton('notes-visible', TI.cfgCAPTIONNOTESVISIBLE[currentVisibility], TI.aliasName, handlerVisibleNotes);
+
+    const handlerExport = async (e) => {
+      const chapters = await TI.db.getChaptersByHelpFile(TI.db.helpFileIdx);
+      const notes = (await Promise.all(chapters.map(x => TI.db.getNotesByChapter(x.id)))).flat();
+      const reply = {
+        chapters: chapters.map(x => {
+          return {i: x.id, n: x.name};
+        }),
+        notes: notes.map(x => {
+          return {c: x.chapterId, p: x.position, d: x.data};
+        })
+      };
+
+      const replyPlain = JSON.stringify(reply);
+      prepareDownload(stringToBlob(replyPlain, 'application/json'), `notes-${TI.prjName.replace('/', '-')}-${getDateInYYYYMMDD(new Date())}.json`);
+    };
+
+    TI.btnExport = uiAddButton('notes-export', '💾', TI.aliasName, handlerExport);
+
+    const handlerClear = async (e) => {
+      if (!confirm(_T('notesQuestion')))
+        return;
+
+      const chapters = await TI.db.getChaptersByHelpFile(TI.db.helpFileIdx);
+      const notes = [...new Set( (await Promise.all(chapters.map(x => TI.db.getNotesByChapter(x.id)))).flat().map(x => x.id) )];
+      notes.forEach(x => TI.db.delete('note', x));
+    };
+
+    TI.btnExport = uiAddButton('notes-clear', '🗑️', TI.aliasName, handlerClear);
+
   }
 
   _setNotesVisibility(state) {
@@ -174,6 +194,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       return;
     const prjName = configGetValue('CFG_KEY__PRJNAME', '')?.trim() || dataPathGeneral;
     const TI = this;
+    TI.prjName = prjName;
     TI.db.helpFileIdx = await TI.db.getHelpIdByName(prjName) || await TI.db.addHelpFile({ name: prjName });
   }
 

@@ -84,3 +84,22 @@ function searchOverTextNodesAndDo(parent, action) {
     }
   }
 }
+
+function stringToBlob(str, type = "text/plain") {
+  const blob = new Blob([str], { type: type });
+  return blob;
+}
+
+function prepareDownload(dataBlob, fileName, revocationTimeout = 5000) {
+  const url = URL.createObjectURL(dataBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.setAttribute('data-param', url);
+  a.target = '_blank';
+  a.id = ID_DOWNLOADLINK;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), revocationTimeout);
+}

@@ -179,19 +179,7 @@ class puiButtonCustPackage extends puiButton {
         this.deleteFromZip(jszip, filesToExclude.filter(x => !x.endsWith('/')), masksToExclude);
   
         // provide started download of result
-        jszip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(x => {
-          const url = URL.createObjectURL(x);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'data.zip';
-          a.setAttribute('data-param', url);
-          a.target = '_blank';
-          a.id = ID_DOWNLOADLINK;
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-          setTimeout(() => URL.revokeObjectURL(url), 5000);  
-        });
+        jszip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(x => prepareDownload(x, 'data.zip'));
       });
 
     }
