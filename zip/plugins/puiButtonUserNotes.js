@@ -251,8 +251,9 @@ class puiButtonUserNotes extends puiButtonTabTree {
   }
 
   async _loadNotes() {
+    this.tree.innerHTML = '';
     const contentPane = $(this.cfgIDCONTENT);
-    const notesObj = [...$A('*', contentPane)].filter(x => x?.classList.contains(this.cfgCSSCLASS));
+    var notesObj = notesObj = [...$A(`.${this.cfgCSSCLASS}`, contentPane)];
     notesObj.forEach(x => x.remove());
     const elements = [...$A('*', contentPane)];
     const cssClassUNote = this.cfgCSSCLASS;
@@ -278,6 +279,14 @@ class puiButtonUserNotes extends puiButtonTabTree {
     });
 
     this._setNotesVisibility(currentVisibility);
+    notesObj = [...$A(`.${this.cfgCSSCLASS}`, contentPane)].map(x => {
+      const li = document.createElement('li');
+      li.innerHTML = x.innerHTML;
+      li.setAttribute('role', 'treeitem');
+      return li;
+    });
+
+    notesObj.forEach(x => this.tree.appendChild(x));
   }
 
   _getNewNoteSpan() {
