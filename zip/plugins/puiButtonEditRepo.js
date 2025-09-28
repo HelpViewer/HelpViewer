@@ -3,7 +3,7 @@ class puiButtonEditRepo extends puiButton {
     super(aliasName, data);
 
     this.DEFAULT_KEY_CFG_ID = 'editRepoBtn';
-    this.DEFAULT_KEY_CFG_CAPTION = '✏️';
+    this.DEFAULT_KEY_CFG_CAPTION = '📝';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_HEADER;
   }
 

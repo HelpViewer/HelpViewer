@@ -6,7 +6,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     const TI = this;
     TI.DEFAULT_KEY_CFG_ID = 'downP-UserNotes';
-    TI.DEFAULT_KEY_CFG_CAPTION = '📝';
+    TI.DEFAULT_KEY_CFG_CAPTION = '✏️';
     TI.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
 
     TI.DEFAULT_KEY_CFG_TREEID = 'notesList';
@@ -206,6 +206,8 @@ class puiButtonUserNotes extends puiButtonTabTree {
     const currentVisibility = getUserConfigValue(this.cfgCFGKEYNOTESVISIBLE) == 1;
 
     notesDataTransposed.forEach(x => {
+      if (x[0].parentNode.tagName.toUpperCase().startsWith('H'))
+        x[0] = x[0].parentNode;
       x[0].after(x[1]);
     });
 
