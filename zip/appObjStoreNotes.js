@@ -7,12 +7,14 @@ class HelpViewerDB extends IndexedDBOperator {
         indexes: [{ name: 'byName', key: 'name', unique: true }] 
       },
       chapter: { 
-        indexes: [{ name: 'byName', key: 'name', unique: true }] 
+        indexes: [
+          { name: 'byNameHelpId', key: ['name', 'helpId'], unique: true },
+          { name: 'byHelpId', key: 'helpId', unique: false },
+        ]
       },
       note: { 
         indexes: [
-          { name: 'byChapterId', key: 'chapterId', unique: false },
-          { name: 'byHelpId', key: 'helpId', unique: false }
+          { name: 'byChapterId', key: 'chapterId', unique: false }
         ]
       }
     };
@@ -23,8 +25,8 @@ class HelpViewerDB extends IndexedDBOperator {
     return result?.id || null;
   }
 
-  async getChapterIdByName(name) {
-    const result = await this.getByIndex('chapter', 'byName', name);
+  async getChapterIdByName(name, helpId) {
+    const result = await this.getByIndex('chapter', 'byNameHelpId', [name, helpId]);
     return result?.id || null;
   }
 

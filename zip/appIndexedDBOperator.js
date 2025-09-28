@@ -52,6 +52,7 @@ class IndexedDBOperator {
   }
 
   _request(store, method, ...args) {
+    log('E IndexedDB operation request: ', [store, method?.name, [...args]]);
     return new Promise((resolve, reject) => {
       const request = store[method](...args);
       request.onsuccess = () => resolve(request.result);

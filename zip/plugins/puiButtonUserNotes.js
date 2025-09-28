@@ -88,7 +88,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     textRange.setEndAfter(textNode);
   }
 
-  _handleBlur(e) {
+  async _handleBlur(e) {
     const targetVal = stripTagsSome(e.target.innerHTML, this.cfgNOTESTYPEDFILTEROUTHTML);
 
     if (this.cfgNOTESONLYTEXTMANTYPED)
@@ -96,9 +96,32 @@ class puiButtonUserNotes extends puiButtonTabTree {
     else
       e.target.innerHTML = targetVal;
 
+    const targetId = e.target.id;
+    var noteId = parseInt(targetId.split('-')[1]);
+
     if (!targetVal) {
+      if (!targetId.includes('_')) {
+        this.db.deleteNote({ id: noteId });
+      }
       e.target.remove();
+    } else {
+      const chapterId = await this.db.getChapterIdByName(pagePath, this.db.helpFileIdx) || await this.db.addChapter({ name: pagePath, helpId: this.db.helpFileIdx });
+      const contentPane = $(this.cfgIDCONTENT);
+      const elements = [...$A('*', contentPane)].filter(x => !x.classList.contains(this.cfgCSSCLASS) || x.id == targetId);
+      const noteObject = { data: e.target.innerHTML, position: elements.indexOf(e.target), chapterId: chapterId };
+
+      if (targetId.includes('_')) {
+        noteId = await this.db.addNote(noteObject);
+        e.target.id = `${this.cfgCSSCLASS}-${noteId}`;
+      } else {
+        noteObject.id = noteId;
+        this.db.updateNote(noteObject);
+      }
     }
+
+    //if (targetId.contains('_'))
+
+    //if (e.target)
   }
 
   _handleFocus(e) {
