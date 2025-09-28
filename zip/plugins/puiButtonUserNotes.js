@@ -281,7 +281,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     this._setNotesVisibility(currentVisibility);
     notesObj = [...$A(`.${this.cfgCSSCLASS}`, contentPane)].map(x => {
       const li = document.createElement('li');
-      li.innerHTML = x.innerHTML;
+      li.innerHTML = x.innerText;
       li.setAttribute('role', 'treeitem');
       li.id = `${this.cfgTREEID}|${x.id.split('-')[1]}`;
       return li;
@@ -297,6 +297,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     if (!e)
       return;
 
+    scrollToAnchor(convertedId);
     const cssClass = 'act-flash';
     e.classList.remove(cssClass);
     e.offsetWidth;
