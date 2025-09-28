@@ -1,8 +1,6 @@
 # Future plans
 
 - Support old help CHM file format with defined conversion steps.
-- Left panel with multi pages:
-  - User notes list and links to headings inside documents
 - Possibility to add custom user note to anchor (heading) + data management in separated ZIP
 - In commit 1119768 there has been done try with scratch image, but failed so alpine was used. Retry it.
 - Nice URLs (?id=5&d=...&p=... vs /hello.md/3)
@@ -24,4 +22,4 @@
 - glossary list page (pages with single letter and word list)
 - wizard with points and buttons
 - Github and another repository services (appGHIntegration.js refactor)
-- User bookmarks across help pages
+- User bookmarks across help pages / User bookmarks to chapters (?, browser bookmarks also exists)
