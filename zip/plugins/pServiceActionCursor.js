@@ -35,6 +35,7 @@ class pServiceActionCursor extends pClickConverter {
     ActionClickedEvent.register(TI.cfgEVENTBUSEVENT);
 
     const h_EVT_AC_SET = (data) => {
+      data.offsetLT = (typeof data.offsetLT === 'string') ? data.offsetLT.split(';') : data.offsetLT;
       TI.targetSysObject = SystemEventHandler.getTargetFromName(TI.cfgSYSOBJECT);
       TI.SEVT_MOUSE = new SystemEventHandler('', undefined, TI.targetSysObject, 'mousemove', this._mouseMove.bind(this));
       TI.SEVT_MOUSE.init();
