@@ -182,7 +182,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       this._loadNotes();
     };
 
-    TI.btnExport = uiAddButton('notes-clear', '🗑️', TI.aliasName, handlerClear);
+    TI.btnClear = uiAddButton('notes-clear', '🗑️', TI.aliasName, handlerClear);
 
     const handlerImport = async (e) => {
       const formB = document.createElement('span');
@@ -220,7 +220,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       fInput.click();
     };
 
-    TI.btnExport = uiAddButton('notes-import', '📥', TI.aliasName, handlerImport);
+    TI.btnImport = uiAddButton('notes-import', '📥', TI.aliasName, handlerImport);
   }
 
   _setNotesVisibility(state) {
