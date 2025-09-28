@@ -299,7 +299,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     const cssClass = 'act-flash';
     e.classList.remove(cssClass);
-    void e.offsetWidth;
+    e.offsetWidth;
     e.classList.add(cssClass);
   }
 
