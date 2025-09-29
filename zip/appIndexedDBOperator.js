@@ -29,7 +29,6 @@ class IndexedDBOperator {
             if (!db.objectStoreNames.contains(storeName)) {
               const store = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
               
-              // Vytvoření indexů podle konfigurace
               config.indexes?.forEach(({ name, key, unique }) => {
                 store.createIndex(name, key, { unique });
               });
