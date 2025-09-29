@@ -39,3 +39,4 @@ INDEXEDDB|Podpora pro Indexed DB úložiště
 TECHC|Technologické komponenty
 SERVICEPLUGIN|Podpora pro pluginy rozšiřujících služeb
 SERVICEPLANG|Oddělené překlady pluginů
+TOCCUSTICONS|Ikony v seznamu témat

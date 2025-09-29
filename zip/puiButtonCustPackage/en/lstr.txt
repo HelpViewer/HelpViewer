@@ -39,3 +39,4 @@ INDEXEDDB|Indexed DB storage support
 TECHC|Technology components
 SERVICEPLUGIN|Support for plugins extending services
 SERVICEPLANG|Separate plugin translations
+TOCCUSTICONS|TOC tree icons support
