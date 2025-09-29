@@ -22,6 +22,7 @@ puiButtonTabTree
 puiPanel:bottom
 puiPanel:top
 puiButtonTOC:toc
+puiTOCCustomIcons:FILE_CONFIG
 puiButtonBmarks:
 pIndexFile:keywordList
 puiButtonKeywordIndex:keywordList
