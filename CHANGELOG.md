@@ -1,5 +1,31 @@
 # Changelog
 
+## 20250929
+
+### 🧑‍🤝‍🧑 User
+- ✏️ User notes
+- ✨ Splash screen (if defined in help file)
+- 📥 Customization of download package : rearranges in component tree to make interconnections clearer
+- Tree view code listings are now without numbers on left
+
+### 🐞 Bugfix
+- 🕘 Version search : missing bookmark in heading
+- 📥 Customization of download package : close sidebar when browsing via mobile device
+
+### 🧩 Technology
+- 📥 Customization of download package : -C list of plugins introduced. All plugins that are not parented in the tree but are located elsewhere in the tree (different substructure) should be there. This list is processed for checking all dependencies when plugin is selected. Usage example: OBJECTEXPLORER, USERNOTES
+- 🌐 pLocalizationSwitcher : LocAppend event extended for dynamic localization keys support
+- 🧩 pTRAnchorName : anchor generation logic can be changed now (strategies: numbering (default), slugify) or your own can be defined
+- ⚙️🏡 pServiceHomeFile : uri to readme page can be changed by configuration option, puiButtonHome updated
+- ✨ puiSplash : Splash screen/page for help file
+- 🖼️ pTR1stHeadingToTopPanel : fallback for heading started with **_** - these headings will not be processed by plugin if found
+- 🖥️ puiHeader : support for act like footer panel with text (good for copyright and other texts)
+- 🎨 pColorTheme : refactor, extension of configuration keys
+- ⚙️ pServiceActionCursor : Cursor with service action (API for de/activating mode and icon following mouse cursor)
+- ✏️ puiButtonUserNotes : User notes plugin - complete action handling - management, browsing, import/export (+ appObjStoreNotes - holds data storage logic for HelpViewer)
+- 🛢️ appIndexedDBOperator : basic general logic for **IndexedDB** data storage
+- 📖 puiTOCCustomIcons : logic of TOC tree icons processing extracted from appmainNext plugin, logic for sibling tree nodes images support
+
 ## 20250921
 
 ### 🧑‍🤝‍🧑 User
