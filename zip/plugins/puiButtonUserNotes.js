@@ -165,6 +165,9 @@ class puiButtonUserNotes extends puiButtonTabTree {
         })
       };
 
+      const usedChapters = [...new Set(reply.notes.map(x => x.c))];
+      reply.chapters = reply.chapters.filter(x => usedChapters.includes(x.i));
+
       const replyPlain = JSON.stringify(reply);
       prepareDownload(stringToBlob(replyPlain, 'application/json'), `notes-${TI.prjName.replace('/', '-')}-${getDateInYYYYMMDD(new Date())}.json`);
     };
@@ -242,7 +245,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
   }
 
   onET_ChapterShown(evt) {
-    this.pagePath = evt.addressOrig;
+    this.pagePath = evt.address;
     
     if (!this.db || evt.id != '')
       return;
