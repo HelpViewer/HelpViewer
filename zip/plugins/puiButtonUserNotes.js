@@ -212,7 +212,8 @@ class puiButtonUserNotes extends puiButtonTabTree {
               return {chapterId: chapters.get(x.c), position: x.p, data: x.d};
             });
 
-            await Promise.all(notes.map(x => TI.db.addNote(x)));
+            const addNotes = notes.map(x => TI.db.addNote(x));
+            await Promise.all(addNotes);
 
             TI._loadNotes();
           };
