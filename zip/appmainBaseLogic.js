@@ -13,6 +13,7 @@ const CFG_KEY__LANG = '_lang';
 
 const FILENAME_BOOKO = 'book-open.png';
 const FILENAME_BOOKC = 'book-closed.png';
+const FILENAME_SIBLING = 'tree-sibling.png';
 const FILENAME_FAVICON = 'favicon.png';
 
 const UI_PLUGIN_SIDEBAR = 'sidebar';

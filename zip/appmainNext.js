@@ -204,9 +204,10 @@ class pAppmainNext extends IPlugin {
         changeFavicon(customFavicon);
         
       // override book images in tree structure
-      var [bookOpen, bookClosed] = await Promise.all([
+      var [bookOpen, bookClosed, siblingImg] = await Promise.all([
         getDataOfPathInZIPImage(FILENAME_BOOKO, STO_HELP),
         getDataOfPathInZIPImage(FILENAME_BOOKC, STO_HELP),
+        getDataOfPathInZIPImage(FILENAME_SIBLING, STO_HELP),
       ]);
     
       var doOverride = null;
@@ -244,6 +245,33 @@ class pAppmainNext extends IPlugin {
     content: ${bookOpen};
     }` 
         );
+      }
+
+      var siblingTxt = configGetValue(CFG_KEY_OverrideBookIconSibling) || '';
+
+      if (siblingImg) {
+        siblingTxt = '';
+        siblingImg = 
+`width: 16px;
+height: 16px;
+background-image: url("${siblingImg}");
+background-size: contain;
+background-repeat: no-repeat;`;
+      } else {
+        siblingImg = '';
+      }
+
+      const cssName = 'overrideSiblingTopics';
+      $(cssName)?.remove();
+      if (siblingTxt || siblingImg) {
+        appendCSS(cssName,
+`.tree#tree li > a::before {
+content: "${siblingTxt}";
+${siblingImg}
+display: inline-block;
+margin-right: 0.5em;
+vertical-align: middle;
+}`);
       }
       
     })();
