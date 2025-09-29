@@ -61,7 +61,6 @@ class IndexedDBOperator {
     });
   }
 
-  // Transakce pro jeden nebo více stores
   async _transaction(storeNames, mode, callback) {
     const db = await this.getDb();
     const tx = db.transaction(storeNames, mode, { durability: this.durability });
@@ -128,62 +127,6 @@ class IndexedDBOperator {
     return this._transaction(storeName, 'readonly', store => 
       this._request(store[storeName].index(indexName), 'getAll', value)
     );
-  }
-
-  async addMany(storeName, records) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
-        const results = [];
-        let completed = 0;
-        
-        if (records.length === 0) {
-          resolve([]);
-          return;
-        }
-
-        records.forEach((record, index) => {
-          const request = store.add(record);
-          request.onsuccess = () => {
-            results[index] = request.result;
-            completed++;
-            if (completed === records.length) resolve(results);
-          };
-          request.onerror = () => reject(request.error);
-        });
-      })
-    );
-  }
-
-  async deleteMany(storeName, ids) {
-    return this._execute(() => 
-      this._transaction(storeName, 'readwrite', (store, resolve, reject) => {
-        let completed = 0;
-        
-        if (ids.length === 0) {
-          resolve(true);
-          return;
-        }
-
-        ids.forEach(id => {
-          const request = store.delete(id);
-          request.onsuccess = () => {
-            completed++;
-            if (completed === ids.length) resolve(true);
-          };
-          request.onerror = () => reject(request.error);
-        });
-      })
-    );
-  }
-
-  async exists(storeName, id) {
-    const result = await this.get(storeName, id);
-    return !!result;
-  }
-
-  async existsByIndex(storeName, indexName, value) {
-    const result = await this.getByIndex(storeName, indexName, value);
-    return !!result;
   }
 
   async getDbStats() {
