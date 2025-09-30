@@ -280,7 +280,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     notesDataTransposed.forEach(x => {
       if (!x[0])
         x[0] = contentPane;
-      if (x[0].parentNode?.tagName.toUpperCase().startsWith('H'))
+      if (x[0].parentNode?.tagName.toUpperCase().startsWith('H') || x[0].tagName.toUpperCase().startsWith('A'))
         x[0] = x[0].parentNode;
       if (x[0].tagName.toUpperCase().startsWith('H')) {
         //x[0] = x[0].nextElementSibling;
