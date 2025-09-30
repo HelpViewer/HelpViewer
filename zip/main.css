@@ -68,7 +68,7 @@ h1 {
 
 .container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .sidebar {
@@ -81,11 +81,16 @@ h1 {
   transition: width 1.0s ease, opacity 1.0s ease;
   display: flex;
   flex-direction: column;
+  position: sticky;
+  flex: 0 0 250px;
+  height: 100vh;
+  top: 0;
 }
 
 .sidebar.hidden {
   width: 0;
   opacity: 0;
+  flex: unset;
 }
 
 .notransition {
@@ -119,7 +124,7 @@ h1 {
 .content {
   position: relative;
   flex: 1;
-  overflow-y: auto;
+  overflow-y: visible;
   padding: 1em;
   font-size: 1em;
   background-color: var(--c-contentPaneColor);
