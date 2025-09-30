@@ -25,7 +25,7 @@ class puiButtonEditRepo extends puiButton {
   }
   
   _buttonAction(evt) {
-    const PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+    const PRJNAME_VAL = configGetDataProjectFile().split('/');
     const fileLink = getHelpRepoUriEditFile(PRJNAME_VAL[0], PRJNAME_VAL[1], (getGets(PAR_NAME_PAGE) || getHomePageData())?.split(MARKER_MARKWORD)[0], getActiveLanguage(), 'main');
     window.location.href = fileLink;
   }

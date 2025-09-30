@@ -18,6 +18,18 @@ function configGetValue(key, backup, CFG = FILE_CONFIG) {
   }) || backup;
 }
 
+function configGetDataProjectFile() {
+  var prjName = configGetValue(CFG_KEY__PRJNAME, '', FILE_CONFIG);
+  if (prjName)
+    return prjName;
+
+  const baseURI = 'https://';
+  if (!prjName && dataPathGeneral.startsWith(baseURI))
+    prjName = dataPathGeneral.substring(baseURI.length).split('/')?.slice(1, 3).join('/');
+
+  return prjName;
+}
+
 function configFileReload(CFG = FILE_CONFIG) {
   return sendEventWProm(EventNames.ConfigFileReload, (x) => {
     x.id = CFG;

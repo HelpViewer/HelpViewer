@@ -23,7 +23,7 @@ class puiButtonVersionSearch extends puiButton {
   }
 
   onET_ConfigFileReloadFinished(evt) {
-    const PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+    const PRJNAME_VAL = configGetDataProjectFile().split('/');
     
     if (!PRJNAME_VAL)
       return;

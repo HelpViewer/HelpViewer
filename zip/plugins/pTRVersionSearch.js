@@ -17,7 +17,7 @@ class pTRVersionSearch extends pTRPhasePlugin {
     r.heading = _T('versionList');
     const headings = $A('h2', r.doc);
     
-    const PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+    const PRJNAME_VAL = configGetDataProjectFile().split('/');
     
     headings.forEach(heading => {
       const boomark = $O('a', heading);

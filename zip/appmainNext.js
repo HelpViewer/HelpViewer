@@ -195,7 +195,7 @@ class pAppmainNext extends IPlugin {
         pagePath = getHomePageData();
 
       showChapterByData(idxTreeItem, pagePath);
-      PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+      PRJNAME_VAL = configGetDataProjectFile().split('/');
     
       // Load favicon
       const customFavicon = await getDataOfPathInZIPImage(FILENAME_FAVICON, STO_HELP);

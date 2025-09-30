@@ -104,7 +104,7 @@ class pTopicRenderer extends IPlugin {
     const h_EVT_TOPREN_SHOW_CHAPTER = (data) => {
       const r = data.result;
 
-      const PRJNAME_VAL = configGetValue(CFG_KEY__PRJNAME)?.trim().split('/');
+      const PRJNAME_VAL = configGetDataProjectFile().split('/');
       
       r.STORAGE_NETW = (path) => {
         const pathToRepo = (r.helpFile || getHelpRepoUri(PRJNAME_VAL[0], PRJNAME_VAL[1])) + path;
