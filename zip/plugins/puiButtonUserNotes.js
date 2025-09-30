@@ -103,7 +103,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       e.target.remove();
     } else {
       const contentPane = $(this.cfgIDCONTENT);
-      const elements = [...$A('*', contentPane)].filter(x => !x.classList.contains(this.cfgCSSCLASS) || x.id == targetId);
+      const elements = this._getEligibleElements(contentPane, targetId);
       const noteObject = { data: e.target.innerHTML, position: elements.indexOf(e.target), chapterId: this.chapterId };
 
       if (targetId.includes('_')) {
@@ -259,7 +259,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     const contentPane = $(this.cfgIDCONTENT);
     var notesObj = notesObj = [...$A(`.${this.cfgCSSCLASS}`, contentPane)];
     notesObj.forEach(x => x.remove());
-    const elements = [...$A('*', contentPane)];
+    const elements = this._getEligibleElements(contentPane);
     const cssClassUNote = this.cfgCSSCLASS;
 
     const chapterId = await this.db.getChapterIdByName(this.pagePath, this.db.helpFileIdx) || await this.db.addChapter({ name: this.pagePath, helpId: this.db.helpFileIdx });
@@ -277,9 +277,15 @@ class puiButtonUserNotes extends puiButtonTabTree {
     const currentVisibility = getUserConfigValue(this.cfgCFGKEYNOTESVISIBLE) == 1;
 
     notesDataTransposed.forEach(x => {
-      if (x[0].parentNode.tagName.toUpperCase().startsWith('H'))
+      if (!x[0])
+        x[0] = contentPane;
+      if (x[0].parentNode?.tagName.toUpperCase().startsWith('H'))
         x[0] = x[0].parentNode;
-      x[0].after(x[1]);
+      if (x[0].tagName.toUpperCase().startsWith('H')) {
+        //x[0] = x[0].nextElementSibling;
+        x[0].after(x[1]);
+      } else 
+        x[0].appendChild(x[1]);
     });
 
     this._setNotesVisibility(currentVisibility);
@@ -292,6 +298,15 @@ class puiButtonUserNotes extends puiButtonTabTree {
     });
 
     notesObj.forEach(x => this.tree.appendChild(x));
+  }
+
+  _getEligibleElements(contentPane, oneNoteToKeep) {
+    const codes = [...$A('.code-toolbar, .code-toolbar *', contentPane)];
+    const hash = oneNoteToKeep ? `:not(#${oneNoteToKeep})` : '';
+    const hash2 = oneNoteToKeep ? `:not(#${oneNoteToKeep} *)` : '';
+    const notes = [...$A(`.${this.cfgCSSCLASS}${hash}, .${this.cfgCSSCLASS}${hash} *${hash2}`, contentPane)];
+    var elements = [...$A('*', contentPane)].filter(x => !codes.includes(x) && !notes.includes(x));
+    return elements;
   }
 
   _treeClick(evt) {
