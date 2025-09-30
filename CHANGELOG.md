@@ -1,5 +1,13 @@
 # Changelog
 
+## 20250930
+
+### 🧑‍🤝‍🧑 User
+- 🕘 Version search : improved help project name detection for older help files
+
+### 🐞 Bugfix
+- ✏️ User notes : loading and notes position processing fix, tooltips added
+
 ## 20250929
 
 ### 🧑‍🤝‍🧑 User
