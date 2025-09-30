@@ -104,8 +104,9 @@ class puiButtonUserNotes extends puiButtonTabTree {
     } else {
       const contentPane = $(this.cfgIDCONTENT);
       const elements = this._getEligibleElements(contentPane, targetId);
-      const noteObject = { data: e.target.innerHTML, position: elements.indexOf(e.target), chapterId: this.chapterId };
-
+      const len = elements.length - 1;
+      const position = len == elements.indexOf(e.target) ? len : elements.indexOf(e.target) - 1;
+      const noteObject = { data: e.target.innerHTML, position: position, chapterId: this.chapterId };
       if (targetId.includes('_')) {
         noteId = await this.db.addNote(noteObject);
         e.target.id = `${this.cfgCSSCLASS}-${noteId}`;
@@ -265,7 +266,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     const chapterId = await this.db.getChapterIdByName(this.pagePath, this.db.helpFileIdx) || await this.db.addChapter({ name: this.pagePath, helpId: this.db.helpFileIdx });
     this.chapterId = chapterId;
     const notesData = await this.db.getNotesByChapter(chapterId);
-    var notesDataTransposed = notesData.map(x => [elements[x.position-1], x.id, x.data]);
+    var notesDataTransposed = notesData.map(x => [elements[x.position], x.id, x.data]);
 
     notesDataTransposed = notesDataTransposed.map(x => {
       const span = this._getNewNoteSpan();
