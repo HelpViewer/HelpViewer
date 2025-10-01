@@ -101,8 +101,9 @@ h1 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
+  height: 100vh;
 }
 
 .header {
@@ -112,6 +113,13 @@ h1 {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--c-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  position: sticky;
+  box-sizing: border-box;
 }
 
 .pnl-btn {
@@ -181,11 +189,13 @@ ul.tree details[open] > summary::before {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid var(--c-border);
-    min-height: 60px;
-    display: block;
     padding: 0;
-    display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    height: 100vh;
+    flex-shrink: 0;
   }
 
   .main {
