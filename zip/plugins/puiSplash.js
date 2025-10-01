@@ -52,6 +52,8 @@ class puiSplash extends IPlugin {
           TI.splashPanel = sp;
           sp.classList.add(...TI.cfgCSSCLASS.split(';'));
           sp.id = TI.cfgIDNAME;
+          sp.setAttribute('role', 'banner');
+          sp.setAttribute('aria-hidden', 'true');
           relative.parentElement.insertBefore(sp, relative);
           TI.show(TI.cfgFILENAME);
         }
