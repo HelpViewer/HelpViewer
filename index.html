@@ -8,6 +8,11 @@
   <meta name="description" content="Help Viewer help file.">
   <link rel="manifest" href="manifest.webmanifest">
   <script src="hvdata/jszip.min.js"></script>
+  <script>
+"use strict";
+const DEBUG_MODE = true;
+const global1stState = DEBUG_MODE? new Set(Object.getOwnPropertyNames(globalThis)) : new Set();
+  </script>
   <script src="hvdata/appmain.js"></script>
   <link rel="icon" type="image/png" href="favicon.png">
   <meta property="og:title" content="Help Viewer">

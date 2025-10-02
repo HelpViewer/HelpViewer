@@ -1,6 +1,4 @@
 "use strict";
-const DEBUG_MODE = true;
-const global1stState = DEBUG_MODE? new Set(Object.getOwnPropertyNames(globalThis)) : new Set();
 const DEBUG_MODE_RENDERER = DEBUG_MODE;
 const LOG_MINIMIZE_OBJECT = true;
 const LOG_MINIMIZE_DATE_ISO = false;
