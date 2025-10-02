@@ -57,6 +57,8 @@ class puiButtonUserNotes extends puiButtonTabTree {
 
     TI.NOTE_BLUR = new SystemEventHandler('', undefined, contentPane, 'focusout', (e) => TI._handleForNote(e, TI._handleBlur.bind(TI)));
     TI.NOTE_BLUR.init();
+
+    TI.loadNotesLock = false;
   }
 
   deInit() {
@@ -256,6 +258,11 @@ class puiButtonUserNotes extends puiButtonTabTree {
   }
 
   async _loadNotes() {
+    if (this.loadNotesLock)
+      return;
+    else
+      this.loadNotesLock = true;
+
     this.tree.innerHTML = '';
     const contentPane = $(this.cfgIDCONTENT);
     var notesObj = notesObj = [...$A(`.${this.cfgCSSCLASS}`, contentPane)];
@@ -299,6 +306,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     });
 
     notesObj.forEach(x => this.tree.appendChild(x));
+    this.loadNotesLock = false;
   }
 
   _getEligibleElements(contentPane, oneNoteToKeep) {
