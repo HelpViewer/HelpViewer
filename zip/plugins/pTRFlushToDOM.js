@@ -10,8 +10,10 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     log(`Rendering ${r.uri} data attached to DOM - visible to user now`);
     r.fixRelativePathToZipPaths(r.heading, ":not(.treepic)");
 
-    if (!r.targetOverriden)
+    if (!r.targetOverriden) {
+      r.heading = r.heading.split(MARKER_MARKWORD)[0];
       r.setTitle(r.heading);
+    }
   
     if (r.docM)
       r.content = r.docM.body.innerHTML;
