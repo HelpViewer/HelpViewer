@@ -1,5 +1,21 @@
 # Changelog
 
+## 20251004
+
+### 🧑‍🤝‍🧑 User
+- 🌈 Select skin + 8 new application styles
+
+### 🐞 Bugfix
+- 🐞 DEBUG_MODE directive moved to index.html due to uncomplete scanning of global methods
+- ✏️ User notes : correction of multiple notes loading
+- history back -> Heading of chapter printed with @@ part (now skipped in heading)
+
+### 🧩 Technology
+- 🖥️ puiButtonSelect : select element customised to look like standard panel button
+- 🌈 puiButtonSelectSkin
+- ✏️ puiButtonUserNotes : configuration key renamed to STOREKEY
+- 🖥️ puiSplash : ARIA attributes updated
+
 ## 20250930
 
 ### 🧑‍🤝‍🧑 User
