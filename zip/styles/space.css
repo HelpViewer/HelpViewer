@@ -1,5 +1,6 @@
 :root {
   --c-tabLine1: unset;
+  --c-background: transparent;
 }
 
 body.inStandard {
