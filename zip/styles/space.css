@@ -1,0 +1,94 @@
+:root {
+  --c-tabLine1: unset;
+}
+
+body.inStandard {
+  background-color: #0a0a0a;
+  color: #00ffcc;
+  font-family: 'Orbitron', monospace;
+}
+a { color: #00ffff; text-decoration: none; }
+a:hover { color: #ff00ff; text-shadow: 0 0 8px #ff00ff; }
+
+#toolbar {
+  visibility: visible;
+}
+
+#header {
+  border-bottom: 2px solid #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
+  backdrop-filter: blur(8px);
+}
+#toolbar button {
+  background: rgba(0,255,255,0.1);
+  border: 1px solid #00ffcc;
+  border-radius: 4px;
+  margin: 0 4px;
+  transition: 0.3s;
+}
+#toolbar button:hover {
+  box-shadow: 0 0 12px #ff00ff, 0 0 20px #00ffff;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 250px;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  border-right: 2px solid #00ffcc;
+  backdrop-filter: blur(5px);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.sidebar.open { transform: translateX(0); }
+
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: #00ffcc; border-radius: 3px; }
+
+.content {
+  padding: 2rem;
+  border: 1px solid #00ffcc;
+  box-shadow: 0 0 15px #00ffff;
+  margin: 1rem;
+  backdrop-filter: blur(4px);
+}
+h2 {
+  text-shadow: 0 0 6px #ff00ff;
+}
+
+@keyframes glow {
+  0%, 100% { text-shadow: 0 0 4px #00ffff; }
+  50% { text-shadow: 0 0 12px #ff00ff; }
+}
+h2 { animation: glow 2s infinite; }
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  border-right: 2px solid #00ffcc;
+  backdrop-filter: blur(5px);
+  transform: none;
+}
+
+.content, .header {
+  background: transparent;
+}
+
+.header button {
+  color: white;
+  background: transparent;
+}
+
+.toolbar {
+  background-color: transparent;
+}
+
+.toolbar button {
+  background-color: transparent;
+  color: white;
+}

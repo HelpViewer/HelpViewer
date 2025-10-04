@@ -37,6 +37,8 @@ puiButtonUserNotes:notes
 puiButtonToggleSide:
 puiButtonFullScreen:
 puiButtonPresMode:
+puiButtonSelect
+puiButtonSelectSkin:
 puiSidebarVisibilityToggle:
 puiButtonPrint:
 puiNavigation:nav

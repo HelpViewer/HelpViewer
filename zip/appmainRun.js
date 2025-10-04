@@ -2,6 +2,7 @@ const FILENAME_LAYOUT = 'layout.htm';
 const FILENAME_MAINCSS = 'main.css';
 const FILENAME_JSBACKEND = 'appmainNext.js'
 const FILENAME_MAINCSS_PLUS = 'plus.css';
+const ID_MAINCSS_PLUS = 'mainCSSPlus';
 const FILENAME_JSBACKEND_PLUS = 'plus.js';
 const FILENAME_LIST_JS = 'js.lst';
 const FILENAME_LIST_CSS = 'css.lst';
@@ -56,7 +57,7 @@ async function runApp() {
   appendJavaScript(FILENAME_JSBACKEND, srcJSOverride, document.head);
 
   if (srcMainCSSPlus)
-    appendCSS('mainCSSPlus', srcMainCSSPlus);
+    appendCSS(ID_MAINCSS_PLUS, srcMainCSSPlus);
 
   if (srcJSOverridePlus)
     appendJavaScript('mainJSPlus', srcJSOverridePlus, document.head);

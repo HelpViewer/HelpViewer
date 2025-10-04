@@ -1,0 +1,22 @@
+:root {
+    --c-border: #7aa07a;
+    --c-background: #cfe8cf;
+    --c-backgroundHead: #b7d8b7;
+    --c-numbering: #a37f4a;
+    --c-line0: #e9f4e9;
+    --c-line1: #ffffff;
+    --c-tabLine0: rgba(0, 0, 0, 0);
+    --c-tabLine1: var(--c-background);
+    --c-anchorHover: #cc9900;
+    --c-anchorColor: #5a5a5a;
+    --c-contentPaneColor: white;
+    --c-wordFound: #ffee58;
+}
+
+a {
+    color: var(--c-anchorColor);
+}
+
+a:hover {
+    color: var(--c-anchorHover);
+}

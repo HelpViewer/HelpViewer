@@ -1,0 +1,68 @@
+:root {
+  --color-bg: #f9f9fb;
+  --color-fg: #222;
+  --color-accent: #3a7afe;
+  --color-border: #ddd;
+  --color-hover: #eef3ff;
+  --color-btn-hover: #2c63d4;
+  --color-btn-active: #224ca0;
+  --radius: 6px;
+  --transition: 0.2s ease;
+  --font: "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  line-height: 1.5;
+}
+
+button {
+  background: var(--color-accent);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5em 1em;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  font-size: 0.95rem;
+}
+
+button:hover {
+  background: var(--color-btn-hover);
+  transform: translateY(-1px);
+}
+
+button:active {
+  background: var(--color-btn-active);
+  transform: translateY(0);
+}
+
+.tree {
+  list-style: none;
+  padding-left: 1em;
+}
+
+.tree li {
+  margin: 0.25em 0;
+  position: relative;
+  cursor: pointer;
+}
+
+a {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius);
+}
+
+a:hover {
+  background: var(--color-btn-hover);
+  color: var(--color-hover);
+  transform: translateY(-1px);
+}
+
+a:active {
+  background: var(--color-btn-active);
+  color: var(--color-hover);
+  transform: translateY(0);
+}

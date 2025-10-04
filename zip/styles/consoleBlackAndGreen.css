@@ -1,0 +1,34 @@
+:root {
+  --c-main: #0f0;
+  --c-secondary: white;
+  --c-border: #000000;
+  --c-background: #000000;
+  --c-backgroundHead: #111111;
+  --c-numbering: var(--c-main);
+  --c-line0: #000000;
+  --c-line1: #0a0a0a;
+  --c-tabLine0: rgba(0, 255, 0, 0.05);
+  --c-tabLine1: rgba(0, 255, 0, 0.1);
+  --c-anchorHover: #0ff;
+  --c-anchorColor: var(--c-main);
+  --c-contentPaneColor: #111;
+  --c-wordFound: #ff0;
+  color: var(--c-main);
+  --c-usernoteBackground: rgba(255,255,255,0.05);
+}
+
+a {
+  color: var(--c-anchorColor);
+}
+
+a:hover {
+  color: var(--c-anchorHover);
+}
+
+.pnl-btn {
+  color: var(--c-secondary);
+}
+
+.usernote {
+  mix-blend-mode: unset;
+}

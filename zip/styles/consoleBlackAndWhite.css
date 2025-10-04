@@ -1,0 +1,36 @@
+:root {
+  --c-border: #888888;
+  --c-background: #111111;
+  --c-backgroundHead: #222222;
+  --c-numbering: #aaaaaa;
+  --c-line0: #111111;
+  --c-line1: #1a1a1a;
+  --c-tabLine0: rgba(255,255,255,0.05);
+  --c-tabLine1: rgba(255,255,255,0.1);
+  --c-anchorHover: #ffffff;
+  --c-anchorColor: #cccccc;
+  --c-contentPaneColor: #1a1a1a;
+  --c-wordFound: #ffffff;
+  color: var(--c-wordFound);
+  --c-secondary :  var(--c-anchorHover);
+}
+
+a {
+  color: var(--c-anchorColor);
+}
+
+a:hover {
+  color: var(--c-anchorHover);
+}
+
+.pnl-btn {
+  color: var(--c-secondary);
+}
+
+.toolbar, button, .pnl-btn {
+  background-color: transparent;
+}
+
+.usernote {
+  mix-blend-mode: unset;
+}
