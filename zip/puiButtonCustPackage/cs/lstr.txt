@@ -40,3 +40,5 @@ TECHC|Technologické komponenty
 SERVICEPLUGIN|Podpora pro pluginy rozšiřujících služeb
 SERVICEPLANG|Oddělené překlady pluginů
 TOCCUSTICONS|Ikony v seznamu témat
+DROPDOWNBUTTON|Tlačítko s výběrovým seznamem
+SELECTSKIN|Vybrat styl

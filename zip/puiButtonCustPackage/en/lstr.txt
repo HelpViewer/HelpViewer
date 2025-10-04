@@ -40,3 +40,5 @@ TECHC|Technology components
 SERVICEPLUGIN|Support for plugins extending services
 SERVICEPLANG|Separate plugin translations
 TOCCUSTICONS|TOC tree icons support
+DROPDOWNBUTTON|Button with dropdown list
+SELECTSKIN|Select skin
