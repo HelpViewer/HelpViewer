@@ -9,7 +9,7 @@ class puiButtonSelectSkin extends puiButtonSelect {
     this.DEFAULT_KEY_CFG_STOREKEY = 'skin';
     this.DEFAULT_KEY_CFG_DEFAULTSKIN = '';
 
-    this.dirStyles = 'styles';
+    this.dirStyles = 'styles/';
     this.idCSS = 'css-skin';
   }
 
@@ -19,7 +19,8 @@ class puiButtonSelectSkin extends puiButtonSelect {
     const TI = this;
     TI.activeSkin = getUserConfigValue(TI.cfgSTOREKEY) || TI.cfgDEFAULTSKIN;
 
-    const styles = (await storageGetSubdirs(STO_DATA, TI.dirStyles)).map(x => x.split('.')[0]);
+    var styles = await storageSearch(STO_DATA, `${TI.dirStyles}${FILENAME_DIR_LISTING}`);
+    styles = rowsToArray(styles).map(x => x.split('.')[0]);
     styles.unshift('');
     appendComboBoxItems(TI.select, styles, TI.activeSkin);
   }
@@ -39,7 +40,7 @@ class puiButtonSelectSkin extends puiButtonSelect {
     $(this.idCSS)?.remove();
     if (!name)
       return;
-    const styleData = await storageSearch(STO_DATA, `${this.dirStyles}/${name}.css`);
+    const styleData = await storageSearch(STO_DATA, `${this.dirStyles}${name}.css`);
     appendCSS(this.idCSS, styleData);
     $(ID_MAINCSS_PLUS)?.remove();
     this.activeSkin = name;
