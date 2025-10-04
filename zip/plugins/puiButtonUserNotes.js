@@ -16,7 +16,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     TI.DEFAULT_KEY_CFG_NOTESONLYTEXTMANTYPED = 0;
     TI.DEFAULT_KEY_CFG_NOTESTYPEDFILTEROUTHTML = 'script;iframe;img;button;input;frameset;srcdoc;object;embed;applet;video;audio;form;style;base;link;meta';
     TI.DEFAULT_KEY_CFG_CAPTIONNOTESVISIBLE = '🙈👁️';
-    TI.DEFAULT_KEY_CFG_CFGKEYNOTESVISIBLE = 'notesVisible';
+    TI.DEFAULT_KEY_CFG_STOREKEY = 'notesVisible';
     TI.DEFAULT_KEY_CFG_EDITCAPTION = TI.DEFAULT_KEY_CFG_CAPTION;
   }
 
@@ -37,7 +37,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
     });
 
     const h_EVT_UN_SETNOTESVISIBILITY = (data) => {
-      const current = !!getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE);
+      const current = !!getUserConfigValue(TI.cfgSTOREKEY);
       TI._setNotesVisibility(current);
     };
 
@@ -146,14 +146,14 @@ class puiButtonUserNotes extends puiButtonTabTree {
     TI.btnNoteAdd = uiAddButton('notes-add', TI.cfgEDITCAPTION, TI.aliasName, handlerAddNote);
 
     const handlerVisibleNotes = (e) => {
-      const nextB = getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE) == 0;
+      const nextB = getUserConfigValue(TI.cfgSTOREKEY) == 0;
       const next = Number(nextB);
-      setUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE, next);
+      setUserConfigValue(TI.cfgSTOREKEY, next);
       e.target.innerHTML = TI.cfgCAPTIONNOTESVISIBLE[next];
       TI._setNotesVisibility(nextB);
     };
 
-    const currentVisibility = Number(getUserConfigValue(TI.cfgCFGKEYNOTESVISIBLE) != 0);
+    const currentVisibility = Number(getUserConfigValue(TI.cfgSTOREKEY) != 0);
     TI.btnNoteVisibility = uiAddButton('notes-visible', TI.cfgCAPTIONNOTESVISIBLE[currentVisibility], TI.aliasName, handlerVisibleNotes);
 
     const handlerExport = async (e) => {
@@ -282,7 +282,7 @@ class puiButtonUserNotes extends puiButtonTabTree {
       return [x[0], span];
     });
 
-    const currentVisibility = getUserConfigValue(this.cfgCFGKEYNOTESVISIBLE) == 1;
+    const currentVisibility = getUserConfigValue(this.cfgSTOREKEY) == 1;
 
     notesDataTransposed.forEach(x => {
       if (!x[0])
