@@ -73,6 +73,7 @@ jobs:
           shopt -s nullglob
           find ./zip/lang -maxdepth 1 -type f -exec rm -f {} +
           find ./zip/lang -mindepth 1 -maxdepth 1 -type d -printf "%f\n" > ./zip/lang/__dir.lst
+          find ./zip/styles -mindepth 1 -maxdepth 1 -type f -name "*.css" -printf "%f\n" > ./zip/styles/__dir.lst
           cp -rf ./zip/* ./hvdata/data
           shopt -u nullglob
           echo "::endgroup::"
