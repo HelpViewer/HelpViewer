@@ -22,4 +22,5 @@
 - wizard with points and buttons
 - Github and another repository services (appGHIntegration.js refactor)
 - User bookmarks across help pages / User bookmarks to chapters (?, browser bookmarks also exists)
-- Export to static pages version
+- Export to static pages version (complete interconnected pages)
+- Export to TEX, HTML
