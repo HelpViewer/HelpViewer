@@ -19,8 +19,6 @@ class puiButtonSelect extends IPlugin {
   }
 
   init() {
-    super.init();
-
     const T = this.constructor;
     const TI = this;
 
@@ -39,7 +37,7 @@ class puiButtonSelect extends IPlugin {
       if (data)
         data.result = true;
     }
-    TI.eventDefinitions.push([T.EVT_BUSE_SET, HeaderSet, h_EVT_BUSE_SET]);
+    TI.eventDefinitions.push([T.EVT_BUSE_SET, ButtonSelectIconSet, h_EVT_BUSE_SET]);
     h_EVT_BUSE_SET(undefined);
 
     const select = document.createElement('select');
@@ -60,6 +58,7 @@ class puiButtonSelect extends IPlugin {
 
     TI.eventOnFocus = new SystemEventHandler('', undefined, TI.targetSysObject, 'focus', TI._handleFocus.bind(TI));
     TI.eventOnFocus.init();
+    super.init();
   }
 
   deInit() {
