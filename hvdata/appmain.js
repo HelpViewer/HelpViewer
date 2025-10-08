@@ -387,7 +387,7 @@ async function main(baseDataStream = null) {
   } else {
     st = await _Storage.add(STO_DATA, `${DATA_FILE_PATH_BASE}.zip`, baseDataStream);
   }
-  const srcT = await _Storage.search(STO_DATA, 'appmainRun.js');
+  const srcT = await _Storage.search(STO_DATA, 'base/appmainRun.js');
   appendJavaScript(id_JSAppRun, srcT, document.body);
   runApp();
 }

@@ -7,6 +7,7 @@ const FILENAME_JSBACKEND_PLUS = 'plus.js';
 const FILENAME_LIST_JS = 'js.lst';
 const FILENAME_LIST_CSS = 'css.lst';
 const FILENAME_LIST_JS_PLUGINS = 'plugins.lst';
+const SUBDIR_BASE = 'base/';
 
 const EVT_PluginsLoadingFinished = 'PluginsLoadingFinished';
 
@@ -17,11 +18,11 @@ var srcMainCSSPlus = null;
 var srcJSOverridePlus = null;
 
 async function initLayout(store) {
-  const srcLayout = await _Storage.search(store, FILENAME_LAYOUT);
+  const srcLayout = await _Storage.search(store, (store == STO_DATA ? SUBDIR_BASE : '') + FILENAME_LAYOUT);
   if (srcLayout)
     document.body.innerHTML = srcLayout;
   
-  const srcMainCSS = await _Storage.search(store, FILENAME_MAINCSS);
+  const srcMainCSS = await _Storage.search(store, (store == STO_DATA ? SUBDIR_BASE : '') + FILENAME_MAINCSS);
   if (!srcMainCSS) return
   const mainCSSAlias = 'mainCSS';
   $(mainCSSAlias)?.remove();
@@ -113,10 +114,16 @@ async function loadPluginList(listFileName, storage, basePath = loadPluginListBa
   return activatedPluginsList;
 }
 
+function getNoDotPath(path) {
+  const base = 'http://a.com/'
+  const reply = new URL(path, base).href.substring(base.length);
+  return reply;
+}
+
 async function lc_loadPlugin(name, file, source = STO_DATA) {
   const appendingAlias = name.replaceAll('/', '_');
   log(`Plugins: loading from file '${file}' under internal alias ${appendingAlias} ...'`);
-  const srcMarkedJs = await _Storage.search(source, file);
+  const srcMarkedJs = await _Storage.search(source, getNoDotPath(file));
   appendJavaScript(`plugins-${appendingAlias}.js`, srcMarkedJs, document.head);
   const pluginPureName = name.split('/').pop();
 
@@ -129,7 +136,7 @@ async function lc_loadPlugin(name, file, source = STO_DATA) {
 
 async function lc_activatePlugin(name, alias, source = STO_DATA) {
   const pluginPureName = name.split('/').pop();
-  const cfgFile = `plugins-config/${name}_${alias}.cfg`;
+  const cfgFile = `plugins-config/${pluginPureName}_${alias}.cfg`;
   log(`Plugins: loading configuration for plugin ${pluginPureName} (${name}) from file '${cfgFile}' ...`);
   const configFileRaw = await _Storage.search(source, cfgFile);
   const configFileStruct = parseConfigFile(configFileRaw || '|');
