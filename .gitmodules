@@ -14,3 +14,7 @@
 	path = zip/base
 	url = https://github.com/HelpViewer/HelpViewer-base
 	branch = main
+[submodule "hvdata"]
+	path = hvdata
+	url = https://github.com/HelpViewer/HelpViewer-loader
+	branch = master
