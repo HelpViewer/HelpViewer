@@ -10,3 +10,7 @@
 	path = zip/i
 	url = https://github.com/HelpViewer/helpInternalRef
 	branch = main
+[submodule "zip/base"]
+	path = zip/base
+	url = https://github.com/HelpViewer/HelpViewer-base
+	branch = main
