@@ -127,7 +127,7 @@ class pAppmainNext extends IPlugin {
 
     if (DEBUG_MODE) {
       log('W Application is in DEBUG_MODE, debug tools will be attached. Turn DEBUG_MODE to off in hvdata/appmain.js file for work in production.');
-      const objExplorerName = 'puiButtonObjectExplorer';
+      const objExplorerName = '../base/plugins/puiButtonObjectExplorer';
       await loadPlugin(objExplorerName, loadPluginListBasePath(objExplorerName));
       await activatePlugin(objExplorerName, '-load');
       loadLocalization(getActiveLanguage());

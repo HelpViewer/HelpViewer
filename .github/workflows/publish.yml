@@ -69,6 +69,7 @@ jobs:
           echo "::group::Processing zip subdirectory"
           rm -rf ./zip/prism/README.md ./zip/prism/.git
           rm -rf ./zip/i/README.md ./zip/i/.git ./zip/i/CHANGELOG.md ./zip/i/.github
+          rm ./zip/base/README.md ./zip/base/LICENSE
           
           shopt -s nullglob
           find ./zip/lang -maxdepth 1 -type f -exec rm -f {} +
@@ -95,6 +96,7 @@ jobs:
           zip -r -9 ../data.zip .
           cd ..
           rm -rf data/
+          rm ./README.md ./LICENSE
           echo "::endgroup::"
 
           echo "::group::Set DEBUG_MODE to false"

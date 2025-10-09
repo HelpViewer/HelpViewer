@@ -65,7 +65,7 @@ class puiButtonCustPackage extends puiButton {
       this.tree = tree;
       openSubtree(tree);
       $A('a', tree).forEach(a => {
-        const plugins = TI.config[`P-${a.textContent}`].split(';').map(x => x.split(':')[0]).filter(x => x).map(x => `plugins/${x}.js`).join(';');
+        const plugins = TI.config[`P-${a.textContent}`].split(';').map(x => x.split(':')[0]).filter(x => x).map(x => x.includes('/') ? getNoDotPath(`${x}.js`) : `plugins/${x}.js`).join(';');
         
         var dirsAndFiles = TI.config[`F-${a.textContent}`].split(';').filter(x => x.endsWith('/'));
 
@@ -125,7 +125,7 @@ class puiButtonCustPackage extends puiButton {
       log('W features for deletion', items);
       items = items.map(x => [TI.config[`P-${x}`], TI.config[`F-${x}`]]);
       var filesToExclude = [...new Set(items.map(x => x[1]).join(';').split(';').filter(x => x))];
-      var pluginsToExclude = items.map(x => x[0]).join(';').split(';').filter(x => x);
+      var pluginsToExclude = items.map(x => x.includes('/') ? getNoDotPath(x[0]) : x[0]).join(';').split(';').filter(x => x);
       const pluginMaskToExclude = pluginsToExclude.filter(x => x.startsWith(':'));
       pluginsToExclude = pluginsToExclude.filter(x => !pluginMaskToExclude.includes(x));
       log('W lists to exclude (files, plugins, plugin ids)', filesToExclude, pluginsToExclude, pluginMaskToExclude);
@@ -162,8 +162,8 @@ class puiButtonCustPackage extends puiButton {
         });
         
         pluginsToExclude = [...new Set(pluginsToExclude)];
-        filesToExclude.push(...pluginsToExclude.map(x => `plugins/${x}.js`));
-        filesToExclude.push(...pluginsToExclude.map(x => `${x}/`));
+        filesToExclude.push(...pluginsToExclude.map(x => x.includes('/') ? `${getNoDotPath(x)}.js` : `plugins/${x}.js`));
+        filesToExclude.push(...pluginsToExclude.map(x => `${x.split('/').pop()}/`));
         filesToExclude = filesToExclude.filter(x => x);
         
         log('W Files in ZIP for deletion:', filesToExclude);
@@ -174,7 +174,7 @@ class puiButtonCustPackage extends puiButton {
         jszip.file(FILENAME_LIST_JS_PLUGINS, newSequence.join('\n'));
       }).then(x => {
         var masksToExclude = filesToExclude.filter(x => x.endsWith('/'));
-        masksToExclude.push(...pluginsToExclude.map(x => `plugins-config/${x}_`));
+        masksToExclude.push(...pluginsToExclude.map(x => `plugins-config/${x.split('/').pop()}_`));
         masksToExclude = masksToExclude.filter(x => x);
         this.deleteFromZip(jszip, filesToExclude.filter(x => !x.endsWith('/')), masksToExclude);
   
