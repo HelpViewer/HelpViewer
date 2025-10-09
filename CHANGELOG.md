@@ -1,5 +1,10 @@
 # Changelog
 
+## 20251009
+
+### 🧩 Technology
+- solution refactor - main repository divided to solution, appstrap (base), loader, implementation - preparation for develop another application
+
 ## 20251004
 
 ### 🧑‍🤝‍🧑 User
