@@ -1,7 +1,6 @@
 # Future plans
 
 - Support old help CHM file format with defined conversion steps.
-- In commit 1119768 there has been done try with scratch image, but failed so alpine was used. Retry it.
 - Nice URLs (?id=5&d=...&p=... vs /hello.md/3)
 - RSS generator
 - sitemap.xml
