@@ -1,20 +1,19 @@
-FROM alpine
-#FROM alpine AS srcbase
-#RUN cp /bin/busybox /busybox
+FROM alpine AS build
 ARG PACKAGE_TAG
-RUN apk add --no-cache busybox busybox-extras && \
-    apk add --no-cache --virtual .tempdeps curl unzip && \
-    mkdir -p /www/hlp && \
-    curl -L https://github.com/HelpViewer/HelpViewer/releases/download/${PACKAGE_TAG}/package.zip -o /tmp/package.zip && \
-    unzip /tmp/package.zip -d /www && \
-    rm /tmp/package.zip && \
-    apk del .tempdeps && \
-    echo "busybox-extras httpd -f -p 80 -h /www/" >> /run.sh && \
-    chmod +x /run.sh
+RUN apk add --no-cache musl busybox busybox-extras curl unzip
+WORKDIR /tmp
+RUN curl -L https://github.com/HelpViewer/HelpViewer/releases/download/${PACKAGE_TAG}/package.zip -o package.zip
+WORKDIR /outp
+RUN mkdir lib \
+  && cp /bin/busybox /bin/busybox-extras . \
+  && cp /lib/libc.musl-x86_64.so.1 /lib/ld-musl-x86_64.so.1 ./lib
+WORKDIR /outpd
+RUN echo "/busybox-extras httpd -f -p 80 -h /www/" > run.sh \
+  && chmod +x run.sh \
+  && unzip /tmp/package.zip -d ./www
 
-#COPY --from=srcbase /busybox /busybox
-#COPY --from=srcbase /www /www
-
+FROM scratch
+COPY --from=build /outp /
+COPY --from=build /outpd /
 EXPOSE 80
-
-CMD [ "sh", "-c", "/run.sh" ]
+CMD ["/busybox", "sh", "/run.sh"]
