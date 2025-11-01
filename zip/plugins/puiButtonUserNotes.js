@@ -91,9 +91,9 @@ class puiButtonUserNotes extends puiButtonTabTree {
     const targetVal = stripTagsSome(e.target.innerHTML, this.cfgNOTESTYPEDFILTEROUTHTML);
 
     if (this.cfgNOTESONLYTEXTMANTYPED)
-      e.target.innerText = stripTags(targetVal);
+      e.target.innerText = toFilteredUTFText(stripTags(targetVal));
     else
-      e.target.innerHTML = targetVal;
+      e.target.innerHTML = toFilteredUTFText(targetVal);
 
     const targetId = e.target.id;
     var noteId = parseInt(targetId.split('-')[1]);
