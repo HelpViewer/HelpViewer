@@ -115,6 +115,7 @@ jobs:
             ! -name '.*' \
             -exec cp {} . \;
           cp -rf ../hvdata .
+          rm -rf ./.git
           zip -r -9 ../package.zip .
           echo "::endgroup::"
 
