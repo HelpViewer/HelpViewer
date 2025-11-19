@@ -1,5 +1,14 @@
 # Changelog
 
+## 20251119
+
+### 🧑‍🤝‍🧑 User
+- 🧩 Unicode steganography (invisible-code UTF characters) protection improved for notes texts
+
+### 🧩 Technology
+- 🤖 CI/CD pipeline fi of .git file
+- 🐳 OCI image parent changed to **scratch** (utilities taken from Alpine)
+
 ## 20251009
 
 ### 🧩 Technology
