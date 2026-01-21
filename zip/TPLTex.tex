@@ -1,0 +1,82 @@
+%Run commands:
+%makeindex -shell-escape LaTeX1
+%pdflatex LaTeX1.tex
+
+\documentclass[a4paper,12pt]{article}
+
+\newcommand{\auth}{_AUTH_}
+\newcommand{\docname}{_DOCNAME_}
+
+\UseRawInputEncoding
+
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+
+\usepackage{graphicx}
+\usepackage{makeidx}
+\usepackage[final]{listings}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\usepackage{imakeidx}
+\makeindex[title=, columns=3, indexstyle=alpha]
+
+\usepackage{svg}
+
+\lstset{
+	numbers=left,
+	showstringspaces=false,
+	breaklines=true,
+	tabsize=2,
+	captionpos=b
+}
+
+\fancypagestyle{plain}{
+\fancyhf{}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\fancyhead[LE]{\leftmark}
+\fancyhead[LO]{\rightmark}
+\fancyhead[RE]{\rightmark}
+\fancyhead[RO]{\leftmark}
+
+\fancyfoot[LE,RO]{\thepage / \pageref{LastPage}}
+\fancyfoot[LO,RE]{TEST}
+
+\fancyfoot[CO,CE]{\docname}
+
+}
+
+\begin{document}
+
+\begin{titlepage}
+\vspace*{5cm}
+\begin{center}
+{\Huge \docname}\\[1cm]
+{\Large \auth}\\[1cm]
+{\today}
+\end{center}
+\end{titlepage}
+
+\newpage
+
+\pagestyle{plain}
+\tableofcontents
+\pagestyle{plain}
+\newpage
+
+%DOC%
+
+\pagestyle{fancy}
+\listoftables
+\listoffigures
+\lstlistoflistings
+\printindex
+
+\end{document}

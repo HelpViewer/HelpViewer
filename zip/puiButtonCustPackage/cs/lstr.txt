@@ -43,3 +43,4 @@ TOCCUSTICONS|Ikony v seznamu témat
 DROPDOWNBUTTON|Tlačítko s výběrovým seznamem
 SELECTSKIN|Vybrat styl
 STDSTYLES|Standardní styly
+BTNEXPORT|Tlačítko exportovat

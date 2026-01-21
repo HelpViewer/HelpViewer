@@ -75,3 +75,8 @@ pKWIndexDoc:fulltextList-unconnected2
 ../base/plugins/pServicePlugin
 ../base/plugins/pServiceLocalization:
 puiWatermark
+pExport
+pExportHTM:HTM
+pExportMD:MD
+pExportTEX:TEX
+puiButtonExport:
