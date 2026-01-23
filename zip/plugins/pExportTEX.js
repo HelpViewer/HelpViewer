@@ -42,7 +42,7 @@ class pExportTEX extends pExport {
       },
       svg: (node, ctx, children) => {
         ctx.i_svg++;
-        return `\\includesvg\{src/img_${ctx.i_svg}.svg\}\n`;
+        return `\\includesvg\{src/svg_${ctx.i_svg}.svg\}\n`;
       },
       h1: (node, ctx, children) => `\\section\{${clearHash(children)}\}\n`,
       h2: (node, ctx, children) => `\\subsection\{${clearHash(children)}\}\n`,
@@ -75,7 +75,7 @@ class pExportTEX extends pExport {
       b: handlerBold,
       em: (node, ctx, children) => `\\emph\{${children}\}\n`,
       //TODO: Beware of \\end{tabularx} used elsewhere wantedly because of HTML to TeX wrong output.
-      table: (node, ctx, children) => `\\begin{table}[h]\n${children}\n \\end{tabularx} \\end{table}\n`,
+      table: (node, ctx, children) => `\\begin{table}[H]\n${children}\n \\end{tabularx} \\end{table}\n`,
       thead: (node, ctx, children) => {
         let cols = rowsToArray(children.trim());
         const mCols = 'l|'.repeat(cols.length - 1);
