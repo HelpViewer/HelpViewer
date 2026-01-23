@@ -4,11 +4,6 @@ class pExport extends IPlugin {
     this.eventIdStrict = true;
   }
 
-  getPlainCodeFromPrism(element) {
-    if (!element) return null;
-    if (element.dataset.src) return element.dataset.src;
-    return element.textContent;
-  }
 }
 
 Plugins.catalogize(pExport);

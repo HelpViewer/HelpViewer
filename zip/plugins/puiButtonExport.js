@@ -47,14 +47,6 @@ class puiButtonExport extends puiButtonSelect {
 
     const zip = new JSZip();
 
-    sendEvent(T.EVT_BE_PREPEXPORT, (x) => {
-      x.data = data;
-      x.parent = parent;
-      x.output = zip
-      x.id = e.target.options[e.target.selectedIndex].text;
-      x.doneHandler = () => zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(x => prepareDownload(x, 'export.zip'));
-    });
-
     let i = 0;
     let imgs = $A("img", parent);
 
@@ -76,6 +68,14 @@ class puiButtonExport extends puiButtonSelect {
     $A("svg", parent).forEach(c => {
       i++;
       zip.file(`src/svg_${i}.svg`, serializer.serializeToString(c));
+    });
+
+    sendEvent(T.EVT_BE_PREPEXPORT, (x) => {
+      x.data = data;
+      x.parent = parent;
+      x.output = zip
+      x.id = e.target.options[e.target.selectedIndex].text;
+      x.doneHandler = () => zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(x => prepareDownload(x, 'export.zip'));
     });
   }
 

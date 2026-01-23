@@ -9,7 +9,7 @@
 
 \UseRawInputEncoding
 
-\usepackage[czech]{babel}
+\usepackage[_LANG_]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref}
@@ -23,7 +23,7 @@
 \usepackage{lastpage}
 
 \usepackage{imakeidx}
-\makeindex[title=, columns=3, indexstyle=alpha]
+\makeindex[title=, columns=3]
 
 \usepackage{svg}
 
@@ -47,9 +47,9 @@
 \fancyhead[RO]{\leftmark}
 
 \fancyfoot[LE,RO]{\thepage / \pageref{LastPage}}
-\fancyfoot[LO,RE]{TEST}
+\fancyfoot[LO,RE]{\docname}
 
-\fancyfoot[CO,CE]{\docname}
+\fancyfoot[CO,CE]{}
 
 }
 
@@ -73,6 +73,7 @@
 
 %DOC%
 
+\newpage
 \pagestyle{fancy}
 \listoftables
 \listoffigures

@@ -10,138 +10,112 @@ class pExportTEX extends pExport {
   }
 
   async onETPrepareExport(evt) {
-    searchOverTextNodesAndDo(evt.parent, (x) => log('E TEXT NODE:', x.parentElement.nodeName, x));
+    function clearHash(text) {
+      let cleanedText = text;
+      if (text.endsWith('#'))
+        cleanedText = text.substring(0, text.length - 1);
+      return cleanedText.trim();
+    }
+
+    const handlerBold = (node, ctx, children) => `\\textbf\{${sCh(children)}\}\n`;
+
+    const handlers = {
+      ul: (node, ctx, children) => {
+        ctx.listStack.push('itemize');
+        const body = children;
+        ctx.listStack.pop();
+        return `\\begin{itemize}\n${body}\\end{itemize}\n`;
+      },
+      ol: (node, ctx, children) => {
+        ctx.listStack.push('enumerate');
+        const body = children;
+        ctx.listStack.pop();
+        return `\\begin{enumerate}\n${body}\\end{enumerate}\n`;
+      },
+      li: (node, ctx, children) => {
+        return `\\item ${children}\n`;
+      },
+      img: (node, ctx, children) => {
+        ctx.i_img++;
+        //return `\\includegraphics[width=1\\textwidth]\{src/img_${ctx.i_img}\}\n`;
+        return `\\begin{figure}\n\\includegraphics\{src/img_${ctx.i_img}\}\n\\caption{${node.title}}\n\\label{fig:I_${ctx.i_img}}\n\\end{figure}\n`;
+      },
+      svg: (node, ctx, children) => {
+        ctx.i_svg++;
+        return `\\includesvg\{src/img_${ctx.i_svg}.svg\}\n`;
+      },
+      h1: (node, ctx, children) => `\\section\{${clearHash(children)}\}\n`,
+      h2: (node, ctx, children) => `\\subsection\{${clearHash(children)}\}\n`,
+      h3: (node, ctx, children) => `\\subsubsection\{${clearHash(children)}\}\n`,
+      h4: (node, ctx, children) => `\\paragraph\{${clearHash(children)}\}\n`,
+      h5: (node, ctx, children) => `\\subparagraph\{${clearHash(children)}\}\n`,
+      h6: (node, ctx, children) => `\\subsubparagraph\{${clearHash(children)}\}\n`,
+      p: (node, ctx, children) => `${children}\\par\n`,
+
+      div: (node, ctx, children) => {
+        if (node.classList.contains('toolbar-item') || node.classList.contains('toolbar'))
+          return '';
+        return children;
+      },
+
+      code: (node, ctx, children) => {
+        if (node.classList.length == 0)
+          return children;
+
+        const codeText = node.textContent;
+        const prefix = 'language-';
+        const langClass = Array.from(node.classList).find(cls => cls.startsWith(prefix));
+        let lang = langClass ? langClass.replace(prefix, '') : '{}';
+        lang = lang == 'none' ? '{}' : lang;
+
+        return `\\begin{lstlisting}[language=${lang}, caption={}]\n${codeText}\\end{lstlisting}`;
+      },
+
+      strong: handlerBold,
+      b: handlerBold,
+      em: (node, ctx, children) => `\\emph\{${sCh(children)}\}\n`,
+      table: (node, ctx, children) => `\begin{table}[h]\n{${sCh(children)}\n\end{table}\n`,
+
+      a: (node, ctx, children) => {
+        if (children.trim().length == 1)
+          return '';
+        return `\\href{${node.href}}{${sCh(children)}}`;
+      },
+
+      script: (node, ctx, children) => '',
+      style: (node, ctx, children) => '',
+
+      default: (node, ctx, children) => sCh(children)
+    };
+
+    function sCh(children) {
+      log('E TT:', [children, children.parentElement]);
+      return children.replace('_', '\_');
+    }
+
+    function walk(node, ctx) {
+      if (node.nodeType === Node.TEXT_NODE) 
+        return node.textContent;
+      const children = Array.from(node.childNodes)
+        .map(child => walk(child, ctx))
+        .join('');
+      const tag = node.nodeName.toLowerCase();
+      const handler = handlers[tag] || handlers.default;
+      return handler(node, ctx, children);
+    }
+
     let document = await storageSearch(STO_DATA, this.cfgFILE, STOF_TEXT);
     // TODO : Resolve author name in export
     document = document.replace(/_AUTH_/g, '');
     const header = getHeader();
     document = document.replace(/_DOCNAME_/g, header);
+    const activeLanguage = getActiveLanguage().toLowerCase();
+    document = document.replace(/_LANG_/g, this.config[activeLanguage] || activeLanguage);
 
-    let dataToFlush = [];
-    dataToFlush.push(`\\section\{${header}\}`);
-    log('E LIST:', evt.data);
+    const ctx = { listStack: [], i_img: 0, i_svg: 0 };
+    const latex = `\\section\{${header}\}\n` + walk(evt.parent, ctx);
 
-    let i_img = 0;
-    let i_svg = 0;
-    let parNode = evt.parent;
-    let codePre = undefined;
-    let liType = undefined;
-    let olulObject = undefined;
-
-    searchOverTextNodesAndDo(evt.parent, (x) => {
-      if (parNode != x.parentElement) {
-        parNode = x.parentElement;
-      }
-
-      if (codePre) {
-        if (codePre == x.parentElement)
-          codePre = undefined;
-        else 
-          return;
-      }
-
-      //codePre = false;
-      log('E RR0 ', x.parentElement);
-      log('E RR ', [x, x.nodeName, x.parentElement.nodeName]);
-      const innerText = x.textContent;
-
-      if (liType && x.parentElement.nodeName.toLowerCase() != 'li') {
-        dataToFlush.push(`\\end{${liType}}`);
-        liType = undefined;
-        olulObject = undefined;
-      }
-
-      switch (x.parentElement.nodeName.toLowerCase()) {
-        case 'p':
-          dataToFlush.push(`${innerText}\\par`);
-          break;
-        case 'img':
-          i_img++;
-          dataToFlush.push(`\\includegraphics[width=1\\textwidth]\{src/img_${i_img}\}`);
-          break;
-        case 'svg':
-          i_svg++;
-          dataToFlush.push(`\\includesvg[width=1\\textwidth]\{src/img_${i_svg}.svg\}`);
-          break;
-        case 'h1':
-          dataToFlush.push(`\\section\{${innerText}\}`);
-          break;
-        case 'h2':
-          dataToFlush.push(`\\subsection\{${innerText}\}`);
-          break;
-        case 'h3':
-          dataToFlush.push(`\\subsubsection\{${innerText}\}`);
-          break;
-        case 'h4':
-          dataToFlush.push(`\\paragraph\{${innerText}\}`);
-          break;
-        case 'h5':
-          dataToFlush.push(`\\subparagraph\{${innerText}\}`);
-          break;
-        case 'h6':
-          dataToFlush.push(`\\subsubparagraph\{${innerText}\}`);
-          break;
-        case 'div':
-          log('E DIV FOUND', x, x.nextElementSibling);
-          x = x.nextElementSibling;
-          if (Array.from(x.classList).find(cls => cls.startsWith('code-toolbar'))) {
-            codePre = x.nextElementSibling;
-            log('E GG', codePre);
-            const codeText = this.getPlainCodeFromPrism($O("code", x.childNodes[0]));
-            const prefix = 'language-';
-            const langClass = Array.from(x.classList).find(cls => cls.startsWith(prefix));
-            const lang = langClass ? langClass.replace(prefix, '') : 'text';
-            dataToFlush.push(`\\begin{lstlisting}[language=${lang}, caption={}]\n${codeText}\\end{lstlisting}`);
-          }
-          break;
-        case 'pre':
-          if (!codePre)
-            dataToFlush.push(`\\texttt{${innerText}}`);
-          break;
-        case 'a':
-          if (innerText.trim().length == 1)
-            break;
-          dataToFlush.push(`\\href{${x.parentElement.href}}{${innerText}}`);
-          break;
-        case 'ul':
-          if (olulObject)
-            break;
-          dataToFlush.push('\\begin{itemize}');
-          liType = 'itemize';
-          olulObject = x.parentElement;
-          break;
-        case 'ol':
-          if (olulObject)
-            break;
-          dataToFlush.push('\\begin{enumerate}');
-          liType = 'enumerate';
-          olulObject = x.parentElement;
-          break;
-        case 'strong':
-          dataToFlush.push(`\\textbf{${innerText}}`);
-          break;
-        case 'em':
-          dataToFlush.push(`\\emph{${innerText}}`);
-          break;
-        case 'li':
-          dataToFlush.push('\\item ');
-        default:
-          if (codePre)
-            break;
-
-          dataToFlush.push(`--L${innerText}L--`);
-          break;
-      }
-    });
-    // for (const c of evt.data) {
-    //   let innerText = c.textContent.replace('#', '').trim();
-    //   // TODO: More clever sanitation !!
-
-
-    // }
-    
-    document = document.replace(/%DOC%/g, dataToFlush.join('\n'));
-    dataToFlush = undefined;
+    document = document.replace(/%DOC%/g, latex);
     evt.output.file('LaTeX1.tex', document);
 
     if (evt.doneHandler)
