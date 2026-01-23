@@ -55,6 +55,10 @@ class pExportTEX extends pExport {
       div: (node, ctx, children) => {
         if (node.classList.contains('toolbar-item') || node.classList.contains('toolbar'))
           return '';
+
+        if (node.classList.contains('page-break'))
+          return '\\newpage';
+
         return children;
       },
 
