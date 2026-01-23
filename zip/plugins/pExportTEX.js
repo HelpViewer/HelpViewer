@@ -79,12 +79,12 @@ class pExportTEX extends pExport {
       b: handlerBold,
       em: (node, ctx, children) => `\\emph\{${children}\}\n`,
       //TODO: Beware of \\end{tabularx} used elsewhere wantedly because of HTML to TeX wrong output.
-      table: (node, ctx, children) => `\\begin{table}[H]\n${children}\n \\end{tabularx} \\end{table}\n`,
+      table: (node, ctx, children) => `\\begin{center}\\begin{longtable}%${children}\n \\end{longtable}\\end{center}\n`,
       thead: (node, ctx, children) => {
         let cols = rowsToArray(children.trim());
         const mCols = 'l|'.repeat(cols.length - 1);
         const mColData = cols.map(c => `\\textbf{${c}}`).join(' & ');
-        return `\\begin{tabularx}{\\textwidth}{|${mCols}X|}\n\\hline\n${mColData} \n\\\\ \\hline\n`;
+        return `{|${mCols}p{6.5cm}|}\n\\hline\n${mColData} \n\\\\ \\hline\n\\endhead\n`;
       },
 
       td: (node, ctx, children) => children,
