@@ -84,23 +84,34 @@ class pExportTEX extends pExport {
         let cols = rowsToArray(children.trim());
         const mCols = 'l|'.repeat(cols.length - 1);
         const mColData = cols.map(c => `\\textbf{${c}}`).join(' & ');
-        return `\\begin{tabularx}{\\textwidth}{|${mCols}X|}\n\\hline\n${mColData} \\\\ \n\\hline\n`;
+        return `\\begin{tabularx}{\\textwidth}{|${mCols}X|}\n\\hline\n${mColData} \n\\\\ \\hline\n`;
       },
 
       td: (node, ctx, children) => children,
 
       tr: (node, ctx, children) => {
-        if (node.parentElement.tagName.toLowerCase() == 'thead')
-          return children;
-
-        let cols = rowsToArray(children.trim());
-        return `${cols.join(' & ')} \\\\ \n\\hline\n`;
+        if (node.parentElement.tagName.toLowerCase() === 'thead') return children;
+  
+        const tds = Array.from(node.children).filter(child => 
+          child.tagName.toLowerCase() === 'td' || child.tagName.toLowerCase() === 'th'
+        );
+        
+        const colTexts = tds.map(td => walk(td, ctx));
+        return colTexts.join(' & ') + ' \n\\\\ \\hline';
       },
 
       a: (node, ctx, children) => {
         if (children.trim().replace('\\#', '#').length == 1)
           return '';
-        return `\\href{${node.href}}{${children}}`;
+        
+        let href = node.href || '';
+        href = href.replace(/&amp;/g, '&').replace(/&/g, '&amp;');
+        href = decodeURI(href);
+        href = href
+          .replace(/([#\$%&~^{}])/g, '\\$1')
+          .replace(/_/g, '\\_');
+        
+        return `\\href{${href}}{${children}}`;
       },
 
       script: (node, ctx, children) => '',
