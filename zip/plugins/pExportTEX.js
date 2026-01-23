@@ -17,7 +17,7 @@ class pExportTEX extends pExport {
       return cleanedText.trim();
     }
 
-    const handlerBold = (node, ctx, children) => `\\textbf\{${sCh(children)}\}\n`;
+    const handlerBold = (node, ctx, children) => `\\textbf\{${children}\}\n`;
 
     const handlers = {
       ul: (node, ctx, children) => {
@@ -73,29 +73,56 @@ class pExportTEX extends pExport {
 
       strong: handlerBold,
       b: handlerBold,
-      em: (node, ctx, children) => `\\emph\{${sCh(children)}\}\n`,
-      table: (node, ctx, children) => `\begin{table}[h]\n{${sCh(children)}\n\end{table}\n`,
+      em: (node, ctx, children) => `\\emph\{${children}\}\n`,
+      //TODO: Beware of \\end{tabularx} used elsewhere wantedly because of HTML to TeX wrong output.
+      table: (node, ctx, children) => `\\begin{table}[h]\n${children}\n \\end{tabularx} \\end{table}\n`,
+      thead: (node, ctx, children) => {
+        let cols = rowsToArray(children.trim());
+        const mCols = 'l|'.repeat(cols.length - 1);
+        const mColData = cols.map(c => `\\textbf{${c}}`).join(' & ');
+        return `\\begin{tabularx}{\\textwidth}{|${mCols}X|}\n\\hline\n${mColData} \\\\ \n\\hline\n`;
+      },
+
+      td: (node, ctx, children) => children,
+
+      tr: (node, ctx, children) => {
+        if (node.parentElement.tagName.toLowerCase() == 'thead')
+          return children;
+
+        let cols = rowsToArray(children.trim());
+        return `${cols.join(' & ')} \\\\ \n\\hline\n`;
+      },
 
       a: (node, ctx, children) => {
-        if (children.trim().length == 1)
+        if (children.trim().replace('\\#', '#').length == 1)
           return '';
-        return `\\href{${node.href}}{${sCh(children)}}`;
+        return `\\href{${node.href}}{${children}}`;
       },
 
       script: (node, ctx, children) => '',
       style: (node, ctx, children) => '',
 
-      default: (node, ctx, children) => sCh(children)
+      default: (node, ctx, children) => children
     };
 
-    function sCh(children) {
-      log('E TT:', [children, children.parentElement]);
-      return children.replace('_', '\_');
+    function escapeLaTeX(text) {
+      return text.replace(/([_%&#$\\~^])/g, match => {
+        const escapes = {
+          '%': '\\%',
+          '_': '\\_',
+          '#': '\\#',
+          '$': '\\$',
+          '\\': '\\\\',
+          '~': '\\~{}',
+          '^': '\\^{}'
+        };
+        return escapes[match];
+      });
     }
 
     function walk(node, ctx) {
       if (node.nodeType === Node.TEXT_NODE) 
-        return node.textContent;
+        return escapeLaTeX(node.textContent);
       const children = Array.from(node.childNodes)
         .map(child => walk(child, ctx))
         .join('');
@@ -111,6 +138,7 @@ class pExportTEX extends pExport {
     document = document.replace(/_DOCNAME_/g, header);
     const activeLanguage = getActiveLanguage().toLowerCase();
     document = document.replace(/_LANG_/g, this.config[activeLanguage] || activeLanguage);
+    document = document.replace(/_LSTSET_/g, this.config[`${activeLanguage}-lstset`] || '');
 
     const ctx = { listStack: [], i_img: 0, i_svg: 0 };
     const latex = `\\section\{${header}\}\n` + walk(evt.parent, ctx);
