@@ -18,3 +18,6 @@
 	path = hvdata
 	url = https://github.com/HelpViewer/HelpViewer-loader
 	branch = master
+[submodule "zip/HTMLToTeX"]
+	path = zip/HTMLToTeX
+	url = https://github.com/HelpViewer/HTMLToTeX
