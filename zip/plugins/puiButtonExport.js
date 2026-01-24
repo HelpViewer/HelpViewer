@@ -2,6 +2,7 @@ class PrepareExport extends IEvent {
   constructor() {
     super();
     this.data = [];
+    this.embeds = [];
     this.output = undefined;
     this.parent = undefined;
   }
@@ -54,25 +55,35 @@ class puiButtonExport extends puiButtonSelect {
 
     let i = 0;
     let imgs = $A("img", parent);
+    const embeds = new Map();
 
     for (const c of imgs) {
-      i++;
-      let data;
-    
-      if (c.src.startsWith('http')) {
-        data = await fetchData(c.src);
-      } else {
-        data = dataUrlRawDataToBlob(c.src);
+      // TODO: Not good work with file extension
+      if (!embeds.has(c.src)) {
+        i++;
+        let data;
+      
+        if (c.src.startsWith('http')) {
+          data = await fetchData(c.src);
+        } else {
+          data = dataUrlRawDataToBlob(c.src);
+        }
+  
+        const key = `src/img_${i}.jpg`;
+        embeds.set(c.src, key);
+        zip.file(key, data);
       }
-    
-      zip.file(`src/img_${i}`, data);
     }
 
     i = 0;
     const serializer = new XMLSerializer();
     $A("svg", parent).forEach(c => {
-      i++;
-      zip.file(`src/svg_${i}.svg`, serializer.serializeToString(c));
+      if (!embeds.has(c)) {
+        i++;
+        const key = `src/svg_${i}.svg`;
+        embeds.set(c, key);
+        zip.file(key, serializer.serializeToString(c));
+      }
     });
 
     sendEvent(T.EVT_BE_PREPEXPORT, (x) => {
@@ -80,6 +91,7 @@ class puiButtonExport extends puiButtonSelect {
       x.parent = parent;
       x.output = zip
       x.id = e.target.options[e.target.selectedIndex].text;
+      x.embeds = embeds;
       x.doneHandler = () => zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(x => prepareDownload(x, 'export.zip'));
     });
   }
