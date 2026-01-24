@@ -43,6 +43,11 @@ class puiButtonExport extends puiButtonSelect {
     const TI = this;
 
     const parent = $(TI.cfgCONTENTID);
+
+    // Page breaks : logic took from appPrePrintActions.js (need to be copied because of this package can be deselected by user)
+    const DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT = '<div class="page-break"></div>';
+    parent.innerHTML = parent.innerHTML.replace(new RegExp(DIRECTIVE_PRINT_PAGEBREAK, "g"), DIRECTIVE_PRINT_PAGEBREAK_REPLACEMENT);
+
     const data = $A("*", parent);
 
     const zip = new JSZip();
