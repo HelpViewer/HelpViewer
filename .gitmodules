@@ -21,3 +21,7 @@
 [submodule "zip/HTMLToTeX"]
 	path = zip/HTMLToTeX
 	url = https://github.com/HelpViewer/HTMLToTeX
+[submodule "zip/HTMLToMD"]
+	path = zip/HTMLToMD
+	url = https://github.com/HelpViewer/HTMLToMD
+	branch = main
