@@ -18,7 +18,26 @@ class pExportMD extends pExport {
     promise = promise.then(async() => {
       const ctx = { listStack: [], i_img: 0, i_svg: 0, embeds: evt.embeds };
       const header = getHeader();
-      const converted = `# ${header}\n\n` + HTMLToMD(evt.parent, ctx);
+      const tocTree = $('tree');
+
+      let tocData0 = tocTree?.innerHTML || ''; 
+      let tocData = tocTree?.innerHTML || '';
+
+      if (tocTree) {
+        tocTree.innerHTML = '%%TOC%%'
+        const ctx = { listStack: [], i_img: 0, i_svg: 0, embeds: evt.embeds };
+        const tmpContainer = document.createElement('div');
+        tmpContainer.innerHTML = tocData;
+        tocData = HTMLToMD(tmpContainer, ctx).replaceAll(')- [', ')\n- [');
+      }
+      
+      let converted = `# ${header}\n\n` + HTMLToMD(evt.parent, ctx);
+
+      if (tocTree) {
+        tocTree.innerHTML = tocData0;
+        converted = converted.replace('%%TOC%%', tocData);
+      }
+
       evt.output.file('README.md', converted);
   
       if (evt.doneHandler)
