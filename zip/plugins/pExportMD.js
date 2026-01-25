@@ -1,16 +1,8 @@
 class pExportMD extends pExport {
   constructor(aliasName, data) {
     super(aliasName, data);
-  }
 
-  async init() {
-    super.init();
-
-    const TI = this;
-  }
-
-  deInit() {
-    super.deInit();
+    this.RES_HTMLTOMD = new Resource('HTMLTOMD', undefined, STO_DATA, ';HTMLToMD/HTMLToMD.js;HTMLToMD/LICENSE;HTMLToMD/README.md');
   }
 
   onET_GetExportFormat(evt) {
@@ -18,8 +10,22 @@ class pExportMD extends pExport {
   }
 
   onETPrepareExport(evt) {
-    //evt.data
-    alert('0');
+    let promise = Promise.resolve(true);
+
+    if (typeof HTMLToTeX !== 'function')
+      promise = this.RES_HTMLTOMD?.init(promise);
+
+    promise = promise.then(async() => {
+      const ctx = { listStack: [], i_img: 0, i_svg: 0, embeds: evt.embeds };
+      const header = getHeader();
+      const converted = `# ${header}\n\n` + HTMLToMD(evt.parent, ctx);
+      evt.output.file('README.md', converted);
+  
+      if (evt.doneHandler)
+        evt.doneHandler();
+
+    });
+
   }
 }
 
