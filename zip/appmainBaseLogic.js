@@ -1,4 +1,6 @@
 const C_HIDDENC = 'hidden';
+const C_SCREENREADERONLY = 'sronly';
+
 const C_HIDDENCPRESMODE = 'hiddenPresmode';
 const C_HIDDENCPRINT = 'hiddenprint';
 const C_NOTRANSITION = 'notransition';
