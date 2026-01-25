@@ -44,3 +44,5 @@ DROPDOWNBUTTON|Tlačítko s výběrovým seznamem
 SELECTSKIN|Vybrat styl
 STDSTYLES|Standardní styly
 BTNEXPORT|Tlačítko exportovat
+BTNEXPORTTEX|(La)TeX
+BTNEXPORTMD|Markdown
