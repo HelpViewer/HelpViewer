@@ -12,13 +12,13 @@ class pExportMD extends pExport {
   onETPrepareExport(evt) {
     let promise = Promise.resolve(true);
 
-    if (typeof HTMLToTeX !== 'function')
+    if (typeof HTMLToMD !== 'function')
       promise = this.RES_HTMLTOMD?.init(promise);
 
     promise = promise.then(async() => {
       const ctx = { listStack: [], i_img: 0, i_svg: 0, embeds: evt.embeds };
       const header = getHeader();
-      const tocTree = $('tree');
+      const tocTree = $O('#tree', evt.parent);
 
       let tocData0 = tocTree?.innerHTML || ''; 
       let tocData = tocTree?.innerHTML || '';
