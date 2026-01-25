@@ -1,5 +1,13 @@
 # Changelog
 
+## 20260125
+
+### 🧑‍🤝‍🧑 User
+- 📥 Export button and handlers for **HTML, md, LaTeX**
+
+### 🐞 Bugfix
+- 🖥️ puiButtonSelect : bugfix of WebAim error : missing form label error
+
 ## 20251119
 
 ### 🧑‍🤝‍🧑 User
