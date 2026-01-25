@@ -4,6 +4,9 @@ class pExport extends IPlugin {
     this.eventIdStrict = true;
   }
 
+  onET_GetExportFormat(evt) {
+    evt.result.push(this.aliasName);
+  }
 }
 
 Plugins.catalogize(pExport);

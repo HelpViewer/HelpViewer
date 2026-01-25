@@ -5,10 +5,6 @@ class pExportMD extends pExport {
     this.RES_HTMLTOMD = new Resource('HTMLTOMD', undefined, STO_DATA, 'HTMLToMD/HTMLToMD.js;HTMLToMD/LICENSE;HTMLToMD/README.md');
   }
 
-  onET_GetExportFormat(evt) {
-    evt.result.push('MD');
-  }
-
   onETPrepareExport(evt) {
     let promise = Promise.resolve(true);
 

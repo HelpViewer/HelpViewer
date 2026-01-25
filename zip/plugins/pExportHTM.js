@@ -13,10 +13,6 @@ class pExportHTM extends pExport {
     super.deInit();
   }
 
-  onET_GetExportFormat(evt) {
-    evt.result.push('HTM');
-  }
-
   onETPrepareExport(evt) {
     if (!evt.parent)
       return;

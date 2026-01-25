@@ -6,10 +6,6 @@ class pExportTEX extends pExport {
     this.RES_HTMLTOTEX = new Resource('HTMLTOTEX', undefined, STO_DATA, 'TPLTex.tex;HTMLToTeX/HTMLToTeX.js;HTMLToTeX/LICENSE;HTMLToTeX/README.md');
   }
   
-  onET_GetExportFormat(evt) {
-    evt.result.push('TEX');
-  }
-
   async onETPrepareExport(evt) {
     let promise = Promise.resolve(true);
 
