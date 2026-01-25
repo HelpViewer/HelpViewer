@@ -91,6 +91,11 @@ jobs:
 
           rm -rf ./jsconfig.json
 
+          echo "::group::Pre packaging cleanup"
+          find . -type f -name ".git" -print -exec rm -rf {} + 2>/dev/null || true
+          find . -type d -name ".extras" -print -exec rm -rf {} + 2>/dev/null || true
+          echo "::endgroup::"
+
           echo "::group::Packaging"
           cd hvdata/data
           zip -r -9 ../data.zip .
