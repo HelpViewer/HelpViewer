@@ -3,16 +3,6 @@ class pExportHTM extends pExport {
     super(aliasName, data);
   }
 
-  async init() {
-    super.init();
-
-    const TI = this;
-  }
-
-  deInit() {
-    super.deInit();
-  }
-
   onETPrepareExport(evt) {
     if (!evt.parent)
       return;
