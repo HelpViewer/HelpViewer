@@ -2,7 +2,7 @@ class pExportMD extends pExport {
   constructor(aliasName, data) {
     super(aliasName, data);
 
-    this.RES_HTMLTOMD = new Resource('HTMLTOMD', undefined, STO_DATA, ';HTMLToMD/HTMLToMD.js;HTMLToMD/LICENSE;HTMLToMD/README.md');
+    this.RES_HTMLTOMD = new Resource('HTMLTOMD', undefined, STO_DATA, 'HTMLToMD/HTMLToMD.js;HTMLToMD/LICENSE;HTMLToMD/README.md');
   }
 
   onET_GetExportFormat(evt) {
