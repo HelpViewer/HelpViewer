@@ -63,7 +63,7 @@ class puiButtonExport extends puiButtonSelect {
         i++;
         let data;
       
-        if (c.src.startsWith('http')) {
+        if (c.src.startsWith('http') || !c.src.startsWith('data:')) {
           data = await fetchData(c.src);
         } else {
           data = dataUrlRawDataToBlob(c.src);
