@@ -12,7 +12,6 @@
 - Associated topics groups (something like links/keywords/topics, see also )
 - Dead links checker
 - Discussion (e.g.: Disqus or other service) plugin
-- extra CSS styles + plugin for switching them
 - prod logs to console, debug logs to custom tool
 - custom log explorer
 - add jsdoc and auto parse of it
@@ -22,4 +21,3 @@
 - Github and another repository services (appGHIntegration.js refactor)
 - User bookmarks across help pages / User bookmarks to chapters (?, browser bookmarks also exists)
 - Export to static pages version (complete interconnected pages)
-- Export to TEX, HTML
