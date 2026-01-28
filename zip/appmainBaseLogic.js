@@ -38,28 +38,6 @@ const ChapterContentType = {
   NETWORK_RESOURCE: 'NETWORK_RESOURCE',
 };
 
-function nextElementFromOnSameLevel(parent, elementFrom, searchedTagName, count = 1) {
-  const directChild = elementFrom.closest(':scope > *');
-  const searchedTagNameU = searchedTagName.toUpperCase();
-  const children = parent.children;
-  const startIndex = Array.from(children).indexOf(directChild);
-  let steps = 0;
-  log("E XSTRSEEK", parent, elementFrom, searchedTagName, count);
-  for (let i = startIndex + 1; i < children.length; i++)
-  {
-    log("E SEEK", searchedTagName, children[i], i, children[i].tagName);
-    if (children[i].tagName === searchedTagNameU) {
-      steps++;
-      if (steps === count) {
-        log("E SEEK FOUND", children[i], i);
-        return children[i];
-      }
-    }
-  }
-
-  return null;
-}
-
 function valKiBs(size) {
   return roundToDecPlaces(size / 1024, 2);
 }

@@ -164,8 +164,17 @@ class puiButtonAsBook extends puiButtonTab {
     } else {
       this.files = undefined;
       const contentPane = $O('#content');
+      let filesHeadings = Array.from($A('a.anchor-link', contentPane)).map(l => l.id || l.getAttribute('href'));
+      filesHeadings = filesHeadings.reduce((groups, item) => {
+        if (item.startsWith('file-')) {
+          groups.push({ f: item.substring(5), h: [] });
+        } else if (groups.length > 0) {
+          groups[groups.length - 1].headings.push(item.substring(1));
+        }
+        return groups;
+      }, []);
+      log('E LINKS LIST', filesHeadings);
       let hrefs = $A('a:not([class])', contentPane);
-      log('E LINKS LIST', Array.from($A('a.anchor-link, h1, h2, h3, h4, h5, h6', contentPane)).map(l => [l.getAttribute('data-param') || l.id, l]));
       Array.from(hrefs).forEach(link => {
         const dataLink = link.getAttribute('data-param');
         if (dataLink && !dataLink.startsWith('http') && !dataLink.startsWith(':')) {
@@ -175,17 +184,14 @@ class puiButtonAsBook extends puiButtonTab {
             log('E LINK:', dataLink, link);
           } else {
             const [baseFileName, fileChapter] = dataLink.split('#');
-            const baseFile = $(`file-${baseFileName}`);
-            // const completeAnchor = $(dataLink);
-            // if (completeAnchor)
-            //   link.setAttribute('href', '#' + completeAnchor.id);
-            // else {
-              // TODO : Beware of other anchor naming strategies! - pTRAnchorName
-              const [, level, order] = fileChapter.split('-');
-              const found = nextElementFromOnSameLevel(contentPane, baseFile, `h${level}`, +order + 1);
-              log("E RRR", [baseFileName, fileChapter, found]);
-              link.setAttribute('href', '#' + found.id);
-            //}
+
+            // TODO : Beware of other anchor naming strategies! - pTRAnchorName
+            const [, level, order] = fileChapter.split('-');
+            log("E RRR?", [baseFileName, fileChapter, filesHeadings, filesHeadings[baseFileName]]);
+            const found = filesHeadings[baseFileName].filter(x => x.startsWith(`h-${level}-`))[+order];
+            log("E RRR", [baseFileName, fileChapter, found]);
+            link.setAttribute('href', '#' + found.id);
+
             log('E BAF', baseFile, `file-${dataLink.split('#')[0]}`);
           }
 
