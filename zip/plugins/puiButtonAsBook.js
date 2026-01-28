@@ -165,14 +165,18 @@ class puiButtonAsBook extends puiButtonTab {
       this.files = undefined;
       const contentPane = $O('#content');
       let filesHeadings = Array.from($A('a.anchor-link', contentPane)).map(l => l.id || l.getAttribute('href'));
-      filesHeadings = filesHeadings.reduce((groups, item) => {
+      filesHeadings = filesHeadings.reduce((map, item) => {
         if (item.startsWith('file-')) {
-          groups.push({ f: item.substring(5), h: [] });
-        } else if (groups.length > 0) {
-          groups[groups.length - 1].headings.push(item.substring(1));
+          const fileName = item.substring(5);
+          if (!map[fileName])
+            map[fileName] = [];
+        } else {
+          const lastKey = Object.keys(map).at(-1);
+          if (lastKey)
+            map[lastKey].push(item.substring(1));
         }
-        return groups;
-      }, []);
+        return map;
+      }, {});
       log('E LINKS LIST', filesHeadings);
       let hrefs = $A('a:not([class])', contentPane);
       Array.from(hrefs).forEach(link => {
@@ -190,9 +194,9 @@ class puiButtonAsBook extends puiButtonTab {
             log("E RRR?", [baseFileName, fileChapter, filesHeadings, filesHeadings[baseFileName]]);
             const found = filesHeadings[baseFileName].filter(x => x.startsWith(`h-${level}-`))[+order];
             log("E RRR", [baseFileName, fileChapter, found]);
-            link.setAttribute('href', '#' + found.id);
+            link.setAttribute('href', '#' + found);
 
-            log('E BAF', baseFile, `file-${dataLink.split('#')[0]}`);
+            log('E BAF', `file-${dataLink.split('#')[0]}`);
           }
 
         }
