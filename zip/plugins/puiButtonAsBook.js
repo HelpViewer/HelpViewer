@@ -178,6 +178,30 @@ class puiButtonAsBook extends puiButtonTab {
         return map;
       }, {});
 
+      // Local chapter links recounted to absolute anchors - orders
+      const linksAll = Array.from($A('a', contentPane));
+      var linksLocal = Array.from($A('a:not([class])', contentPane))
+      .filter(a => {
+        const v = a.getAttribute('href');
+        return v && /^(#)/.test(v)
+      });
+
+      linksLocal.forEach(link => {
+        let i = linksAll.indexOf(link);
+        do {
+          i--;
+        } while (i >= 0 && !linksAll[i].getAttribute('id')?.startsWith('file-'));
+
+        if (i > 0) {
+          const baseFileName = linksAll[i].getAttribute('id')?.substring(5);
+          const [, fileChapter] = link.getAttribute('href').split('#');
+          const [, level, order] = fileChapter.split('-');
+          const found = filesHeadings[baseFileName].filter(x => x.startsWith(`h-${level}-`))[+order];
+          link.setAttribute('href', '#' + found);
+        }
+      });
+      // End: Local chapter links recounted to absolute anchors - orders
+
       let hrefs = $A('a:not([class])', contentPane);
       Array.from(hrefs).forEach(link => {
         const dataLink = link.getAttribute('data-param');
