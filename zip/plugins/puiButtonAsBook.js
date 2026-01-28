@@ -177,31 +177,25 @@ class puiButtonAsBook extends puiButtonTab {
         }
         return map;
       }, {});
-      log('E LINKS LIST', filesHeadings);
+
       let hrefs = $A('a:not([class])', contentPane);
       Array.from(hrefs).forEach(link => {
         const dataLink = link.getAttribute('data-param');
         if (dataLink && !dataLink.startsWith('http') && !dataLink.startsWith(':')) {
-          log('E SEARCH:', $(`file-${dataLink}`), `file-${dataLink}`, link);
           if (/\.(md|html|htm)$/.test(dataLink)) {
             link.setAttribute('href', `#file-${dataLink}`);
-            log('E LINK:', dataLink, link);
           } else {
             const [baseFileName, fileChapter] = dataLink.split('#');
 
             // TODO : Beware of other anchor naming strategies! - pTRAnchorName
             const [, level, order] = fileChapter.split('-');
-            log("E RRR?", [baseFileName, fileChapter, filesHeadings, filesHeadings[baseFileName]]);
             const found = filesHeadings[baseFileName].filter(x => x.startsWith(`h-${level}-`))[+order];
-            log("E RRR", [baseFileName, fileChapter, found]);
             link.setAttribute('href', '#' + found);
-
-            log('E BAF', `file-${dataLink.split('#')[0]}`);
           }
 
         }
       });
-      log('E LINKS', hrefs);
+      
     }
   }
 
