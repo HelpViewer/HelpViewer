@@ -89,9 +89,11 @@ class puiButtonAsBook extends puiButtonTab {
     files.forEach((x) => {
       prom = prom.then(() => (x.startsWith(':') ? storageSearch(STO_DATA, x.substring(1)) : storageSearch(STO_HELP, x)).then((y) => {
         if (y.length > 0) {
-          textOfFiles += '\n' + y + '\n';
+          const isHomeData = x == homeData;
+          const fileAnchor = isHomeData ? '' : `<a id="file-${x}" class="anchor-link"></a>`;
+          textOfFiles += '\n' + fileAnchor + '\n' + y + '\n';
 
-          if (x == homeData) {
+          if (isHomeData) {
             const metainfo = `\n| ${_T('helpfile')} | ${_T('version')} |\n|---|---|\n| ${configGetDataProjectFile()} | ${configGetValue(CFG_KEY__VERSION) || ''} |\n| ${configGetValue(CFG_KEY__PRJNAME, '', FILE_CONFIG_DEFAULT)} | ${configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT)} |\n| ${_T('source')} | ${dataPath} |\n| ${_T('date')} | ${getDateInYYYYMMDDHH24IIss(new Date())} |\n\n`;
             textOfFiles += metainfo;
             textOfFiles += PAGE_BREAK;
@@ -161,6 +163,20 @@ class puiButtonAsBook extends puiButtonTab {
       this._prepareDump(this.homeData, files);
     } else {
       this.files = undefined;
+      const contentPane = $O('#content');
+      let hrefs = $A('a:not([class])', contentPane);
+      Array.from(hrefs).forEach(link => {
+        const dataLink = link.getAttribute('data-param');
+        if (dataLink && !dataLink.startsWith('http') && !dataLink.startsWith(':')) {
+          if (/\.(md|html|htm)$/.test(dataLink)) {
+            link.setAttribute('href', `#file-${dataLink}`);
+            link.class = 'anchor-link';
+          } else {
+            const baseFile = $(`file-${dataLink.split('#')[0]}`);
+          }
+
+        }
+      });
     }
   }
 
