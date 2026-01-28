@@ -90,8 +90,8 @@ class puiButtonAsBook extends puiButtonTab {
       prom = prom.then(() => (x.startsWith(':') ? storageSearch(STO_DATA, x.substring(1)) : storageSearch(STO_HELP, x)).then((y) => {
         if (y.length > 0) {
           const isHomeData = x == homeData;
-          const fileAnchor = isHomeData ? '' : `<a id="file-${x}" class="anchor-link"></a>`;
-          textOfFiles += '\n' + fileAnchor + '\n' + y + '\n';
+          const fileAnchor = isHomeData ? '' : `<a id="file-${x}" class="anchor-link"></a>\n`;
+          textOfFiles += `\n${fileAnchor}${y}\n`;
 
           if (isHomeData) {
             const metainfo = `\n| ${_T('helpfile')} | ${_T('version')} |\n|---|---|\n| ${configGetDataProjectFile()} | ${configGetValue(CFG_KEY__VERSION) || ''} |\n| ${configGetValue(CFG_KEY__PRJNAME, '', FILE_CONFIG_DEFAULT)} | ${configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT)} |\n| ${_T('source')} | ${dataPath} |\n| ${_T('date')} | ${getDateInYYYYMMDDHH24IIss(new Date())} |\n\n`;
@@ -165,18 +165,33 @@ class puiButtonAsBook extends puiButtonTab {
       this.files = undefined;
       const contentPane = $O('#content');
       let hrefs = $A('a:not([class])', contentPane);
+      log('E LINKS LIST', Array.from($A('a.anchor-link, h1, h2, h3, h4, h5, h6', contentPane)).map(l => [l.getAttribute('data-param') || l.id, l]));
       Array.from(hrefs).forEach(link => {
         const dataLink = link.getAttribute('data-param');
         if (dataLink && !dataLink.startsWith('http') && !dataLink.startsWith(':')) {
+          log('E SEARCH:', $(`file-${dataLink}`), `file-${dataLink}`, link);
           if (/\.(md|html|htm)$/.test(dataLink)) {
             link.setAttribute('href', `#file-${dataLink}`);
-            link.class = 'anchor-link';
+            log('E LINK:', dataLink, link);
           } else {
-            const baseFile = $(`file-${dataLink.split('#')[0]}`);
+            const [baseFileName, fileChapter] = dataLink.split('#');
+            const baseFile = $(`file-${baseFileName}`);
+            // const completeAnchor = $(dataLink);
+            // if (completeAnchor)
+            //   link.setAttribute('href', '#' + completeAnchor.id);
+            // else {
+              // TODO : Beware of other anchor naming strategies! - pTRAnchorName
+              const [, level, order] = fileChapter.split('-');
+              const found = nextElementFromOnSameLevel(contentPane, baseFile, `h${level}`, +order + 1);
+              log("E RRR", [baseFileName, fileChapter, found]);
+              link.setAttribute('href', '#' + found.id);
+            //}
+            log('E BAF', baseFile, `file-${dataLink.split('#')[0]}`);
           }
 
         }
       });
+      log('E LINKS', hrefs);
     }
   }
 
