@@ -14,6 +14,8 @@ class pExportHTM extends pExport {
     title.textContent = headerTitle;
     head.appendChild(title);
     
+    const div0 = document.createElement('div');
+    div0.className = evt.parent.parentElement.className;
     const div = document.createElement('div');
     div.innerHTML = evt.parent.innerHTML;
     const h1 = document.createElement('h1');
@@ -21,7 +23,8 @@ class pExportHTM extends pExport {
     div.prepend(h1);
     div.className = evt.parent.className;
 
-    doc.body.appendChild(div);
+    div0.appendChild(div);
+    doc.body.appendChild(div0);
 
     const styles = this.getStyles();
     Object.entries(styles).forEach(([filename, content]) => {
