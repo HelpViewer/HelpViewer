@@ -32,10 +32,10 @@ class pExportHTM extends pExport {
       cssLink.type = 'text/css';
       
       head.appendChild(cssLink);
-      evt.output.file(fName, content);
+      evt.output.set(fName, content);
     });
 
-    evt.output.file('index.html', new XMLSerializer().serializeToString(doc));
+    evt.output.set('index.html', new XMLSerializer().serializeToString(doc));
 
     if (evt.doneHandler)
       evt.doneHandler();

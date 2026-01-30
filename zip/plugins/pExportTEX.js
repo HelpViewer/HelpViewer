@@ -36,7 +36,7 @@ class pExportTEX extends pExport {
       const converted = HTMLToTeX(evt.parent, header, activeLanguage, config, ctx, document, author);
       const latex = `\\section\{${header}\}\n` + converted[1];
       document = converted[0].replace(/%DOC%/g, latex);
-      evt.output.file('LaTeX1.tex', document);
+      evt.output.set('LaTeX1.tex', document);
   
       if (evt.doneHandler)
         evt.doneHandler();

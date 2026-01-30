@@ -8,8 +8,8 @@ class pExportEPUB extends pExport {
       return;
 
     const mainDir = 'OEBPS';
-    evt.output.file('mimetype', 'application/epub+zip');
-    evt.output.file('META-INF/container.xml', this.config['container.xml'] || '');
+    evt.output.set('mimetype', 'application/epub+zip');
+    evt.output.set('META-INF/container.xml', this.config['container.xml'] || '');
     const language = getActiveLanguage().toLowerCase();
     const title = getHeader();
     const replacements = {
@@ -38,16 +38,16 @@ class pExportEPUB extends pExport {
       cssLink.setAttribute('type', 'text/css');
       
       head.appendChild(cssLink);
-      evt.output.file(fName, content);
+      evt.output.set(fName, content);
     });
 
     evt.embeds.values().filter(x => x.endsWith('.svg')).forEach(x => {
-      evt.output.remove(x);
+      evt.output.delete(x);
       replacements['ADDFILES'].push(`<item id="${x.replaceAll('/', '-').replaceAll('..', 'R.')}" href="${x}" media-type="image/svg+xml"/>`);
     });
 
     replacements['ADDFILES'] = replacements['ADDFILES'].join('\n');
-    evt.output.file(`${mainDir}/package.opf`, opfFile.replace(regex, m => replacements[m.slice(1, -1)]));
+    evt.output.set(`${mainDir}/package.opf`, opfFile.replace(regex, m => replacements[m.slice(1, -1)]));
 
     html.setAttribute('xmlns', xhtmlNS);
     html.setAttribute('xml:lang', language);
@@ -68,7 +68,7 @@ class pExportEPUB extends pExport {
     html.appendChild(body);
     body.appendChild(div);
     
-    evt.output.file(`${mainDir}/index.xhtml`, 
+    evt.output.set(`${mainDir}/index.xhtml`, 
       `<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html>${new XMLSerializer().serializeToString(doc)}`);
     evt.fileName = evt.fileName.split('.').shift() + '.epub';
 

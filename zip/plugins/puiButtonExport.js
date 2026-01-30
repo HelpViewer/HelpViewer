@@ -3,7 +3,7 @@ class PrepareExport extends IEvent {
     super();
     this.data = [];
     this.embeds = [];
-    this.output = undefined;
+    this.output = new Map();
     this.parent = undefined;
     this.fileName = 'export.zip';
   }
@@ -54,6 +54,7 @@ class puiButtonExport extends puiButtonSelect {
     const data = $A("*", parent);
 
     const zip = new JSZip();
+    const files = new Map();
 
     let i = 0;
     let imgs = $A("img", parent);
@@ -73,7 +74,7 @@ class puiButtonExport extends puiButtonSelect {
   
         const key = `src/img_${i}.jpg`;
         embeds.set(c.src, key);
-        zip.file(key, data);
+        files.set(key, data);
       }
     }
 
@@ -84,18 +85,19 @@ class puiButtonExport extends puiButtonSelect {
         i++;
         const key = `src/svg_${i}.svg`;
         embeds.set(c, key);
-        zip.file(key, serializer.serializeToString(c));
+        files.set(key, serializer.serializeToString(c));
       }
     });
 
     sendEvent(T.EVT_BE_PREPEXPORT, (x) => {
       x.data = data;
       x.parent = parent;
-      x.output = zip
+      x.output = files;
       x.id = e.target.options[e.target.selectedIndex].text;
       x.embeds = embeds;
       x.fileName = TI.cfgFILENAME || x.fileName;
       x.doneHandler = () => {
+        x.output.forEach((v, k) => zip.file(k, v));
         zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(o => prepareDownload(o, x.fileName));
       }
     });

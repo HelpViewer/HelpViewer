@@ -34,7 +34,7 @@ class pExportMD extends pExport {
         converted = converted.replace('%%TOC%%', tocData);
       }
 
-      evt.output.file('README.md', converted);
+      evt.output.set('README.md', converted);
   
       if (evt.doneHandler)
         evt.doneHandler();
