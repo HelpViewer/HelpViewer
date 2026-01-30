@@ -14,7 +14,7 @@ class pExportEPUB extends pExport {
     const title = getHeader();
     const replacements = {
       'LANG': language,
-      'IDENTIFIER': `${configGetValue(CFG_KEY__PRJNAME, '', FILE_CONFIG_DEFAULT)}-${configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT)}`,
+      'IDENTIFIER': `${configGetValue(CFG_KEY__PRJNAME, '', FILE_CONFIG)}-${configGetValue(CFG_KEY__VERSION)}`,
       'TITLE': title,
       'TIME': new Date().toISOString(),
       'ADDFILES': []
