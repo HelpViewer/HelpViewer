@@ -95,7 +95,9 @@ class puiButtonExport extends puiButtonSelect {
       x.id = e.target.options[e.target.selectedIndex].text;
       x.embeds = embeds;
       x.fileName = TI.cfgFILENAME || x.fileName;
-      x.doneHandler = () => zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(o => prepareDownload(o, x.fileName));
+      x.doneHandler = () => {
+        zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(o => prepareDownload(o, x.fileName));
+      }
     });
   }
 

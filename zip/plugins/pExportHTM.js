@@ -26,8 +26,6 @@ class pExportHTM extends pExport {
     const styles = this.getStyles();
     Object.entries(styles).forEach(([filename, content]) => {
       const fName = `src/${filename}`;
-      const style = document.createElement('style');
-      style.textContent = content;
       const cssLink = doc.createElement('link');
       cssLink.rel = 'stylesheet';
       cssLink.href = fName;
