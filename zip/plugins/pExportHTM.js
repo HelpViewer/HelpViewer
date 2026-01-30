@@ -38,7 +38,7 @@ class pExportHTM extends pExport {
       evt.output.set(fName, content);
     });
 
-    evt.output.set('index.html', new XMLSerializer().serializeToString(doc));
+    evt.output.set('index.html', minifyHTMLSource(new XMLSerializer().serializeToString(doc)));
 
     if (evt.doneHandler)
       evt.doneHandler();
@@ -46,3 +46,15 @@ class pExportHTM extends pExport {
 }
 
 Plugins.catalogize(pExportHTM);
+
+function minifyHTMLSource(html) {
+  const blocks = [];
+  html = html.replace(/<(pre|script|style|textarea)[^>]*>([\s\S]*?)<\/\1>/gi, (m, tag, content) => {
+      const id = 'BLOCK' + blocks.length;
+      blocks.push(`<${tag}>${content}</${tag}>`);
+      return `<${id}>`;
+  });
+  
+  html = html.replace(/>\s+</g, '><');
+  return html.replace(/<BLOCK(\d+)>/g, (m, i) => blocks[i]);
+}
