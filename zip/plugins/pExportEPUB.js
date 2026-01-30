@@ -41,9 +41,11 @@ class pExportEPUB extends pExport {
       evt.output.set(fName, content);
     });
 
-    evt.embeds.values().filter(x => x.endsWith('.svg')).forEach(x => {
+    evt.embeds.values().filter(x => x.startsWith('src/')).forEach(x => {
+      const flatName = x.split('/').pop();
+      evt.output.set(`${mainDir}/${flatName}`, evt.output.get(x));
       evt.output.delete(x);
-      replacements['ADDFILES'].push(`<item id="${x.replaceAll('/', '-').replaceAll('..', 'R.')}" href="${x}" media-type="image/svg+xml"/>`);
+      replacements['ADDFILES'].push(`<item id="${flatName.replaceAll('/', '-').replaceAll('..', 'R.')}" href="${flatName}" media-type="image/svg+xml"/>`);
     });
 
     replacements['ADDFILES'] = replacements['ADDFILES'].join('\n');
