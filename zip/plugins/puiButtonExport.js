@@ -5,6 +5,7 @@ class PrepareExport extends IEvent {
     this.embeds = [];
     this.output = undefined;
     this.parent = undefined;
+    this.fileName = 'export.zip';
   }
 }
 
@@ -19,6 +20,7 @@ class puiButtonExport extends puiButtonSelect {
     this.DEFAULT_KEY_CFG_CAPTION = '📥';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_HEADER;
     this.DEFAULT_KEY_CFG_CONTENTID = 'content';
+    this.DEFAULT_KEY_CFG_FILENAME = 'export.zip';
   }
 
   async init() {
@@ -92,7 +94,8 @@ class puiButtonExport extends puiButtonSelect {
       x.output = zip
       x.id = e.target.options[e.target.selectedIndex].text;
       x.embeds = embeds;
-      x.doneHandler = () => zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(x => prepareDownload(x, 'export.zip'));
+      x.fileName = TI.cfgFILENAME || x.fileName;
+      x.doneHandler = () => zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(o => prepareDownload(o, x.fileName));
     });
   }
 
