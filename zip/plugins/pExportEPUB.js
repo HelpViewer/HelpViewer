@@ -69,6 +69,7 @@ class pExportEPUB extends pExport {
     const body = doc.createElementNS(xhtmlNS, 'body');
     html.appendChild(body);
     body.appendChild(div);
+    Array.from($A('a.anchor-link', doc)).forEach(x => x.innerText = '');
     
     evt.output.set(`${mainDir}/index.xhtml`, 
       `<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html>${new XMLSerializer().serializeToString(doc)}`);
