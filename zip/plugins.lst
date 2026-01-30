@@ -79,4 +79,5 @@ pExport
 pExportHTM:HTM
 pExportMD:MD
 pExportTEX:TEX
+pExportEPUB:EPUB
 puiButtonExport:

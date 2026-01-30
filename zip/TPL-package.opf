@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<package xmlns="http://www.idpf.org/2007/opf" 
+         xmlns:dc="http://purl.org/dc/elements/1.1/" 
+         version="3.0" 
+         unique-identifier="pub-identifier" 
+         xml:lang="_LANG_">
+  <metadata>
+    <dc:identifier id="pub-identifier">_IDENTIFIER_</dc:identifier>
+    <dc:title>_TITLE_</dc:title>
+    <dc:language>_LANG_</dc:language>
+    <meta property="dcterms:modified">_TIME_</meta>
+    <dc:creator>_IDENTIFIER_</dc:creator>
+    <dc:publisher>_IDENTIFIER_</dc:publisher>
+  </metadata>
+  <manifest>
+    <item id="index" href="index.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+    _ADDFILES_
+  </manifest>
+  <spine>
+    <itemref idref="index"/>
+  </spine>
+</package>
