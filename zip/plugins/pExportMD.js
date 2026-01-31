@@ -27,6 +27,7 @@ class pExportMD extends pExport {
         tocData = HTMLToMD(tmpContainer, ctx).replaceAll(')- [', ')\n- [');
       }
       
+      Array.from($A('a.anchor-link[id^="file-"]', evt.parent)).forEach(x => x.remove());
       let converted = `# ${header}\n\n` + HTMLToMD(evt.parent, ctx);
 
       if (tocTree) {
