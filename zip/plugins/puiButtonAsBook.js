@@ -207,7 +207,7 @@ class puiButtonAsBook extends puiButtonTab {
         const dataLink = link.getAttribute('data-param');
         if (dataLink && !dataLink.startsWith('http') && !dataLink.startsWith(':')) {
           if (/\.(md|html|htm)$/.test(dataLink)) {
-            link.setAttribute('href', `#file-${dataLink}`);
+            link.setAttribute('href', `#${filesHeadings[dataLink]?.[0] || ''}`);
           } else {
             const [baseFileName, fileChapter] = dataLink.split('#');
 
@@ -220,6 +220,8 @@ class puiButtonAsBook extends puiButtonTab {
         }
       });
       
+      Array.from($A('a.anchor-link[id^="file-"]', evt.parent)).forEach(x => x.remove());
+
     }
   }
 
