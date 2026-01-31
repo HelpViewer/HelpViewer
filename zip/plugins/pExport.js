@@ -12,7 +12,7 @@ class pExport extends IPlugin {
     const reply = {};
     Array.from($A('style', document.head)).forEach(s => {
       if (s)
-        reply[`${s.id || newUID}.css`] = s?.textContent;
+        reply[`${s.id || newUID()}.css`] = s?.textContent;
     });
     return reply;
   }
