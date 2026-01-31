@@ -1,5 +1,17 @@
 # Changelog
 
+## 20260131
+
+### 🧑‍🤝‍🧑 User
+- 📥 Added export format **ePub**
+
+### 🧩 Technology
+- 📥 Export button interface changed : no direct access to ZIP file handling library, ZIP content preparation centralized, file name can be changed by export format handler
+
+### 🐞 Bugfix
+- 📚 Show all chapters as book : all links now correctly point to the relevant subchapters within the merged export document
+- 📥 Export button format handlers fixes and refactor in **HTML, md, LaTeX** - fixing of SVG inserting, oredered list items spacing, HTML exports all text with all CSS styles, LaTeX file has author name now, other small issues
+
 ## 20260125
 
 ### 🧑‍🤝‍🧑 User
