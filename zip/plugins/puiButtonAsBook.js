@@ -145,10 +145,13 @@ class puiButtonAsBook extends puiButtonTab {
     const cssName = 'tmp-AsBook';
     $(cssName)?.remove();
 
-    if (toc && this.fIcons.value != 1) {
-      appendCSS(cssName,
-        `#content ul.tree details > summary::before { content: '>'; }
-        #content ul.tree details[open] > summary::before { transform: rotate(0deg); content: '˅'; }`);
+    if (toc) {
+      openSubtree(toc);
+      if (this.fIcons.value != 1) {
+        appendCSS(cssName,
+          `#content ul.tree details > summary::before { content: '>'; }
+          #content ul.tree details[open] > summary::before { transform: rotate(0deg); content: '˅'; }`);
+      }  
     }
 
     var links = Array.from($A('a', evt.doc))
