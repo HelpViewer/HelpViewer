@@ -149,5 +149,9 @@ function htmlTreeToLines(toc, reply, step = 1, level = 0) {
       replyI.push(...htmlTreeToLines(v, [], step, nextLev));
     }
   });
+  
+  if (level == 0)
+    replyI.push('');
+
   return replyI;
 }

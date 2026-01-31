@@ -82,17 +82,22 @@ class pExportEPUB extends pExport {
     log('E TREE', htmlTreeToLines(toc).join('\n'));
 
     function _buildTreeFromText(src, handleItem, type = 'ol') {
-      let lastLevel = -1;
+      let lastLevel = 0;
       let reply = [];
       reply.push(`<${type}>`);
       Array.from(src).forEach((vi) => {
-        let level = vi.match(/^ */);
-        if (level > lastLevel)
-          reply.push(`<${type}>`);
+        let level = vi.match(/^ */)[0].length;
         const [title, uri] = vi.trim().split('|');
         if (level < lastLevel)
-          reply.push(`</${type}>`.repeat(level - lastLevel));
-        reply.push(handleItem(title, uri));
+          reply.push(`</${type}></li>`.repeat(lastLevel - level));
+
+        if (level > lastLevel) {
+          reply[reply.length - 1] = reply[reply.length - 1].slice(0, -5);
+          reply.push(`<${type}>`);
+        }
+        
+        if (title && uri)
+          reply.push(handleItem(title, uri));
         lastLevel = level;
       });
       reply.push(`</${type}>`);
