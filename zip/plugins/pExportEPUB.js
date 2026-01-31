@@ -19,7 +19,7 @@ class pExportEPUB extends pExport {
       'TIME': new Date().toISOString(),
       'ADDFILES': []
     };
-    const regex = new RegExp(`_${Object.keys(replacements).join('_|_')}_`, 'g');
+    let regex = new RegExp(`_${Object.keys(replacements).join('_|_')}_`, 'g');
     const opfFile = await storageSearch(STO_DATA, 'TPL-package.opf', STOF_TEXT);
 
     const xhtmlNS = 'http://www.w3.org/1999/xhtml';
@@ -75,6 +75,42 @@ class pExportEPUB extends pExport {
       `<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html>${new XMLSerializer().serializeToString(doc)}`);
     evt.fileName = evt.fileName.split('.').shift() + '.epub';
 
+    replacements['TOC'] = '';
+    regex = new RegExp(`_${Object.keys(replacements).join('_|_')}_`, 'g');
+    const toc = $O('#tree', div);
+    let tocText = htmlTreeToLines(toc);
+    log('E TREE', htmlTreeToLines(toc).join('\n'));
+
+    function _buildTreeFromText(src, handleItem, type = 'ol') {
+      let lastLevel = -1;
+      let reply = [];
+      reply.push(`<${type}>`);
+      Array.from(src).forEach((vi) => {
+        let level = vi.match(/^ */);
+        if (level > lastLevel)
+          reply.push(`<${type}>`);
+        const [title, uri] = vi.trim().split('|');
+        if (level < lastLevel)
+          reply.push(`</${type}>`.repeat(level - lastLevel));
+        reply.push(handleItem(title, uri));
+        lastLevel = level;
+      });
+      reply.push(`</${type}>`);
+      return reply;
+    }
+
+    let contentsText = this.config['nav.xhtml'] || '';
+    if (toc)
+      replacements['TOC'] = _buildTreeFromText(tocText, (t, u) => `<li><a href="index.xhtml${u}">${t}</a></li>`).join('');
+    contentsText = contentsText.replace(regex, m => replacements[m.slice(1, -1)]);
+    evt.output.set(`${mainDir}/nav.xhtml`, contentsText);
+
+    contentsText = this.config['toc.ncx'] || '';
+    if (!toc)
+      replacements['TOC'] = '';
+    contentsText = contentsText.replace(regex, m => replacements[m.slice(1, -1)]);
+    evt.output.set(`${mainDir}/toc.ncx`, contentsText);
+  
     if (evt.doneHandler)
       evt.doneHandler();
   }

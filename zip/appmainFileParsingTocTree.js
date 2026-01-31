@@ -120,3 +120,34 @@ function buildStringTreeFromMap(source, reply, step = 1, level = 0) {
   });
   return replyI;
 }
+
+function htmlTreeToLines(toc, reply, step = 1, level = 0) {
+  var replyI = reply || [];
+  const tabbing = ' '.repeat(step).repeat(level);
+  
+  Array.from(toc.children).forEach((vi) => {
+    let v = vi;
+    let isSummary = false;
+    const tag = () => v.tagName.toLowerCase();
+    
+    if (tag() === 'li')
+      v = v.firstElementChild;
+
+    if (tag() === 'details')
+      v = v.firstElementChild;
+
+    isSummary = tag() === 'summary';
+    if (isSummary)
+      v = v.firstElementChild;
+
+    if (tag() === 'a')
+      replyI.push(`${tabbing}${v.innerText.trim()}|${v.getAttribute('href')}`);
+
+    if (isSummary) {
+      v = v.parentElement.parentElement.lastElementChild;
+      const nextLev = level + 1;
+      replyI.push(...htmlTreeToLines(v, [], step, nextLev));
+    }
+  });
+  return replyI;
+}
