@@ -81,7 +81,7 @@ class pExportEPUB extends pExport {
     let tocText = htmlTreeToLines(toc);
     log('E TREE', htmlTreeToLines(toc).join('\n'));
 
-    function _buildTreeFromText(src, handleItem, type = 'ol') {
+    function _buildTreeFromText(src, handleItem, handleClosing, handleOpening, type = 'ol') {
       let lastLevel = 0;
       let reply = [];
       reply.push(`<${type}>`);
@@ -89,12 +89,10 @@ class pExportEPUB extends pExport {
         let level = vi.match(/^ */)[0].length;
         const [title, uri] = vi.trim().split('|');
         if (level < lastLevel)
-          reply.push(`</${type}></li>`.repeat(lastLevel - level));
+          handleClosing(type, lastLevel - level, reply);
 
-        if (level > lastLevel) {
-          reply[reply.length - 1] = reply[reply.length - 1].slice(0, -5);
-          reply.push(`<${type}>`);
-        }
+        if (level > lastLevel)
+          handleOpening(type, reply);
         
         if (title && uri)
           reply.push(handleItem(title, uri));
@@ -106,7 +104,14 @@ class pExportEPUB extends pExport {
 
     let contentsText = this.config['nav.xhtml'] || '';
     if (toc)
-      replacements['TOC'] = _buildTreeFromText(tocText, (t, u) => `<li><a href="index.xhtml${u}">${t}</a></li>`).join('');
+      replacements['TOC'] = _buildTreeFromText(tocText, 
+        (t, u) => `<li><a href="index.xhtml${u}">${t}</a></li>`,
+        (type, difference, reply) => reply.push(`</${type}></li>`.repeat(difference)),
+        (type, reply) => {
+          reply[reply.length - 1] = reply[reply.length - 1].slice(0, -5);
+          reply.push(`<${type}>`);
+        }
+      ).join('');
     contentsText = contentsText.replace(regex, m => replacements[m.slice(1, -1)]);
     evt.output.set(`${mainDir}/nav.xhtml`, contentsText);
 
