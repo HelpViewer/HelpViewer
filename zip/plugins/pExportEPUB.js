@@ -79,7 +79,6 @@ class pExportEPUB extends pExport {
     regex = new RegExp(`_${Object.keys(replacements).join('_|_')}_`, 'g');
     const toc = $O('#tree', div);
     let tocText = htmlTreeToLines(toc);
-    log('E TREE', htmlTreeToLines(toc).join('\n'));
 
     function _buildTreeFromText(src, handleItem, handleClosing, handleOpening, type = 'ol') {
       let lastLevel = 0;
@@ -103,9 +102,10 @@ class pExportEPUB extends pExport {
     }
 
     let contentsText = this.config['nav.xhtml'] || '';
+    const getLocalPath = (u) => u.startsWith('http') ? `index.xhtml#h-1-0` : `index.xhtml${u}`;
     if (toc)
       replacements['TOC'] = _buildTreeFromText(tocText, 
-        (t, u) => `<li><a href="index.xhtml${u}">${t}</a></li>`,
+        (t, u) => `<li><a href="${getLocalPath(u)}">${t}</a></li>`,
         (type, difference, reply) => reply.push(`</${type}></li>`.repeat(difference)),
         (type, reply) => {
           reply[reply.length - 1] = reply[reply.length - 1].slice(0, -5);
@@ -116,8 +116,19 @@ class pExportEPUB extends pExport {
     evt.output.set(`${mainDir}/nav.xhtml`, contentsText);
 
     contentsText = this.config['toc.ncx'] || '';
-    if (!toc)
-      replacements['TOC'] = '';
+    let id = 0;
+    if (toc)
+      replacements['TOC'] = _buildTreeFromText(tocText, 
+        (t, u) => {
+          id++;
+          return `<navPoint id="nav-${id}" playOrder="${id}"><navLabel><text>${t}</text></navLabel><content src="${getLocalPath(u)}"/></navPoint>`;
+        },
+        (type, difference, reply) => reply.push(`</navPoint>`.repeat(difference)),
+        (type, reply) => {
+          reply[reply.length - 1] = reply[reply.length - 1].slice(0, -11);
+        },
+      'navMap').join('');
+
     contentsText = contentsText.replace(regex, m => replacements[m.slice(1, -1)]);
     evt.output.set(`${mainDir}/toc.ncx`, contentsText);
   
