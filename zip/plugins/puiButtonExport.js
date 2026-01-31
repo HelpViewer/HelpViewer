@@ -6,6 +6,7 @@ class PrepareExport extends IEvent {
     this.output = new Map();
     this.parent = undefined;
     this.fileName = 'export.zip';
+    this.mimeType = 'application/zip';
   }
 }
 
@@ -98,7 +99,10 @@ class puiButtonExport extends puiButtonSelect {
       x.fileName = TI.cfgFILENAME || x.fileName;
       x.doneHandler = () => {
         x.output.forEach((v, k) => zip.file(k, v));
-        zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(o => prepareDownload(o, x.fileName));
+        zip.generateAsync({ type: 'blob', compression: 'DEFLATE' }).then(o => {
+          const blob = new Blob([o], { type: x.mimeType });
+          prepareDownload(blob, x.fileName)
+        });
       }
     });
   }

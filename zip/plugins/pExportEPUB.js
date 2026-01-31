@@ -7,6 +7,7 @@ class pExportEPUB extends pExport {
     if (!evt.parent)
       return;
 
+    evt.mimeType = 'application/epub+zip';
     const mainDir = 'OEBPS';
     evt.output.set('mimetype', 'application/epub+zip');
     evt.output.set('META-INF/container.xml', this.config['container.xml'] || '');
