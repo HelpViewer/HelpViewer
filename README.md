@@ -35,7 +35,12 @@ Want to be involved even more?
 - Ready to work in offline mode without any backend or local server
   - A browser with CORS policies disabled is recommended. Otherwise, functionality is partially limited and you must manually select the data file and help file at startup.
 - Responsive (desktop and other devices supported)
-- Lightweight - distribution package under 1 MiB (most part of solution compressed)
+- Lightweight - distribution package under 1.38 MiB (💾; most part of solution compressed)
+- Supports export of a chapter (in 2 clicks) or the complete help file (in 4 clicks) to HTML, Markdown, LaTeX, or ePub formats.
+- Accessibility rules WCAG 2.1 implemented (accessibilitychecker.org: 89 %, Lighthouse: 96%, Web Aim)
+- Print friendly version (prefers greyscale)
+- Personal notes on chapter paragraphs
+- Easily switch between different language versions of the viewer interface and help file
 - See the [full list][Features]
 
 ## Features for authors
