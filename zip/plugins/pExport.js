@@ -10,12 +10,10 @@ class pExport extends IPlugin {
 
   getStyles() {
     const reply = {};
-    const mainCSS = $O('#mainCSS')?.textContent;
-    if (mainCSS)
-      reply['main.css'] = mainCSS;
-    const mainCSSPlus = $O('#mainCSSPlus')?.textContent;
-    if (mainCSSPlus)
-      reply['plus.css'] = mainCSSPlus;
+    Array.from($A('style', document.head)).forEach(s => {
+      if (s)
+        reply[`${s.id || newUID}.css`] = s?.textContent;
+    });
     return reply;
   }
 }

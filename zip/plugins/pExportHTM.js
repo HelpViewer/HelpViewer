@@ -3,7 +3,7 @@ class pExportHTM extends pExport {
     super(aliasName, data);
   }
 
-  onETPrepareExport(evt) {
+  async onETPrepareExport(evt) {
     if (!evt.parent)
       return;
 
@@ -27,6 +27,9 @@ class pExportHTM extends pExport {
     doc.body.appendChild(div0);
 
     const styles = this.getStyles();
+    const fixesStyle = 'TPL-HTML-fixes.css';
+    styles[fixesStyle] = await storageSearch(STO_DATA, fixesStyle, STOF_TEXT);
+    
     Object.entries(styles).forEach(([filename, content]) => {
       const fName = `src/${filename}`;
       const cssLink = doc.createElement('link');
