@@ -124,6 +124,9 @@ function buildStringTreeFromMap(source, reply, step = 1, level = 0) {
 function htmlTreeToLines(toc, reply, step = 1, level = 0) {
   var replyI = reply || [];
   const tabbing = ' '.repeat(step).repeat(level);
+
+  if (!toc)
+    return replyI;
   
   Array.from(toc.children).forEach((vi) => {
     let v = vi;
