@@ -29,7 +29,8 @@ class pExportHTM extends pExport {
     const styles = this.getStyles();
     const fixesStyle = 'TPL-HTML-fixes.css';
     styles[fixesStyle] = await storageSearch(STO_DATA, fixesStyle, STOF_TEXT);
-    
+    styles['_custom.css'] = '';
+
     Object.entries(styles).forEach(([filename, content]) => {
       const fName = `src/${filename}`;
       const cssLink = doc.createElement('link');

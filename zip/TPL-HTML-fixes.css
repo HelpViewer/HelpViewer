@@ -7,3 +7,7 @@
 .code-toolbar pre {
 	margin-left: 3em;
 }
+
+.copy-to-clipboard-button {
+	display: none;
+}
