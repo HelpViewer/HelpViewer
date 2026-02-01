@@ -1,4 +1,9 @@
 class pTRUnconnectedTransformation extends pTRPhasePlugin {
+  constructor(aliasName, data) {
+    super(aliasName, data);
+    this.DEFAULT_KEY_CFG_DEFAULTEXTENSION = '.md';
+  }
+
   onETShowChapterResolutions(r) {
     //relative link paths update for ZIP structure
     const checkList = ["href", "src", "data-href"];
@@ -18,6 +23,9 @@ class pTRUnconnectedTransformation extends pTRPhasePlugin {
             
             const newVal = convertRelativePathToViewerURI(val);
             el.setAttribute(attr, newVal);
+
+            if (!val.includes('.'))
+              val += this.cfgDEFAULTEXTENSION;
             
             if (!val?.startsWith('?d') && !el.getAttribute('data-param'))
               el.setAttribute('data-param', val);    
