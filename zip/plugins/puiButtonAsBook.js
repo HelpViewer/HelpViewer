@@ -227,7 +227,17 @@ class puiButtonAsBook extends puiButtonTab {
         }
       });
       
-      Array.from($A('a.anchor-link[id^="file-"]', evt.parent)).forEach(x => x.remove());
+      Array.from($A('a.anchor-link[id^="file-"]', evt.parent)).forEach(x => {
+        const fileId = x.id?.split('-').pop();
+        const firstHeadingId = fileId && filesHeadings[fileId]?.[0];
+        const firstHeading = firstHeadingId && $(firstHeadingId);
+
+        if (firstHeading)
+          firstHeading.appendChild(x);
+        else
+          x.remove();
+        
+      });
 
     }
   }
