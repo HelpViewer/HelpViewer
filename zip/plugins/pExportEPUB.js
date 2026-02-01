@@ -78,8 +78,18 @@ class pExportEPUB extends pExport {
 
     replacements['TOC'] = '';
     regex = new RegExp(`_${Object.keys(replacements).join('_|_')}_`, 'g');
-    const toc = $O('#tree', div);
-    let tocText = htmlTreeToLines(toc);
+    let toc = $O('#tree', div);
+
+    let tocText = undefined;
+
+    if (toc)
+      tocText = htmlTreeToLines(toc);
+    else {
+      tocText = Array.from($A('h1', doc)).map(x => `${x.innerText.endsWith('#') ? x.innerText.slice(0, -1) : x.innerText}|${$O('a', x)?.getAttribute('href') || '#'}`);
+      if (tocText.length > 0)
+        toc = tocText;
+      tocText.push('');
+    }
 
     function _buildTreeFromText(src, handleItem, handleClosing, handleOpening, type = 'ol') {
       let lastLevel = 0;
