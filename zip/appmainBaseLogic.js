@@ -73,6 +73,18 @@ function stripTagsSome(htmlString, tags) {
   return htmlString.replace(regex, '');
 }
 
+function minifyHTMLSource(html) {
+  const blocks = [];
+  html = html.replace(/<(pre|script|style|textarea)[^>]*>([\s\S]*?)<\/\1>/gi, (m, tag, content) => {
+      const id = 'BLOCK' + blocks.length;
+      blocks.push(`<${tag}>${content}</${tag}>`);
+      return `<${id}>`;
+  });
+  
+  html = html.replace(/>\s+</g, '><');
+  return html.replace(/<BLOCK(\d+)>/g, (m, i) => blocks[i]);
+}
+
 const UserDataFileLoadedFileType = {
   LOCALDIR: 'LOCALDIR',
   LOCALARC: 'LOCALARC',
