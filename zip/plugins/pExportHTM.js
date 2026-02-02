@@ -42,6 +42,11 @@ class pExportHTM extends pExport {
       evt.output.set(fName, content);
     });
 
+    Array.from(evt.output.keys()).forEach(k => {
+      if (k.endsWith('.svg'))
+        evt.output.delete(k);
+    });
+    
     evt.output.set('index.html', minifyHTMLSource(new XMLSerializer().serializeToString(doc)));
 
     if (evt.doneHandler)
