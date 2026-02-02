@@ -11,3 +11,19 @@
 .copy-to-clipboard-button {
 	display: none;
 }
+
+div .code-toolbar .toolbar-item {
+	position: unset;
+}
+
+div.toolbar {
+	font-size: 1.5em;
+	background-color: transparent;
+	position: fixed;
+	bottom: 0;
+	right: 1em;
+}
+
+div.toolbar a {
+	text-decoration: none;
+}

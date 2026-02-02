@@ -80,4 +80,5 @@ pExportHTM:HTM
 pExportMD:MD
 pExportTEX:TEX
 pExportEPUB:EPUB
+pExportSTATIC:STATIC
 puiButtonExport:
