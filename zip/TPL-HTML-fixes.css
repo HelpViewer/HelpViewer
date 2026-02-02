@@ -19,9 +19,7 @@ div .code-toolbar .toolbar-item {
 div.toolbar {
 	font-size: 1.5em;
 	background-color: transparent;
-	position: fixed;
-	bottom: 0;
-	right: 1em;
+	position: sticky;
 }
 
 div.toolbar a {
