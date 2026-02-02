@@ -21,7 +21,6 @@ class pExportEPUB extends pExport {
       'TIME': new Date().toISOString(),
       'ADDFILES': []
     };
-    let regex = new RegExp(`_${Object.keys(replacements).join('_|_')}_`, 'g');
     const opfFile = await storageSearch(STO_DATA, 'TPL-package.opf', STOF_TEXT);
 
     const xhtmlNS = 'http://www.w3.org/1999/xhtml';
@@ -53,7 +52,7 @@ class pExportEPUB extends pExport {
     });
 
     replacements['ADDFILES'] = replacements['ADDFILES'].join('\n');
-    evt.output.set(`${mainDir}/package.opf`, opfFile.replace(regex, m => replacements[m.slice(1, -1)]));
+    evt.output.set(`${mainDir}/package.opf`, multipleTextReplace(opfFile, replacements, '_'));
 
     html.setAttribute('xmlns', xhtmlNS);
     html.setAttribute('xml:lang', language);
@@ -80,7 +79,6 @@ class pExportEPUB extends pExport {
     evt.fileName = evt.fileName.split('.').shift() + '.epub';
 
     replacements['TOC'] = '';
-    regex = new RegExp(`_${Object.keys(replacements).join('_|_')}_`, 'g');
     let toc = $O('#tree', div);
 
     let tocText = undefined;
@@ -126,7 +124,7 @@ class pExportEPUB extends pExport {
           reply.push(`<${type}>`);
         }
       ).join('');
-    contentsText = contentsText.replace(regex, m => replacements[m.slice(1, -1)]);
+    contentsText = multipleTextReplace(contentsText, replacements, '_');
     evt.output.set(`${mainDir}/nav.xhtml`, contentsText);
 
     contentsText = this.config['toc.ncx'] || '';
@@ -143,7 +141,7 @@ class pExportEPUB extends pExport {
         },
       'navMap').join('');
 
-    contentsText = contentsText.replace(regex, m => replacements[m.slice(1, -1)]);
+    contentsText = multipleTextReplace(contentsText, replacements, '_');
     evt.output.set(`${mainDir}/toc.ncx`, contentsText);
   
     if (evt.doneHandler)

@@ -85,6 +85,14 @@ function minifyHTMLSource(html) {
   return html.replace(/<BLOCK(\d+)>/g, (m, i) => blocks[i]);
 }
 
+function multipleTextReplace(input, replacements, leftRightMarkerForKey = '') {
+  const mark = leftRightMarkerForKey || '';
+  const markLen = mark.length;
+  const regex = new RegExp(`${mark}${Object.keys(replacements).join(`${mark}|${mark}`)}${mark}`, 'g');
+  const reply = input.replace(regex, m => replacements[m.slice(markLen, -markLen)]);
+  return reply;
+}
+
 const UserDataFileLoadedFileType = {
   LOCALDIR: 'LOCALDIR',
   LOCALARC: 'LOCALARC',
