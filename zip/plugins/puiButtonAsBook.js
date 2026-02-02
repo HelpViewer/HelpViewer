@@ -102,11 +102,8 @@ class puiButtonAsBook extends puiButtonTab {
             const tree = $('tree');
             const data = tree?.outerHTML;
 
-            if (data && data.length > 0 && tree?.childNodes.length > 0) {
-              textOfFiles += `<a id="file-toc.htm" class="anchor-link"></a>\n`
-              textOfFiles += `\n# ${_T('downP-TopicTree')}\n`;
-              textOfFiles += '\n' + data + '\n' + PAGE_BREAK + '\n';
-            }
+            if (data && data.length > 0 && tree?.childNodes.length > 0)
+              textOfFiles += `<a id="file-toc.htm" class="anchor-link"></a>\n\n# ${_T('downP-TopicTree')}\n\n${data}\n${PAGE_BREAK}\n`;
           } else {
             textOfFiles += PAGE_BREAK + '\n';
           }
