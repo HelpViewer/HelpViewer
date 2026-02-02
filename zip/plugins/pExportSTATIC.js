@@ -20,6 +20,8 @@ class pExportSTATIC extends pExport {
       'CONTENT' : ''
     };
     replacements['CONTENT'] = evt.parent.innerHTML;
+    replacements['DESCRIPTION'] = evt.parent.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 200);
+    replacements['TITLE'] = getHeader();
     doc.documentElement.innerHTML = multipleTextReplace(layout, replacements, '_');
     
     // const div = $O('#content', doc);
