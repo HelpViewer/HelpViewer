@@ -20,6 +20,16 @@ class pExportSTATIC extends pExport {
       'CONTENT' : ''
     };
 
+    if (evt.parent.children[0].tagName.toLowerCase() != 'h1') {
+      const h1 = document.createElement('h1');
+      h1.innerHTML = getHeader();
+      const h1a = document.createElement('a');
+      h1a.id = 'file-index.htm';
+      h1a.className = 'anchor-link';
+      h1.append(h1a);
+      evt.parent.prepend(h1);
+    }
+
     const allHref = Array.from($A('a', evt.parent));
     const allAnchor = allHref.filter(x => x.className == 'anchor-link');
     const filesList = allAnchor.filter(x => x.id?.startsWith('file-'));
@@ -28,7 +38,7 @@ class pExportSTATIC extends pExport {
       const rightOut = index > -1 ? x.id.slice(0, index) : x.id;
       x.id = rightOut + '.htm';
     });
-    const filesMap = filesList.map(x => [x.id.substring(5), x.parentElement, []]);
+    const filesMap = filesList.map(x => [x.id.substring(5), x.parentElement, [], undefined, []]);
     const headingToFileMap = new Map();
 
     let lastFileOrder = -1;
@@ -39,7 +49,7 @@ class pExportSTATIC extends pExport {
         lastFileOrder++;
       } else {
         const idName = item.getAttribute('href');//.substring(1);
-        filesMap[lastFileOrder][2].push();
+        filesMap[lastFileOrder][2].push(idName);
         filesMap[lastFileOrder][3] = item.parentElement;
         headingToFileMap.set(idName, lastFileName);
       }
@@ -51,6 +61,18 @@ class pExportSTATIC extends pExport {
       const index = dataParam.indexOf('#');
       const target = index > 0 ? dataParam.slice(0, index) : dataParam;
       x.href = `${target}${x.getAttribute('href')}`;
+    });
+
+    let lastH = null;
+    let idx = -1;
+    Array.from(evt.parent.children)
+    //querySelectorAll('*')
+    .forEach(el => {
+      if (el.tagName.toLowerCase() == 'h1' && lastH !== headingToFileMap[el.getAttribute('href')]) {
+        idx++;
+        lastH = el;
+      }
+      filesMap[idx][4].push(el);
     });
 
     replacements['CONTENT'] = evt.parent.innerHTML;
