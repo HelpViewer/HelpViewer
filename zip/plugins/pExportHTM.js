@@ -45,6 +45,10 @@ class pExportHTM extends pExport {
     this.removeSVG(evt.output);
     evt.output.set('index.html', minifyHTMLSource(new XMLSerializer().serializeToString(doc)));
 
+    const favicon = await TI.getFavicon(document);
+    if (favicon)
+      evt.output.set('favicon.png', favicon);
+
     if (evt.doneHandler)
       evt.doneHandler();
   }

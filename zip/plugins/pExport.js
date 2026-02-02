@@ -23,6 +23,24 @@ class pExport extends IPlugin {
         output.delete(k);
     });
   }
+
+  async getFavicon(parent = document) {
+    var link = $O("link[rel~='icon']", parent);
+
+    if (link) {
+      let data;
+      
+      if (!link?.href.startsWith('data:')) {
+        data = await fetchData(link.href);
+      } else {
+        data = dataUrlRawDataToBlob(link.href);
+      }
+
+      return data;
+    }
+
+    return undefined;
+  }
 }
 
 Plugins.catalogize(pExport);
