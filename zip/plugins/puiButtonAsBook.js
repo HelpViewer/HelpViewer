@@ -103,6 +103,7 @@ class puiButtonAsBook extends puiButtonTab {
             const data = tree?.outerHTML;
 
             if (data && data.length > 0 && tree?.childNodes.length > 0) {
+              textOfFiles += `<a id="file-toc.htm" class="anchor-link"></a>\n`
               textOfFiles += `\n# ${_T('downP-TopicTree')}\n`;
               textOfFiles += '\n' + data + '\n' + PAGE_BREAK + '\n';
             }
@@ -207,6 +208,7 @@ class puiButtonAsBook extends puiButtonTab {
       });
       // End: Local chapter links recounted to absolute anchors - orders
 
+      // Local chapter links correction and usage of data-param attribute, correction for cross links between files
       let hrefs = $A('a:not([class])', contentPane);
       Array.from(hrefs).forEach(link => {
         const dataLink = link.getAttribute('data-param');
@@ -226,7 +228,9 @@ class puiButtonAsBook extends puiButtonTab {
 
         }
       });
+      // End: Local chapter links correction and usage of data-param attribute, correction for cross links between files
       
+      // File anchors are moved to 1st heading of file
       Array.from($A('a.anchor-link[id^="file-"]', evt.parent)).forEach(x => {
         const fileId = x.id?.split('-').pop();
         const firstHeadingId = fileId && filesHeadings[fileId]?.[0];
@@ -238,6 +242,8 @@ class puiButtonAsBook extends puiButtonTab {
           x.remove();
         
       });
+      // End: File anchors are moved to 1st heading of file
+
 
     }
   }
