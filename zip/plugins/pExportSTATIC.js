@@ -16,17 +16,48 @@ class pExportSTATIC extends pExport {
       'LANG': getActiveLanguage().toLowerCase(),
       'INSTYLE': document.body.className,
       'TITLE': getHeader(),
-      'TOOLBAR': '🖨️▶️🖨️▶️',
+      'TOOLBAR': '...',//🖨️▶️🖨️▶️
       'CONTENT' : ''
     };
+
+    const allHref = Array.from($A('a', evt.parent));
+    const allAnchor = allHref.filter(x => x.className == 'anchor-link');
+    const filesList = allAnchor.filter(x => x.id?.startsWith('file-'));
+    filesList.forEach(x => {
+      const index = x.id.lastIndexOf('.');
+      const rightOut = index > -1 ? x.id.slice(0, index) : x.id;
+      x.id = rightOut + '.htm';
+    });
+    const filesMap = filesList.map(x => [x.id.substring(5), x.parentElement, []]);
+    const headingToFileMap = new Map();
+
+    let lastFileOrder = -1;
+    let lastFileName = '';
+    allAnchor.reduce((map, item) => {
+      if (item.id?.startsWith('file-')) {
+        lastFileName = item.id.substring(5);
+        lastFileOrder++;
+      } else {
+        const idName = item.getAttribute('href');//.substring(1);
+        filesMap[lastFileOrder][2].push();
+        filesMap[lastFileOrder][3] = item.parentElement;
+        headingToFileMap.set(idName, lastFileName);
+      }
+      return map;
+    }, {});
+
+    allHref.filter(x => !x.classList?.length && x.getAttribute('href')?.startsWith('#')).forEach(x => {
+      const dataParam = x.getAttribute('data-param')?.replace('.md', '.htm') || '';
+      const index = dataParam.indexOf('#');
+      const target = index > 0 ? dataParam.slice(0, index) : dataParam;
+      x.href = `${target}${x.getAttribute('href')}`;
+    });
+
     replacements['CONTENT'] = evt.parent.innerHTML;
     replacements['DESCRIPTION'] = evt.parent.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 200);
     replacements['TITLE'] = getHeader();
     doc.documentElement.innerHTML = multipleTextReplace(layout, replacements, '_');
     
-    // const div = $O('#content', doc);
-    // div.innerHTML = evt.parent.innerHTML;
-
     const styles = this.getStyles();
     const fixesStyle = 'TPL-HTML-fixes.css';
     styles[fixesStyle] = await storageSearch(STO_DATA, fixesStyle, STOF_TEXT);
