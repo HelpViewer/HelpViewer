@@ -231,7 +231,7 @@ class puiButtonAsBook extends puiButtonTab {
         const firstHeading = firstHeadingId && $(firstHeadingId);
 
         if (firstHeading)
-          firstHeading.appendChild(x);
+          firstHeading.insertBefore(x, firstHeading.firstElementChild);
         else
           x.remove();
         
