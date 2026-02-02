@@ -16,6 +16,13 @@ class pExport extends IPlugin {
     });
     return reply;
   }
+
+  removeSVG(output) {
+    Array.from(output.keys()).forEach(k => {
+      if (k.endsWith('.svg'))
+        output.delete(k);
+    });
+  }
 }
 
 Plugins.catalogize(pExport);

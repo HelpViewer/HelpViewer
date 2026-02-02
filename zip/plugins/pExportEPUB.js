@@ -8,6 +8,7 @@ class pExportEPUB extends pExport {
       return;
 
     evt.mimeType = 'application/epub+zip';
+    this.removeSVG(evt.output);
     const mainDir = 'OEBPS';
     evt.output.set('mimetype', 'application/epub+zip');
     evt.output.set('META-INF/container.xml', this.config['container.xml'] || '');
@@ -42,11 +43,13 @@ class pExportEPUB extends pExport {
       evt.output.set(fName, content);
     });
 
-    evt.embeds.values().filter(x => x.startsWith('src/')).forEach(x => {
+    evt.embeds.values().filter(x => x.startsWith('src/') && !x.endsWith('.svg')).forEach(x => {
       const flatName = x.split('/').pop();
       evt.output.set(`${mainDir}/${flatName}`, evt.output.get(x));
       evt.output.delete(x);
-      replacements['ADDFILES'].push(`<item id="${flatName.replaceAll('/', '-').replaceAll('..', 'R.')}" href="${flatName}" media-type="image/svg+xml"/>`);
+      let flatNameMime = flatName.slice(-3);
+      flatNameMime = flatNameMime == 'jpg' ? 'jpeg' : flatNameMime;
+      replacements['ADDFILES'].push(`<item id="${flatName.replaceAll('/', '-').replaceAll('..', 'R.')}" href="${flatName}" media-type="image/${flatNameMime}"/>`);
     });
 
     replacements['ADDFILES'] = replacements['ADDFILES'].join('\n');
