@@ -82,6 +82,7 @@ class pExportSTATIC extends pExport {
     const parser = new DOMParser();
 
     filesMap.forEach(x => {
+      const subfolders = '../'.repeat(x[0].split('/').length - 1) || '';
       const div = document.createElement('div');
       div.append(...x[4]);
       div.removeChild(x[4][0]);
@@ -95,11 +96,13 @@ class pExportSTATIC extends pExport {
 
       const doc = parser.parseFromString(populated, "text/html");
       const head = doc.head;
+      const faviconRel = $O("link[rel~='icon']", head);
+      faviconRel.href = `${subfolders}${faviconRel.getAttribute('href')}`;
       Object.entries(styles).forEach(([filename, content]) => {
         const fName = `src/${filename}`;
         const cssLink = doc.createElement('link');
         cssLink.rel = 'stylesheet';
-        cssLink.href = fName;
+        cssLink.href = `${subfolders}${fName}`;
         cssLink.type = 'text/css';
         
         head.appendChild(cssLink);
