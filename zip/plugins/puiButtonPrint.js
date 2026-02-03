@@ -15,6 +15,12 @@ class puiButtonPrint extends puiButton {
   _buttonAction(evt) {
     window.print();
   }
+
+  onET_ButtonDump(evt) {
+    const partial = super.onET_ButtonDump(evt);
+    partial.handlerB = 'window.print();';
+    return partial;
+  }
 }
 
 Plugins.catalogize(puiButtonPrint);

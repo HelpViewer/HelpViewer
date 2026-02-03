@@ -158,6 +158,21 @@ class puiNavigation extends IPlugin {
       if (x.targetTree == this.treeId)
         this.updateNavButtons(this.getId());
     }
+
+    onET_ButtonDump(evt) {
+      const T = this;
+      const left = collectButtonDump(T.buttonLeft);
+      left.id = T.aliasName;
+      evt.collected.push(left);
+      const top = collectButtonDump(T.buttonTop);
+      top.id = T.aliasName;
+      evt.collected.push(top);
+      const right = collectButtonDump(T.buttonRight);
+      right.id = T.aliasName;
+      evt.collected.push(right);
+
+      evt.result = [left, top, right];
+    }
   }
   
   Plugins.catalogize(puiNavigation);
