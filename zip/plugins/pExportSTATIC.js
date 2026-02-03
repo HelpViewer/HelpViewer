@@ -7,7 +7,7 @@ class pExportSTATIC extends pExport {
     this.DEFAULT_KEY_CFG_BUTTONORDER = 'printBtn;nav-left;nav-top;nav-right;downP-TopicTree;downP-Glossary;downP-Fulltext;downP-Home';
   }
 
-  init(handler = null) {
+  init() {
     const T = this.constructor;
     const TI = this;
     conversionToStatic.buttonOrder = TI.cfgBUTTONORDER.split(';');
@@ -27,7 +27,7 @@ class pExportSTATIC extends pExport {
       'LANG': getActiveLanguage().toLowerCase(),
       'INSTYLE': document.body.className,
       'TITLE': getHeader(),
-      'TOOLBAR': '...',//🖨️▶️🖨️▶️
+      'TOOLBAR': '',
       'CONTENT' : ''
     };
 
@@ -105,6 +105,7 @@ class pExportSTATIC extends pExport {
     const parser = new DOMParser();
     idx = -1;
     const staticData = {};
+    staticData.tocExists = filesMap.map(x => x[0]).includes('toc.htm');
 
     const buttons = new Map();
     sendEvent(T.EVT_BUTTON_DUMP, (x) => {
@@ -201,7 +202,7 @@ const conversionToStatic = {
     ['nav-left', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nprevious, c.buttonDefinitions.get(id))],
     ['nav-top', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nparent, c.buttonDefinitions.get(id))],
     ['nav-right', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nnext, c.buttonDefinitions.get(id))],
-    ['downP-TopicTree', (c, id) => conversionToStatic.buttonDefinedVarId(c, 'toc.htm', c.buttonDefinitions.get(id))],
+    ['downP-TopicTree', (c, id) => c.staticData.tocExists ? conversionToStatic.buttonDefinedVarId(c, 'toc.htm', c.buttonDefinitions.get(id)) : undefined],
     // ['downP-Glossary', (c, id) => {}],
     // ['downP-Fulltext', (c, id) => {}],
     ['downP-Home', (c, id) => conversionToStatic.buttonDefinedVarId(c, 'index.htm', c.buttonDefinitions.get(id))],
@@ -219,6 +220,8 @@ const conversionToStatic = {
   },
   buttonDefinedVarId: (c, v, id) => {
     if (v) {
+      if (v.startsWith(':'))
+        v = '_' + v.slice(1);
       const b = conversionToStatic.buttonBuilder(id);
       b.setAttribute('href', `${c.subfolders}${v}`);
       return b;
