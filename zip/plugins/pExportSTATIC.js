@@ -10,7 +10,6 @@ class pExportSTATIC extends pExport {
 
     const TI = this;
     const layout = minifyHTMLSource(await storageSearch(STO_DATA, TI.cfgLAYOUT, STOF_TEXT));
-    const doc = document.implementation.createHTMLDocument();
 
     let replacements = {
       'LANG': getActiveLanguage().toLowerCase(),
@@ -24,7 +23,7 @@ class pExportSTATIC extends pExport {
       const h1 = document.createElement('h1');
       h1.innerHTML = getHeader();
       const h1a = document.createElement('a');
-      h1a.id = 'file-index.htm';
+      h1a.id = 'file-README.htm';
       h1a.className = 'anchor-link';
       h1.append(h1a);
       evt.parent.prepend(h1);
@@ -75,30 +74,42 @@ class pExportSTATIC extends pExport {
       filesMap[idx][4].push(el);
     });
 
-    replacements['CONTENT'] = evt.parent.innerHTML;
-    replacements['DESCRIPTION'] = evt.parent.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 200);
-    replacements['TITLE'] = getHeader();
-    doc.documentElement.innerHTML = multipleTextReplace(layout, replacements, '_');
     
     const styles = this.getStyles();
     const fixesStyle = 'TPL-HTML-fixes.css';
     styles[fixesStyle] = await storageSearch(STO_DATA, fixesStyle, STOF_TEXT);
     styles['_custom.css'] = '';
+    const parser = new DOMParser();
 
-    const head = doc.head;
-    Object.entries(styles).forEach(([filename, content]) => {
-      const fName = `src/${filename}`;
-      const cssLink = doc.createElement('link');
-      cssLink.rel = 'stylesheet';
-      cssLink.href = fName;
-      cssLink.type = 'text/css';
-      
-      head.appendChild(cssLink);
-      evt.output.set(fName, content);
+    filesMap.forEach(x => {
+      const div = document.createElement('div');
+      div.append(...x[4]);
+      div.removeChild(x[4][0]);
+      replacements['CONTENT'] = div.innerHTML;
+      replacements['DESCRIPTION'] = div.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 200);
+      const title = x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
+        ? x[1].childNodes[0].textContent.trim() 
+        : '';
+      replacements['TITLE'] = title;
+      const populated = multipleTextReplace(layout, replacements, '_');
+
+      const doc = parser.parseFromString(populated, "text/html");
+      const head = doc.head;
+      Object.entries(styles).forEach(([filename, content]) => {
+        const fName = `src/${filename}`;
+        const cssLink = doc.createElement('link');
+        cssLink.rel = 'stylesheet';
+        cssLink.href = fName;
+        cssLink.type = 'text/css';
+        
+        head.appendChild(cssLink);
+        evt.output.set(fName, content);
+      });
+
+      evt.output.set(x[0], minifyHTMLSource(doc.documentElement.outerHTML));
     });
 
     this.removeSVG(evt.output);
-    evt.output.set('index.html', minifyHTMLSource(new XMLSerializer().serializeToString(doc)));
 
     const favicon = await TI.getFavicon(document);
     if (favicon)
