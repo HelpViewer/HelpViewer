@@ -1,13 +1,23 @@
 class pExportSTATIC extends pExport {
+  static EVT_BUTTON_DUMP = 'ButtonDump';
+
   constructor(aliasName, data) {
     super(aliasName, data);
     this.DEFAULT_KEY_CFG_LAYOUT = 'layoutSTATICExport.htm';
+  }
+
+  init(handler = null) {
+    const T = this.constructor;
+    const TI = this;
+    TI.catalogizeEventCall(TI.init, T.EVT_BUTTON_DUMP);
+    super.init();
   }
 
   async onETPrepareExport(evt) {
     if (!evt.parent)
       return;
 
+    const T = this.constructor;
     const TI = this;
     const layout = minifyHTMLSource(await storageSearch(STO_DATA, TI.cfgLAYOUT, STOF_TEXT));
 
@@ -92,6 +102,12 @@ class pExportSTATIC extends pExport {
     styles['_custom.css'] = '';
     const parser = new DOMParser();
     idx = -1;
+    const staticData = {};
+
+    const buttons = new Map();
+    sendEvent(T.EVT_BUTTON_DUMP, (x) => {
+      x.collected = buttons;
+    });
 
     filesMap.forEach(x => {
       idx++;
@@ -102,6 +118,8 @@ class pExportSTATIC extends pExport {
       context.nparent = treeLinksParenting.get(x[0]) || '';
       context.nnext = filesMap[idx+1]?.[0] || '';
       context.nprevious = filesMap[idx-1]?.[0] || '';
+      context.staticData = staticData;
+      context.buttonDefinitions = buttons;
 
       const div = document.createElement('div');
       div.append(...x[4]);
@@ -112,6 +130,10 @@ class pExportSTATIC extends pExport {
         ? x[1].childNodes[0].textContent.trim() 
         : '';
       replacements['TITLE'] = title;
+
+      conversionToStatic.buttonOrder.forEach(x => context.panelButtons.push(conversionToStatic.buttons.get(x)?.(context, x)));
+      replacements['TOOLBAR'] = context.panelButtons.filter(x => x).map(x => x.outerHTML).join('');
+
       const populated = multipleTextReplace(layout, replacements, '_');
 
       const doc = parser.parseFromString(populated, "text/html");
@@ -157,6 +179,9 @@ class StaticExportFileContext {
 
     this.homePath = 'index.htm';
     this.currentPagePath = '';
+    this.panelButtons = [];
+    this.staticData = {};
+    this.buttonDefinitions = new Map();
   }
 }
 
@@ -164,21 +189,37 @@ const conversionToStatic = {
   pages: [],
   buttonOrder: "printBtn;nav-left;nav-top;nav-right;downP-TopicTree;downP-Glossary;downP-Fulltext;downP-Home".split(';'),
   buttons: new Map([
-    ['printBtn', () => {}],
-    ['nav-left', () => {}],
-    ['nav-top', () => {}],
-    ['nav-right', () => {}],
-    ['downP-TopicTree', () => {}],
-    ['downP-Glossary', () => {}],
-    ['downP-Fulltext', () => {}],
-    ['downP-Home', () => {}],
+    ['printBtn', (c, id) => {
+      if (!c.staticData.printcmd) {
+        c.staticData.printcmd = conversionToStatic.buttonBuilder(c.buttonDefinitions.get(id));
+        c.staticData.printcmd.setAttribute('href', 'javascript:window.print();');
+      }
+      return c.staticData.printcmd;
+    }],
+    ['nav-left', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nprevious, c.buttonDefinitions.get(id))],
+    ['nav-top', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nparent, c.buttonDefinitions.get(id))],
+    ['nav-right', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nnext, c.buttonDefinitions.get(id))],
+    ['downP-TopicTree', (c, id) => conversionToStatic.buttonDefinedVarId(c, 'toc.htm', c.buttonDefinitions.get(id))],
+    // ['downP-Glossary', (c, id) => {}],
+    // ['downP-Fulltext', (c, id) => {}],
+    ['downP-Home', (c, id) => conversionToStatic.buttonDefinedVarId(c, 'index.htm', c.buttonDefinitions.get(id))],
   ]),
   buttonBuilder: (btnDef) => {
+    if (!btnDef)
+      return undefined;
+
     const button = document.createElement('a');
     button.id = btnDef.buttonId;
     button.innerText = btnDef.caption;
     button.title = btnDef.title;
-    button.setAttribute('aria-label') = btnDef.aria;
+    button.setAttribute('aria-label', btnDef.aria);
     return button;
+  },
+  buttonDefinedVarId: (c, v, id) => {
+    if (v) {
+      const b = conversionToStatic.buttonBuilder(id);
+      b.setAttribute('href', `${c.subfolders}${v}`);
+      return b;
+    }
   }
 };
