@@ -62,6 +62,18 @@ class pExportSTATIC extends pExport {
       x.href = `${target}${x.getAttribute('href')}`;
     });
 
+    const treeLinksParenting = new Map();
+    Array.from($A('a', $('tree'))).map(x => [x.getAttribute('href') || x.getAttribute('data-param'), x])
+    .map(x => [x[0], x[1].parentElement?.parentElement?.parentElement?.firstElementChild?.firstElementChild
+      ?.getAttribute('href') || ''])
+    .forEach(x => {
+      let idx = x[0].indexOf('#');
+      x[0] = idx === -1 ? x[0] : x[0].substring(0, idx);
+      idx = x[1].indexOf('#');
+      x[1] = idx === -1 ? x[1] : x[1].substring(0, idx);
+      treeLinksParenting.set(x[0], x[1]);
+    });
+
     let lastH = null;
     let idx = -1;
     Array.from(evt.parent.children)
@@ -74,15 +86,23 @@ class pExportSTATIC extends pExport {
       filesMap[idx][4].push(el);
     });
 
-    
     const styles = this.getStyles();
     const fixesStyle = 'TPL-HTML-fixes.css';
     styles[fixesStyle] = await storageSearch(STO_DATA, fixesStyle, STOF_TEXT);
     styles['_custom.css'] = '';
     const parser = new DOMParser();
+    idx = -1;
 
     filesMap.forEach(x => {
+      idx++;
       const subfolders = '../'.repeat(x[0].split('/').length - 1) || '';
+      const context = new StaticExportFileContext();
+      context.subfolders = subfolders;
+      context.currentPagePath = x[0];
+      context.nparent = treeLinksParenting.get(x[0]) || '';
+      context.nnext = filesMap[idx+1]?.[0] || '';
+      context.nprevious = filesMap[idx-1]?.[0] || '';
+
       const div = document.createElement('div');
       div.append(...x[4]);
       div.removeChild(x[4][0]);
@@ -112,6 +132,8 @@ class pExportSTATIC extends pExport {
       evt.output.set(x[0], minifyHTMLSource(doc.documentElement.outerHTML));
     });
 
+    evt.output.set('index.htm', minifyHTMLSource(evt.output.get('README.htm')));
+
     this.removeSVG(evt.output);
 
     const favicon = await TI.getFavicon(document);
@@ -124,3 +146,39 @@ class pExportSTATIC extends pExport {
 }
 
 Plugins.catalogize(pExportSTATIC);
+
+class StaticExportFileContext {
+  constructor() {
+    this.subfolders = '';
+
+    this.nprevious = '';
+    this.nparent = '';
+    this.nnext = '';
+
+    this.homePath = 'index.htm';
+    this.currentPagePath = '';
+  }
+}
+
+const conversionToStatic = {
+  pages: [],
+  buttonOrder: "printBtn;nav-left;nav-top;nav-right;downP-TopicTree;downP-Glossary;downP-Fulltext;downP-Home".split(';'),
+  buttons: new Map([
+    ['printBtn', () => {}],
+    ['nav-left', () => {}],
+    ['nav-top', () => {}],
+    ['nav-right', () => {}],
+    ['downP-TopicTree', () => {}],
+    ['downP-Glossary', () => {}],
+    ['downP-Fulltext', () => {}],
+    ['downP-Home', () => {}],
+  ]),
+  buttonBuilder: (btnDef) => {
+    const button = document.createElement('a');
+    button.id = btnDef.buttonId;
+    button.innerText = btnDef.caption;
+    button.title = btnDef.title;
+    button.setAttribute('aria-label') = btnDef.aria;
+    return button;
+  }
+};
