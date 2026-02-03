@@ -31,7 +31,7 @@ class pExport extends IPlugin {
       let data;
       
       if (!link?.href.startsWith('data:')) {
-        data = await fetchData(link.href);
+        data = await fetchDataOrZero(link.href);
       } else {
         data = dataUrlRawDataToBlob(link.href);
       }

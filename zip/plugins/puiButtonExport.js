@@ -68,7 +68,7 @@ class puiButtonExport extends puiButtonSelect {
         let data;
       
         if (!c.src.startsWith('data:')) {
-          data = await fetchData(c.src);
+          data = await fetchDataOrZero(c.src);
         } else {
           data = dataUrlRawDataToBlob(c.src);
         }
