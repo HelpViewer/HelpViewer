@@ -215,8 +215,8 @@ class puiButtonAsBook extends puiButtonTab {
             // TODO : Beware of other anchor naming strategies! - pTRAnchorName
             const [, level, order] = fileChapter.split('-');
             const found = (level && order 
-              ? filesHeadings[baseFileName].filter(x => x.startsWith(`h-${level}-`))[+order] 
-              : filesHeadings[baseFileName][0]) || '';
+              ? filesHeadings[baseFileName]?.filter(x => x.startsWith(`h-${level}-`))[+order] 
+              : filesHeadings[baseFileName]?.[0]) || '';
             link.setAttribute('href', '#' + found);
           }
 
