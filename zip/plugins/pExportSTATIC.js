@@ -114,7 +114,19 @@ class pExportSTATIC extends pExport {
 
     if (buttons.has('_FILES')) {
       const files = await puiButtonExportResolveImages(buttons.get('_FILES'));
-      for (const [k, v] of files) evt.output.set(k, v);
+      let imagesListForCSS = [];
+      for (const [k, v] of files) {
+        evt.output.set(k, v);
+        const index = k.lastIndexOf('.')
+        const flatName = index > -1 ? k.slice(0, index) : k;
+        imagesListForCSS.push(`--icon-${flatName}: url("../${k}");`);
+      }
+
+      if (imagesListForCSS && imagesListForCSS.length)
+        imagesListForCSS = `\n:root {\n${imagesListForCSS.join('\n')}\n}`;
+      else
+        imagesListForCSS = '';
+      styles[fixesStyle] += imagesListForCSS;
     }
 
     filesMap.forEach(x => {

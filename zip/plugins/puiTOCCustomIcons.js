@@ -18,6 +18,7 @@ class puiTOCCustomIcons extends IPlugin {
   deInit() {
     $('overridePlusMinus')?.remove();
     $('overrideSiblingTopics')?.remove();
+    $('overridePlusMinusVars')?.remove();
     super.deInit();
   }
 
@@ -33,6 +34,7 @@ class puiTOCCustomIcons extends IPlugin {
     ]);
 
     TI.images = [bookOpen, bookClosed, siblingImg];
+    let siblingImgOrig = siblingImg;
   
     var doOverride = null;
     
@@ -61,12 +63,12 @@ class puiTOCCustomIcons extends IPlugin {
       $(cssName)?.remove();
       appendCSS(cssName,
   `ul.tree details > summary::before {
-  content: ${bookClosed};
+  content: var(--icon-book-closed);
   }
   
   ul.tree details[open] > summary::before {
   transform: rotate(0deg);
-  content: ${bookOpen};
+  content: var(--icon-book-open);
   }` 
       );
     }
@@ -78,11 +80,12 @@ class puiTOCCustomIcons extends IPlugin {
       siblingImg = 
 `width: 16px;
 height: 16px;
-background-image: url("${siblingImg}");
+background-image: var(--icon-tree-sibling);
 background-size: contain;
 background-repeat: no-repeat;`;
     } else {
       siblingImg = '';
+      siblingImgOrig = '';
     }
 
     const cssName = 'overrideSiblingTopics';
@@ -99,6 +102,14 @@ vertical-align: middle;
 }`);
     }
 
+    const varsCSS ='overridePlusMinusVars';
+    $(varsCSS)?.remove();
+    appendCSS(varsCSS,
+`:root { 
+  --icon-book-closed: ${bookClosed || '""'};
+  --icon-book-open: ${bookOpen || '""'};
+  --icon-tree-sibling: url("${siblingImgOrig}");
+}`);
   }
 
   onET_ButtonDump(evt) {
@@ -107,9 +118,14 @@ vertical-align: middle;
     if (!evt.collected.has(kFILES))
       evt.collected.set(kFILES, new Map());
     const target = evt.collected.get(kFILES);
-    target.set(T.cfgFILENAMEBOOKO, T.images[0] || '');
-    target.set(T.cfgFILENAMEBOOKC, T.images[1] || '');
-    target.set(T.cfgFILENAMESIBLING, T.images[2] || '');
+
+    if (T.images[0])
+      target.set(T.cfgFILENAMEBOOKO, T.images[0]);
+    if (T.images[1])
+      target.set(T.cfgFILENAMEBOOKC, T.images[1]);
+    if (T.images[2])
+      target.set(T.cfgFILENAMESIBLING, T.images[2]);
+
     return target;
   }
 }

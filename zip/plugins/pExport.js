@@ -11,8 +11,11 @@ class pExport extends IPlugin {
   getStyles() {
     const reply = {};
     Array.from($A('style', document.head)).forEach(s => {
-      if (s)
-        reply[`${s.id || newUID()}.css`] = s?.textContent;
+      if (s) {
+        const id = s.id || newUID();
+        //if (!id.startsWith('t-'))
+        reply[`${id}.css`] = s?.textContent;
+      }
     });
     return reply;
   }
