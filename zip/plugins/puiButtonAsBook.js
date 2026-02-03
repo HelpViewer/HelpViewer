@@ -226,7 +226,7 @@ class puiButtonAsBook extends puiButtonTab {
       
       // File anchors are moved to 1st heading of file
       Array.from($A('a.anchor-link[id^="file-"]', evt.parent)).forEach(x => {
-        const fileId = x.id?.split('-').pop();
+        const fileId = x.id.substring(5);
         const firstHeadingId = fileId && filesHeadings[fileId]?.[0];
         const firstHeading = firstHeadingId && $(firstHeadingId);
 
