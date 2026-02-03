@@ -31,6 +31,8 @@ class puiTOCCustomIcons extends IPlugin {
       getDataOfPathInZIPImage(TI.cfgFILENAMEBOOKC, stor),
       getDataOfPathInZIPImage(TI.cfgFILENAMESIBLING, stor),
     ]);
+
+    TI.images = [bookOpen, bookClosed, siblingImg];
   
     var doOverride = null;
     
@@ -97,6 +99,18 @@ vertical-align: middle;
 }`);
     }
 
+  }
+
+  onET_ButtonDump(evt) {
+    const T = this;
+    const kFILES = '_FILES';
+    if (!evt.collected.has(kFILES))
+      evt.collected.set(kFILES, new Map());
+    const target = evt.collected.get(kFILES);
+    target.set(T.cfgFILENAMEBOOKO, T.images[0] || '');
+    target.set(T.cfgFILENAMEBOOKC, T.images[1] || '');
+    target.set(T.cfgFILENAMESIBLING, T.images[2] || '');
+    return target;
   }
 }
 

@@ -112,6 +112,11 @@ class pExportSTATIC extends pExport {
       x.collected = buttons;
     });
 
+    if (buttons.has('_FILES')) {
+      const files = await puiButtonExportResolveImages(buttons.get('_FILES'));
+      for (const [k, v] of files) evt.output.set(k, v);
+    }
+
     filesMap.forEach(x => {
       idx++;
       const subfolders = '../'.repeat(x[0].split('/').length - 1) || '';

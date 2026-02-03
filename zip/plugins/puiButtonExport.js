@@ -126,3 +126,23 @@ class puiButtonExport extends puiButtonSelect {
 }
 
 Plugins.catalogize(puiButtonExport);
+
+async function puiButtonExportResolveImages(imgs) {
+  const files = new Map();
+
+  const promises = Array.from(imgs.entries()).map(async ([k, src]) => {
+    let data;
+    if (!src.startsWith('data:')) {
+      data = await fetchDataOrZero(src);
+    } else {
+      data = dataUrlRawDataToBlob(src);
+    }
+
+    files.set(k, data);
+    return data;
+  });
+
+  await Promise.all(promises);
+
+  return files;
+}
