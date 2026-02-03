@@ -4,11 +4,13 @@ class pExportSTATIC extends pExport {
   constructor(aliasName, data) {
     super(aliasName, data);
     this.DEFAULT_KEY_CFG_LAYOUT = 'layoutSTATICExport.htm';
+    this.DEFAULT_KEY_CFG_BUTTONORDER = 'printBtn;nav-left;nav-top;nav-right;downP-TopicTree;downP-Glossary;downP-Fulltext;downP-Home';
   }
 
   init(handler = null) {
     const T = this.constructor;
     const TI = this;
+    conversionToStatic.buttonOrder = TI.cfgBUTTONORDER.split(';');
     TI.catalogizeEventCall(TI.init, T.EVT_BUTTON_DUMP);
     super.init();
   }
@@ -187,7 +189,7 @@ class StaticExportFileContext {
 
 const conversionToStatic = {
   pages: [],
-  buttonOrder: "printBtn;nav-left;nav-top;nav-right;downP-TopicTree;downP-Glossary;downP-Fulltext;downP-Home".split(';'),
+  buttonOrder: '',
   buttons: new Map([
     ['printBtn', (c, id) => {
       if (!c.staticData.printcmd) {
