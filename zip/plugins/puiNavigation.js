@@ -163,13 +163,13 @@ class puiNavigation extends IPlugin {
       const T = this;
       const left = collectButtonDump(T.buttonLeft);
       left.id = T.aliasName;
-      evt.collected.push(left);
+      evt.collected.set(left.buttonId, left);
       const top = collectButtonDump(T.buttonTop);
       top.id = T.aliasName;
-      evt.collected.push(top);
+      evt.collected.set(top.buttonId, top);
       const right = collectButtonDump(T.buttonRight);
       right.id = T.aliasName;
-      evt.collected.push(right);
+      evt.collected.set(right.buttonId, right);
 
       evt.result = [left, top, right];
     }
