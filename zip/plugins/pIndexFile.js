@@ -101,20 +101,23 @@ class pIndexFile extends IPlugin {
     const T = this;
     if (!T.index)
       return;
-    const dump = T.index._getKeywordSorted();
-    const wordsToFiles = dump.map(x => [x, T.index._dumpForWord(x).map(y => {
-      var targetkwName = getChapterAlternativeHeading(y);
-      var targetkwPath = targetkwName[0];
-      targetkwName = targetkwName[1];
-      return [targetkwName, targetkwPath];
-    })]);
-    return;
-    const kFILES = '_INDEX_' + T.aliasName;
-    if (!evt.collected.has(kFILES))
-      evt.collected.set(kFILES, new Map());
-    const target = evt.collected.get(kFILES);
 
-    target.set(T.cfgFILENAMEBOOKO, T.images[0]);
+    const dump = T.index._getKeywordSorted();
+    const headings = [];
+    const wordsToFiles = dump.map(x => [x, T.index._dumpForWord(x).map(y => {
+      headings[y] = headings[y] || [getChapterAlternativeHeading(y), new Set()];
+      headings[y][1].add(x);
+      return parseInt(y, 10);
+    })]);
+
+    const kIndex = '_INDEX_' + T.aliasName;
+    if (!evt.collected.has(kIndex))
+      evt.collected.set(kIndex, new Map());
+    const target = evt.collected.get(kIndex);
+
+    target.set("WORD", dump);
+    target.set("WORD-FILE", wordsToFiles);
+    target.set("FILE-TITLE-WORD", headings);
 
     return target;
   }
