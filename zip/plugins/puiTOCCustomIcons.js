@@ -112,7 +112,7 @@ vertical-align: middle;
 }`);
   }
 
-  onET_ButtonDump(evt) {
+  onET_OfflineDump(evt) {
     const T = this;
     const kFILES = '_FILES';
     if (!evt.collected.has(kFILES))

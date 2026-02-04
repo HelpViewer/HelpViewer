@@ -1,7 +1,7 @@
 const FILENAME_EXPORT_TOC = 'toc.htm';
 
 class pExportSTATIC extends pExport {
-  static EVT_BUTTON_DUMP = 'ButtonDump';
+  static EVT_BUTTON_DUMP = 'OfflineDump';
 
   constructor(aliasName, data) {
     super(aliasName, data);

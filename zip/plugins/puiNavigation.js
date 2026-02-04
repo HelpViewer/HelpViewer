@@ -159,7 +159,7 @@ class puiNavigation extends IPlugin {
         this.updateNavButtons(this.getId());
     }
 
-    onET_ButtonDump(evt) {
+    onET_OfflineDump(evt) {
       const T = this;
       const left = collectButtonDump(T.buttonLeft);
       left.id = T.aliasName;
