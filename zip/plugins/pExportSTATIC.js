@@ -1,3 +1,5 @@
+const FILENAME_EXPORT_TOC = 'toc.htm';
+
 class pExportSTATIC extends pExport {
   static EVT_BUTTON_DUMP = 'ButtonDump';
 
@@ -104,7 +106,7 @@ class pExportSTATIC extends pExport {
     const parser = new DOMParser();
     idx = -1;
     const staticData = {};
-    staticData.tocExists = filesMap.map(x => x[0]).includes('toc.htm');
+    staticData.tocExists = filesMap.map(x => x[0]).includes(FILENAME_EXPORT_TOC);
 
     const buttons = new Map();
     sendEvent(T.EVT_BUTTON_DUMP, (x) => {
@@ -232,7 +234,7 @@ const conversionToStatic = {
     ['nav-left', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nprevious, c.buttonDefinitions.get(id))],
     ['nav-top', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nparent, c.buttonDefinitions.get(id))],
     ['nav-right', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nnext, c.buttonDefinitions.get(id))],
-    ['downP-TopicTree', (c, id) => c.staticData.tocExists ? conversionToStatic.buttonDefinedVarId(c, 'toc.htm', c.buttonDefinitions.get(id)) : undefined],
+    ['downP-TopicTree', (c, id) => c.staticData.tocExists ? conversionToStatic.buttonDefinedVarId(c, FILENAME_EXPORT_TOC, c.buttonDefinitions.get(id)) : undefined],
     // ['downP-Glossary', (c, id) => {}],
     // ['downP-Fulltext', (c, id) => {}],
     ['downP-Home', (c, id) => conversionToStatic.buttonDefinedVarId(c, 'index.htm', c.buttonDefinitions.get(id))],
