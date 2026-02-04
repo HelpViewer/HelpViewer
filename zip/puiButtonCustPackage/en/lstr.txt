@@ -47,3 +47,4 @@ BTNEXPORT|Export
 BTNEXPORTTEX|(La)TeX
 BTNEXPORTMD|Markdown
 BTNEXPORTEPUB|ePub
+BTNEXPORTSTATIC|Static website (HTML files without JavaScript and without links to HelpViewer)
