@@ -148,7 +148,7 @@ class pExportSTATIC extends pExport {
       let imagesListForCSS = [];
       for (const [k, v] of files) {
         evt.output.set(k, v);
-        const flatName = TI.clearLastFromRight('.', k);
+        const flatName = TI.clearLastFromRight(k, '.');
         imagesListForCSS.push(`--icon-${flatName}: url("../${k}");`);
       }
 
