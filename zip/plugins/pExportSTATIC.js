@@ -75,8 +75,26 @@ class pExportSTATIC extends pExport {
       x.href = `${target}${x.getAttribute('href')}`;
     });
 
+    const staticData = {};
+    staticData.tocExists = filesMap.map(x => x[0]).includes(FILENAME_EXPORT_TOC);
+
     const treeLinksParenting = new Map();
-    Array.from($A('a', $('tree'))).map(x => [x.getAttribute('href') || x.getAttribute('data-param'), x])
+    let treeObject = $('tree');
+    let treeData = Array.from($A('a', treeObject));
+    const dynamicTOCNeed = !treeObject || !treeData.length && filesMap.length > 1
+    if (dynamicTOCNeed) {
+      const rows = filesMap.map(x => {
+        const titleL = x[1].childNodes[0]?.nodeValue;
+        return `${titleL}|${titleL}||${x[0]}`;
+      });
+
+      treeObject = document.createElement('ul');
+      treeObject.innerHTML = linesToHtmlTree(rows.join('\n'));
+      treeData = Array.from($A('a', treeObject));
+      treeData.forEach(x => x.setAttribute('href', x.getAttribute('data-param')));
+    }
+
+    treeData.map(x => [x.getAttribute('href') || x.getAttribute('data-param'), x])
     .map(x => [x[0], x[1].parentElement?.parentElement?.parentElement?.firstElementChild?.firstElementChild
       ?.getAttribute('href') || ''])
     .forEach(x => {
@@ -99,14 +117,20 @@ class pExportSTATIC extends pExport {
       filesMap[idx][4].push(el);
     });
 
+    if (dynamicTOCNeed) {
+      const h1 = document.createElement('h1');
+      h1.innerText = _T('downP-TopicTree');
+      const dynamicToc = [FILENAME_EXPORT_TOC, h1, [], h1, [h1, treeObject]];
+      filesMap.splice(1, 0, dynamicToc);
+      staticData.tocExists = filesMap.map(x => x[0]).includes(FILENAME_EXPORT_TOC);
+    }
+
     const styles = this.getStyles();
     const fixesStyle = 'TPL-HTML-fixes.css';
     styles[fixesStyle] = await storageSearch(STO_DATA, fixesStyle, STOF_TEXT);
     styles['_custom.css'] = '';
     const parser = new DOMParser();
     idx = -1;
-    const staticData = {};
-    staticData.tocExists = filesMap.map(x => x[0]).includes(FILENAME_EXPORT_TOC);
 
     const buttons = new Map();
     sendEvent(T.EVT_BUTTON_DUMP, (x) => {
