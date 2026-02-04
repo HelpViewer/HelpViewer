@@ -143,6 +143,8 @@ class pExportSTATIC extends pExport {
       const div = document.createElement('div');
       div.append(...x[4]);
       div.removeChild(x[4][0]);
+      if (subfolders)
+        Array.from($A('a:not([class])', div)).filter(a => !/^(ftp|https|\?|#|@|:)/.test(a.getAttribute('href'))).forEach(a => a.setAttribute('href', `${subfolders}${a.getAttribute('href')}`));
       replacements['CONTENT'] = div.innerHTML;
       replacements['DESCRIPTION'] = div.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 200);
       const title = x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
