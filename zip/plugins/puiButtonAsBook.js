@@ -192,8 +192,8 @@ class puiButtonAsBook extends puiButtonTab {
 
         if (i > 0) {
           const baseFileName = linksAll[i].getAttribute('id')?.substring(5);
-          const [, fileChapter] = link.getAttribute('href').split('#');
-          const [, level, order] = fileChapter.split('-');
+          const [, fileChapter] = link.getAttribute('href').split('#') || [];
+          const [, level, order] = fileChapter.split('-') || [];
           const found = (level && order 
             ? filesHeadings[baseFileName].filter(x => x.startsWith(`h-${level}-`))[+order] 
             : filesHeadings[baseFileName][0]) || '';
@@ -210,10 +210,10 @@ class puiButtonAsBook extends puiButtonTab {
           if (/\.(md|html|htm)$/.test(dataLink)) {
             link.setAttribute('href', `#${filesHeadings[dataLink]?.[0] || ''}`);
           } else {
-            const [baseFileName, fileChapter] = dataLink.split('#');
+            const [baseFileName, fileChapter] = dataLink.split('#') || [];
 
             // TODO : Beware of other anchor naming strategies! - pTRAnchorName
-            const [, level, order] = fileChapter.split('-');
+            const [, level, order] = fileChapter?.split('-') || [];
             const found = (level && order 
               ? filesHeadings[baseFileName]?.filter(x => x.startsWith(`h-${level}-`))[+order] 
               : filesHeadings[baseFileName]?.[0]) || '';
