@@ -77,6 +77,7 @@ class pExportSTATIC extends pExport {
 
     const staticData = {};
     staticData.tocExists = filesMap.map(x => x[0]).includes(FILENAME_EXPORT_TOC);
+    staticData.indexes = [];
 
     const treeLinksParenting = new Map();
     let treeObject = $('tree');
@@ -154,7 +155,17 @@ class pExportSTATIC extends pExport {
       styles[fixesStyle] += imagesListForCSS;
     }
 
+    log('E BUTTONS:', buttons);
+    Array.from(buttons.keys()).filter(x => x.startsWith('_INDEX_')).forEach(d => {
+      const dictionary = buttons.get(d);
+      const alias = d.substring(7);
+      staticData.indexes.push(alias);
+      log('E INDEX DICT:', d, dictionary);
+      TI.processIndexFile(filesMap, alias, dictionary);
+    });
+
     filesMap.forEach(x => {
+      log('E FILE:', x);
       idx++;
       const subfolders = '../'.repeat(x[0].split('/').length - 1) || '';
       const context = new StaticExportFileContext();
@@ -224,6 +235,29 @@ Sitemap: _REMOTEHOST_/sitemap.xml
     if (evt.doneHandler)
       evt.doneHandler();
   }
+
+  processIndexFile(filesMap, alias, dictionary) {
+    //index.htm
+    let h1 = document.createElement('h1');
+    const buttonName = conversionToStatic.convertIndexId(alias);
+    h1.innerText = _T(buttonName);
+    const indexFile = [`${alias}/index.htm`, h1, [], h1, []];
+    //const indexFileContent = `<h1>${}</h1>`;
+    let i = 0;
+    const indexFileContent = `<ul class="tree" id="${alias}" role="tree">${dictionary.get("WORD").map(x => {
+      i++;
+      return `<li role="treeitem"><a href="${x}.htm" id="${alias}|${i}" data-param="@${x}:${alias}" title="${x}" aria-label="${x}" class="k">${x}</a></li>`
+    }).join('')}</ul>`;
+
+    const div = document.createElement('div');
+    div.innerHTML = indexFileContent;
+    log('E INNER:', indexFileContent);
+    indexFile[4].push(h1, ...div.children);
+    filesMap.push(indexFile);
+
+    //items
+
+  }
 }
 
 Plugins.catalogize(pExportSTATIC);
@@ -259,8 +293,8 @@ const conversionToStatic = {
     ['nav-top', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nparent, c.buttonDefinitions.get(id))],
     ['nav-right', (c, id) => conversionToStatic.buttonDefinedVarId(c, c.nnext, c.buttonDefinitions.get(id))],
     ['downP-TopicTree', (c, id) => c.staticData.tocExists ? conversionToStatic.buttonDefinedVarId(c, FILENAME_EXPORT_TOC, c.buttonDefinitions.get(id)) : undefined],
-    // ['downP-Glossary', (c, id) => {}],
-    // ['downP-Fulltext', (c, id) => {}],
+    ['downP-Glossary', (c, id) => conversionToStatic.buttonIndexFile(c, c.staticData?.indexes?.includes('keywordList') ? 'keywordList' : undefined , c.buttonDefinitions.get(id))],
+    ['downP-Fulltext', (c, id) => conversionToStatic.buttonIndexFile(c, c.staticData?.indexes?.includes('fulltextList') ? 'fulltextList' : undefined, c.buttonDefinitions.get(id))],
     ['downP-Home', (c, id) => conversionToStatic.buttonDefinedVarId(c, 'index.htm', c.buttonDefinitions.get(id))],
   ]),
   buttonBuilder: (btnDef) => {
@@ -282,5 +316,26 @@ const conversionToStatic = {
       b.setAttribute('href', `${c.subfolders}${v}`);
       return b;
     }
+  },
+  buttonIndexFile: (c, v, id) => {
+    if (v) {
+      const b = conversionToStatic.buttonBuilder(id);
+      b.setAttribute('href', `${c.subfolders}${v}/index.htm`);
+      return b;
+    }
+  },
+  IndexNameToButtonId: [
+    'keywordList', 'downP-Glossary', 
+    'fulltextList', 'downP-Fulltext',
+  ],
+  convertIndexId: (id) => {
+    const index = conversionToStatic.IndexNameToButtonId.indexOf(id);
+    if (index === -1)
+      return undefined;
+
+    if (index % 2 === 0)
+      return conversionToStatic.IndexNameToButtonId[index + 1];
+    else
+      return conversionToStatic.IndexNameToButtonId[index - 1];
   }
 };
