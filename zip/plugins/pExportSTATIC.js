@@ -16,6 +16,12 @@ class pExportSTATIC extends pExport {
     super.init();
   }
 
+  clearLastFromRight(x, c = '.') {
+    const index = x.lastIndexOf(c);
+    const rightOut = index > -1 ? x.slice(0, index) : x;
+    return rightOut;
+  }
+
   async onETPrepareExport(evt) {
     if (!evt.parent)
       return;
@@ -46,8 +52,7 @@ class pExportSTATIC extends pExport {
     const allAnchor = allHref.filter(x => x.className == 'anchor-link');
     const filesList = allAnchor.filter(x => x.id?.startsWith('file-'));
     filesList.forEach(x => {
-      const index = x.id.lastIndexOf('.');
-      const rightOut = index > -1 ? x.id.slice(0, index) : x.id;
+      const rightOut = TI.clearLastFromRight(x.id, '.');
       x.id = rightOut + '.htm';
     });
     const filesMap = filesList.map(x => [x.id.substring(5), x.parentElement, [], undefined, []]);
@@ -143,8 +148,7 @@ class pExportSTATIC extends pExport {
       let imagesListForCSS = [];
       for (const [k, v] of files) {
         evt.output.set(k, v);
-        const index = k.lastIndexOf('.')
-        const flatName = index > -1 ? k.slice(0, index) : k;
+        const flatName = TI.clearLastFromRight('.', k);
         imagesListForCSS.push(`--icon-${flatName}: url("../${k}");`);
       }
 
@@ -155,17 +159,14 @@ class pExportSTATIC extends pExport {
       styles[fixesStyle] += imagesListForCSS;
     }
 
-    log('E BUTTONS:', buttons);
     Array.from(buttons.keys()).filter(x => x.startsWith('_INDEX_')).forEach(d => {
       const dictionary = buttons.get(d);
       const alias = d.substring(7);
       staticData.indexes.push(alias);
-      log('E INDEX DICT:', d, dictionary);
       TI.processIndexFile(filesMap, alias, dictionary);
     });
 
     filesMap.forEach(x => {
-      log('E FILE:', x);
       idx++;
       const subfolders = '../'.repeat(x[0].split('/').length - 1) || '';
       const context = new StaticExportFileContext();
@@ -237,25 +238,39 @@ Sitemap: _REMOTEHOST_/sitemap.xml
   }
 
   processIndexFile(filesMap, alias, dictionary) {
-    //index.htm
-    let h1 = document.createElement('h1');
-    const buttonName = conversionToStatic.convertIndexId(alias);
-    h1.innerText = _T(buttonName);
-    const indexFile = [`${alias}/index.htm`, h1, [], h1, []];
-    //const indexFileContent = `<h1>${}</h1>`;
-    let i = 0;
-    const indexFileContent = `<ul class="tree" id="${alias}" role="tree">${dictionary.get("WORD").map(x => {
+    const printList = (dict, parseItem) => {
+      let i = 0;
+      return `<ul class="tree" id="${alias}" role="tree">${dict.map(xa => {
       i++;
-      return `<li role="treeitem"><a href="${x}.htm" id="${alias}|${i}" data-param="@${x}:${alias}" title="${x}" aria-label="${x}" class="k">${x}</a></li>`
-    }).join('')}</ul>`;
+      const [x, xt, path] = parseItem(xa);
+      return `<li role="treeitem"><a href="${path}${x}.htm" id="${alias}|${i}" data-param="@${x}:${alias}" title="${xt}" aria-label="${xt}" class="k">${xt}</a></li>`
+    }).join('')}</ul>`
+    };
 
-    const div = document.createElement('div');
-    div.innerHTML = indexFileContent;
-    log('E INNER:', indexFileContent);
-    indexFile[4].push(h1, ...div.children);
+    //index.htm
+    const h1t = document.createElement('h1');
+    const buttonName = conversionToStatic.convertIndexId(alias);
+    h1t.innerText = _T(buttonName);
+    const indexFile = [`${alias}/index.htm`, h1t, [], h1t, []];
+    const indexFileContent = printList(dictionary.get("WORD"), (x) => [x, x, 'w/']);
+
+    const divt = document.createElement('div');
+    divt.innerHTML = indexFileContent;
+    indexFile[4].push(h1t, ...divt.children);
     filesMap.push(indexFile);
+    dictionary.get("FILE-TITLE-WORD").forEach(t => t[0][0] = this.clearLastFromRight(t[0][0], '.'));
 
-    //items
+    Promise.all(Array.from(dictionary.get("WORD-FILE"), xa => {
+      const h1 = document.createElement('h1');
+      h1.innerText = xa[0];
+      const oneFile = [`${alias}/w/${xa[0]}.htm`, h1, [], h1, []];
+      const oneConnectionTable = xa[1].map(x => dictionary.get("FILE-TITLE-WORD")[x][0]);
+      const content = printList(oneConnectionTable, (x) => [x[0], x[1], '../../']);
+      const div = document.createElement('div');
+      div.innerHTML = content;
+      oneFile[4].push(h1, ...div.children);
+      filesMap.push(oneFile);
+    }));
 
   }
 }
