@@ -1,3 +1,5 @@
+const FILENAME_SITEMAPTPL = 'TPL-sitemap.xml';
+
 class pExport extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);

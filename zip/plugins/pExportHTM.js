@@ -42,6 +42,17 @@ class pExportHTM extends pExport {
       evt.output.set(fName, content);
     });
 
+    let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);
+    sitemapText = sitemapText.replace('_SITES_', `<url><loc>_REMOTEHOST_index.html</loc><lastmod>${new Date().toISOString()}</lastmod></url>`);
+    evt.output.set('sitemap.xml', sitemapText);
+
+    evt.output.set('robots.txt', 
+`User-agent: *
+Disallow: /
+Allow: /index.html
+Sitemap: _REMOTEHOST_/sitemap.xml
+`);
+
     this.removeSVG(evt.output);
     evt.output.set('index.html', minifyHTMLSource(new XMLSerializer().serializeToString(doc)));
 

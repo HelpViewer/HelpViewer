@@ -176,6 +176,18 @@ class pExportSTATIC extends pExport {
 
     evt.output.set('index.htm', minifyHTMLSource(evt.output.get('README.htm')));
 
+    let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);
+    const date = new Date().toISOString();
+    sitemapText = sitemapText.replace('_SITES_', filesMap.filter(x => !x[0].startsWith('http')).map(x => `<url><loc>_REMOTEHOST_${x[0]}</loc><lastmod>${date}</lastmod></url>`).join('\n'));
+    evt.output.set('sitemap.xml', sitemapText);
+
+    evt.output.set('robots.txt', 
+`User-agent: *
+Allow: /
+Disallow: /src/
+Sitemap: _REMOTEHOST_/sitemap.xml
+`);
+    
     this.removeSVG(evt.output);
 
     const favicon = await TI.getFavicon(document);
