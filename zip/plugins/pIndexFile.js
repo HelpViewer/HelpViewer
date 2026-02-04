@@ -53,8 +53,10 @@ class pIndexFile extends IPlugin {
         r.id = aliasName;
         r.result = loadedCount;
       });
+      this.index = index;
 
       if (!loadedCount) {
+        this.index = undefined;
         sendEvent(T.EVT_IF_NOTEXISTS, (r) => {
           r.id = aliasName;
           r.result = data.result;
@@ -93,6 +95,28 @@ class pIndexFile extends IPlugin {
     ]).then(([kw, kwmap]) => {
       setIndexFileData(this.aliasName, kw, kwmap);
     });
+  }
+
+  onET_OfflineDump(evt) {
+    const T = this;
+    if (!T.index)
+      return;
+    const dump = T.index._getKeywordSorted();
+    const wordsToFiles = dump.map(x => [x, T.index._dumpForWord(x).map(y => {
+      var targetkwName = getChapterAlternativeHeading(y);
+      var targetkwPath = targetkwName[0];
+      targetkwName = targetkwName[1];
+      return [targetkwName, targetkwPath];
+    })]);
+    return;
+    const kFILES = '_INDEX_' + T.aliasName;
+    if (!evt.collected.has(kFILES))
+      evt.collected.set(kFILES, new Map());
+    const target = evt.collected.get(kFILES);
+
+    target.set(T.cfgFILENAMEBOOKO, T.images[0]);
+
+    return target;
   }
 }
 
@@ -198,10 +222,15 @@ function newKeywordDatabase(id, keywordData, keywordToFilesData) {
     return treeData;
   }
   
-  function searchKeyword(id) {
+  function _dumpForWord(id) {
     const fileLists = String(keywordToIndex.get(id))?.split(';');
     var files = fileLists.flatMap(k => keywordFiles[k] || []);
     files = [...new Set(files)];
+    return files;
+  }
+
+  function searchKeyword(id) {
+    var files = _dumpForWord(id);
     
     var treeData = `${id}|||\n`;
     for (const item of files) {
@@ -216,10 +245,16 @@ function newKeywordDatabase(id, keywordData, keywordToFilesData) {
     }
     return treeData;
   }
+
+  function _getKeywordSorted() {
+    return keywordSorted;
+  }
   
   return {
     readKeywordDatabase,
     searchKeyword,
-    getTreeData
+    getTreeData,
+    _getKeywordSorted,
+    _dumpForWord
   }
 }
