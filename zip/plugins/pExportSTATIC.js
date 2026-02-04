@@ -11,7 +11,6 @@ class pExportSTATIC extends pExport {
     const T = this.constructor;
     const TI = this;
     conversionToStatic.buttonOrder = TI.cfgBUTTONORDER.split(';');
-    TI.catalogizeEventCall(TI.init, T.EVT_BUTTON_DUMP);
     super.init();
   }
 
