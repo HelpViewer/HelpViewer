@@ -100,6 +100,8 @@ class pExportSTATIC extends pExport {
       treeData.forEach(x => x.setAttribute('href', x.getAttribute('data-param')));
     }
 
+    treeData.forEach(x => x.insertAdjacentHTML('afterend', ' '));
+
     treeData.map(x => [x.getAttribute('href') || x.getAttribute('data-param'), x])
     .map(x => [x[0], x[1].parentElement?.parentElement?.parentElement?.firstElementChild?.firstElementChild
       ?.getAttribute('href') || ''])
@@ -245,7 +247,7 @@ Sitemap: _REMOTEHOST_/sitemap.xml
       return `<ul class="tree" id="${alias}" role="tree">${dict.map(xa => {
       i++;
       const [x, xt, path] = parseItem(xa);
-      return `<li role="treeitem"><a href="${path}${x}.htm" id="${alias}|${i}" data-param="@${x}:${alias}" title="${xt}" aria-label="${xt}" class="k">${xt}</a></li>`
+      return `<li role="treeitem"><a href="${path}${x}.htm" id="${alias}|${i}" data-param="@${x}:${alias}" title="${xt}" aria-label="${xt}" class="k">${xt}</a> </li>`
     }).join('')}</ul>`
     };
 
