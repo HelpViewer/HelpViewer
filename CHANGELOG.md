@@ -1,5 +1,23 @@
 # Changelog
 
+## 20260205
+
+### 🧑‍🤝‍🧑 User
+- 📥 Added static web pages export (format **STATIC**)
+- SVG images are kept in HTML and related (pExportHTM, pExportEPUB, pExportSTATIC) and deleted from bundle (space saved)
+- 📥 pExportHTM : sitemap.xml, robots.txt, favicon gathering added
+- 📥 pExportEPUB : builds TOC even when not any TOC given from input document (external sources without HelpViewer metadata, h1 from chapters are used)
+
+### 🐞 Bugfix
+- 📥 pExportEPUB : bug with wrong MIME type for Android browsers (e-book has been recognized as ZIP archive despite of epub extension)
+- 📚 Show all chapters as book : fix in handling unorganized (external) resources without **HelpViewer** usual metadata
+- 📥 HTMLToTeX : bugfix for hyperlink URI processing and handling more edge cases
+
+### 🧩 Technology
+- 📥 Export button interface refactor (added helper functions)
+- ⚡ OfflineDump event introduced for handling collection of information for **STATIC** web pages export from application plugins (puiButton*, puiNavigation, pIndexFile, puiTOCCustomIcons, ... - refactor in these plugins)
+- 🖼️ pTRUnconnectedTransformation : when not any extension specified in URI hyperlink, then backup from configuration option **DEFAULTEXTENSION** will be used (default: .md)
+
 ## 20260131
 
 ### 🧑‍🤝‍🧑 User
