@@ -177,6 +177,21 @@ class pExportSTATIC extends pExport {
       dictionaries = dictionaries.map(x => x.substring(7));
     }
 
+    const nameIndex = buttons.has('_INDEX_keywordList') 
+      ? [...buttons.get('_INDEX_keywordList').get("FILE-TITLE-WORD").map(x => x[0][0])]
+      : [];
+
+    const keywordsMeta = !buttons.has('_INDEX_keywordList') ? (head, idx, fileName) => {} : ((head, idx, fileName) => {
+      const sourceIdx = nameIndex.indexOf(this.clearLastFromRight(fileName, '.'));
+      if (sourceIdx == -1) return;
+      const source = [...buttons.get('_INDEX_keywordList').get("FILE-TITLE-WORD")?.[sourceIdx]?.[1] || []].join(', ') || '';
+      if (!source) return;
+      const metaKeywords = document.createElement('meta');
+      metaKeywords.name = 'keywords';
+      metaKeywords.content = source;
+      head.appendChild(metaKeywords);
+    });
+
     filesMap.forEach(x => {
       idx++;
       const subfolders = '../'.repeat(x[0].split('/').length - 1) || '';
@@ -220,6 +235,8 @@ class pExportSTATIC extends pExport {
         head.appendChild(cssLink);
         evt.output.set(fName, content);
       });
+
+      keywordsMeta(head, idx, x[0]);
 
       evt.output.set(x[0], minifyHTMLSource(doc.documentElement.outerHTML));
     });
