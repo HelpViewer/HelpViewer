@@ -224,7 +224,8 @@ class pExportSTATIC extends pExport {
       evt.output.set(x[0], minifyHTMLSource(doc.documentElement.outerHTML));
     });
 
-    evt.output.set('index.htm', minifyHTMLSource(evt.output.get('README.htm')));
+    if (!evt.output.get(FILENAME_INDEXHTM))
+      evt.output.set(FILENAME_INDEXHTM, minifyHTMLSource(evt.output.get('README.htm')));
 
     let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);
     const date = new Date().toISOString();
@@ -267,7 +268,7 @@ ${dictionaries.map(x => `Disallow: /${x}/`).join('\n')}
     const h1t = document.createElement('h1');
     const buttonName = conversionToStatic.convertIndexId(alias);
     h1t.innerText = _T(buttonName);
-    const indexFile = [`${alias}/index.htm`, h1t, [], h1t, []];
+    const indexFile = [`${alias}/${FILENAME_INDEXHTM}`, h1t, [], h1t, []];
     const indexFileContent = printList(dictionary.get("WORD"), (x) => [x, x, 'w/']);
 
     const divt = document.createElement('div');
@@ -301,7 +302,7 @@ class StaticExportFileContext {
     this.nparent = '';
     this.nnext = '';
 
-    this.homePath = 'index.htm';
+    this.homePath = FILENAME_INDEXHTM;
     this.currentPagePath = '';
     this.panelButtons = [];
     this.staticData = {};
@@ -326,7 +327,7 @@ const conversionToStatic = {
     ['downP-TopicTree', (c, id) => c.staticData.tocExists ? conversionToStatic.buttonDefinedVarId(c, FILENAME_EXPORT_TOC, c.buttonDefinitions.get(id)) : undefined],
     ['downP-Glossary', (c, id) => conversionToStatic.buttonIndexFile(c, c.staticData?.indexes?.includes('keywordList') ? 'keywordList' : undefined , c.buttonDefinitions.get(id))],
     ['downP-Fulltext', (c, id) => conversionToStatic.buttonIndexFile(c, c.staticData?.indexes?.includes('fulltextList') ? 'fulltextList' : undefined, c.buttonDefinitions.get(id))],
-    ['downP-Home', (c, id) => conversionToStatic.buttonDefinedVarId(c, 'index.htm', c.buttonDefinitions.get(id))],
+    ['downP-Home', (c, id) => conversionToStatic.buttonDefinedVarId(c, FILENAME_INDEXHTM, c.buttonDefinitions.get(id))],
   ]),
   buttonBuilder: (btnDef) => {
     if (!btnDef)
@@ -351,7 +352,7 @@ const conversionToStatic = {
   buttonIndexFile: (c, v, id) => {
     if (v) {
       const b = conversionToStatic.buttonBuilder(id);
-      b.setAttribute('href', `${c.subfolders}${v}/index.htm`);
+      b.setAttribute('href', `${c.subfolders}${v}/${FILENAME_INDEXHTM}`);
       return b;
     }
   },

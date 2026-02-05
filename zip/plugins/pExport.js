@@ -1,4 +1,5 @@
 const FILENAME_SITEMAPTPL = 'TPL-sitemap.xml';
+const FILENAME_INDEXHTM = 'index.htm';
 
 class pExport extends IPlugin {
   constructor(aliasName, data) {
