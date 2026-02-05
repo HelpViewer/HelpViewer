@@ -228,7 +228,11 @@ class pExportSTATIC extends pExport {
 
     let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);
     const date = new Date().toISOString();
-    sitemapText = sitemapText.replace('_SITES_', filesMap.filter(x => !x[0].startsWith('http') && !dictionaries.some(p => x[0].includes(p))).map(x => `<url><loc>_REMOTEHOST_${x[0]}</loc><lastmod>${date}</lastmod></url>`).join('\n'));
+    sitemapText = sitemapText.replace('_SITES_', [...evt.output.keys()].filter(x => 
+      /\.(?:htm|html)$/i.test(x) && 
+      !/^(http|src\/)/.test(x) && 
+      !dictionaries.some(p => x.includes(p)))
+      .map(x => `<url><loc>_REMOTEHOST_${x}</loc><lastmod>${date}</lastmod></url>`).join('\n'));
     evt.output.set('sitemap.xml', sitemapText);
 
     evt.output.set('robots.txt', 
