@@ -139,7 +139,7 @@ class pExportSTATIC extends pExport {
     const styles = this.getStyles();
     const fixesStyle = 'TPL-HTML-fixes.css';
     styles[fixesStyle] = await storageSearch(STO_DATA, fixesStyle, STOF_TEXT);
-    styles['_custom.css'] = '';
+    styles['custom.css'] = '';
     const parser = new DOMParser();
     idx = -1;
 
