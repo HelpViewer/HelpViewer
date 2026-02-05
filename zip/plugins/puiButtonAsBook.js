@@ -47,6 +47,14 @@ class puiButtonAsBook extends puiButtonTab {
     //fPageBreak.checked = true;
     this.fPageBreak = fPageBreak;
     this.fIcons = fIcons;
+
+    const nExportDictionary = 'cbExportDictionary';
+    appendField(this.tab, nExportDictionary, getUserConfigValue(KEY_LS_EXPORTDICT) == 1, FormFieldType.CHECKBOX);
+    var fExportDictionary = $(nExportDictionary);
+
+    registerOnClick(nExportDictionary, (evt) => {
+      setUserConfigValue(KEY_LS_EXPORTDICT, fExportDictionary?.checked ? 1 : 0);
+    });
   }
 
   _buttonAction(evt) {

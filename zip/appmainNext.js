@@ -43,6 +43,7 @@ function showChapterByData(idxTreeItem, pagePath) {
 const PAR_NAME_PAGE = 'p'; // chapter page path
 
 const KEY_LS_PRINTICONS = "printIcons";
+const KEY_LS_EXPORTDICT = "exportDictionaries";
 
 var dataPathGeneral;
 
