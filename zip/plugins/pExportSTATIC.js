@@ -164,13 +164,17 @@ class pExportSTATIC extends pExport {
       styles[fixesStyle] += imagesListForCSS;
     }
 
+    let dictionaries = [];
+
     if (getUserConfigValue(KEY_LS_EXPORTDICT) == 1) {
-      Array.from(buttons.keys()).filter(x => x.startsWith('_INDEX_')).forEach(d => {
+      dictionaries = Array.from(buttons.keys()).filter(x => x.startsWith('_INDEX_'));
+      dictionaries.forEach(d => {
         const dictionary = buttons.get(d);
         const alias = d.substring(7);
         staticData.indexes.push(alias);
         TI.processIndexFile(filesMap, alias, dictionary);
-      });  
+      });
+      dictionaries = dictionaries.map(x => x.substring(7));
     }
 
     filesMap.forEach(x => {
@@ -224,7 +228,7 @@ class pExportSTATIC extends pExport {
 
     let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);
     const date = new Date().toISOString();
-    sitemapText = sitemapText.replace('_SITES_', filesMap.filter(x => !x[0].startsWith('http')).map(x => `<url><loc>_REMOTEHOST_${x[0]}</loc><lastmod>${date}</lastmod></url>`).join('\n'));
+    sitemapText = sitemapText.replace('_SITES_', filesMap.filter(x => !x[0].startsWith('http') && !dictionaries.some(p => x[0].includes(p))).map(x => `<url><loc>_REMOTEHOST_${x[0]}</loc><lastmod>${date}</lastmod></url>`).join('\n'));
     evt.output.set('sitemap.xml', sitemapText);
 
     evt.output.set('robots.txt', 
@@ -232,6 +236,7 @@ class pExportSTATIC extends pExport {
 Allow: /
 Disallow: /src/
 Sitemap: _REMOTEHOST_/sitemap.xml
+${dictionaries.map(x => `Disallow: /${x}/`).join('\n')}
 `);
     
     this.removeSVG(evt.output);
