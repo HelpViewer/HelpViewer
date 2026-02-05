@@ -95,6 +95,9 @@ class pExportSTATIC extends pExport {
       });
 
       treeObject = document.createElement('ul');
+      treeObject.className = 'tree'; 
+      treeObject.id = 'tree';
+      treeObject.setAttribute('role', 'tree');
       treeObject.innerHTML = linesToHtmlTree(rows.join('\n'));
       treeData = Array.from($A('a', treeObject));
       treeData.forEach(x => x.setAttribute('href', x.getAttribute('data-param')));
