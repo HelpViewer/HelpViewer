@@ -159,12 +159,14 @@ class pExportSTATIC extends pExport {
       styles[fixesStyle] += imagesListForCSS;
     }
 
-    Array.from(buttons.keys()).filter(x => x.startsWith('_INDEX_')).forEach(d => {
-      const dictionary = buttons.get(d);
-      const alias = d.substring(7);
-      staticData.indexes.push(alias);
-      TI.processIndexFile(filesMap, alias, dictionary);
-    });
+    if (getUserConfigValue(KEY_LS_EXPORTDICT) == 1) {
+      Array.from(buttons.keys()).filter(x => x.startsWith('_INDEX_')).forEach(d => {
+        const dictionary = buttons.get(d);
+        const alias = d.substring(7);
+        staticData.indexes.push(alias);
+        TI.processIndexFile(filesMap, alias, dictionary);
+      });  
+    }
 
     filesMap.forEach(x => {
       idx++;
