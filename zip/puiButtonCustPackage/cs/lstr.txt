@@ -48,3 +48,4 @@ BTNEXPORTTEX|(La)TeX
 BTNEXPORTMD|Markdown
 BTNEXPORTEPUB|ePub
 BTNEXPORTSTATIC|Statický web (HTML soubory bez javascriptu a bez vazby na HelpViewer)
+ADMONITIONS|Vyznačené informační bloky (admonitions)
