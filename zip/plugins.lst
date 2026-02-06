@@ -49,6 +49,7 @@ pTRTriage:-triage
 pTRKeywordRender:-triage
 pTRLoadData:-load
 pExtensionMarkedMd
+pExtensionMarkedAdmonitions:
 pTRParseMd:-md
 pTREmptyPlugin:-htm
 pTRFlushToMemDOM:-unconnected
