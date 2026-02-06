@@ -277,7 +277,8 @@ ${dictionaries.map(x => `Disallow: /${x}/`).join('\n')}
       return `<ul class="tree" id="${alias}" role="tree">${dict.map(xa => {
       i++;
       const [x, xt, path] = parseItem(xa);
-      return `<li role="treeitem"><a href="${path}${x}.htm" id="${alias}|${i}" data-param="@${x}:${alias}" title="${xt}" aria-label="${xt}" class="k">${xt}</a> </li>`
+      const targetPath = x.startsWith('http') ? x : `${path}${x}.htm`;
+      return `<li role="treeitem"><a href="${targetPath}" id="${alias}|${i}" data-param="@${x}:${alias}" title="${xt}" aria-label="${xt}" class="k">${xt}</a> </li>`
     }).join('')}</ul>`
     };
 
@@ -292,7 +293,7 @@ ${dictionaries.map(x => `Disallow: /${x}/`).join('\n')}
     divt.innerHTML = indexFileContent;
     indexFile[4].push(h1t, ...divt.children);
     filesMap.push(indexFile);
-    dictionary.get("FILE-TITLE-WORD").forEach(t => t[0][0] = this.clearLastFromRight(t[0][0], '.'));
+    dictionary.get("FILE-TITLE-WORD").forEach(t => t[0][0] = t[0][0].startsWith('http') ? t[0][0] : this.clearLastFromRight(t[0][0], '.'));
 
     Promise.all(Array.from(dictionary.get("WORD-FILE"), xa => {
       const h1 = document.createElement('h1');
