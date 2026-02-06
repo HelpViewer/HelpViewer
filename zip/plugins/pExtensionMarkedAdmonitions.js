@@ -3,6 +3,17 @@ class pExtensionMarkedAdmonitions extends pExtensionMarkedMd {
     super(aliasName, data);
     const TI = this;
     TI.DEFAULT_KEY_CFG_ROOTCSSCLASS = 'note';
+    TI.loadingState = false;
+  }
+
+  onET_MarkedExtend(e) {
+    const styleId = 'admonitions.css';
+
+    if (!$(styleId) && !this.loadingState) {
+      this.loadingState = true;
+      const RES = new Resource('MARKED-ADMONITION', undefined, STO_DATA, styleId);
+      RES.init();
+    }
   }
 
   _initHandlingObject(o) {
