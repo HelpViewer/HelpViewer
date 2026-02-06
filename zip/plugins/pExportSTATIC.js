@@ -238,7 +238,7 @@ class pExportSTATIC extends pExport {
 
       keywordsMeta(head, idx, x[0]);
 
-      evt.output.set(x[0], minifyHTMLSource(doc.documentElement.outerHTML));
+      evt.output.set(x[0], `<!DOCTYPE html>${minifyHTMLSource(doc.documentElement.outerHTML)}`);
     });
 
     if (!evt.output.get(FILENAME_INDEXHTM))
