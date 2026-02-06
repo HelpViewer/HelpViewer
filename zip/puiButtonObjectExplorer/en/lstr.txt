@@ -60,3 +60,5 @@ method|Function
 oeod_fn|Class function (in source code)
 oeod_g|Object globalThis
 oeod_var|Variable
+EXTENSIONS|Extensions
+EXTENSIONS-D|Modules for minor extensions of functionality and external sources and packages
