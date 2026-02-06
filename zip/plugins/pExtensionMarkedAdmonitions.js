@@ -14,7 +14,6 @@ class pExtensionMarkedAdmonitions extends pExtensionMarkedMd {
   }
 
   _handlerTokenizer(src, ctx) {
-    //const match = src.match(/^(\s*>\s*\[!([^\]]+)\](?:\s*\n)?)((?:(?!\s*>\s*\[!|\n{1,})[^\n]*\n?)+)/);
     const match = src.match(/^(\s*>\s*(?:\\)?\[!([^\]]+)\](?:\s*\n)?)((?:(?!\s*>\s*\[!|\n{1,})[^\n]*\n?)+)/);
 
     if (!match) return false;
