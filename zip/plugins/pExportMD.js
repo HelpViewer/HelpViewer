@@ -27,7 +27,15 @@ class pExportMD extends pExport {
         tocData = HTMLToMD(tmpContainer, ctx).replaceAll(')- [', ')\n- [');
       }
       
+      const corrections = [];
+      sendEvent(EventNames.PreExportCorrection, (x) => {
+        x.exportType = this.aliasName;
+        x.parent = evt.parent;
+        x.temporaryObjects = corrections;
+      });
+
       let converted = `# ${header}\n\n` + HTMLToMD(evt.parent, ctx);
+      corrections.forEach(x => x.remove());
 
       if (tocTree) {
         tocTree.innerHTML = tocData0;

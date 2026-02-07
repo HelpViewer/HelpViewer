@@ -33,7 +33,17 @@ class pExportTEX extends pExport {
       document = document.replace(/_METAINFO_/g, `\\begin{table}[H]\n\\begin{tabularx}{\\textwidth}{|l|X|}\n\\hline\n${mColData} \\hline\n \\end{tabularx}\\end{table}\n`);
   
       const ctx = { listStack: [], i_img: 0, i_svg: 0, embeds: evt.embeds };
+
+      const corrections = [];
+      sendEvent(EventNames.PreExportCorrection, (x) => {
+        x.exportType = this.aliasName;
+        x.parent = evt.parent;
+        x.temporaryObjects = corrections;
+      });
+
       const converted = HTMLToTeX(evt.parent, header, activeLanguage, config, ctx, document, author);
+      corrections.forEach(x => x.remove());
+      
       const latex = `\\section\{${header}\}\n` + converted[1];
       document = converted[0].replace(/%DOC%/g, latex);
       evt.output.set('LaTeX1.tex', document);
