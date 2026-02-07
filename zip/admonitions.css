@@ -1,0 +1,66 @@
+:root {
+  --c-border-note: var(--c-border);
+  --c-border-note-note: #0969da;
+  --c-border-note-tip: #1a7f37;
+  --c-border-note-important: #8250df;
+  --c-border-note-warning: #9a6700;
+  --c-border-note-caution: #cf222e;
+}
+
+.note {
+  padding-left: 0.5em;
+  margin-bottom: 1em;
+  border-left: .25em solid var(--c-border-note);
+}
+
+.note-note {
+  border-color: var(--c-border-note-note);
+}
+
+.note-note p::before {
+  content: "🛈 ";
+}
+
+.note-tip {
+  border-color: var(--c-border-note-tip);
+}
+
+.note-tip p::before {
+  content: "💡 ";
+}
+
+.note-important {
+  border-color: var(--c-border-note-important);
+}
+
+.note-important p::before {
+  content: "⭐ ";
+}
+
+.note-warning {
+  border-color: var(--c-border-note-warning);
+}
+
+.note-warning p::before {
+  content: "⚠️ ";
+}
+
+.note-caution {
+  border-color: var(--c-border-note-caution);
+}
+
+.note-caution p::before {
+  content: "❗ ";
+}
+
+/*S: print support*/
+@media print {
+  .note {
+    border-left: 0;
+  }
+
+  .note p::before {
+    filter: grayscale(100%) brightness(800%);
+  }
+}
+/*E: print support*/
