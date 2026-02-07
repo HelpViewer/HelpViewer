@@ -3,7 +3,7 @@
 - Support old help CHM file format with defined conversion steps.
 - Nice URLs (?id=5&d=...&p=... vs /hello.md/3)
 - RSS generator
-- sitemap.xml
+- sitemap.xml - generate in STATIC?
 - Editor for creating help files
 - Improve reading of markdowns - filter out YAML, TOML, JSON headings (currently not touching them) - getting information partially from them
 - Converting TEX file from archive to md format (investigation if possible, base support only?)
@@ -20,4 +20,3 @@
 - wizard with points and buttons
 - Github and another repository services (appGHIntegration.js refactor)
 - User bookmarks across help pages / User bookmarks to chapters (?, browser bookmarks also exists)
-- Export to static pages version (complete interconnected pages)
