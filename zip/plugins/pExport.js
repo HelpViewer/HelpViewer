@@ -1,10 +1,35 @@
 const FILENAME_SITEMAPTPL = 'TPL-sitemap.xml';
 const FILENAME_INDEXHTM = 'index.htm';
 
+class PreExportCorrection extends IEvent {
+  constructor() {
+    super();
+    this.CSSClassName = 'preExportCorrection';
+    this.exportType = '';
+    this.temporaryObjects = [];
+    this.manipulatedObjects = [];
+    this.parent = undefined;
+    //(event, object) => return correction object
+  }
+}
+
 class pExport extends IPlugin {
+  static EVT_E_CORRECTION = PreExportCorrection.name;
+
   constructor(aliasName, data) {
     super(aliasName, data);
     this.eventIdStrict = true;
+  }
+
+  async init() {
+    const T = this.constructor;
+    const TI = this;
+
+    TI.eventDefinitions.push([T.EVT_E_CORRECTION, PreExportCorrection, null]);
+
+//    TI.catalogizeEventCall(this._handle, T.EVT_BE_PREPEXPORT);
+
+    super.init();
   }
 
   onET_GetExportFormat(evt) {
