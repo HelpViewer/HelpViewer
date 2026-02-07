@@ -6,6 +6,34 @@ class pExtensionMarkedAdmonitions extends pExtensionMarkedMd {
     TI.loadingState = false;
   }
 
+  onET_PreExportCorrection(e) {
+    if (!e || !e.parent) return;
+
+    const cssClass = this.cfgROOTCSSCLASS;
+    const willBeUpdated = [...$A(`.${cssClass}`, e.parent)];
+    const exportFormatting = new Map([
+      ['MD', (id) => `> [!${id}]`],
+      ['TEX', (id) => `<strong>[!${id}]</strong>`],
+      ['*', (id) => ''],
+    ]);
+    
+    willBeUpdated.forEach(x => {
+      const typeClass = x.className.split(' ').filter(Boolean).find(c => c.startsWith(cssClass) && c !== cssClass) || '';
+      if (typeClass) {
+        const correctionText = (exportFormatting.get(e.exportType) || exportFormatting.get('*'))?.(typeClass.toUpperCase().substring(cssClass.length + 1));
+        if (correctionText) {
+          const correction = document.createElement('span');
+          correction.className = e.CSSClassName;
+          correction.innerText = correctionText;
+
+          x.prepend(correction);
+          e.temporaryObjects.push(correction);
+          e.manipulatedObjects.push(x);  
+        }
+      }
+    });
+  }
+
   onET_MarkedExtend(e) {
     const styleId = 'admonitions.css';
 
