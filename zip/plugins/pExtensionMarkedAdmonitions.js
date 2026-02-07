@@ -1,4 +1,4 @@
-class pExtensionMarkedAdmonitions extends pExtensionMarkedMd {
+class pExtensionMarkedAdmonitions extends pExtensionMarked {
   constructor(aliasName, data) {
     super(aliasName, data);
     const TI = this;

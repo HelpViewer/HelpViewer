@@ -1,4 +1,4 @@
-class pExtensionMarkedMd extends IPlugin {
+class pExtensionMarked extends IPlugin {
   constructor(aliasName, data) {
     super(aliasName, data);
     const TI = this;
@@ -49,4 +49,4 @@ class pExtensionMarkedMd extends IPlugin {
   }
 }
 
-Plugins.catalogize(pExtensionMarkedMd);
+Plugins.catalogize(pExtensionMarked);

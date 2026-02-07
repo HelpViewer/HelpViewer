@@ -48,7 +48,7 @@ pTRClearPanels:-triage
 pTRTriage:-triage
 pTRKeywordRender:-triage
 pTRLoadData:-load
-pExtensionMarkedMd
+pExtensionMarked
 pExtensionMarkedAdmonitions:
 pTRParseMd:-md
 pTREmptyPlugin:-htm
