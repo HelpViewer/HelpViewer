@@ -20,3 +20,4 @@
 - wizard with points and buttons
 - Github and another repository services (appGHIntegration.js refactor)
 - User bookmarks across help pages / User bookmarks to chapters (?, browser bookmarks also exists)
+- Export to RTF
