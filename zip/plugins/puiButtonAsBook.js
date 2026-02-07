@@ -216,8 +216,10 @@ class puiButtonAsBook extends puiButtonTab {
       let hrefs = $A('a:not([class])', contentPane);
       Array.from(hrefs).forEach(link => {
         let dataLink = link.getAttribute('data-param');
-        if (dataLink.startsWith(':'))
+        if (dataLink && dataLink.startsWith(':')) {
           dataLink = `_${dataLink.slice(1)}`;
+          link.setAttribute('data-param', dataLink);
+        }
 
         if (dataLink && !dataLink.startsWith('http')) {
           if (/\.(md|html|htm)$/.test(dataLink)) {
