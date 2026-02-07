@@ -98,6 +98,8 @@ class puiButtonAsBook extends puiButtonTab {
       prom = prom.then(() => (x.startsWith(':') ? storageSearch(STO_DATA, x.substring(1)) : storageSearch(STO_HELP, x)).then((y) => {
         if (y.length > 0) {
           const isHomeData = x == homeData;
+          if (x.startsWith(':'))
+            x = `_${x.slice(1)}`;
           const fileAnchor = isHomeData ? '' : `<a id="file-${x}" class="anchor-link"></a>\n`;
           textOfFiles += `\n${fileAnchor}${y}\n`;
 
@@ -213,8 +215,11 @@ class puiButtonAsBook extends puiButtonTab {
       // Local chapter links correction and usage of data-param attribute, correction for cross links between files
       let hrefs = $A('a:not([class])', contentPane);
       Array.from(hrefs).forEach(link => {
-        const dataLink = link.getAttribute('data-param');
-        if (dataLink && !dataLink.startsWith('http') && !dataLink.startsWith(':')) {
+        let dataLink = link.getAttribute('data-param');
+        if (dataLink.startsWith(':'))
+          dataLink = `_${dataLink.slice(1)}`;
+
+        if (dataLink && !dataLink.startsWith('http')) {
           if (/\.(md|html|htm)$/.test(dataLink)) {
             link.setAttribute('href', `#${filesHeadings[dataLink]?.[0] || ''}`);
           } else {
