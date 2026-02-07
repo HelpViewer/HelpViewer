@@ -13,7 +13,7 @@ class pExtensionMarkedAdmonitions extends pExtensionMarkedMd {
     const willBeUpdated = [...$A(`.${cssClass}`, e.parent)];
     const exportFormatting = new Map([
       ['MD', (id) => `> [!${id}]`],
-      ['TEX', (id) => `<strong>[!${id}]</strong>`],
+      ['TEX', (id) => `<strong>[!${id}]</strong> `],
       ['*', (id) => ''],
     ]);
     
@@ -24,7 +24,7 @@ class pExtensionMarkedAdmonitions extends pExtensionMarkedMd {
         if (correctionText) {
           const correction = document.createElement('span');
           correction.className = e.CSSClassName;
-          correction.innerText = correctionText;
+          correction.innerHTML = correctionText;
 
           x.prepend(correction);
           e.temporaryObjects.push(correction);
