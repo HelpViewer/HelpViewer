@@ -121,6 +121,7 @@ jobs:
             -exec cp {} . \;
           cp -rf ../hvdata .
           rm -rf ./.git
+          echo "<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title></title><meta name="robots" content="noindex,nofollow"></head><body></body></html>" > ./hvdata/index.html
           zip -r -9 ../package.zip .
           echo "::endgroup::"
 
