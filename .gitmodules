@@ -25,3 +25,7 @@
 	path = zip/HTMLToMD
 	url = https://github.com/HelpViewer/HTMLToMD
 	branch = main
+[submodule "zip/HTMLToRTF"]
+	path = zip/HTMLToRTF
+	url = https://github.com/HelpViewer/HTMLToRTF
+	branch = main
