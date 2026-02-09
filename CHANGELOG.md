@@ -1,5 +1,20 @@
 # Changelog
 
+## 20260209
+
+### 🧑‍🤝‍🧑 User
+- 📥 Added RTF 1.5 / Word 97 export format
+- 📢 Admonitions (Highlighted information blocks)
+- viewRepo.htm - languages checkbox unchecked for fluent usage for newcomers when they test the application for the 1st time
+
+### 🐞 Bugfix
+- 📥 pExportSTATIC - DOCTYPE missing in static pages, dictionaries prunned http external URI path
+- 📚 puiButtonAsBook - internal resource is exported and links to it are correct now in chapters and TOC
+- 📥 pExportHTM, pExportSTATIC : \_REMOTEHOST\_ marker : slash added in generated paths
+
+### 🧩 Technology
+- 🧩 pExport plugin concept introduced for general definition of extensions for application parts (then pExtensionMarkedMd -> pExtensionMarkedAdmonitions), ⚡ PreExportCorrection introduced for chapter text construct simplification (usage with pExtensionMarkedAdmonitions)
+
 ## 20260205
 
 ### 🧑‍🤝‍🧑 User
