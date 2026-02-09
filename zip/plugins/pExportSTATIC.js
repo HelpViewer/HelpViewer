@@ -250,7 +250,7 @@ class pExportSTATIC extends pExport {
       /\.(?:htm|html)$/i.test(x) && 
       !/^(http|src\/)/.test(x) && 
       !dictionaries.some(p => x.includes(p)))
-      .map(x => `<url><loc>_REMOTEHOST_${x}</loc><lastmod>${date}</lastmod></url>`).join('\n'));
+      .map(x => `<url><loc>_REMOTEHOST_/${x}</loc><lastmod>${date}</lastmod></url>`).join('\n'));
     evt.output.set('sitemap.xml', sitemapText);
 
     evt.output.set('robots.txt', 

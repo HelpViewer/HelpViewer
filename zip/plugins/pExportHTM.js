@@ -43,7 +43,7 @@ class pExportHTM extends pExport {
     });
 
     let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);
-    sitemapText = sitemapText.replace('_SITES_', `<url><loc>_REMOTEHOST_${FILENAME_INDEXHTM}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`);
+    sitemapText = sitemapText.replace('_SITES_', `<url><loc>_REMOTEHOST_/${FILENAME_INDEXHTM}</loc><lastmod>${new Date().toISOString()}</lastmod></url>`);
     evt.output.set('sitemap.xml', sitemapText);
 
     evt.output.set('robots.txt', 
