@@ -59,8 +59,24 @@
     border-left: 0;
   }
 
-  .note p::before {
-    filter: grayscale(100%) brightness(800%);
+  .note-note p::before {
+    content: "(i) ";
+  }
+
+  .note-tip p::before {
+    content: "TIP ";
+  }
+
+  .note-important p::before {
+    content: "* ";
+  }
+
+  .note-warning p::before {
+    content: "! ";
+  }
+
+  .note-caution p::before {
+    content: "!! ";
   }
 }
 /*E: print support*/
