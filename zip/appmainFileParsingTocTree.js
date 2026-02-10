@@ -52,7 +52,7 @@ function linesToHtmlTree(linesP, treename = N_P_TREEITEM) {
     
       return `<a href="${hrefVal}" ${PAR_NAME_ID}="${treename}|${linksEmitted}" data-param="${clickEvent}" title="${note}">${picAdd}${name}</a>`;
     } else {
-      return `<a title="${note}">${picAdd}${name}</a>`;
+      return `<span title="${note}">${picAdd}${name}</span>`;
     }
   }
 
