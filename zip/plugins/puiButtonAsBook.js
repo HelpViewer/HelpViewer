@@ -215,7 +215,7 @@ class puiButtonAsBook extends puiButtonTab {
       // Local chapter links correction and usage of data-param attribute, correction for cross links between files
       let hrefs = $A('a:not([class])', contentPane);
       Array.from(hrefs).forEach(link => {
-        let dataLink = link.getAttribute('data-param');
+        let dataLink = link.getAttribute('data-param') || link.getAttribute('href');
         if (dataLink && dataLink.startsWith(':')) {
           dataLink = `_${dataLink.slice(1)}`;
           link.setAttribute('data-param', dataLink);
