@@ -4,3 +4,5 @@ jszip.min.js|https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js|
 LICENSE-marked.md|https://cdn.jsdelivr.net/npm/marked/LICENSE.md
 LICENSE-mermaid.md|https://cdn.jsdelivr.net/npm/mermaid/LICENSE
 LICENSE-jszip.md|https://cdn.jsdelivr.net/npm/jszip/LICENSE.markdown|
+LICENSE-DOMPurify.txt|https://raw.githubusercontent.com/cure53/DOMPurify/refs/heads/main/LICENSE
+purify.min.js|https://raw.githubusercontent.com/cure53/DOMPurify/refs/heads/main/dist/purify.min.js

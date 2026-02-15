@@ -52,6 +52,7 @@ pExtensionMarked
 pExtensionMarkedAdmonitions:
 pTRParseMd:-md
 pTREmptyPlugin:-htm
+pTRPurify:-unconnected
 pTRFlushToMemDOM:-unconnected
 pTRUnconnectedTransformation:-unconnected
 pTR1stHeadingToTopPanel:-unconnected
@@ -69,6 +70,7 @@ pTRTriage:fulltextList-triage
 pTRLoadData:fulltextList-load
 pTRParseMd:fulltextList-md
 pTREmptyPlugin:fulltextList-htm
+pTRPurify:fulltextList-unconnected
 pTRFlushToMemDOM:fulltextList-unconnected
 pTRUnconnectedTransformation:fulltextList-unconnected
 pKWGetChapterLinks:fulltextList-unconnected2
