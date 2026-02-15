@@ -4,6 +4,10 @@ class pTRFlushToDOM extends pTRPhasePlugin {
 
     const TI = this;
     TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.StorageGetImages);
+    TI.replacements = {
+      'LANG': (r) => getActiveLanguage().toLowerCase(),
+      'VERSION': (r) => configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT).trim()
+    };
   }
   
   onETShowChapterResolutions(r) {
@@ -30,6 +34,12 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     if (r.fileMedium == UserDataFileLoadedFileType.NETWORK)
       r.content = '';
 
+    let replacements = Object.fromEntries(
+      Object.entries(this.replacements).map(([key, fn]) => {
+        return [key, fn(r)];
+      })
+    );
+    r.content = multipleTextReplace(r.content, replacements, '__');
     r.docV.innerHTML = r.content;
     r.fixRelativePathToZipPaths(r.docV);
     r.doc = r.docV;
