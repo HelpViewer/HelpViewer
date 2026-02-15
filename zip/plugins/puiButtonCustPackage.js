@@ -64,7 +64,7 @@ class puiButtonCustPackage extends puiButton {
       tree = $(treeId);
       this.tree = tree;
       openSubtree(tree);
-      $A('a', tree).forEach(a => {
+      $A('span', tree).forEach(a => {
         const plugins = TI.config[`P-${a.textContent}`].split(';').map(x => x.split(':')[0]).filter(x => x).map(x => x.includes('/') ? getNoDotPath(`${x}.js`) : `plugins/${x}.js`).join(';');
         
         var dirsAndFiles = TI.config[`F-${a.textContent}`].split(';').filter(x => x.endsWith('/'));
