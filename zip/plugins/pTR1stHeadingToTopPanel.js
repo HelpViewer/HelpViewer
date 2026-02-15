@@ -8,20 +8,22 @@ class pTR1stHeadingToTopPanel extends pTRPhasePlugin {
   }
 
   onETShowChapterResolutions(r) {
-    const firstChild = this.doc(r).firstElementChild;
-    const firstH1 = $O('h1', r.doc);
-  
-    if (firstH1 && firstChild === firstH1)
-    {
-      if (firstH1.innerHTML.startsWith('_')) {
-        firstH1.innerHTML = firstH1.innerHTML.trim().substring(1);
-        return;
+    r.result = r.result.then(() => {
+      const firstChild = this.doc(r).firstElementChild;
+      const firstH1 = $O('h1', r.doc);
+    
+      if (firstH1 && firstChild === firstH1)
+      {
+        if (firstH1.innerHTML.startsWith('_')) {
+          firstH1.innerHTML = firstH1.innerHTML.trim().substring(1);
+          return;
+        }
+        if (r.setTitle(firstH1.innerHTML.trim())) {
+          r.heading = firstH1.innerHTML.trim();
+          firstH1.remove();
+        }
       }
-      if (r.setTitle(firstH1.innerHTML.trim())) {
-        r.heading = firstH1.innerHTML.trim();
-        firstH1.remove();
-      }
-    }
+    });
   }
 }
 
