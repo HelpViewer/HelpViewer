@@ -1,5 +1,9 @@
 class pKWGetChapterLinks extends pTRPhasePlugin {
   onETShowChapterResolutions(r) {
+    r.result = (r.result || Promise.resolve()).then(() => this._showChapterResolutions(r));
+  }
+
+  _showChapterResolutions(r) {
     const nodes = $A('a', r.doc);
     var links = [];
 
