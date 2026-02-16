@@ -17,7 +17,8 @@ class pTRPurify extends pTRPhasePlugin {
     if (!window.DOMPurify)
       r.result = r.result.then(() => this.RES_DOMPURIFY?.init(r.result));
 
-    r.result = (!r.content || r.content.length == 0) ? r.result : r.result.then(() => r.content = DOMPurify.sanitize(r.content));
+    if (r.contentType != ChapterContentType.INTERNAL_RESOURCE)
+      r.result = (!r.content || r.content.length == 0) ? r.result : r.result.then(() => r.content = DOMPurify.sanitize(r.content));
   }
 }
 
