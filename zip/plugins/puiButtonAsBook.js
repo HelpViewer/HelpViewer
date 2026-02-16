@@ -186,58 +186,43 @@ class puiButtonAsBook extends puiButtonTab {
         return map;
       }, {});
 
-      // Local chapter links recounted to absolute anchors - orders
+      // Chapter links recounted to absolute anchors - orders and files if needed
       const linksAll = Array.from($A('a', contentPane));
-      var linksLocal = Array.from($A('a:not([class])', contentPane))
-      .filter(a => {
-        const v = a.getAttribute('href');
-        return v && /^(#)/.test(v)
-      });
-
-      linksLocal.forEach(link => {
-        let i = linksAll.indexOf(link);
-        do {
-          i--;
-        } while (i >= 0 && !linksAll[i].getAttribute('id')?.startsWith('file-'));
-
-        if (i > 0) {
-          const baseFileName = linksAll[i].getAttribute('id')?.substring(5);
-          const [, fileChapter] = link.getAttribute('href').split('#') || [];
-          const [, level, order] = fileChapter.split('-') || [];
-          const found = (level && order 
-            ? filesHeadings[baseFileName].filter(x => x.startsWith(`h-${level}-`))[+order] 
-            : filesHeadings[baseFileName][0]) || '';
-          link.setAttribute('href', '#' + found);
-        }
-      });
-      // End: Local chapter links recounted to absolute anchors - orders
-
-      // Local chapter links correction and usage of data-param attribute, correction for cross links between files
-      let hrefs = $A('a:not([class])', contentPane);
-      Array.from(hrefs).forEach(link => {
+      let currentFile = '';
+      linksAll.forEach(link => {
         let dataLink = link.getAttribute('data-param') || link.getAttribute('href');
-        if (dataLink && dataLink.startsWith(':')) {
-          dataLink = `_${dataLink.slice(1)}`;
-          link.setAttribute('data-param', dataLink);
+
+        if (!dataLink) {
+          currentFile = link.getAttribute('id')?.substring(5);
+          return;
         }
+
+        if (link.classList.contains('anchor-link'))
+          return;
 
         if (dataLink && !dataLink.startsWith('http')) {
+          if (/^(?:\?d=|[:?])/.test(dataLink))
+            link.setAttribute('href', '#');
+          else
           if (/\.(md|html|htm)$/.test(dataLink)) {
-            link.setAttribute('href', `#${filesHeadings[dataLink]?.[0] || ''}`);
+            link.setAttribute('href', `#file-${dataLink}`);
+            link.setAttribute('data-param', dataLink);
           } else {
-            const [baseFileName, fileChapter] = dataLink.split('#') || [];
-
-            // TODO : Beware of other anchor naming strategies! - pTRAnchorName
+            let [fileName, fileChapter] = dataLink?.split('#') || [];
+            fileName = fileName || currentFile;
             const [, level, order] = fileChapter?.split('-') || [];
             const found = (level && order 
-              ? filesHeadings[baseFileName]?.filter(x => x.startsWith(`h-${level}-`))[+order] 
-              : filesHeadings[baseFileName]?.[0]) || '';
-            link.setAttribute('href', '#' + found);
+              ? filesHeadings[fileName]?.filter(x => x.startsWith(`h-${level}-`))[+order] 
+              : filesHeadings[fileName]?.[0]) || '';
+            if (found) {
+              link.setAttribute('href', `#${found}`);
+              link.setAttribute('data-param', `${fileName}#${found}`);  
+            } else 
+              log('E Link conversion problem:', fileName, link);
           }
-
         }
       });
-      // End: Local chapter links correction and usage of data-param attribute, correction for cross links between files
+      // End: Chapter links recounted to absolute anchors - orders and files if needed
       
       // File anchors are moved to 1st heading of file
       Array.from($A('a.anchor-link[id^="file-"]', evt.parent)).forEach(x => {
