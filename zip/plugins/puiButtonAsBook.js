@@ -217,8 +217,12 @@ class puiButtonAsBook extends puiButtonTab {
             if (found) {
               link.setAttribute('href', `#${found}`);
               link.setAttribute('data-param', `${fileName}#${found}`);  
-            } else 
+            } else {
+              // backup for decision about other anchor naming strategies! - pTRAnchorName or general failure process
+              link.setAttribute('href', `${fileName}#${fileChapter}`);
+              link.setAttribute('data-param', `${fileName}#${fileChapter}`);  
               log('E Link conversion problem:', fileName, link);
+            }
           }
         }
       });
