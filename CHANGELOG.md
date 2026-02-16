@@ -1,5 +1,19 @@
 # Changelog
 
+## 20260216
+
+### 🧑‍🤝‍🧑 User
+- 📖🔖📇🔎 Span instead of link when not any URI provided (headings and non clickable tree items have better visual format) 
+- 📢🖨️ Admonitions printed with simple characters instead of bright unicode icons
+- 🛡️📦 DOMPurify library integrated as optional 3rd party component
+
+### 🐞 Bugfix
+- 🖼️ Small fixes in content rendering process
+
+### 🧩 Technology
+- 🖼️ pTRFlushToDOM - chapter content now supports list of variables which can be used for chapter rendering (currently closed inside plugin, keys - LANG, VERSION with marker \_\_ on both sides)
+- 📚 puiButtonAsBook - internal refactor of heading anchors preparation process
+
 ## 20260209
 
 ### 🧑‍🤝‍🧑 User
