@@ -205,7 +205,7 @@ class puiButtonAsBook extends puiButtonTab {
             link.setAttribute('href', '#');
           else
           if (/\.(md|html|htm)$/.test(dataLink)) {
-            link.setAttribute('href', `#file-${dataLink}`);
+            link.setAttribute('href', `#${filesHeadings[dataLink]?.[0] || `file-${dataLink}`}`);
             link.setAttribute('data-param', dataLink);
           } else {
             let [fileName, fileChapter] = dataLink?.split('#') || [];
