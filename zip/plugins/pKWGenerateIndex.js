@@ -40,6 +40,10 @@ class pKWGenerateIndex extends IPlugin {
   }
 
   onETChapterShown(r) {
+    r.result = (r.result || Promise.resolve()).then((x) => this._sumUpIndex(r));
+  }
+
+  _sumUpIndex(r) {
     this.indexes.set(r.address, new Map(r.content[0]));
     this.countProcessed++;
     this.chapterLinks.push(...r.content[1])
