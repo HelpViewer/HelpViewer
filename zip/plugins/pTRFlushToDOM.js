@@ -40,7 +40,8 @@ class pTRFlushToDOM extends pTRPhasePlugin {
       })
     );
     r.content = multipleTextReplace(r.content, replacements, '__');
-    r.docV.innerHTML = r.content;
+    r.docV.innerHTML = DOMPurify?.sanitize?.(r.content) || r.content;
+    //r.docV.innerHTML = r.content;
     r.fixRelativePathToZipPaths(r.docV);
     r.doc = r.docV;
   }
