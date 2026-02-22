@@ -3,7 +3,15 @@ class pExtensionMarkedAdmonitions extends pExtensionMarked {
     super(aliasName, data);
     const TI = this;
     TI.DEFAULT_KEY_CFG_ROOTCSSCLASS = 'note';
+    TI.DEFAULT_KEY_CFG_SMALLADMONTYPESTABLE = '?;note;!;warning';
     TI.loadingState = false;
+  }
+
+  init() {
+    super.init();
+    this.cfgSMALLADMONTYPESTABLE = this.cfgSMALLADMONTYPESTABLE.split(';');
+    this.smallAdmonCharsList = this.cfgSMALLADMONTYPESTABLE.filter((_, index) => index % 2 === 0);
+    this.smallAdmonCharsRegex = new RegExp(`^(?:${this.smallAdmonCharsList.map(x => `[${x}>]`).join('|')})`);
   }
 
   onET_PreExportCorrection(e) {
@@ -49,21 +57,38 @@ class pExtensionMarkedAdmonitions extends pExtensionMarked {
   }
 
   _handlerStart(src) {
-    return src.match(/^\s*>?\s*\[!/)?.index;
+    return src.match(/^\s*>?\s*\[!/)?.index || src.match(this.smallAdmonCharsRegex)?.index;
   }
 
   _handlerTokenizer(src, ctx) {
-    const match = src.match(/^(\s*>\s*(?:\\)?\[!([^\]]+)\](?:\s*\n)?)((?:(?!\s*>\s*\[!|\n{1,})[^\n]*\n?)+)/);
+    let match = src.match(/^(\s*>\s*(?:\\)?\[!([^\]]+)\](?:\s*\n)?)((?:(?!\s*>\s*\[!|\n{1,})[^\n]*\n?)+)/);
 
-    if (!match) return false;
-    const type = match[2].trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    const token = {
-      type: this._getMarkedPluginName(),
-      raw: match[0],
-      typeClass: type,
-      text: match[3].trim().replace(/^>\s*/gm, '')
-    };
-    return token;
+    if (match) {
+      const type = match[2].trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+      const token = {
+        type: this._getMarkedPluginName(),
+        raw: match[0],
+        typeClass: type,
+        text: match[3].trim().replace(/^>\s*/gm, '')
+      };
+      return token;
+    }
+
+    match = src.match(/^(\s*(?:[!>]|[?>])\s+)((?:(?!\s*[>!][>?]|\n{2,})[\s\S]*?))(?=\n{2,}|\Z)/);
+
+    if (match) {
+      log('E MATCH:', match, src);
+      const typeResolved = this.cfgSMALLADMONTYPESTABLE.indexOf(match[1]);
+      // const token2 = {
+      //   type: this._getMarkedPluginName(),
+      //   raw: match[0],
+      //   typeClass: this.cfgSMALLADMONTYPESTABLE[typeResolved+1],
+      //   text: match[2].trim().replace(/^\s*(?>|!>)\s*/gm, '')
+      // };
+      // return token2;
+    }
+
+    return false;
   }
 
   _handlerRenderer(token) {
