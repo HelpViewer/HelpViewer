@@ -118,12 +118,18 @@ class pExportSTATIC extends pExport {
 
     let lastH = null;
     let idx = -1;
+    lastFileName = undefined;
+    filesMap[idx] = filesMap[idx] || [];
+    filesMap[idx][4] = filesMap[idx][4] || [];
     Array.from(evt.parent.children)
     //querySelectorAll('*')
     .forEach(el => {
-      if (el.tagName.toLowerCase() == 'h1' && lastH !== headingToFileMap[el.getAttribute('href')]) {
-        idx++;
+      const foundFile = headingToFileMap.get(el.getAttribute('href')) || headingToFileMap.get('#' + el.getAttribute('id')) || 'README.htm';
+      if (el.tagName.toLowerCase() == 'h1') {
+        if (lastFileName != foundFile)
+          idx++;
         lastH = el;
+        lastFileName = foundFile;
       }
       filesMap[idx][4].push(el);
     });
@@ -206,7 +212,8 @@ class pExportSTATIC extends pExport {
 
       const div = document.createElement('div');
       div.append(...x[4]);
-      div.removeChild(x[4][0]);
+      if (x[4][0])
+        div.removeChild(x[4][0]);
       if (subfolders)
         Array.from($A('a:not([class])', div)).filter(a => !/^(ftp|https|\?|#|@|:)/.test(a.getAttribute('href'))).forEach(a => a.setAttribute('href', `${subfolders}${a.getAttribute('href')}`));
       replacements['CONTENT'] = div.innerHTML;
