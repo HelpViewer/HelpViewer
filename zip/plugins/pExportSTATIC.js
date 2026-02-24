@@ -277,6 +277,8 @@ ${dictionaries.map(x => `Disallow: /${x}/`).join('\n')}
       return `<ul class="tree" id="${alias}" role="tree">${dict.map(xa => {
       i++;
       const [x, xt, path] = parseItem(xa);
+      if (!x)
+        return '';
       const targetPath = x.startsWith('http') ? x : `${path}${x}.htm`;
       return `<li role="treeitem"><a href="${targetPath}" id="${alias}|${i}" data-param="@${x}:${alias}" title="${xt}" aria-label="${xt}" class="k">${xt}</a> </li>`
     }).join('')}</ul>`
