@@ -19,4 +19,5 @@
 - wizard with points and buttons
 - Github and another repository services (appGHIntegration.js refactor) - one concept prepared
 - User bookmarks across help pages / User bookmarks to chapters (?, browser bookmarks also exists)
-
+- MCP server - export, showChapter
+- RAG search
