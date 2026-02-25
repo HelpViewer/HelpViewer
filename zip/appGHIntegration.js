@@ -85,7 +85,12 @@ async function insertDownloadLink(hereT, titleMask) {
 
   const linkTitle = titleMask;
   
-  const parentO = $(hereT);
+  const parentO = $(hereT) || hereT;
   if (parentO)
     parentO.innerHTML = `<a href="${path}" title="${path}">${linkTitle}</a>`;
 }
+
+const linkVer1 = document.createElement('span');
+const linkVer2 = document.createElement('span');
+insertDownloadLink(linkVer1);
+insertDownloadLink(linkVer2, '@ (_)');

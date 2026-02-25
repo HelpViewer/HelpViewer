@@ -4,10 +4,17 @@ class pTRFlushToDOM extends pTRPhasePlugin {
 
     const TI = this;
     TI.catalogizeEventCall(TI.onETShowChapterResolutions, EventNames.StorageGetImages);
+
     TI.replacements = {
       'LANG': (r) => getActiveLanguage().toLowerCase(),
-      'VERSION': (r) => configGetValue(CFG_KEY__VERSION, '', FILE_CONFIG_DEFAULT).trim()
+      'LTOPVERSIONV': (r) => linkVer2.innerHTML,
+      'LTOPVERSIONN': (r) => linkVer1.innerHTML,
     };
+  }
+
+  onET_ConfigFileReloadFinished(d) {
+    insertDownloadLink(linkVer1);
+    insertDownloadLink(linkVer2, '@ (_)');
   }
   
   onETShowChapterResolutions(r) {
@@ -39,7 +46,7 @@ class pTRFlushToDOM extends pTRPhasePlugin {
         return [key, fn(r)];
       })
     );
-    r.content = multipleTextReplace(r.content, replacements, '__');
+    r.content = multipleTextReplace(r.content, replacements, '@');
     r.docV.innerHTML = window.DOMPurify ? DOMPurify.sanitize(r.content) : r.content;
     //r.docV.innerHTML = r.content;
     r.fixRelativePathToZipPaths(r.docV);
