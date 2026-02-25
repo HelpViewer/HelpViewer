@@ -51,7 +51,12 @@ class pTRFlushToDOM extends pTRPhasePlugin {
         el.innerHTML = '';
       else {
         const newA = document.createElement('a');
-        newA.setAttribute('href', ah.getAttribute('href'));
+        const hrefURI = ah.getAttribute('href');
+        if (!/^https?:|ftp:\/\//.test(hrefURI)) {
+          el.innerHTML = '';
+          return;
+        }
+        newA.setAttribute('href', hrefURI);
         newA.setAttribute('title', ah.getAttribute('title'));
         newA.innerText = ah.innerText;
         el.innerHTML = newA.outerHTML;
