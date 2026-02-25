@@ -1,5 +1,21 @@
 # Changelog
 
+## 20260225
+
+### 🧑‍🤝‍🧑 User
+- Newest version links preparation security improved across help files
+
+### 🐞 Bugfix
+- DOMPurify integration fixes (mainly edge states when DOMPurify is not present)
+- Fulltext index generation process fixes and improvements connected to asynchronous preparation processing
+- Export STATIC : edge cases fixes - dictionary pages preparation, multiple h1 headings processing in single file
+- Text variables solution (as alternative solution to javascript with DOMPurify used) refactor and variable names changed
+
+### 🧩 Technology
+- Bugfix : pGets : base security fix for XSS by params
+- function safeLinkHtml introduced (kept in pTRFlushToDOM)
+- Newest version links preparation logic refactor
+
 ## 20260216-1
 
 ### 🐞 Bugfix
