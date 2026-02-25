@@ -41,8 +41,25 @@ class pTRFlushToDOM extends pTRPhasePlugin {
     if (r.fileMedium == UserDataFileLoadedFileType.NETWORK)
       r.content = '';
 
-    linkVer2.innerHTML = linkVer2.innerHTML.startsWith('<a') ? linkVer2.innerHTML : '';
-    linkVer1.innerHTML = linkVer1.innerHTML.startsWith('<a') ? linkVer1.innerHTML : '';
+    function safeLinkHtml(el) {
+      if (!el) 
+        return;
+
+      const ah = $O('a[href]', el);
+      
+      if (!ah)
+        el.innerHTML = '';
+      else {
+        const newA = document.createElement('a');
+        newA.setAttribute('href', ah.getAttribute('href'));
+        newA.setAttribute('title', ah.getAttribute('title'));
+        newA.innerText = ah.innerText;
+        el.innerHTML = newA.outerHTML;
+      }
+    }
+
+    safeLinkHtml(linkVer2);
+    safeLinkHtml(linkVer1);
 
     let replacements = Object.fromEntries(
       Object.entries(this.replacements).map(([key, fn]) => {
