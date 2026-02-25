@@ -42,25 +42,10 @@ class pTRFlushToDOM extends pTRPhasePlugin {
       r.content = '';
 
     function safeLinkHtml(el) {
-      if (!el) 
-        return;
-
+      if (!el) return;
       const ah = $O('a[href]', el);
-      
-      if (!ah)
-        el.innerHTML = '';
-      else {
-        const newA = document.createElement('a');
-        const hrefURI = ah.getAttribute('href');
-        if (!/^https?:|ftp:\/\//.test(hrefURI)) {
-          el.innerHTML = '';
-          return;
-        }
-        newA.setAttribute('href', hrefURI);
-        newA.setAttribute('title', ah.getAttribute('title'));
-        newA.innerText = ah.innerText;
-        el.innerHTML = newA.outerHTML;
-      }
+      const minLink = linkToSecuredLink(ah);
+      el.innerHTML = minLink?.outerHTML || '';
     }
 
     safeLinkHtml(linkVer2);
@@ -80,3 +65,21 @@ class pTRFlushToDOM extends pTRPhasePlugin {
 }
 
 Plugins.catalogize(pTRFlushToDOM);
+
+function linkToSecuredLink(ah) {
+  if (!ah)
+    return;
+  else {
+    const newA = document.createElement('a');
+    const hrefURI = ah.getAttribute('href');
+    if (!/^https?:|ftp:\/\//.test(hrefURI)) {
+      el.innerHTML = '';
+      return;
+    }
+    newA.setAttribute('href', hrefURI || '');
+    newA.setAttribute('title', ah.getAttribute('title') || '');
+    newA.innerText = ah.innerText || '';
+    return newA;
+  }
+  return;
+}
