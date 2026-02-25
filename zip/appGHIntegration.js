@@ -72,7 +72,10 @@ async function getLatestReleaseBundleUri(arc, fileName)
 
 async function insertDownloadLink(hereT, titleMask) {
   const fname = 'package.zip';
-  const path = await getLatestReleaseBundleUri(null, fname);
+  let path = await getLatestReleaseBundleUri(null, fname);
+  path = path == 'https://github.com//undefined/releases/download//package.zip' 
+    ? 'https://github.com/HelpViewer/HelpViewer/releases/latest' 
+    : path;
   const linkParts = path.split('/');
   
   if (titleMask) {

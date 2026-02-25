@@ -10,6 +10,8 @@ class pTRFlushToDOM extends pTRPhasePlugin {
       'LTOPVERSIONV': (r) => linkVer2.innerHTML,
       'LTOPVERSIONN': (r) => linkVer1.innerHTML,
     };
+
+    TI.linksPrepared = false;
   }
 
   onET_ConfigFileReloadFinished(d) {
@@ -40,6 +42,11 @@ class pTRFlushToDOM extends pTRPhasePlugin {
 
     if (r.fileMedium == UserDataFileLoadedFileType.NETWORK)
       r.content = '';
+
+    if (!this.linksPrepared) {
+      this.onET_ConfigFileReloadFinished(undefined);
+      this.linksPrepared = true;
+    }
 
     function safeLinkHtml(el) {
       if (!el) return;
