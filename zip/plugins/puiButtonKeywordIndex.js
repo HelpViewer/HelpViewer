@@ -91,8 +91,9 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
 
   static _requestIndexData(target, alias, phrase = '', count = null) {
     let phraseParts = !phrase ? [''] : phrase.split(' ').map(p => p.trim()).filter(p => p !== '');
-    const foundKeywords = [...new Set(phraseParts.flatMap(phrase => getIndexFileData(alias, phrase, count)))].join('\n');
-    target.innerHTML = linesToHtmlTree(foundKeywords, alias);
+    let foundKeywords = [...new Set(phraseParts.flatMap(phrase => getIndexFileData(alias, phrase, count)))];
+    foundKeywords = groupBy(foundKeywords.join('\n').split('\n'), (x) => x);
+    target.innerHTML = linesToHtmlTree(Object.keys(foundKeywords).join('\n'), alias);
   }
 }
   
