@@ -45,6 +45,8 @@ class puiButtonExport extends puiButtonSelect {
   async _handle(e) {
     const T = this.constructor;
     const TI = this;
+    const C_CLASSBUSY = 'wordFound';
+    TI.main.classList.add(C_CLASSBUSY);
 
     const parent = $(TI.cfgCONTENTID);
 
@@ -103,6 +105,7 @@ class puiButtonExport extends puiButtonSelect {
           const blob = new Blob([o], { type: x.mimeType });
           prepareDownload(blob, x.fileName)
         });
+        TI.main.classList.remove(C_CLASSBUSY);
       }
     });
   }
