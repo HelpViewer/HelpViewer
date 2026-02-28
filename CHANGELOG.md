@@ -1,5 +1,10 @@
 # Changelog
 
+## 20260228-1
+
+### 🐞 Bugfix
+- 🛡️ View your repository - DOMPurify prunned internal resources rendering (added exception for internal resources)
+
 ## 20260228
 
 ### 🧑‍🤝‍🧑 User
