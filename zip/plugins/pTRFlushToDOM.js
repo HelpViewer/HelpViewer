@@ -74,9 +74,7 @@ class pTRFlushToDOM extends pTRPhasePlugin {
 Plugins.catalogize(pTRFlushToDOM);
 
 function linkToSecuredLink(ah) {
-  if (!ah)
-    return;
-  else {
+  if (ah) {
     const newA = document.createElement('a');
     const hrefURI = ah.getAttribute('href');
     if (!/^https?:|ftp:\/\//.test(hrefURI)) {
