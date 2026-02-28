@@ -1,5 +1,16 @@
 # Changelog
 
+## 20260228
+
+### 🧑‍🤝‍🧑 User
+- 📇🔎 Indexes now supports searching by parts of words. Each part must be found in found word.
+- 📚 Show all chapters as book : metadata files from other systems like Docsify are present in scanned files
+- 📥 Export : signal border color when export is in progress added
+
+### 🐞 Bugfix
+- Bugfix when GitHub artefact of latest package is resolved too late, then general backup URI is used.
+- 📚 Show all chapters as book : file names cleaning improved
+
 ## 20260225
 
 ### 🧑‍🤝‍🧑 User
