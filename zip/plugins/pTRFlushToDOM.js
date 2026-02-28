@@ -64,7 +64,7 @@ class pTRFlushToDOM extends pTRPhasePlugin {
       })
     );
     r.content = multipleTextReplace(r.content, replacements, '@');
-    r.docV.innerHTML = window.DOMPurify ? DOMPurify.sanitize(r.content) : r.content;
+    r.docV.innerHTML = (window.DOMPurify && r.contentType != ChapterContentType.INTERNAL_RESOURCE) ? DOMPurify.sanitize(r.content) : r.content;
     //r.docV.innerHTML = r.content;
     r.fixRelativePathToZipPaths(r.docV);
     r.doc = r.docV;
