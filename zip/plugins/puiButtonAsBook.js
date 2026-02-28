@@ -5,6 +5,7 @@ class puiButtonAsBook extends puiButtonTab {
     this.DEFAULT_KEY_CFG_ID = 'downP-ShowAsBook';
     this.DEFAULT_KEY_CFG_CAPTION = '📚';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
+    this.DEFAULT_KEY_CFG_ADDITIONALINDEXFILES = '_sidebar.md;_navbar.md';
   }
 
   init() {
@@ -67,6 +68,7 @@ class puiButtonAsBook extends puiButtonTab {
   
       var files = [];
       files.push(homeData);
+      files.push(...(this.cfgADDITIONALINDEXFILES?.split(';') || []));
   
       tocData.then((x) => {
         const result = rowsToArray(x);
@@ -91,6 +93,9 @@ class puiButtonAsBook extends puiButtonTab {
     var prom = Promise.resolve();
 
     files = files.map(f => f.split("#")[0]);
+    files = files.map(f => f.split("@@")[0]);
+    files = files.map(f => f.split("?")[0]);
+    log('E FILES:', files);
     files = [...new Set(files)];
     files = files.filter(f => !/^(ftp|https|\?d=|=)/.test(f));
 
