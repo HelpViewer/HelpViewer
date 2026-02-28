@@ -95,6 +95,7 @@ class puiButtonAsBook extends puiButtonTab {
     files = files.map(f => f.split("#")[0]);
     files = files.map(f => f.split("@@")[0]);
     files = files.map(f => f.split("?")[0]);
+    files = files.map(f => f.startsWith('/') ? f.substring(1) : f);
     log('E FILES:', files);
     files = [...new Set(files)];
     files = files.filter(f => !/^(ftp|https|\?d=|=)/.test(f));
