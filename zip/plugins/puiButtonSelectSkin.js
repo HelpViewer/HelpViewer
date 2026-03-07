@@ -8,6 +8,7 @@ class puiButtonSelectSkin extends puiButtonSelect {
 
     this.DEFAULT_KEY_CFG_STOREKEY = 'skin';
     this.DEFAULT_KEY_CFG_DEFAULTSKIN = '';
+    this.DEFAULT_KEY_CFG_IDCONTENTCONTAINER = 'content';
 
     this.dirStyles = 'styles/';
     this.idCSS = 'css-skin';
@@ -38,12 +39,23 @@ class puiButtonSelectSkin extends puiButtonSelect {
 
   async _setStyle(name) {
     $(this.idCSS)?.remove();
+
+    const contentC = $(this.cfgIDCONTENTCONTAINER);
+    let cssClassPlus = this.config[this.activeSkin] || undefined;
+    if (cssClassPlus)
+      contentC.classList.remove(cssClassPlus);
+
     if (!name)
       return;
+
     const styleData = await storageSearch(STO_DATA, `${this.dirStyles}${name}.css`);
     appendCSS(this.idCSS, styleData);
     $(ID_MAINCSS_PLUS)?.remove();
     this.activeSkin = name;
+
+    cssClassPlus = this.config[this.activeSkin] || undefined;
+    if (cssClassPlus)
+      contentC.classList.add(cssClassPlus);
   }
 
   onET_UserDataFileLoaded(evt) {
