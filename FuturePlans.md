@@ -21,4 +21,3 @@
 - User bookmarks across help pages / User bookmarks to chapters (?, browser bookmarks also exists)
 - MCP server - export, showChapter
 - RAG search
-- Chrome plugin - context help and HelpViewer chapter opening
