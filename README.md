@@ -30,6 +30,8 @@ Want to be involved even more?
 
 📙 Explore [Documentation for developers][DGuide] to start custom development.
 
+🧩 Integrate [plugin][HVPlugin] into your Chromium browser (Chrome/Edge) to provide context‑sensitive help directly in your application for your users.
+
 ## Features
 
 - No installation required - just unzip and run locally
@@ -139,3 +141,4 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [YourRepo]: https://helpviewer.github.io/?p=%3AviewRepo.htm&id=10&d=hlp/Help-__.zip "👀 View your repository"
 [SLinux]: https://github.com/HelpViewer/MiniHTTPServer/releases/download/20260206/main "Local server (Linux)"
 [SWindows]: https://github.com/HelpViewer/MiniHTTPServer/releases/download/20260206/main.exe  "Local server (Windows)"
+[HVPlugin]: https://github.com/HelpViewer/PluginChromeHelpViewer "PluginChromeHelpViewer"
