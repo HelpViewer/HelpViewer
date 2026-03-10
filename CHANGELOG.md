@@ -1,5 +1,16 @@
 # Changelog
 
+## 20260310
+### 🧑‍🤝‍🧑 User
+- 🧩 Plugin **What is here?** for Chromium core browsers ([PluginChromeHelpViewer](https://github.com/HelpViewer/PluginChromeHelpViewer/master/ "PluginChromeHelpViewer"))
+- 🛡️ Unicode steganography (invisible-code UTF characters) protection improved - extension for character code range 0000-001F
+
+### 🐞 Bugfix
+- 🌈 Skin : consoleBlackAndGreen : bugfix select options font color
+
+### 🧩 Technology
+- 🌈 puiButtonSelectSkin : added support for an additional CSS class on the content pane when skin changes
+
 ## 20260228-1
 
 ### 🐞 Bugfix
