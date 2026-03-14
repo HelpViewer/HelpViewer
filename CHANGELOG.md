@@ -1,5 +1,14 @@
 # Changelog
 
+## 20260314
+### 🧑‍🤝‍🧑 User
+- 🛡️ Unicode steganography (invisible-code UTF characters) protection improved - extension for character code range FE00–FE0D, E0100-E01EF, allowed white space characters list minimized
+- 🛡️ Content security policy upgraded
+- 🛡️ Loader: Zip files are now checked for zip slip (path traversal inside zip files)
+
+### 🧩 Technology
+- Optimization in main CSS style
+
 ## 20260310
 ### 🧑‍🤝‍🧑 User
 - 🧩 Plugin **What is here?** for Chromium core browsers ([PluginChromeHelpViewer](https://github.com/HelpViewer/PluginChromeHelpViewer/master/ "PluginChromeHelpViewer"))
