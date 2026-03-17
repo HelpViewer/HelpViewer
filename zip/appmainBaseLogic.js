@@ -196,7 +196,7 @@ function fixImgRelativePathToZipPaths(doc, archive, exclude = '')
 {
   $A(`img${exclude}`, doc).forEach((img) => {
     const src = img.getAttribute('src');
-    if (src && !/^https?:\/\//.test(src)) {
+    if (src && !src.startsWith('data:image') && !/^https?:\/\//.test(src)) {
       getDataOfPathInZIPImage(src, archive).then((data) => {
         if (data)
           img.src = data;
