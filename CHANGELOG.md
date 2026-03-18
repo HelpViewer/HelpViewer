@@ -1,5 +1,9 @@
 # Changelog
 
+## 20260318
+### 🧑‍🤝‍🧑 User
+- 🛡️ Security improved: LSB noise injection on images (breaks common steganography attacks)
+
 ## 20260314
 ### 🧑‍🤝‍🧑 User
 - 🛡️ Unicode steganography (invisible-code UTF characters) protection improved - extension for character code range FE00–FE0D, E0100-E01EF, allowed white space characters list minimized
