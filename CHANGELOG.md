@@ -1,5 +1,13 @@
 # Changelog
 
+## 20260321
+### 🧑‍🤝‍🧑 User
+- 📇🔎 Indexes : dictionary words are normalized to non diacritics letters, searching with diacritic text is still supported
+- 🛡️ Unicode steganography (invisible-code UTF characters) protection improved - extended character ranges, header panel and HTML title better covered now
+
+### 🧩 Technology
+- 🧩 puiButtonObjectExplorer : Global variables value gathering as JSON dump when complex object is forwarded
+
 ## 20260318
 ### 🧑‍🤝‍🧑 User
 - 🛡️ Security improved: LSB noise injection on images (breaks common steganography attacks)
