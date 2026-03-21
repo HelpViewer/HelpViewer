@@ -44,7 +44,7 @@ class pIndexFile extends IPlugin {
     const aliasName = this.aliasName;
 
     const h_EVT_IF_SET = (data) => {
-      index = newKeywordDatabase(aliasName, data.keywords.toLowerCase(), data.mapping);
+      index = newKeywordDatabase(aliasName, textCleanupPhrase(data.keywords).toLowerCase(), data.mapping);
       data.result = index.readKeywordDatabase();
 
       const loadedCount = data.result > 0;
