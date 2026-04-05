@@ -1,5 +1,9 @@
 # Changelog
 
+## 20260405
+### 🐞 Bugfix
+- 📥 Customization of download package : fix of component tree loading
+
 ## 20260321
 ### 🧑‍🤝‍🧑 User
 - 📇🔎 Indexes : dictionary words are normalized to non diacritics letters, searching with diacritic text is still supported
