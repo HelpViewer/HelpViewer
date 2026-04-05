@@ -1,5 +1,9 @@
 # Changelog
 
+## 20260406
+### 🐞 Bugfix
+- 📥 Customization of download package : ZIP file preparation fix
+
 ## 20260405
 ### 🐞 Bugfix
 - 📥 Customization of download package : fix of component tree loading
