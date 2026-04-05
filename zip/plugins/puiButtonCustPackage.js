@@ -111,9 +111,9 @@ class puiButtonCustPackage extends puiButton {
     }
   }
 
-  _preparePackage(items) {
+  async _preparePackage(items) {
     const TI = this;
-    const jszip = _Storage.getKey(STO_DATA)?.storageO;
+    const jszip = await _Storage.getKey(STO_DATA)?.getCopyForChanges();
 
     if (!jszip || typeof jszip === "string") {
       const contentPane = $(TI.cfgIDCONTENT);
