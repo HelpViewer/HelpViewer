@@ -15,6 +15,7 @@ class puiButtonChangeLanguage extends puiButtonTab {
     const TI = this;
 
     this.langTab = uiAddTreeView('langList', TI.tab);
+    this.langTab.setAttribute('role', 'list');
 
     registerOnClick(TI.cfgLINKPREFIX, (e) => {
       loadLocalization(e.elementIdVal);
