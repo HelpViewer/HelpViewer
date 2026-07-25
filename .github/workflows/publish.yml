@@ -202,6 +202,7 @@ jobs:
           tag_name: ${{ steps.newtag.outputs.version }}
           release_name: ${{ steps.newtag.outputs.version }}
           body: ${{ steps.newtag.outputs.body }}
+          draft: true
         env:
           GITHUB_TOKEN: ${{ secrets._TOKEN }}
 
@@ -241,6 +242,13 @@ jobs:
           asset_path: ./package.zip
           asset_name: package.zip
           asset_content_type: application/zip
+
+      - name: Publish release
+        uses: eregon/publish-release@v1
+        with:
+          release_id: ${{ steps.crelease.outputs.id }}
+        env:
+          GITHUB_TOKEN: ${{ secrets._TOKEN }}
 
       - name: Set up Docker Buildx
         if: steps.pub.outputs.exists == 'true'
