@@ -1,5 +1,14 @@
 # Changelog
 
+## 20260725
+### 🧑‍🤝‍🧑 User
+- 🛡️ Application CSP tightened more, referer defined
+- 🛡️ Unicode steganography (invisible-code UTF characters) protection improved - extended character ranges
+- Line numbers are turned off for code block without language defined (pTRParsePrism)
+
+### 🐞 Bugfix
+- 🌐 Change language list ARIA role fixed
+
 ## 20260406
 ### 🐞 Bugfix
 - 📥 Customization of download package : ZIP file preparation fix
