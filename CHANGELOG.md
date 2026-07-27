@@ -1,6 +1,6 @@
 # Changelog
 
-## 20260725
+## 20260727
 ### 🧑‍🤝‍🧑 User
 - 🛡️ Application CSP tightened more, referer defined
 - 🛡️ Unicode steganography (invisible-code UTF characters) protection improved - extended character ranges
