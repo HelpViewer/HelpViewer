@@ -66,8 +66,10 @@ const global1stState = DEBUG_MODE? new Set(Object.getOwnPropertyNames(globalThis
   <div id="js-error"> ⚠ JavaScript is turned off!</div>
 </noscript>
 <div id="cors-error">
-<p> ⚠ Do you see this message only? Then viewer is not reading help file content.<br>This may be caused by your browser blocking local file access (file://) due to CORS policy restrictions. </p>
-<p>You can select these files:</p>
+<h1>🔒 Local file access restricted (CORS)</h1>
+<p> Your browser is blocking direct access to local files (file://) due to standard security policies (CORS). To open your documentation, please choose one of the options below:</p>
+<h2>🟢 Option 1: Select files manually (recommended & safe)</h2>
+<p>Simply select your data pack and help file below. No installation or settings changes required.</p>
 <form id="form">
   <div id="formIn">
   </div>
@@ -75,6 +77,11 @@ const global1stState = DEBUG_MODE? new Set(Object.getOwnPropertyNames(globalThis
 <script>
   formCorsHelpFilesUpload();
 </script>
+<h2>🌐 Option 2: Use our online PWA</h2>
+<p>Avoid file dialogs entirely by using our live web app. Upload your public GitHub repository, pass URI and read your documentation instantly at <a href="https://helpviewer.github.io?p=:viewRepo.htm">https://helpviewer.github.io</a>.</p>
+<h2>🛠️ Option 3: For Developers (local server)</h2>
+<p>To load files automatically via URL parameters (?d=file.zip), run HelpViewer through a local web server (e.g., using our lightweight HTTP server for <a href="https://github.com/HelpViewer/MiniHTTPServer/releases/latest" title="Linux (main) or Windows (main.exe)">Linux musl libc (main) or Windows (main.exe)</a> or <a href="https://github.com/HelpViewer/HelpViewer/pkgs/container/helpviewer" title="Podman/Docker image">Podman/Docker image</a>) on localhost.</p>
+<h2>🔴 Option 4: Bypass CORS policy (not recommended, can lead to security risk)</h2>
 <p>Alternatively you need to run your browser in mode with bypass CORS policy:</p>
 <ul>
 <li><p>Chrome:</p>
