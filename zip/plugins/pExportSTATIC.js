@@ -174,7 +174,8 @@ class pExportSTATIC extends pExport {
     let fileHeading = filesMap.map(x => [x[0], 
       x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
         ? x[1].childNodes[0].textContent.trim() 
-        : ''
+        : '',
+        ''
       ]);
 
 const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
@@ -193,9 +194,8 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
     _ITEMS_
   </channel>
 </rss>`;
-    replacements['ITEMS'] = fileHeading.map(x => `<item><title>${x[1]}</title><link>_REMOTEHOST_/${x[0]}</link><description>${x[1]}</description><guid>_REMOTEHOST_/${x[0]}</guid></item>`).join('\n');
-    const populated = multipleTextReplace(rssTemplate, replacements, '_');
-    evt.output.set('rss.xml', populated);
+    replacements['ITEMS'] = '_ITEMS_';
+    let populatedRSS = multipleTextReplace(rssTemplate, replacements, '_');
 
     if (getUserConfigValue(KEY_LS_EXPORTDICT) == 1) {
       dictionaries = Array.from(buttons.keys()).filter(x => x.startsWith('_INDEX_'));
@@ -243,6 +243,9 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
         Array.from($A('a:not([class])', div)).filter(a => !/^(ftp|https|\?|#|@|:)/.test(a.getAttribute('href'))).forEach(a => a.setAttribute('href', `${subfolders}${a.getAttribute('href')}`));
       replacements['CONTENT'] = div.innerHTML;
       replacements['DESCRIPTION'] = div.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 160);
+      if (fileHeading.length > idx) {
+        fileHeading[idx][2] = replacements['DESCRIPTION'];
+      }
       const title = x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
         ? x[1].childNodes[0].textContent.trim() 
         : '';
@@ -272,6 +275,11 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
 
       evt.output.set(x[0], `<!DOCTYPE html>${minifyHTMLSource(doc.documentElement.outerHTML)}`);
     });
+
+    // RSS generation
+    replacements['ITEMS'] = fileHeading.map(x => `<item><title>${x[1]}</title><link>_REMOTEHOST_/${x[0]}</link><description>${x[2]}</description><guid>_REMOTEHOST_/${x[0]}</guid></item>`).join('\n');
+    populatedRSS = minifyHTMLSource(multipleTextReplace(populatedRSS, replacements, '_'));
+    evt.output.set('rss.xml', populatedRSS);
 
     if (!evt.output.get(FILENAME_INDEXHTM))
       evt.output.set(FILENAME_INDEXHTM, minifyHTMLSource(evt.output.get('README.htm')));
