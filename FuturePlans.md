@@ -21,3 +21,4 @@
 - User bookmarks across help pages / User bookmarks to chapters (?, browser bookmarks also exists)
 - MCP server - export, showChapter
 - RAG search
+- pExportSTATIC : RSS feed generation : pubDate - verify if CI/CD script preserves last commit date time on files when cloning back to CI container when help ZIP is being packaged for deploy
