@@ -171,6 +171,31 @@ class pExportSTATIC extends pExport {
     }
 
     let dictionaries = [];
+    let fileHeading = filesMap.map(x => [x[0], 
+      x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
+        ? x[1].childNodes[0].textContent.trim() 
+        : ''
+      ]);
+
+const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <atom:link href="_REMOTEHOST_/rss.xml" rel="self" type="application/rss+xml" />
+    <title>_TITLE_</title>
+    <link>_REMOTEHOST_/</link>
+    <description>_TITLE_</description>
+    <language>_LANG_</language>
+    <image>
+      <title>_TITLE_</title>
+      <url>_REMOTEHOST_/favicon.png</url>
+      <link>_REMOTEHOST_/</link>
+    </image>
+    _ITEMS_
+  </channel>
+</rss>`;
+    replacements['ITEMS'] = fileHeading.map(x => `<item><title>${x[1]}</title><link>_REMOTEHOST_/${x[0]}</link><description>${x[1]}</description><guid>_REMOTEHOST_/${x[0]}</guid></item>`).join('\n');
+    const populated = multipleTextReplace(rssTemplate, replacements, '_');
+    evt.output.set('rss.xml', populated);
 
     if (getUserConfigValue(KEY_LS_EXPORTDICT) == 1) {
       dictionaries = Array.from(buttons.keys()).filter(x => x.startsWith('_INDEX_'));
