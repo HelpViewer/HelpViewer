@@ -73,12 +73,17 @@ class pExportSTATIC extends pExport {
       return map;
     }, {});
 
+    let filesOrig = [];
     allHref.filter(x => !x.classList?.length && x.getAttribute('href')?.startsWith('#')).forEach(x => {
       const dataParam = x.getAttribute('data-param')?.replace('.md', '.htm') || '';
+      filesOrig.push(x.getAttribute('data-param') || '');
       const index = dataParam.indexOf('#');
       const target = index > 0 ? dataParam.slice(0, index) : dataParam;
       x.href = `${target}${x.getAttribute('href')}`;
     });
+
+    filesOrig = filesOrig.map(x => x.split('#')[0]).filter(x => x);
+    filesOrig = [...new Set(filesOrig)];
 
     const staticData = {};
     staticData.tocExists = filesMap.map(x => x[0]).includes(FILENAME_EXPORT_TOC);
@@ -171,12 +176,15 @@ class pExportSTATIC extends pExport {
     }
 
     let dictionaries = [];
-    let fileHeading = filesMap.map(x => [x[0], 
+    filesOrig = filesOrig.map(x => [x, evt.getFileTime(x)]);
+    let fileHeading = filesMap.map((x, idx) => [
+      x[0], 
       x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
         ? x[1].childNodes[0].textContent.trim() 
         : '',
-        ''
-      ]);
+      '',
+      filesOrig[idx]?.[1]
+    ]);
 
 const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
 <rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
@@ -277,7 +285,7 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
     });
 
     // RSS generation
-    replacements['ITEMS'] = fileHeading.map(x => `<item><title>${x[1]}</title><link>_REMOTEHOST_/${x[0]}</link><description>${x[2]}</description><guid>_REMOTEHOST_/${x[0]}</guid></item>`).join('\n');
+    replacements['ITEMS'] = fileHeading.map(x => `<item><title>${x[1]}</title><link>_REMOTEHOST_/${x[0]}</link><description>${x[2]}</description><guid>_REMOTEHOST_/${x[0]}-${x[3]?.toISOString()}</guid><pubDate>${x[3]?.toUTCString()}</pubDate></item>`).join('\n');
     populatedRSS = minifyHTMLSource(multipleTextReplace(populatedRSS, replacements, '_'));
     evt.output.set('rss.xml', populatedRSS);
 

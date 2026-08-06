@@ -7,6 +7,7 @@ class PrepareExport extends IEvent {
     this.parent = undefined;
     this.fileName = 'export.zip';
     this.mimeType = 'application/zip';
+    this.getFileTime = (fileName) => this.createdAt;
   }
 }
 
@@ -106,7 +107,8 @@ class puiButtonExport extends puiButtonSelect {
           prepareDownload(blob, x.fileName)
         });
         TI.main.classList.remove(C_CLASSBUSY);
-      }
+      };
+      x.getFileTime = (fileName) => _Storage.getDateTime(STO_HELP, fileName) || x.createdAt;
     });
   }
 
