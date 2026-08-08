@@ -245,6 +245,7 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
         div.removeChild(x[4][0]);
       if (subfolders)
         Array.from($A('a:not([class])', div)).filter(a => !/^(ftp|https|\?|#|@|:)/.test(a.getAttribute('href'))).forEach(a => a.setAttribute('href', `${subfolders}${a.getAttribute('href')}`));
+      replacements['SUBFOLDERS'] = subfolders;
       replacements['CONTENT'] = div.innerHTML;
       replacements['DESCRIPTION'] = div.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 160);
       if (fileHeading.length > idx) {
