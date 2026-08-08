@@ -73,17 +73,12 @@ class pExportSTATIC extends pExport {
       return map;
     }, {});
 
-    let filesOrig = [];
     allHref.filter(x => !x.classList?.length && x.getAttribute('href')?.startsWith('#')).forEach(x => {
       const dataParam = x.getAttribute('data-param')?.replace('.md', '.htm') || '';
-      filesOrig.push(x.getAttribute('data-param') || '');
       const index = dataParam.indexOf('#');
       const target = index > 0 ? dataParam.slice(0, index) : dataParam;
       x.href = `${target}${x.getAttribute('href')}`;
     });
-
-    filesOrig = filesOrig.map(x => x.split('#')[0]).filter(x => x);
-    filesOrig = [...new Set(filesOrig)];
 
     const staticData = {};
     staticData.tocExists = filesMap.map(x => x[0]).includes(FILENAME_EXPORT_TOC);
@@ -176,15 +171,16 @@ class pExportSTATIC extends pExport {
     }
 
     let dictionaries = [];
-    filesOrig = filesOrig.map(x => [x, evt.getFileTime(x)]);
-    let fileHeading = filesMap.map((x, idx) => [
+    const encoder = new TextEncoder();
+    let fileHeading = filesMap.map(x => [
       x[0], 
       x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
         ? x[1].childNodes[0].textContent.trim() 
         : '',
       '',
-      filesOrig[idx]?.[1]
-    ]);
+      [...Array.from(x[4], element => element.innerText).join('')]
+        .reduce((sum, char) => sum + char.codePointAt(0), 0)
+      ]);
 
 const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
 <rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
@@ -252,7 +248,8 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
       replacements['CONTENT'] = div.innerHTML;
       replacements['DESCRIPTION'] = div.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 160);
       if (fileHeading.length > idx) {
-        fileHeading[idx][2] = replacements['DESCRIPTION'];
+        let idxI = idx;
+        fileHeading[idxI][2] = replacements['DESCRIPTION'];
       }
       const title = x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
         ? x[1].childNodes[0].textContent.trim() 
@@ -285,7 +282,7 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
     });
 
     // RSS generation
-    replacements['ITEMS'] = fileHeading.map(x => `<item><title>${x[1]}</title><link>_REMOTEHOST_/${x[0]}</link><description>${x[2]}</description><guid>_REMOTEHOST_/${x[0]}-${x[3]?.toISOString()}</guid><pubDate>${x[3]?.toUTCString()}</pubDate></item>`).join('\n');
+    replacements['ITEMS'] = fileHeading.map(x => `<item><title>${x[1]}</title><link>_REMOTEHOST_/${x[0]}</link><description>${x[2]}</description><guid isPermaLink="false">_REMOTEHOST_/${x[0]}-${x[3]}</guid></item>`).join('\n');
     populatedRSS = minifyHTMLSource(multipleTextReplace(populatedRSS, replacements, '_'));
     evt.output.set('rss.xml', populatedRSS);
 
