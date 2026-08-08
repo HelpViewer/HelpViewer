@@ -282,7 +282,7 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
     });
 
     // RSS generation
-    replacements['ITEMS'] = fileHeading.map(x => `<item><title>${x[1]}</title><link>_REMOTEHOST_/${x[0]}</link><description>${x[2]}</description><guid isPermaLink="false">_REMOTEHOST_/${x[0]}-${x[3]}</guid></item>`).join('\n');
+    replacements['ITEMS'] = fileHeading.map(x => `<item><title><![CDATA[${x[1]}]]></title><link>_REMOTEHOST_/${x[0]}</link><description><![CDATA[${x[2]}]]></description><guid isPermaLink="false">_REMOTEHOST_/${x[0]}-${x[3]}</guid></item>`).join('\n');
     populatedRSS = minifyHTMLSource(multipleTextReplace(populatedRSS, replacements, '_'));
     evt.output.set('rss.xml', populatedRSS);
 
