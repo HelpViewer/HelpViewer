@@ -98,7 +98,7 @@ jobs:
 
           echo "::group::Packaging"
           cd hvdata/data
-          zip -r -9 ../data.zip .
+          zip -r -9 -X ../data.zip .
           cd ..
           rm -rf data/
           rm ./README.md ./LICENSE
@@ -122,7 +122,7 @@ jobs:
           cp -rf ../hvdata .
           rm -rf ./.git
           echo "<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title></title><meta name="robots" content="noindex,nofollow"></head><body></body></html>" > ./hvdata/index.html
-          zip -r -9 ../package.zip .
+          zip -r -9 -X ../package.zip .
           echo "::endgroup::"
 
           echo "::group::sw.js cache list update"
@@ -229,7 +229,7 @@ jobs:
           echo "::endgroup::"
           
           echo "::group::Bundling user guide help file"
-          zip -r ./package.zip hlp
+          zip -r -9 -X ./package.zip hlp
           echo "::endgroup::"
 
       - name: Upload asset
