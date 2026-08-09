@@ -6,6 +6,7 @@ class puiButtonAsBook extends puiButtonTab {
     this.DEFAULT_KEY_CFG_CAPTION = '📚';
     this.DEFAULT_KEY_CFG_TARGET = UI_PLUGIN_SIDEBAR;
     this.DEFAULT_KEY_CFG_ADDITIONALINDEXFILES = '_sidebar.md;_navbar.md';
+    this.DEFAULT_KEY_CFG_BUSYCLASSNAME = 'wordFound';
   }
 
   init() {
@@ -62,6 +63,8 @@ class puiButtonAsBook extends puiButtonTab {
     if (this.tab.classList.contains(C_HIDDENC)) {
       super._buttonAction();
     } else {
+      this.button.classList.add(this.cfgBUSYCLASSNAME);
+
       const tocData = sendEvent(EventNames.GetTOCData) || Promise.resolve([]);
       this.homeData = getHomePageData() || '';
       const homeData = this.homeData;
@@ -247,7 +250,7 @@ class puiButtonAsBook extends puiButtonTab {
       });
       // End: File anchors are moved to 1st heading of file
 
-
+      this.button.classList.remove(this.cfgBUSYCLASSNAME);
     }
   }
 
