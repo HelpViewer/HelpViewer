@@ -1,5 +1,12 @@
 # Changelog
 
+## 20260809
+### 🧑‍🤝‍🧑 User
+- 📥 Export STATIC - Added RSS feed
+
+### 🧩 Technology
+- 🤖 CI/CD pipeline: zip command uses -X for removing file metadata to provide some more space savings
+
 ## 20260727
 ### 🧑‍🤝‍🧑 User
 - 🛡️ Application CSP tightened more, referer defined
