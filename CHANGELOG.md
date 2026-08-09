@@ -3,6 +3,7 @@
 ## 20260809
 ### 🧑‍🤝‍🧑 User
 - 📥 Export STATIC - Added RSS feed
+- 🛡️ CORS message text updated for better guidance to non-technical user
 
 ### 🧩 Technology
 - 🤖 CI/CD pipeline: zip command uses -X for removing file metadata to provide some more space savings
