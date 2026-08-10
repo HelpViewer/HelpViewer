@@ -18,7 +18,7 @@ class pTRKeywordInText extends pTRPhasePlugin {
             const end = start + m[0].length;
             const found = parent.nodeValue.substring(start, end);
             const foundR = new RegExp(found.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-            span.innerHTML = parent.nodeValue.replace(foundR, `<span class='wordFound'>${found}</span>`);
+            span.innerHTML = parent.nodeValue.replace(foundR, `<mark>${found}</mark>`);
             parent.replaceWith(...span.childNodes);
           }
         });
