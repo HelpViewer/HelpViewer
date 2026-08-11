@@ -22,4 +22,4 @@
 - MCP server - export, showChapter
 - RAG search
 - pExportSTATIC : RSS feed generation : pubDate - verify if CI/CD script preserves last commit date time on files when cloning back to CI container when help ZIP is being packaged for deploy (check action step: chetan/git-restore-mtime-action@v2 ; command: git restore-mtime ) , zkusit: const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('Ahoj'));
-const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join(''); (partially solved by other way in process, but think idea in general)
