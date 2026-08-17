@@ -28,3 +28,7 @@ div.toolbar a {
 	text-align: center;
 	padding-right: 0.1em
 }
+
+code[class*="language-"] {
+	white-space: pre-wrap;
+}
