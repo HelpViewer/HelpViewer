@@ -171,7 +171,6 @@ class pExportSTATIC extends pExport {
     }
 
     let dictionaries = [];
-    const encoder = new TextEncoder();
     let fileHeading = filesMap.map(x => [
       x[0], 
       x[1].childNodes[0]?.nodeType === Node.TEXT_NODE 
