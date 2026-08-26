@@ -339,8 +339,7 @@ ${dictionaries.map(x => `Disallow: /${x}/`).join('\n')}
 
     //index.htm
     const h1t = document.createElement('h1');
-    const buttonName = conversionToStatic.convertIndexId(alias);
-    h1t.innerText = _T(buttonName);
+    h1t.innerText = _T(dictionary.get("BUTTON"));
     const indexFile = [`${alias}/${FILENAME_INDEXHTM}`, h1t, [], h1t, []];
     const indexFileContent = printList(dictionary.get("WORD"), (x) => [x, x, 'w/']);
 
@@ -428,19 +427,5 @@ const conversionToStatic = {
       b.setAttribute('href', `${c.subfolders}${v}/${FILENAME_INDEXHTM}`);
       return b;
     }
-  },
-  IndexNameToButtonId: [
-    'keywordList', 'downP-Glossary', 
-    'fulltextList', 'downP-Fulltext',
-  ],
-  convertIndexId: (id) => {
-    const index = conversionToStatic.IndexNameToButtonId.indexOf(id);
-    if (index === -1)
-      return undefined;
-
-    if (index % 2 === 0)
-      return conversionToStatic.IndexNameToButtonId[index + 1];
-    else
-      return conversionToStatic.IndexNameToButtonId[index - 1];
   }
 };

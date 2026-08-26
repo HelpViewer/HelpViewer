@@ -9,11 +9,16 @@ class puiButtonKeywordIndex extends puiButtonTabTree {
     
     this.DEFAULT_KEY_CFG_TREEID = aliasName;
   }
+
+  static EVT_IDXBTN_GETID = 'GetIndexButtonId';
   
   init() {
-    super.init();
-
+    const T = this.constructor;
     const TI = this;
+    const h_EVT_IDXBTN_GETID = (evt) => evt.result = TI.cfgID;
+
+    TI.eventDefinitions.push([T.EVT_IDXBTN_GETID, IEvent, h_EVT_IDXBTN_GETID]);
+    super.init();
 
     hideButton(TI.button.id, false);
   }

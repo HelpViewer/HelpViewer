@@ -118,6 +118,7 @@ class pIndexFile extends IPlugin {
     target.set("WORD", dump);
     target.set("WORD-FILE", wordsToFiles);
     target.set("FILE-TITLE-WORD", headings);
+    target.set("BUTTON", sendEvent('GetIndexButtonId', (x) => x.id = T.aliasName));
 
     return target;
   }
