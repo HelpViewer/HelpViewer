@@ -18,7 +18,7 @@ class pTRPurify extends pTRPhasePlugin {
       r.result = r.result.then(() => this.RES_DOMPURIFY?.init(r.result));
       r.result = r.result.then(() => {
         const sanitize = DOMPurify.sanitize;
-        DOMPurify.sanitize = (txt) => sanitize(txt, { ADD_TAGS: ['#comment'] });
+        DOMPurify.sanitize = (txt) => sanitize(txt, { ADD_TAGS: ['#comment'], FORCE_BODY: true });
 
         DOMPurify.addHook('afterSanitizeElements', (node) => {
           if (node.nodeType === Node.COMMENT_NODE) {
