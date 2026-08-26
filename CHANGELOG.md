@@ -1,5 +1,19 @@
 # Changelog
 
+## 20260826
+### 🧑‍🤝‍🧑 User
+- 🟡 Long time operations busy state signalling added (yellow color (wordFound CSS variable) on UI buttons)
+- 🛡️ Content security policy refactor and tightening - default-src is none and rest source rules are defined separately
+
+### 🐞 Bugfix
+- 📥🖨️ Print: static pages export (pExportSTATIC) code listings lines are now wrapped correctly to show entire text in printer output (new bug: line numbers are not correctly wrapped with code listing)
+- 🖨️ Print: @print-keep-icons, @print-break directives were removed from chapters by DOMPurify (functionality fully restored)
+- CSS : image max-width: stretch for images to not overflowing page width
+
+### 🧩 Technology
+- 🤖 CI/CD pipeline: optimization of non **[pub]** messages processing
+- marked words in text are in **mark** tag instead of previous **span**
+
 ## 20260809
 ### 🧑‍🤝‍🧑 User
 - 📥 Export STATIC - Added RSS feed
