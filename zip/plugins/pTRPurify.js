@@ -14,8 +14,22 @@ class pTRPurify extends pTRPhasePlugin {
   }
   
   onETShowChapterResolutions(r) {
-    if (!window.DOMPurify)
+    if (!window.DOMPurify) {
       r.result = r.result.then(() => this.RES_DOMPURIFY?.init(r.result));
+      r.result = r.result.then(() => {
+        const sanitize = DOMPurify.sanitize;
+        DOMPurify.sanitize = (txt) => sanitize(txt, { ADD_TAGS: ['#comment'] });
+
+        DOMPurify.addHook('afterSanitizeElements', (node) => {
+          if (node.nodeType === Node.COMMENT_NODE) {
+            const text = node.textContent.trim();
+            // @print-keep-icons - maximum allowed length
+            if (!text.startsWith('@') || text.length > 17)
+              node.remove();
+          }
+        });
+      });
+    }
 
     if (r.contentType != ChapterContentType.INTERNAL_RESOURCE)
       r.result = (!r.content || r.content.length == 0) ? r.result : r.result.then(() => r.content = DOMPurify.sanitize(r.content));
