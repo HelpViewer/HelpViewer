@@ -286,9 +286,16 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
     populatedRSS = minifyHTMLSource(multipleTextReplace(populatedRSS, replacements, '_'));
     evt.output.set('rss.xml', populatedRSS);
 
+    // llms.txt
+    let llms = [`# ${fileHeading[0][1]}`, '', `${fileHeading[0][2]}`, ''];
+    llms.push(...fileHeading.map(x => `- [${x[1]}](_REMOTEHOST_/${x[0]}): ${x[2]}`));
+    evt.output.set('llms.txt', llms.join('\n'));
+
+    // index.html
     if (!evt.output.get(FILENAME_INDEXHTM))
       evt.output.set(FILENAME_INDEXHTM, minifyHTMLSource(evt.output.get('README.htm')));
 
+    // sitemap.xml
     let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);
     const date = new Date().toISOString();
     sitemapText = sitemapText.replace('_SITES_', [...evt.output.keys()].filter(x => 
@@ -298,6 +305,7 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
       .map(x => `<url><loc>_REMOTEHOST_/${x}</loc><lastmod>${date}</lastmod></url>`).join('\n'));
     evt.output.set('sitemap.xml', sitemapText);
 
+    // robots.txt
     evt.output.set('robots.txt', 
 `User-agent: *
 Allow: /
