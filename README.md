@@ -16,6 +16,8 @@ Interested?
 
 📦 Download the latest HelpViewer [release package][PackLatest].
 
+(or 🐳 Pull [Docker/Podman image][Docker])
+
 💬 Join our [Discord][Discord] user group.
 
 Don’t want to just read other people’s help files?
@@ -40,8 +42,8 @@ Want to be involved even more?
   - Your data stays with you - the application runs entirely in JavaScript in your browser, and no files are sent to any server.
   - A browser with CORS policies disabled is recommended. Otherwise, functionality is partially limited and you must manually select the data file and help file at startup.
 - Responsive (desktop and other devices supported)
-- Lightweight - distribution package under 1.38 MiB (💾; most part of solution compressed)
-- Supports export of a chapter (in 2 clicks) or the complete help file (in 4 clicks) to HTML, Markdown, LaTeX, ePub, RTF formats.
+- Lightweight - distribution package under 2 x 1.38 MiB (💾; most part of solution compressed)
+- Supports export of a chapter (in 2 clicks) or the complete help file (in 4 clicks) to HTML, Markdown, LaTeX, ePub, RTF and static website without JS formats.
 - Accessibility rules WCAG 2.1 implemented (accessibilitychecker.org: 89 %, Lighthouse: 96%, Web Aim)
 - Print friendly version (prefers greyscale)
 - Personal notes on chapter paragraphs
@@ -142,3 +144,4 @@ Please note that any use of third-party code generated or suggested by AI is sub
 [SLinux]: https://github.com/HelpViewer/MiniHTTPServer/releases/download/20260206/main "Local server (Linux)"
 [SWindows]: https://github.com/HelpViewer/MiniHTTPServer/releases/download/20260206/main.exe  "Local server (Windows)"
 [HVPlugin]: https://github.com/HelpViewer/PluginChromeHelpViewer "PluginChromeHelpViewer"
+[Docker]: https://github.com/HelpViewer/HelpViewer/pkgs/container/helpviewer "Docker/Podman Image"
