@@ -29,13 +29,16 @@ class pExportSTATIC extends pExport {
     const T = this.constructor;
     const TI = this;
     const layout = minifyHTMLSource(await storageSearch(STO_DATA, TI.cfgLAYOUT, STOF_TEXT));
+    const date = new Date().toISOString();
 
     let replacements = {
       'LANG': getActiveLanguage().toLowerCase(),
       'INSTYLE': document.body.className,
       'TITLE': getHeader(),
       'TOOLBAR': '',
-      'CONTENT' : ''
+      'CONTENT' : '',
+      'DATETIME_EXPORT_ISO': date,
+      'AUTHORPROJECT': configGetDataProjectFile()
     };
 
     if (evt.parent.children[0].tagName.toLowerCase() != 'h1') {
@@ -297,7 +300,6 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
 
     // sitemap.xml
     let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);
-    const date = new Date().toISOString();
     sitemapText = sitemapText.replace('_SITES_', [...evt.output.keys()].filter(x => 
       /\.(?:htm|html)$/i.test(x) && 
       !/^(http|src\/)/.test(x) && 

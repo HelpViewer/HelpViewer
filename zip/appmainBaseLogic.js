@@ -77,7 +77,8 @@ function minifyHTMLSource(html) {
   const blocks = [];
   html = html.replace(/<(pre|script|style|textarea)[^>]*>([\s\S]*?)<\/\1>/gi, (m, tag, content) => {
       const id = 'BLOCK' + blocks.length;
-      blocks.push(`<${tag}>${content}</${tag}>`);
+      //blocks.push(`<${tag}>${content}</${tag}>`);
+      blocks.push(m);
       return `<${id}>`;
   });
   
