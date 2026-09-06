@@ -290,7 +290,7 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
     evt.output.set('rss.xml', populatedRSS);
 
     // llms.txt
-    let llms = [`# ${fileHeading[0][1]}`, '', `${fileHeading[0][2]}`, ''];
+    let llms = [`# ${fileHeading[0][1]}`, '', `> ${fileHeading[0][2]}`, ''];
     llms.push(...fileHeading.map(x => `- [${x[1]}](_REMOTEHOST_/${x[0]}): ${x[2]}`));
     evt.output.set('llms.txt', llms.join('\n'));
 
