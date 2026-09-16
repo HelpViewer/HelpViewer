@@ -1,5 +1,12 @@
 # Changelog
 
+## 20260916
+### 🧑‍🤝‍🧑 User
+- 📥 Export STATIC: llms.txt generation, JSONLD header generation in pages, og:locale, twitter metadata, author meta attributes
+
+### 🐞 Bugfix
+- 📥 Export STATIC: favicon.png relative path part fixed
+
 ## 20260826
 ### 🧑‍🤝‍🧑 User
 - 🟡 Long time operations busy state signalling added (yellow color (wordFound CSS variable) on UI buttons)
