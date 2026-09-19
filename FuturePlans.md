@@ -24,4 +24,3 @@
 const hash = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join(''); (partially solved by other way in process, but think idea in general)
 - Single-Sourcing (snippets, conditional tags blocks, per roles text versions + dynamic content filtering)
 - Export to SCORM (e-learning)
-- Export static HTML: ivestigate why HTML5 tags layout failed on scrollbar: b551f68ed8be2697d7a39f4d5b518138c23626e6
