@@ -31,6 +31,13 @@ class pExportSTATIC extends pExport {
     const layout = minifyHTMLSource(await storageSearch(STO_DATA, TI.cfgLAYOUT, STOF_TEXT));
     const date = new Date().toISOString();
 
+    let imgs = $A("img", evt.parent);
+    for (const c of imgs) {
+      if (evt.embeds.has(c.src)) {
+        c.src = '_SUBFOLDERS_' + evt.embeds.get(c.src);
+      }
+    }
+
     let replacements = {
       'LANG': getActiveLanguage().toLowerCase(),
       'INSTYLE': document.body.className,
@@ -248,7 +255,7 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
       if (subfolders)
         Array.from($A('a:not([class])', div)).filter(a => !/^(ftp|https|\?|#|@|:)/.test(a.getAttribute('href'))).forEach(a => a.setAttribute('href', `${subfolders}${a.getAttribute('href')}`));
       replacements['SUBFOLDERS'] = subfolders;
-      replacements['CONTENT'] = div.innerHTML;
+      replacements['CONTENT'] = multipleTextReplace(div.innerHTML, replacements, '_');
       replacements['DESCRIPTION'] = div.innerText.replace(/[\s#]+/g, ' ').trim().substring(0, 160);
       if (fileHeading.length > idx) {
         let idxI = idx;
