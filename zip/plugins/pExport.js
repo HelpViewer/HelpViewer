@@ -37,7 +37,7 @@ class pExport extends IPlugin {
   }
 
   getStyles() {
-    const reply = {};
+    let reply = {};
     Array.from($A('style', document.head)).forEach(s => {
       if (s) {
         const id = s.id || newUID();
@@ -45,7 +45,8 @@ class pExport extends IPlugin {
         reply[`${id}.css`] = s?.textContent;
       }
     });
-    return reply;
+    let replyF = {['base.css']: Object.entries(reply).map(([k, v]) => `/*S: ${k}*/\n${v}\n/*E: ${k}*/`).join('\n')};
+    return replyF;
   }
 
   removeSVG(output) {
