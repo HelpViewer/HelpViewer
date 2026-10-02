@@ -39,7 +39,7 @@ class pExportEPUB extends pExport {
       cssLink.setAttribute('type', 'text/css');
       
       head.appendChild(cssLink);
-      evt.output.set(fName, content);
+      evt.output.set(fName, this.minifySpacesEmptyLines(content));
     });
 
     evt.embeds.values().filter(x => x.startsWith('src/') && !x.endsWith('.svg')).forEach(x => {

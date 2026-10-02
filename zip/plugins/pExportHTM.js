@@ -39,7 +39,7 @@ class pExportHTM extends pExport {
       cssLink.type = 'text/css';
       
       head.appendChild(cssLink);
-      evt.output.set(fName, content);
+      evt.output.set(fName, this.minifySpacesEmptyLines(content));
     });
 
     let sitemapText = await storageSearch(STO_DATA, FILENAME_SITEMAPTPL, STOF_TEXT);

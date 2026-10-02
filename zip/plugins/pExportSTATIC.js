@@ -283,7 +283,7 @@ const rssTemplate = `<?xml version="1.0" encoding="utf-8"?>
         cssLink.type = 'text/css';
         
         head.appendChild(cssLink);
-        evt.output.set(fName, content);
+        evt.output.set(fName, this.minifySpacesEmptyLines(content));
       });
 
       keywordsMeta(head, idx, x[0]);

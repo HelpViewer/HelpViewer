@@ -55,6 +55,10 @@ class pExport extends IPlugin {
     });
   }
 
+  minifySpacesEmptyLines(text) {
+    return rowsToArray(text).map((r) => r.trim()).filter((r) => r).join('\n');
+  }
+
   async getFavicon(parent = document) {
     var link = $O("link[rel~='icon']", parent);
 
