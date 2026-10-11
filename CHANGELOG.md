@@ -1,5 +1,12 @@
 # Changelog
 
+## 20261011
+### 🧑‍🤝‍🧑 User
+- 📥 Exports: ePub, HTM, STATIC : CSS styles in application are merged into one file with stripped empty lines and spaces on line ends
+
+### 🐞 Bugfix
+- 📥 Export STATIC: images are referenced instead of base64 data string copying
+
 ## 20260916
 ### 🧑‍🤝‍🧑 User
 - 📥 Export STATIC: llms.txt generation, JSONLD header generation in pages, og:locale, twitter metadata, author meta attributes
