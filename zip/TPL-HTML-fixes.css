@@ -1,11 +1,6 @@
 .line-numbers-rows {
 	position: absolute;
 	top: 0.7em;
-	margin-left: -3em;
-}
-
-.code-toolbar pre {
-	margin-left: 3em;
 }
 
 .copy-to-clipboard-button {
