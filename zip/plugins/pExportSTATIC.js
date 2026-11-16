@@ -9,17 +9,11 @@ class pExportSTATIC extends pExport {
     this.DEFAULT_KEY_CFG_BUTTONORDER = 'printBtn;nav-left;nav-top;nav-right;downP-TopicTree;downP-Glossary;downP-Fulltext;downP-Home';
   }
 
-  init() {
+  async init() {
     const T = this.constructor;
     const TI = this;
     conversionToStatic.buttonOrder = TI.cfgBUTTONORDER.split(';');
     super.init();
-  }
-
-  clearLastFromRight(x, c = '.') {
-    const index = x.lastIndexOf(c);
-    const rightOut = index > -1 ? x.slice(0, index) : x;
-    return rightOut;
   }
 
   async onETPrepareExport(evt) {

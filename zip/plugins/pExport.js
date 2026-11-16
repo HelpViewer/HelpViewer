@@ -77,6 +77,12 @@ class pExport extends IPlugin {
 
     return undefined;
   }
+  
+  clearLastFromRight(x, c = '.') {
+    const index = x.lastIndexOf(c);
+    const rightOut = index > -1 ? x.slice(0, index) : x;
+    return rightOut;
+  }
 }
 
 Plugins.catalogize(pExport);
